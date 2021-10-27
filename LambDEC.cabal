@@ -46,6 +46,23 @@ executable LambDEC-exe
     , base >=4.7 && <5
   default-language: Haskell2010
 
+test-suite LambDEC-tasty
+  type: exitcode-stdio-1.0
+  main-is: Tasty.hs
+  other-modules:
+      Test.Config
+      Paths_LambDEC
+  hs-source-dirs:
+      test-tasty
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      LambDEC
+    , base >=4.7 && <5
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+  default-language: Haskell2010
+
 test-suite LambDEC-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
