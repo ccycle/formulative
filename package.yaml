@@ -21,6 +21,11 @@ description:         Please see the README on GitHub at <https://github.com/gith
 
 dependencies:
 - base >= 4.7 && < 5
+- dhall
+- extensible <= 0.8.2
+- composite-dhall <= 0.0.6.0
+- composite-base
+- text
 
 library:
   source-dirs: src
