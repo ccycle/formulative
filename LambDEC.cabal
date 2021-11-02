@@ -26,7 +26,15 @@ source-repository head
 library
   exposed-modules:
       LambDEC.Calculation.DifferentialEquation.Dynamic.TimeEvolution
+      LambDEC.Calculation.Operator.Arithmetic.Class
+      LambDEC.Calculation.Operator.DEC.Class
+      LambDEC.Calculation.Operator.DEC.Generator
+      LambDEC.Calculation.Operator.VectorSpace.Class
+      LambDEC.Postprocess.Export.Class
+      LambDEC.Postprocess.Export.CSV
+      LambDEC.Postprocess.Export.VTU
       LambDEC.Postprocess.Organization
+      LambDEC.Preprocess.CheckMesh
       LambDEC.Preprocess.MakeDIrectory
       LambDEC.Preprocess.ReadConfig
       Lib
@@ -40,7 +48,15 @@ library
     , composite-dhall <=0.0.6.0
     , dhall
     , extensible <=0.8.2
+    , generic-monoid
+    , lens
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
     , text
+    , vector
+    , vector-sized
+    , vector-space
   default-language: Haskell2010
 
 executable LambDEC-exe
@@ -57,14 +73,26 @@ executable LambDEC-exe
     , composite-dhall <=0.0.6.0
     , dhall
     , extensible <=0.8.2
+    , generic-monoid
+    , lens
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
     , text
+    , vector
+    , vector-sized
+    , vector-space
   default-language: Haskell2010
 
 test-suite LambDEC-tasty
   type: exitcode-stdio-1.0
   main-is: Tasty.hs
   other-modules:
+      Test.ArithmetricClass
+      Test.GenericsTest
+      Test.MonoidInstance
       Test.TastyTest
+      Test.VectorSpace
       Paths_LambDEC
   hs-source-dirs:
       test-tasty
@@ -76,10 +104,15 @@ test-suite LambDEC-tasty
     , composite-dhall <=0.0.6.0
     , dhall
     , extensible <=0.8.2
+    , generic-monoid
+    , lens
     , tasty
     , tasty-hunit
     , tasty-quickcheck
     , text
+    , vector
+    , vector-sized
+    , vector-space
   default-language: Haskell2010
 
 test-suite LambDEC-test
@@ -97,5 +130,13 @@ test-suite LambDEC-test
     , composite-dhall <=0.0.6.0
     , dhall
     , extensible <=0.8.2
+    , generic-monoid
+    , lens
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
     , text
+    , vector
+    , vector-sized
+    , vector-space
   default-language: Haskell2010

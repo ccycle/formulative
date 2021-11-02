@@ -26,6 +26,14 @@ dependencies:
 - composite-dhall <= 0.0.6.0
 - composite-base
 - text
+- vector
+- vector-sized
+- lens
+- tasty
+- tasty-hunit
+- tasty-quickcheck
+- generic-monoid
+- vector-space
 
 library:
   source-dirs: src
