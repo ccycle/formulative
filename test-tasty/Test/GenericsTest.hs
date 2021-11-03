@@ -19,6 +19,7 @@ module Test.GenericsTest where
 import GHC.Generics
 
 import LambDEC.Calculation.Operator.Arithmetic.Class
+import LambDEC.Calculation.Operator.VectorSpace.Class
 
 -- import LambDEC.Calculation.Operator.Arithmetic.Class( Scalar(..) )
 
