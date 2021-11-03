@@ -34,6 +34,8 @@ dependencies:
 - tasty-quickcheck
 - generic-monoid
 - vector-space
+- liquid-base
+- liquidhaskell >= 0.8.10
 
 library:
   source-dirs: src
@@ -46,6 +48,7 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -fplugin=LiquidHaskell
     dependencies:
     - LambDEC
 
