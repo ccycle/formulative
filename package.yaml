@@ -22,9 +22,6 @@ description:         Please see the README on GitHub at <https://github.com/gith
 dependencies:
 - base >= 4.7 && < 5
 - dhall
-- extensible <= 0.8.2
-- composite-dhall <= 0.0.6.0
-- composite-base
 - text
 - vector
 - vector-sized
@@ -32,10 +29,9 @@ dependencies:
 - tasty
 - tasty-hunit
 - tasty-quickcheck
-- generic-monoid
 - vector-space
-- liquid-base
-- liquidhaskell >= 0.8.10
+# - liquid-base
+- liquidhaskell
 
 library:
   source-dirs: src
