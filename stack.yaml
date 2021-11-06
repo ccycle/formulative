@@ -43,7 +43,30 @@ packages:
 # - git: https://github.com/commercialhaskell/stack.git
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a
 #
-extra-deps: []
+
+extra-deps:
+# - git: https://github.com/ucsd-progsys/liquid-fixpoint.git
+#   commit: 87105cfad502922e9dd817e8dd4b0f0791588212
+# - git: https://github.com/ucsd-progsys/liquidhaskell.git
+#   commit: 275e9146d686229fc70ee3a4ebab4705c9c3d8d9
+#   subdirs:
+#   - .
+#   - liquid-base
+#   - liquid-ghc-prim
+# - rest-rewrite-0.1.1@sha256:7e180d3feb7185e41e3813e4d5a7aa8dfc1cfb479e754e22e706bcc99a26cf35,4793
+
+# https://github.com/ucsd-progsys/lh-plugin-demo/blob/main/stack.yaml.github
+# - text-format-0.3.2
+# - Diff-0.3.4
+# - git: https://github.com/ucsd-progsys/liquidhaskell
+#   commit: 094ea0d2553c72f38d3704b10ba9157fbace8abe
+#   subdirs:
+#     - .
+#     - liquid-base
+#     - liquid-ghc-prim
+# - git: https://github.com/ucsd-progsys/liquid-fixpoint
+#   commit: 73bf922019259ef6f0581e6bfbec0cee29e5a768
+# - rest-rewrite-0.1.1@sha256:7e180d3feb7185e41e3813e4d5a7aa8dfc1cfb479e754e22e706bcc99a26cf35,4793
 
 # Override default flag values for local packages and extra-deps
 # flags: {}

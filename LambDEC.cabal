@@ -35,7 +35,7 @@ library
       LambDEC.Postprocess.Export.VTU
       LambDEC.Postprocess.Organization
       LambDEC.Preprocess.CheckMesh
-      LambDEC.Preprocess.MakeDIrectory
+      LambDEC.Preprocess.MakeDirectory
       LambDEC.Preprocess.ReadConfig
       Lib
   other-modules:
