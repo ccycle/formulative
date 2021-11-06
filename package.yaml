@@ -29,7 +29,6 @@ dependencies:
 - tasty
 - tasty-hunit
 - tasty-quickcheck
-- generic-monoid
 - vector-space
 - refined
 

@@ -29,6 +29,7 @@ library
       LambDEC.Calculation.Operator.Arithmetic.Class
       LambDEC.Calculation.Operator.DEC.Class
       LambDEC.Calculation.Operator.DEC.Generator
+      LambDEC.Calculation.Operator.UltraDiscretization.Class
       LambDEC.Calculation.Operator.VectorSpace.Class
       LambDEC.Postprocess.Export.Class
       LambDEC.Postprocess.Export.CSV
@@ -44,12 +45,9 @@ library
       src
   build-depends:
       base >=4.7 && <5
-    , composite-base
-    , composite-dhall <=0.0.6.0
     , dhall
-    , extensible <=0.8.2
-    , generic-monoid
     , lens
+    , liquidhaskell
     , tasty
     , tasty-hunit
     , tasty-quickcheck
@@ -65,16 +63,13 @@ executable LambDEC-exe
       Paths_LambDEC
   hs-source-dirs:
       app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -fplugin=LiquidHaskell
   build-depends:
       LambDEC
     , base >=4.7 && <5
-    , composite-base
-    , composite-dhall <=0.0.6.0
     , dhall
-    , extensible <=0.8.2
-    , generic-monoid
     , lens
+    , liquidhaskell
     , tasty
     , tasty-hunit
     , tasty-quickcheck
@@ -88,7 +83,6 @@ test-suite LambDEC-tasty
   type: exitcode-stdio-1.0
   main-is: Tasty.hs
   other-modules:
-      Test.ArithmetricClass
       Test.GenericsTest
       Test.MonoidInstance
       Test.TastyTest
@@ -100,12 +94,9 @@ test-suite LambDEC-tasty
   build-depends:
       LambDEC
     , base >=4.7 && <5
-    , composite-base
-    , composite-dhall <=0.0.6.0
     , dhall
-    , extensible <=0.8.2
-    , generic-monoid
     , lens
+    , liquidhaskell
     , tasty
     , tasty-hunit
     , tasty-quickcheck
@@ -119,6 +110,7 @@ test-suite LambDEC-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      LiquidHaskell
       Paths_LambDEC
   hs-source-dirs:
       test
@@ -126,12 +118,9 @@ test-suite LambDEC-test
   build-depends:
       LambDEC
     , base >=4.7 && <5
-    , composite-base
-    , composite-dhall <=0.0.6.0
     , dhall
-    , extensible <=0.8.2
-    , generic-monoid
     , lens
+    , liquidhaskell
     , tasty
     , tasty-hunit
     , tasty-quickcheck
