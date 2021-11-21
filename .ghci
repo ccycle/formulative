@@ -1,3 +1,6 @@
 :set prompt ">>> "
 :set -XDataKinds
 :set -XOverloadedStrings
+:set -XTypeApplications
+:set -XFlexibleContexts
+:set -XTypeFamilies
