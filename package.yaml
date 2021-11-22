@@ -1,6 +1,6 @@
-name:                LambDEC
+name:                hstructure
 version:             0.1.0.0
-github:              "githubuser/LambDEC"
+github:              "githubuser/hstructure"
 license:             BSD3
 author:              "Author name here"
 maintainer:          "example@example.com"
@@ -17,7 +17,7 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/LambDEC#readme>
+description:         Please see the README on GitHub at <https://github.com/githubuser/hstructure#readme>
 
 dependencies:
 - base >= 4.7 && < 5
@@ -31,12 +31,23 @@ dependencies:
 - tasty-quickcheck
 - vector-space
 - refined
+- HList
+- reflection
+- ghc-typelits-natnormalise
+- ghc-typelits-knownnat
+- ghc-prim
+- safe-exceptions
+- matrix-sized
+- eigen
+- containers
+- exact-combinatorics
+- simple-reflect
 
 library:
   source-dirs: src
 
 executables:
-  LambDEC-exe:
+  hstructure-exe:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
@@ -44,10 +55,10 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - LambDEC
+    - hstructure
 
 tests:
-  LambDEC-test:
+  hstructure-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -55,8 +66,8 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - LambDEC
-  LambDEC-tasty:
+    - hstructure
+  hstructure-tasty:
     main: Tasty.hs
     source-dirs: test-tasty
     ghc-options:
@@ -64,7 +75,19 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - LambDEC
+    - hstructure
     - tasty
     - tasty-hunit
     - tasty-quickcheck
+
+benchmarks:
+  criterion:
+    main: Criterion.hs
+    source-dirs: benchmark-criterion
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - hstructure
+    - criterion

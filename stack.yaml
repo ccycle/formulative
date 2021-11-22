@@ -43,6 +43,8 @@ packages:
 
 extra-deps:
 - HList-0.5.1.0@sha256:3ecb2d10ad2b3d36ad28e2f08505f9c3d7143ca737ef13b3e64db503635966c2,7525
+- matrix-sized-0.1.1@sha256:fefae4c7215e8fc00ed9ea4b34592958efc93113dbf7a600a0c91a01188a05d2,18351
+- eigen-3.3.7.0@sha256:7c24a86426b238e02ba0ac2179cc44997518b443a13828ed7a791fe49a6dffa5,82060
 
 # Override default flag values for local packages and extra-deps
 # flags: {}

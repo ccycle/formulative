@@ -18,10 +18,10 @@ module Test.GenericsTest where
 
 import GHC.Generics
 
-import LambDEC.Calculation.Operator.Arithmetic.Class
-import LambDEC.Calculation.Operator.VectorSpace.Class
+import HStructure.Calculation.Operator.Arithmetic.Class
+import HStructure.Calculation.Operator.VectorSpace.Class
 
--- import LambDEC.Calculation.Operator.Arithmetic.Class( Scalar(..) )
+-- import HStructure.Calculation.Operator.Arithmetic.Class( Scalar(..) )
 
 import GHC.Natural
 
@@ -321,12 +321,13 @@ unit_RecVectorSpace = print $ 2 *. Rec 2 3
 
 data HeteroRecTest = HeteroRecTest {pressure :: Double, density :: Int}
     deriving stock (Show, Eq, Generic)
-    deriving anyclass (Additive, AdditiveGroup)
+    deriving anyclass (Additive, AdditiveGroup, Multiplicative)
 
 unit_HeteroRecAdd = print $ HeteroRecTest 1 1 .+. HeteroRecTest 1 2
+unit_HeteroRecSub = print $ HeteroRecTest 1 1 .-. HeteroRecTest 1 2
 
 associativity :: (Eq a) => (a -> a -> a) -> a -> a -> a -> Bool
-associativity (<>) a b c = (a <> b) <> c == a <> b <> c
+associativity (<>) a b c = (a <> b) <> c == a <> (b <> c)
 
 prop_associativity_DoubleAdd = associativity @Double (.+.) -- fail
 prop_associativity_DoubleMul = associativity @Double (.*.) -- fail
@@ -338,3 +339,9 @@ prop_associativity_IntMul = associativity @Int (.*.)
 
 prop_associativity_IntegerAdd = associativity @Integer (.+.)
 prop_associativity_IntegerMul = associativity @Integer (.*.)
+
+data HeteroRecFieldTest = HeteroRecFieldTest {pressure :: Double, density :: Float}
+    deriving stock (Show, Eq, Generic)
+    deriving anyclass (Additive, AdditiveGroup, Multiplicative)
+
+-- Fieldにするのは相当しんどいしあまり使い道がないので一旦は置いとく

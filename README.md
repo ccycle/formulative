@@ -1,6 +1,6 @@
-# LambDEC
+# hstructure
 
-LambDEC is a open-source tool of Discrete Exterior Calculus written by Haskell.
+hstructure is a open-source tool of Discrete Exterior Calculus written by Haskell.
 
 ## Usage Guide
 
