@@ -83,7 +83,7 @@ tests:
 benchmarks:
   criterion:
     main: Criterion.hs
-    source-dirs: benchmark-criterion
+    source-dirs: benchmarks
     ghc-options:
     - -threaded
     - -rtsopts
