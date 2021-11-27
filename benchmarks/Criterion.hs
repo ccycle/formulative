@@ -7,7 +7,7 @@ import Criterion.Types
 
 import Math.Combinatorics.Exact.Factorial (factorial)
 
--- import HStructure.Calculation.Operator.DEC.Generator
+-- import HStructure.Calculation.DEC.Generator
 
 -- https://haskell.e-bigmoon.com/stack/bench/index.html
 -- https://haskell.e-bigmoon.com/posts/2018/06-25-all-about-strictness

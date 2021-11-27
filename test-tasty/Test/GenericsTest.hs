@@ -18,10 +18,10 @@ module Test.GenericsTest where
 
 import GHC.Generics
 
-import HStructure.Calculation.Operator.Arithmetic.Class
-import HStructure.Calculation.Operator.VectorSpace.Class
+import HStructure.Calculation.Algebra.Arithmetic.Class
+import HStructure.Calculation.VectorSpace.Class
 
--- import HStructure.Calculation.Operator.Arithmetic.Class( Scalar(..) )
+-- import HStructure.Calculation.Algebra.Arithmetic.Class( Scalar(..) )
 
 import GHC.Natural
 
