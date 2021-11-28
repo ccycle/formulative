@@ -38,7 +38,7 @@ unit_AllZero = do
 unit_DivideVector = do
     a <- allNonzeroTest
     b <- notAllNonzeroTestVec
-    print $ b ./. a
+    print $ b `safeDiv` a
 
 -- should be failed
 unit_notAllZero = do
