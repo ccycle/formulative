@@ -32,6 +32,7 @@ dependencies:
 - vector-space
 - refined
 - HList
+- rio
 - reflection
 - ghc-typelits-natnormalise
 - ghc-typelits-knownnat
@@ -42,6 +43,29 @@ dependencies:
 - containers
 - exact-combinatorics
 - simple-reflect
+- singletons
+- ad
+# - typelits-witnesses <= 0.3.0.3
+
+default-extensions:
+- StrictData
+- DataKinds
+- DefaultSignatures
+- DerivingVia
+- DeriveGeneric
+- FlexibleContexts
+- FlexibleInstances
+- GeneralizedNewtypeDeriving
+- GADTs
+- StandaloneDeriving
+- StrictData
+- ScopedTypeVariables
+- TypeApplications
+- TypeFamilies
+- TypeOperators
+- TypeSynonymInstances
+- MultiParamTypeClasses
+- RankNTypes
 
 library:
   source-dirs: src
@@ -49,6 +73,17 @@ library:
 executables:
   hstructure-exe:
     main:                Main.hs
+    other-modules:       []
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - hstructure
+  hstructure-calculation-exe:
+    main:                Calculation.hs
+    other-modules:       []
     source-dirs:         app
     ghc-options:
     - -threaded

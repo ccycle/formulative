@@ -1,5 +1,3 @@
-{-# LANGUAGE DataKinds #-}
-
 module Test.Matrix where
 
 import qualified Data.Matrix.Static.LinearAlgebra as MS

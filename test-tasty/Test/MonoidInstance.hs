@@ -1,7 +1,5 @@
-{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE StandaloneDeriving #-}
-{-# LANGUAGE TypeOperators #-}
+
 {-# LANGUAGE UndecidableInstances #-}
 
 module Test.MonoidInstance where
