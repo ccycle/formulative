@@ -1,10 +1,11 @@
-{-# LANGUAGE TypeApplications #-}
-
 module Main (main) where
 
 import Criterion.Main
 import Criterion.Types
 
+import Control.Monad
+import Control.Monad.ST
+import Data.STRef
 import Math.Combinatorics.Exact.Factorial (factorial)
 
 -- import HStructure.Calculation.DEC.Generator
@@ -21,6 +22,12 @@ factorialRecursive 0 = 1
 factorialRecursive n
     | n < 0 = 0
     | otherwise = n * factorialRecursive (n - 1)
+
+factorialSTRef n = runST $ do
+    x <- newSTRef 1
+    forM_ [1 .. n] $ \i ->
+        modifySTRef x (* i)
+    readSTRef x
 
 numBGroupWHNF func name =
     bgroup
