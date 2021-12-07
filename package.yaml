@@ -20,32 +20,36 @@ extra-source-files:
 description:         Please see the README on GitHub at <https://github.com/githubuser/hstructure#readme>
 
 dependencies:
+- ad
 - base >= 4.7 && < 5
+- bytestring
+- cassava
+- containers
 - dhall
-- text
-- vector
-- vector-sized
+- eigen
+- exact-combinatorics
+- finite-field
+- fused-effects
+- ghc-prim
+- ghc-typelits-knownnat
+- ghc-typelits-natnormalise
 - lens
+- matrix-sized
+- path
+- path-io
+- refined
+- reflection
+- rio
+- safe-exceptions
+- simple-reflect
+- singletons
 - tasty
 - tasty-hunit
 - tasty-quickcheck
+- text
+- vector
+- vector-sized
 - vector-space
-- refined
-- HList
-- rio
-- reflection
-- ghc-typelits-natnormalise
-- ghc-typelits-knownnat
-- ghc-prim
-- safe-exceptions
-- matrix-sized
-- eigen
-- containers
-- exact-combinatorics
-- simple-reflect
-- singletons
-- ad
-# - typelits-witnesses <= 0.3.0.3
 
 default-extensions:
 - StrictData
