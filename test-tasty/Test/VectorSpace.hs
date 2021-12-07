@@ -7,6 +7,8 @@ import Data.VectorSpace
 import Data.Void
 import GHC.Generics
 
+-- package "vectorspace" のテスト
+
 type VRep v = Rep v Void
 
 class (VectorSpace v) => NormSpace v where

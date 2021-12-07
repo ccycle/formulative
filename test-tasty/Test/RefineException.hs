@@ -30,7 +30,7 @@ unit_AllNonZero = do
     print a
 
 -- should be failed
-unit_notAllZero = do
+unit_notAllZero_fail = do
     a <- notAllNonzeroRefinedTest
     print a
 
@@ -40,7 +40,7 @@ unit_DivideByVector = do
     print $ b `safeDiv` a
 
 -- should be failed
-unit_DivideByVectorFail = do
+unit_DivideByVector_fail = do
     a <- notAllNonzeroRefinedTest
     b <- allNonzeroTestVec
     print $ b `safeDiv` a

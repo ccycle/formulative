@@ -321,8 +321,8 @@ unit_HeteroRecSub = print $ HeteroRecTest 1 1 .-. HeteroRecTest 1 2
 associativity :: (Eq a) => (a -> a -> a) -> a -> a -> a -> Bool
 associativity (<>) a b c = (a <> b) <> c == a <> (b <> c)
 
-prop_associativity_DoubleAdd = associativity @Double (.+.) -- fail
-prop_associativity_DoubleMul = associativity @Double (.*.) -- fail
+prop_associativity_DoubleAdd_fail = associativity @Double (.+.) -- fail
+prop_associativity_DoubleMul_fail = associativity @Double (.*.) -- fail
 prop_associativity_FloatAdd = associativity @Float (.+.) -- fail
 prop_associativity_FloatMul = associativity @Float (.*.) -- fail
 
