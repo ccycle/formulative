@@ -22,6 +22,7 @@ description:         Please see the README on GitHub at <https://github.com/gith
 dependencies:
 - ad
 - base >= 4.7 && < 5
+- base-noprelude
 - bytestring
 - cassava
 - containers
@@ -47,38 +48,64 @@ dependencies:
 - tasty-hunit
 - tasty-quickcheck
 - text
+- typenums
 - vector
 - vector-sized
 - vector-space
 
+library:
+  source-dirs: src
+  other-modules:
+  - CustomPrelude
+
 default-extensions:
-- StrictData
+- BangPatterns
+- BinaryLiterals
+- ConstraintKinds
 - DataKinds
 - DefaultSignatures
-- DerivingVia
+- DeriveDataTypeable
+- DeriveFoldable
+- DeriveFunctor
 - DeriveGeneric
+- DeriveTraversable
+- DerivingVia
+- DoAndIfThenElse
+- EmptyDataDecls
+- ExistentialQuantification
 - FlexibleContexts
 - FlexibleInstances
-- GeneralizedNewtypeDeriving
+- FunctionalDependencies
 - GADTs
+- GeneralizedNewtypeDeriving
+- InstanceSigs
+- KindSignatures
+- LambdaCase
+- MultiParamTypeClasses
+- MultiWayIf
+- NamedFieldPuns
+- OverloadedStrings
+- PartialTypeSignatures
+- PatternGuards
+- PolyKinds
+- RankNTypes
+- RecordWildCards
+# - RebindableSyntax
+- ScopedTypeVariables
 - StandaloneDeriving
 - StrictData
-- ScopedTypeVariables
+- TupleSections
 - TypeApplications
 - TypeFamilies
 - TypeOperators
 - TypeSynonymInstances
-- MultiParamTypeClasses
-- RankNTypes
-
-library:
-  source-dirs: src
+- ViewPatterns
 
 executables:
   hstructure-exe:
     main:                Main.hs
-    other-modules:       []
     source-dirs:         app
+    other-modules:       []
     ghc-options:
     - -threaded
     - -rtsopts
@@ -87,6 +114,26 @@ executables:
     - hstructure
   hstructure-calculation-exe:
     main:                Calculation.hs
+    other-modules:       []
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - hstructure
+  hstructure-postprocess-exe:
+    main:                Postprocess.hs
+    other-modules:       []
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - hstructure
+  hstructure-preprocess-exe:
+    main:                Preprocess.hs
     other-modules:       []
     source-dirs:         app
     ghc-options:
