@@ -88,23 +88,23 @@ composeEffectTest7 =
                 b1 <- liftEither (refineThrow @Dividable a1)
                 return $ safeDiv a1 b1
 
+composeEffectTest8 :: (Has (Error SomeException) sig m) => m Double
 composeEffectTest8 =
-    run $
+    runReader 0.0 $ do
+        a1 <- ask @Double
+        b1 <- liftEither $ refineThrow @Dividable a1
         runReader (0.0 :: Double) $ do
-            runError @SomeException $ do
-                a1 <- ask @Double
-                b1 <- liftEither $ refineThrow @Dividable a1
-                runError @SomeException $
-                    runReader (0.0 :: Double) $ do
-                        a2 <- ask @Double
-                        b2 <- liftEither $ refineThrow @Dividable a2
-                        runError @SomeException $
-                            runReader (1.0 :: Double) $ do
-                                a3 <- ask @Double
-                                b3 <- liftEither $ refineThrow @Dividable a2
-                                return $ safeDiv a1 b1 * safeDiv a2 b2 * safeDiv a3 b3
+            a2 <- ask @Double
+            b2 <- liftEither $ refineThrow @Dividable a2
+            runReader (1.0 :: Double) $ do
+                a3 <- ask @Double
+                b3 <- liftEither $ refineThrow @Dividable a2
+                return $ safeDiv a1 b1 * safeDiv a2 b2 * safeDiv a3 b3
 
-composeEffectTest9 :: MonadThrow m => m Double
-composeEffectTest9 = eitherToMonadThrow =<< eitherToMonadThrow =<< eitherToMonadThrow composeEffectTest8
+-- composeEffectTest9 :: MonadThrow m => m Double
+composeEffectTest9 = run $ runError @SomeException composeEffectTest8
+
+composeEffectTest10 :: MonadThrow m => m Double
+composeEffectTest10 = eitherToMonadThrow . run $ runError @SomeException composeEffectTest8
 
 -- return a
