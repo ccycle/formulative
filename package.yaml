@@ -48,7 +48,7 @@ dependencies:
 - tasty-hunit
 - tasty-quickcheck
 - text
-- typenums
+# - typenums
 - vector
 - vector-sized
 - vector-space
