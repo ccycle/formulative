@@ -6,4 +6,4 @@ import HStructure.Calculation.Matrix.Class
 
 a = one :: MSSparseMatrix 2 2 Double
 b = one :: MSSparseMatrix 2 0 Double
-unit_MSmul = print $ a @*@ b
+unit_MSmul = print $ a .@. b
