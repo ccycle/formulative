@@ -1,14 +1,11 @@
 module Main (main) where
 
-import Criterion.Main
-import Criterion.Types
-
 import Control.Monad
 import Control.Monad.ST
+import Criterion.Main
+import Criterion.Types
 import Data.STRef
 import Math.Combinatorics.Exact.Factorial (factorial)
-
--- import HStructure.Calculation.DEC.Generator
 
 -- https://haskell.e-bigmoon.com/stack/bench/index.html
 -- https://haskell.e-bigmoon.com/posts/2018/06-25-all-about-strictness
@@ -58,6 +55,7 @@ factorialRecursiveBenchNF = numBGroupNF (factorialRecursive :: Integer -> Intege
 factorialExactCombinatoricsBenchNF = numBGroupNF (factorial :: Int -> Integer) "factorial from exact-combinatorics"
 factorialExactCombinatoricsBenchWHNF = numBGroupWHNF (factorial :: Int -> Integer) "factorial from exact-combinatorics"
 
+-- TODO: reportFileで指定されているファイルパスのディレクトリが存在するかどうかのを判定する関数を作成
 factorialReport =
     defaultMainWith
         (defaultConfig{reportFile = Just "./benchmark-criterion/factorial-report.html"})
