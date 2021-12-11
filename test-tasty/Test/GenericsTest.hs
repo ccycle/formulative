@@ -4,8 +4,6 @@
 {-# LANGUAGE UndecidableInstances #-}
 {-# OPTIONS_GHC -Wno-overlapping-patterns #-}
 
--- {-# LANGUAGE UndecidableInstances #-}
-
 module Test.GenericsTest where
 
 import GHC.Generics

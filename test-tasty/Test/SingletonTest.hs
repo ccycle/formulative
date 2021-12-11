@@ -26,7 +26,8 @@ unit_printNatsTest = printNats (Sing :: Sing [1, 2, 3, 4])
 -- >>> b = map fromIntegral [a1,a2] :: [Demote Nat]
 -- >>> withSomeSing b printNats
 
-nInput = 2 :: Demote Nat
+nInput = 2
+nsInput = [2, 3, 5]
 
 printFromSing :: forall (n :: Nat). Sing n -> IO ()
 printFromSing proxy = print $ fromSing proxy
@@ -37,4 +38,5 @@ printFromProxy proxy = print $ natVal proxy
 -- >>> withSomeSing nInput printFromSing
 -- "2"
 
-unit_sing = withSomeSing nInput printFromSing
+unit_sing1 = withSomeSing nInput printFromSing
+unit_sing2 = withSomeSing nsInput printNats
