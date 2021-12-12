@@ -15,6 +15,7 @@ import RIO.Prelude hiding (
   local,
   runReader,
   runReaderT,
+  second,
  )
 import RIO.Prelude.Simple
 import RIO.Prelude.Types hiding (Reader, ReaderT)
