@@ -38,6 +38,7 @@ dependencies:
 - matrix-sized
 - path
 - path-io
+- physics
 - refined
 - reflection
 - rio
