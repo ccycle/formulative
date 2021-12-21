@@ -1,6 +1,6 @@
 # hstructure
 
-hstructure is a open-source tool of Discrete Exterior Calculus written by Haskell.
+HStructure is a open-source tool for Structure-Preserving numerical methods in Haskell, supporting ODE and PDE.
 
 ## Usage Guide
 
