@@ -1,4 +1,4 @@
-module Main (main) where
+module Criterion (main) where
 
 import Control.Monad
 import Control.Monad.ST

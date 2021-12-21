@@ -51,6 +51,7 @@ dependencies:
 - text
 # - typenums
 - vector
+- vector-algorithms
 - vector-sized
 - vector-space
 
@@ -111,6 +112,7 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -O2
     dependencies:
     - hstructure
   hstructure-calculation-exe:
@@ -121,6 +123,7 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -O2
     dependencies:
     - hstructure
   hstructure-postprocess-exe:
@@ -131,6 +134,7 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -O2
     dependencies:
     - hstructure
   hstructure-preprocess-exe:
@@ -141,6 +145,7 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -O2
     dependencies:
     - hstructure
 
@@ -175,6 +180,28 @@ benchmarks:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    dependencies:
+    - hstructure
+    - criterion
+  matrixMul:
+    main: MatrixMul.hs
+    source-dirs: benchmarks
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -O2
+    dependencies:
+    - hstructure
+    - criterion
+  matrixToVector:
+    main: MatrixToVector.hs
+    source-dirs: benchmarks
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -O2
     dependencies:
     - hstructure
     - criterion
