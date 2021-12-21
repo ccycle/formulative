@@ -1,13 +1,14 @@
 module Test.FusedEffect where
 
 import Control.Algebra
+import qualified Control.Carrier.Error.Church as Church
 import Control.Carrier.Error.Either
 import Control.Carrier.Reader
 import Control.Effect.Lift
 import Control.Exception.Safe
 import GHC.TypeNats
 import HStructure.Calculation.Algebra.Arithmetic.Field
-import HStructure.Preprocess.Exception (eitherToMonadThrow)
+import HStructure.Preprocess.Exception
 import Refined
 import Test.Tasty
 
@@ -100,11 +101,13 @@ composeEffectTest8 =
                 a3 <- ask @Double
                 b3 <- liftEither $ refineThrow @Dividable a2
                 return $ safeDiv a1 b1 * safeDiv a2 b2 * safeDiv a3 b3
-
--- composeEffectTest9 :: MonadThrow m => m Double
 composeEffectTest9 = run $ runError @SomeException composeEffectTest8
 
 composeEffectTest10 :: MonadThrow m => m Double
-composeEffectTest10 = eitherToMonadThrow . run $ runError @SomeException composeEffectTest8
+composeEffectTest10 = eitherToMonadThrow . run . runError @SomeException $ composeEffectTest8
 
--- return a
+-- composeEffectTest11 :: (Has (Error SomeException) sig m) => m Double
+-- composeEffectTest11 = Church.runError (throwError @SomeException) pure composeEffectTest8
+
+-- composeEffectTest12 :: (Has (Error SomeException) sig m) => m Double
+-- composeEffectTest12 = runSomeException composeEffectTest8
