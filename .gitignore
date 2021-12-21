@@ -4,3 +4,4 @@
 *.lock
 *.cabal
 .VSCodeCounter/
+memo.md
