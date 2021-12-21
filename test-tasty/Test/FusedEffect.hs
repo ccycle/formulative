@@ -1,13 +1,18 @@
+{-# LANGUAGE UndecidableInstances #-}
+
 module Test.FusedEffect where
 
 import Control.Algebra
+import Control.Applicative
 import qualified Control.Carrier.Error.Church as Church
 import Control.Carrier.Error.Either
 import Control.Carrier.Reader
 import Control.Effect.Lift
 import Control.Exception.Safe
 import GHC.TypeNats
+import HStructure.Calculation.Algebra.Arithmetic.Class
 import HStructure.Calculation.Algebra.Arithmetic.Field
+import HStructure.Calculation.Internal.Types
 import HStructure.Preprocess.Exception
 import Refined
 import Test.Tasty
@@ -101,6 +106,7 @@ composeEffectTest8 =
                 a3 <- ask @Double
                 b3 <- liftEither $ refineThrow @Dividable a2
                 return $ safeDiv a1 b1 * safeDiv a2 b2 * safeDiv a3 b3
+
 composeEffectTest9 = run $ runError @SomeException composeEffectTest8
 
 composeEffectTest10 :: MonadThrow m => m Double
@@ -111,3 +117,13 @@ composeEffectTest10 = eitherToMonadThrow . run . runError @SomeException $ compo
 
 -- composeEffectTest12 :: (Has (Error SomeException) sig m) => m Double
 -- composeEffectTest12 = runSomeException composeEffectTest8
+applicativeTest1 :: (Has (Reader Double) sig m) => m Double
+applicativeTest1 = do
+    a <- ask @Double
+    return $ a + a
+
+applicativeTest2 :: (Has (Reader Double) sig m) => m Double
+applicativeTest2 = applicativeTest1 <.+.> applicativeTest1
+
+applicativeTest3 :: (Has (Reader Double) sig m) => m Double
+applicativeTest3 = applicativeTest2 <.+.> applicativeTest2 <.+.> applicativeTest2 <.+.> applicativeTest2
