@@ -82,3 +82,6 @@ build:
   open-haddocks: false
   haddock-internal: false
   haddock-hyperlink-source: true
+
+ghc-options:
+  "$everything": "-O2"
