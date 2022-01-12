@@ -25,6 +25,7 @@ dependencies:
 - base-noprelude
 - bytestring
 - cassava
+- constraints
 - containers
 - dhall
 - eigen
@@ -197,6 +198,17 @@ benchmarks:
   matrixToVector:
     main: MatrixToVector.hs
     source-dirs: benchmarks
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -O2
+    dependencies:
+    - hstructure
+    - criterion
+  unsafeIndex:
+    main: UnsafeIndex.hs
+    source-dirs: benchmarks/UnsafeIndex
     ghc-options:
     - -threaded
     - -rtsopts
