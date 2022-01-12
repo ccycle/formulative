@@ -6,14 +6,13 @@
 
 module Test.GenericsTest where
 
+import Control.Algebra
+import Control.Applicative
 import GHC.Generics
-
-import HStructure.Calculation.Algebra.Arithmetic.Class
-import HStructure.Calculation.VectorSpace.Class
-
--- import HStructure.Calculation.Algebra.Arithmetic.Class( Scalar(..) )
-
 import GHC.Natural
+import HStructure.Calculation.Algebra.Arithmetic.Class
+import HStructure.Calculation.Internal.Types
+import HStructure.Calculation.VectorSpace.Class
 
 -- https://hackage.haskell.org/package/generic-monoid-0.1.0.1/src/src/Data/Monoid/Generic.hs
 
@@ -332,6 +331,21 @@ prop_associativity_IntegerMul = associativity @Integer (.*.)
 
 data HeteroRecFieldTest = HeteroRecFieldTest {pressure :: Double, density :: Float}
     deriving stock (Show, Eq, Generic)
-    deriving anyclass (Additive, AdditiveGroup, Multiplicative)
+    deriving anyclass (Additive, AdditiveGroup, Multiplicative, Ring, Field)
+
+data RecFieldTestM m = RecFieldTestM {pressure :: m Double, density :: m Double}
+    deriving stock (Generic)
+
+-- deriving anyclass (Additive, AdditiveGroup, Multiplicative, Ring, VectorSpace)
+
+-- deriving instance (Algebra sig m) => Additive (RecFieldTestM m)
+-- deriving instance (Algebra sig m) => AdditiveGroup (RecFieldTestM m)
+-- deriving instance (Algebra sig m) => Multiplicative (RecFieldTestM m)
+
+-- deriving instance (Algebra sig m) => VectorSpace (RecFieldTestM m)
 
 -- Fieldにするのは相当しんどいしあまり使い道がないので一旦は置いとく
+
+data RecFieldTest = RecFieldTest {pressure :: Double, density :: Double}
+    deriving stock (Generic)
+    deriving anyclass (Additive, AdditiveGroup, VectorSpace)

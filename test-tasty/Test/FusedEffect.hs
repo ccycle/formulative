@@ -122,8 +122,13 @@ applicativeTest1 = do
     a <- ask @Double
     return $ a + a
 
-applicativeTest2 :: (Has (Reader Double) sig m) => m Double
+applicativeTest2 :: (Algebra sig m, Has (Reader Double) sig m) => m Double
 applicativeTest2 = applicativeTest1 <.+.> applicativeTest1
 
-applicativeTest3 :: (Has (Reader Double) sig m) => m Double
-applicativeTest3 = applicativeTest2 <.+.> applicativeTest2 <.+.> applicativeTest2 <.+.> applicativeTest2
+applicativeTest3 :: (Algebra sig m, Has (Reader Double) sig m) => m Double
+applicativeTest3 = applicativeTest2 <.+.> applicativeTest2 <.-.> applicativeTest2 <.*.> applicativeTest2
+
+applicativeTest4 :: (Algebra sig m, Has (Reader Double) sig m) => m (Double -> Double)
+applicativeTest4 = do
+    a <- applicativeTest1
+    return $ \x -> a .+. x

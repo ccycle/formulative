@@ -1,7 +1,3 @@
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-
-{-# LANGUAGE UndecidableInstances #-}
-
 module Test.MonoidInstance where
 
 import GHC.Generics
