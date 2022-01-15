@@ -1,6 +1,6 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module MatrixMul (main) where
+module Main (main) where
 
 import Criterion.Main
 import Criterion.Types
@@ -105,7 +105,9 @@ matMulReport path =
 
 main :: IO ()
 main = do
-    let srcDir = parseRelDir "./benchmarks"
-    let fileName = addExtension ".html" =<< parseRelFile "matrixMul"
-    ensureDir @IO <$> parseRelDir "./benchmarks"
+    let relDirName = "./benchmarks/MatrixMul"
+    let srcDir = parseRelDir relDirName -- Maybe
+    let srcDir' = parseRelDir relDirName -- IO
+    let fileName = addExtension ".html" =<< parseRelFile "MatrixMul"
+    ensureDir @IO <$> srcDir'
     matMulReport (toFilePath <$> ((</>) <$> srcDir <*> fileName))

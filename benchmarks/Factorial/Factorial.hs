@@ -1,4 +1,4 @@
-module Criterion (main) where
+module Main (main) where
 
 import Control.Monad
 import Control.Monad.ST
@@ -6,6 +6,8 @@ import Criterion.Main
 import Criterion.Types
 import Data.STRef
 import Math.Combinatorics.Exact.Factorial (factorial)
+import Path
+import Path.IO
 
 -- https://haskell.e-bigmoon.com/stack/bench/index.html
 -- https://haskell.e-bigmoon.com/posts/2018/06-25-all-about-strictness
@@ -56,9 +58,9 @@ factorialExactCombinatoricsBenchNF = numBGroupNF (factorial :: Int -> Integer) "
 factorialExactCombinatoricsBenchWHNF = numBGroupWHNF (factorial :: Int -> Integer) "factorial from exact-combinatorics"
 
 -- TODO: reportFileで指定されているファイルパスのディレクトリが存在するかどうかのを判定する関数を作成
-factorialReport =
+factorialReport path =
     defaultMainWith
-        (defaultConfig{reportFile = Just "./benchmark-criterion/factorial-report.html"})
+        (defaultConfig{reportFile = path})
         [ factorialListBenchWHNF
         , factorialListBenchNF
         , factorialRecursiveBenchWHNF
@@ -68,4 +70,10 @@ factorialReport =
         ]
 
 main :: IO ()
-main = factorialReport
+main = do
+    let relDirName = "./benchmarks/Factorial"
+    let srcDir = parseRelDir relDirName -- Maybe
+    let srcDir' = parseRelDir relDirName -- IO
+    let fileName = addExtension ".html" =<< parseRelFile "Factorial"
+    ensureDir @IO <$> srcDir'
+    factorialReport (toFilePath <$> ((</>) <$> srcDir <*> fileName))

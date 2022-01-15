@@ -29,8 +29,7 @@ import Path.IO
 -- https://haskell.e-bigmoon.com/stack/bench/index.html
 -- https://haskell.e-bigmoon.com/posts/2018/06-25-all-about-strictness
 
--- TODO: matrixからvectorへの変換がどのくらいのコストなのかを試す
--- TODO: 疎行列同士の積のコストを見積もる
+-- ベクトルに変換してからindexを参照するのがいいのかどうかを検証
 matrixSizedMulAdjTest :: forall n p. (KnownNat n, KnownNat p) => MSL.SparseMatrix n p Double -> MSL.SparseMatrix n n Double
 matrixSizedMulAdjTest x = x .@. (one :: MSL.SparseMatrix p n Double)
 
@@ -52,8 +51,8 @@ vectorTest = one
 convertVectorToMatrixMS :: forall n p. (KnownNat n, KnownNat p) => VS.Vector p (VS.Vector n Double) -> MSL.SparseMatrix p n Double
 convertVectorToMatrixMS = MSS.fromVector . V.convert . VS.foldl' (V.++) (V.fromList []) . sequence . VS.fromSized
 
-convertSimplexToMatrixE :: forall n p. (KnownNat n, KnownNat p) => VS.Vector p (VS.Vector n Double) -> E.Matrix p n Double
-convertSimplexToMatrixE = fromJust . E.fromList . VS.toList . VS.map VS.toList
+convertToMatrixE :: forall n p. (KnownNat n, KnownNat p) => VS.Vector p (VS.Vector n Double) -> E.Matrix p n Double
+convertToMatrixE = fromJust . E.fromList . VS.toList . VS.map VS.toList
 
 positionsVectorTest :: forall n p. (KnownNat n, KnownNat p) => VS.Vector p (VS.Vector n Double)
 positionsVectorTest = one
@@ -66,13 +65,17 @@ selectPositionTest ::
     (KnownNat n, KnownNat p) =>
     VS.Vector p (VS.Vector n Double) ->
     E.Matrix 3 n Double
-selectPositionTest x = convertSimplexToMatrixE $ VS.map (VS.unsafeIndex x) sizedSimplesTest
+selectPositionTest x = convertToMatrixE $ VS.map (VS.unsafeIndex x) sizedSimplesTest
 
--- v = V.fromList [0,1,2,3,4,5]
--- MSS.fromVector v :: MSS.SparseMatrix 3 2 V.Vector Double
+-- >>> v = V.fromList [0,1,2,3,4,5]
+-- >>> MSS.fromVector v :: MSS.SparseMatrix 3 2 V.Vector Double
+-- (3 x 2)
+-- 0.0 3.0
+-- 1.0 4.0
+-- 2.0 5.0
 
 -- TODO: reportFileで指定されているファイルパスのディレクトリが存在するかどうかのを判定する関数を作成
-matMulReport path =
+matrixToVectorReport path =
     defaultMainWith
         (defaultConfig{reportFile = path})
         [ bgroup
@@ -107,7 +110,9 @@ matMulReport path =
 
 main :: IO ()
 main = do
-    let srcDir = parseRelDir "./benchmarks"
-    let fileName = addExtension ".html" =<< parseRelFile "matrixToVector"
-    ensureDir @IO <$> parseRelDir "./benchmarks"
-    matMulReport (toFilePath <$> ((</>) <$> srcDir <*> fileName))
+    let relDirName = "./benchmarks/MatrixToVector"
+    let srcDir = parseRelDir relDirName -- Maybe
+    let srcDir' = parseRelDir relDirName -- IO
+    let fileName = addExtension ".html" =<< parseRelFile "MatrixToVector"
+    ensureDir @IO <$> srcDir'
+    matrixToVectorReport (toFilePath <$> ((</>) <$> srcDir <*> fileName))

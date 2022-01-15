@@ -174,9 +174,9 @@ tests:
     - tasty-quickcheck
 
 benchmarks:
-  criterion:
-    main: Criterion.hs
-    source-dirs: benchmarks
+  Factorial:
+    main: Factorial.hs
+    source-dirs: benchmarks/Factorial
     ghc-options:
     - -threaded
     - -rtsopts
@@ -184,9 +184,9 @@ benchmarks:
     dependencies:
     - hstructure
     - criterion
-  matrixMul:
+  MatrixMul:
     main: MatrixMul.hs
-    source-dirs: benchmarks
+    source-dirs: benchmarks/MatrixMul
     ghc-options:
     - -threaded
     - -rtsopts
@@ -195,9 +195,9 @@ benchmarks:
     dependencies:
     - hstructure
     - criterion
-  matrixToVector:
+  MatrixToVector:
     main: MatrixToVector.hs
-    source-dirs: benchmarks
+    source-dirs: benchmarks/MatrixToVector
     ghc-options:
     - -threaded
     - -rtsopts
@@ -206,7 +206,7 @@ benchmarks:
     dependencies:
     - hstructure
     - criterion
-  unsafeIndex:
+  UnsafeIndex:
     main: UnsafeIndex.hs
     source-dirs: benchmarks/UnsafeIndex
     ghc-options:
