@@ -39,6 +39,7 @@ dependencies:
 - matrix-sized
 - path
 - path-io
+- prettyprinter
 - physics
 - refined
 - reflection
@@ -50,11 +51,13 @@ dependencies:
 - tasty-hunit
 - tasty-quickcheck
 - text
+# - time
+- unordered-containers
 # - typenums
 - vector
 - vector-algorithms
 - vector-sized
-- vector-space
+# - vector-space
 
 library:
   source-dirs: src
