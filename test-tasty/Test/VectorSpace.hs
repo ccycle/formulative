@@ -42,7 +42,7 @@ import GHC.Generics
 --     type NScalar Double = Double
 --     norm = abs
 
--- data RecVec = RecVec {pressure :: Double, density :: Double} deriving (Show, Generic, AdditiveGroup, VectorSpace, InnerSpace, NormSpace)
+-- data RecVec = RecVec {pressure :: Double, density :: Double} deriving (Show, Generic, AdditiveGroup, VectorSpace, InnerProductSpace, NormSpace)
 
 -- unit_test1 = print $ RecVec 1 1
 -- unit_test2 = print $ RecVec 1 1 <.> RecVec 2 3

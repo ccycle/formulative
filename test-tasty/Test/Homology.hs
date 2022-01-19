@@ -48,7 +48,7 @@ d1test = exteriorDerivativePrimalInternal scTest2 scTest1 :: ExteriorDerivative 
 d2test = exteriorDerivativePrimalInternal scTest3 scTest2 :: ExteriorDerivative NEuc NatsTest Primal 2 Double
 d3test = zero :: ExteriorDerivative NEuc NatsTest Primal 3 Double
 
-inclusionMapTest = nSimplexToInclusionMapMatrix @_ @_ @Primal @Double scTest2
+inclusionMapTest = inclusionMapMatrixInternal @_ @_ @Primal @Double scTest2
 
 length_scTest2 = length $ unMkSimplicialComplex scTest2
 

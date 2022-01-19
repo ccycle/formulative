@@ -2,6 +2,7 @@ module Test.EigenSparseMatrixTest where
 
 import qualified Eigen.Matrix as E
 import qualified Eigen.SparseMatrix as ES
+import Test.Tasty
 
 -- import GHC.TypeNats
 import HStructure.Calculation.Algebra.Arithmetic.Class
