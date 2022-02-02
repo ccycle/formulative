@@ -3,9 +3,9 @@ module Main where
 import Control.Carrier.Error.Either
 import Control.Carrier.Reader
 import Control.Carrier.State.Strict
-import HStructure.Calculation.Internal.Class
-import HStructure.Calculation.Optimization.AugmentedLagrangian
-import HStructure.Calculation.Optimization.LineSearch
+import OptDEC.Calculation.Internal.Class
+import OptDEC.Calculation.Optimization.AugmentedLagrangian
+import OptDEC.Calculation.Optimization.LineSearch
 
 main = print "start calculations"
 

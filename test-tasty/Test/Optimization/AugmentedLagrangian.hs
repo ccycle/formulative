@@ -7,11 +7,11 @@ import Control.Exception.Safe
 import Data.Csv
 import Dhall
 import GHC.Generics
-import HStructure.Calculation.Algebra.Arithmetic.Class
-import HStructure.Calculation.Optimization.AugmentedLagrangian
-import HStructure.Calculation.Optimization.LBFGS
-import HStructure.Calculation.Optimization.LineSearch
-import HStructure.Calculation.VectorSpace.Class
+import OptDEC.Calculation.Algebra.Arithmetic.Class
+import OptDEC.Calculation.Optimization.AugmentedLagrangian
+import OptDEC.Calculation.Optimization.LBFGS
+import OptDEC.Calculation.Optimization.LineSearch
+import OptDEC.Calculation.VectorSpace.Class
 import Test.Tasty
 
 data TestData = MkTestData Double Double

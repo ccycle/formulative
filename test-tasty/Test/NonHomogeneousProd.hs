@@ -2,7 +2,7 @@ module Test.NonHomogeneousProd where
 
 import Data.Kind
 import GHC.TypeNats
-import HStructure.Calculation.Matrix.Class
+import OptDEC.Calculation.Matrix.Class
 import Test.Tasty
 
 class NonHomogeneousMultiplicative a b where

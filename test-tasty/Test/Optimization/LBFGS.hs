@@ -2,8 +2,8 @@ module Test.Optimization.LBFGS where
 
 import Control.Exception.Safe
 import qualified Data.Vector as V
-import HStructure.Calculation.Optimization.LBFGS
-import HStructure.Calculation.Optimization.LineSearch
+import OptDEC.Calculation.Optimization.LBFGS
+import OptDEC.Calculation.Optimization.LineSearch
 import Test.Tasty
 
 x = 0.1 :: Double

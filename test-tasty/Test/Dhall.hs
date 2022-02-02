@@ -9,9 +9,9 @@ import Dhall
 import Dhall.Core
 import Dhall.Pretty
 import Dhall.Src
-import HStructure.Preprocess.DiscreteExteriorCalculus.Read
-import HStructure.Preprocess.Exception
-import HStructure.Preprocess.ReadConfig
+import OptDEC.Preprocess.DiscreteExteriorCalculus.Read
+import OptDEC.Preprocess.Exception
+import OptDEC.Preprocess.ReadConfig
 import qualified Prettyprinter.Render.Text as Prettyprint.Text
 import Test.Tasty
 

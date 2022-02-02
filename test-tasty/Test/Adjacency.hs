@@ -16,11 +16,11 @@ import qualified Data.Vector as V
 import qualified Data.Vector.Unboxed as VU
 import GHC.Exts
 import GHC.TypeNats
-import HStructure.Calculation.Algebra.Arithmetic.Class
-import HStructure.Calculation.DiscreteExteriorCalculus.Class
-import HStructure.Calculation.DiscreteExteriorCalculus.Homology
-import HStructure.Calculation.Internal.Infix
-import HStructure.Calculation.Internal.TypeLevelList
+import OptDEC.Calculation.Algebra.Arithmetic.Class
+import OptDEC.Calculation.DiscreteExteriorCalculus.Class
+import OptDEC.Calculation.DiscreteExteriorCalculus.Homology
+import OptDEC.Calculation.Internal.Infix
+import OptDEC.Calculation.Internal.TypeLevelList
 
 type NEuc = 3
 type NatsTest = '[5, 9, 2]

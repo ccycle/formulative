@@ -1,10 +1,10 @@
 module Test.Geometry where
 
-import HStructure.Calculation.Algebra.Arithmetic.Class
-import HStructure.Calculation.DiscreteExteriorCalculus.Geometry
-import HStructure.Calculation.DiscreteExteriorCalculus.Homology
-import HStructure.Calculation.Internal.List
-import HStructure.Calculation.Matrix.Class
+import OptDEC.Calculation.Algebra.Arithmetic.Class
+import OptDEC.Calculation.DiscreteExteriorCalculus.Geometry
+import OptDEC.Calculation.DiscreteExteriorCalculus.Homology
+import OptDEC.Calculation.Internal.List
+import OptDEC.Calculation.Matrix.Class
 
 -- point 0: [0, 0, 0]
 -- point 1: [1, 0, 1]

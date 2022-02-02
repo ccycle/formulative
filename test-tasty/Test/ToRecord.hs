@@ -4,7 +4,7 @@ module Test.ToRecord where
 
 import Data.Csv
 import GHC.Generics
-import HStructure.Postprocess.Export.Class
+import OptDEC.Postprocess.Export.Class
 
 data RecTest1 a b = MkRecTest1 a b
     deriving stock (Eq, Show, Generic)

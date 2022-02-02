@@ -21,9 +21,9 @@ import Data.Singletons.Prelude.List hiding (type (!!))
 import Data.Singletons.TypeLits
 import Data.Type.Equality
 import GHC.TypeNats
-import HStructure.Calculation.Algebra.Arithmetic.Class
-import HStructure.Calculation.Internal.TypeLevelList
-import HStructure.Calculation.Matrix.Class
+import OptDEC.Calculation.Algebra.Arithmetic.Class
+import OptDEC.Calculation.Internal.TypeLevelList
+import OptDEC.Calculation.Matrix.Class
 import Test.Tasty
 import Unsafe.Coerce (unsafeCoerce)
 

@@ -1,6 +1,6 @@
 # hstructure
 
-HStructure is a open-source tool for Structure-Preserving numerical methods in Haskell, supporting ODE and PDE.
+OptDEC is a open-source tool for Structure-Preserving numerical methods in Haskell, supporting ODE and PDE.
 
 ## Usage Guide
 

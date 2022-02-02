@@ -12,11 +12,11 @@ import Control.Effect.Lift
 import Control.Effect.Sum
 import Control.Exception.Safe
 import GHC.TypeNats
-import HStructure.Calculation.Algebra.Arithmetic.Class
-import HStructure.Calculation.Algebra.Arithmetic.Field
-import HStructure.Calculation.DifferentialEquation.Parameter
-import HStructure.Calculation.Internal.Types
-import HStructure.Preprocess.Exception
+import OptDEC.Calculation.Algebra.Arithmetic.Class
+import OptDEC.Calculation.Algebra.Arithmetic.Field
+import OptDEC.Calculation.DifferentialEquation.Parameter
+import OptDEC.Calculation.Internal.Types
+import OptDEC.Preprocess.Exception
 import Refined
 import Test.Tasty
 

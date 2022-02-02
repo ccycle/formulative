@@ -2,7 +2,7 @@ module Main where
 
 import Control.Exception.Safe
 import Dhall
-import HStructure.Preprocess.Exception
+import OptDEC.Preprocess.Exception
 
 -- TODO: ファイルパスの解析(PathIOを使う)
 -- TODO: コマンドライン引数から設定ファイルのパスを指定できるようにする

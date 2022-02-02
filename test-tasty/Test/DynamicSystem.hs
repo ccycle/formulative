@@ -9,11 +9,11 @@ import Control.Carrier.State.Strict
 import Control.Effect.Sum
 import GHC.Generics
 import GHC.Natural
-import HStructure.Calculation.Algebra.Arithmetic.Class
-import HStructure.Calculation.DifferentialEquation.Parameter
-import HStructure.Calculation.Internal.Class
-import HStructure.Calculation.Optimization.LineSearch
-import HStructure.Calculation.VectorSpace.Class
+import OptDEC.Calculation.Algebra.Arithmetic.Class
+import OptDEC.Calculation.DifferentialEquation.Parameter
+import OptDEC.Calculation.Internal.Class
+import OptDEC.Calculation.Optimization.LineSearch
+import OptDEC.Calculation.VectorSpace.Class
 import Test.Tasty
 
 data StateTest = MkTestData {position :: Double, momentum :: Double}

@@ -7,8 +7,8 @@ import Criterion.Main
 import Criterion.Types
 import qualified Data.Matrix.Static.LinearAlgebra.Types as MSL
 import qualified Data.Matrix.Static.Sparse as MSS
-import HStructure.Calculation.Algebra.Arithmetic.Class
-import HStructure.Calculation.Matrix.Class
+import OptDEC.Calculation.Algebra.Arithmetic.Class
+import OptDEC.Calculation.Matrix.Class
 import Path
 import Path.IO
 

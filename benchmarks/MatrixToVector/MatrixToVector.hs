@@ -21,8 +21,8 @@ import qualified Data.Vector.Unboxed as VU
 import qualified Eigen.Internal as E
 import qualified Eigen.Matrix as E
 import qualified Eigen.SparseMatrix as ES
-import HStructure.Calculation.Algebra.Arithmetic.Class
-import HStructure.Calculation.Matrix.Class
+import OptDEC.Calculation.Algebra.Arithmetic.Class
+import OptDEC.Calculation.Matrix.Class
 import Path
 import Path.IO
 

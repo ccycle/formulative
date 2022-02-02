@@ -14,11 +14,11 @@ import qualified Data.HashMap.Strict as HM
 import Data.Maybe
 import GHC.Generics
 import GHC.Natural
-import HStructure.Calculation.Algebra.Arithmetic.Class
-import HStructure.Calculation.DiscreteExteriorCalculus.Class
-import HStructure.Calculation.Internal.Types
-import HStructure.Calculation.VectorSpace.Class
-import HStructure.Postprocess.Export.Class
+import OptDEC.Calculation.Algebra.Arithmetic.Class
+import OptDEC.Calculation.DiscreteExteriorCalculus.Class
+import OptDEC.Calculation.Internal.Types
+import OptDEC.Calculation.VectorSpace.Class
+import OptDEC.Postprocess.Export.Class
 
 -- https://hackage.haskell.org/package/generic-monoid-0.1.0.1/src/src/Data/Monoid/Generic.hs
 

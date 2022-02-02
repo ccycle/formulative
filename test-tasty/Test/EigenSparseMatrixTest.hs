@@ -5,11 +5,11 @@ import qualified Eigen.SparseMatrix as ES
 import Test.Tasty
 
 -- import GHC.TypeNats
-import HStructure.Calculation.Algebra.Arithmetic.Class
+import OptDEC.Calculation.Algebra.Arithmetic.Class
 
--- import HStructure.Calculation.Calculus.Variation
-import HStructure.Calculation.Matrix.Class
-import HStructure.Calculation.VectorSpace.Class
+-- import OptDEC.Calculation.Calculus.Variation
+import OptDEC.Calculation.Matrix.Class
+import OptDEC.Calculation.VectorSpace.Class
 
 mat1 = ES.fromList (zipWith (\i x -> (i, 0, x)) [0 .. 3] [2, 3, 5, 7]) :: ES.SparseMatrix 4 1 Double
 mat2 = ES.fromList (zipWith (\i x -> (i, 0, x)) [0 .. 3] [11, 13, 17, 19]) :: ES.SparseMatrix 4 1 Double
