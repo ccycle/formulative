@@ -1,11 +1,11 @@
 -- {-# LANGUAGE DeriveAnyClass #-}
 -- {-# LANGUAGE UndecidableInstances #-}
 
-module Test.VectorSpace where
+-- module Test.VectorSpace where
 
-import Data.VectorSpace
-import Data.Void
-import GHC.Generics
+-- import Data.VectorSpace
+-- import Data.Void
+-- import GHC.Generics
 
 -- package "vectorspace" のテスト
 

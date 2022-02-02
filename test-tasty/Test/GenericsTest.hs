@@ -15,7 +15,7 @@ import Data.Maybe
 import GHC.Generics
 import GHC.Natural
 import HStructure.Calculation.Algebra.Arithmetic.Class
-import HStructure.Calculation.DEC.Class
+import HStructure.Calculation.DiscreteExteriorCalculus.Class
 import HStructure.Calculation.Internal.Types
 import HStructure.Calculation.VectorSpace.Class
 import HStructure.Postprocess.Export.Class
@@ -31,7 +31,7 @@ unit_RecSub = print $ Rec 1 1 .-. Rec 2 3
 unit_RecMul = print $ Rec 2 2 .*. Rec 2 3
 unit_RecZero = print (zero :: Rec)
 
-unit_testRecNorm = print $ norm (Rec 1 2)
+unit_testRecNorm = print $ norm (Lp 2) (Rec 1 2)
 
 unit_RecVectorSpace = print $ 2 *. Rec 2 3
 

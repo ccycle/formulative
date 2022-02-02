@@ -17,8 +17,8 @@ import qualified Data.Vector.Unboxed as VU
 import GHC.Exts
 import GHC.TypeNats
 import HStructure.Calculation.Algebra.Arithmetic.Class
-import HStructure.Calculation.DEC.Class
-import HStructure.Calculation.DEC.Homology
+import HStructure.Calculation.DiscreteExteriorCalculus.Class
+import HStructure.Calculation.DiscreteExteriorCalculus.Homology
 import HStructure.Calculation.Internal.Infix
 import HStructure.Calculation.Internal.TypeLevelList
 

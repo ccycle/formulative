@@ -25,7 +25,7 @@ wolfeConditionTest = wolfeCondition (MkWolfeConditionParameter c2) (MkStepSizeFo
 
 p = -1.0
 backtrackingLineSearchTest :: (StepSizeForLineSearch Double)
-backtrackingLineSearchTest = getStepSizeForLineSearch lineSearchParamsTest x (MkDescentDirection p) (MkObjectiveFunction f) (MkGradObjectiveFunction gradf)
+backtrackingLineSearchTest = backtrackingLineSearch lineSearchParamsTest x (MkDescentDirection p) (MkObjectiveFunction f) (MkGradObjectiveFunction gradf)
 
 -- lbfgsMethodTest :: MonadThrow m => m (Double, Residuals ((Double)), Residuals (DescentDirection Double))
 -- lbfgsMethodTest = lbfgsMethod defaultLineSearchParameters defaultConvergenceTestParameters defaultLBFGSParameters (MkObjectiveFunction f) (MkGradObjectiveFunction gradf) x
@@ -33,5 +33,5 @@ backtrackingLineSearchTest = getStepSizeForLineSearch lineSearchParamsTest x (Mk
 -- lbfgsMethodTest1 :: MonadThrow m => m (Double, Residuals ((Double)), Residuals (DescentDirection Double))
 -- lbfgsMethodTest1 = lbfgsMethod defaultLineSearchParameters defaultConvergenceTestParameters defaultLBFGSParameters (MkObjectiveFunction f1) (MkGradObjectiveFunction gradf1) x1
 
-lbfgsMethodTest2 :: MonadThrow m => Double -> m (Double, Residuals (StepSizeForLineSearch (Double)), Residuals (DescentDirection Double))
+lbfgsMethodTest2 :: MonadThrow m => Double -> m (Double)
 lbfgsMethodTest2 x = lbfgsMethod lineSearchParamsTest defaultConvergenceTestParameters defaultLBFGSParameters (MkObjectiveFunction f2) (MkGradObjectiveFunction gradf2) x

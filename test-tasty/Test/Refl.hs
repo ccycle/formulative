@@ -9,7 +9,7 @@ import Data.Singletons
 import Data.Type.Equality
 import GHC.Natural
 import GHC.TypeNats
-import HStructure.Calculation.DEC.Class
+import HStructure.Calculation.DiscreteExteriorCalculus.Class
 import HStructure.Calculation.Internal.TypeLevelList
 import Unsafe.Coerce
 

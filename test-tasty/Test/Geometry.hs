@@ -1,8 +1,8 @@
 module Test.Geometry where
 
 import HStructure.Calculation.Algebra.Arithmetic.Class
-import HStructure.Calculation.DEC.Geometry
-import HStructure.Calculation.DEC.Homology
+import HStructure.Calculation.DiscreteExteriorCalculus.Geometry
+import HStructure.Calculation.DiscreteExteriorCalculus.Homology
 import HStructure.Calculation.Internal.List
 import HStructure.Calculation.Matrix.Class
 

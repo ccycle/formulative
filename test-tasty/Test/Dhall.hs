@@ -9,6 +9,7 @@ import Dhall
 import Dhall.Core
 import Dhall.Pretty
 import Dhall.Src
+import HStructure.Preprocess.DiscreteExteriorCalculus.Read
 import HStructure.Preprocess.Exception
 import HStructure.Preprocess.ReadConfig
 import qualified Prettyprinter.Render.Text as Prettyprint.Text
@@ -24,12 +25,6 @@ data Setting = MkSetting {parameters :: EquationParameters, meshDataPath :: Mesh
 data EquationParameters = MkEquationParameters {a :: ParameterTest Double, b :: Double}
     deriving stock (Eq, Show, Generic)
     deriving anyclass (FromDhall, ToDhall)
-
--- TODO: ファイルパスの解析(PathIOを使う)
--- TODO: コマンドライン引数から設定ファイルのパスを指定できるようにする
--- TODO: 入力ファイルの不正値チェック
--- dimensionOfField n | n == 0 = particle
---                    | otherwise = Field
 
 unit_preprocess = do
     params :: EquationParameters <- input auto "./test-tasty/Test/input/test.dhall"

@@ -7,11 +7,14 @@ import Control.Applicative
 import qualified Control.Carrier.Error.Church as Church
 import Control.Carrier.Error.Either
 import Control.Carrier.Reader
+import Control.Carrier.State.Strict
 import Control.Effect.Lift
+import Control.Effect.Sum
 import Control.Exception.Safe
 import GHC.TypeNats
 import HStructure.Calculation.Algebra.Arithmetic.Class
 import HStructure.Calculation.Algebra.Arithmetic.Field
+import HStructure.Calculation.DifferentialEquation.Parameter
 import HStructure.Calculation.Internal.Types
 import HStructure.Preprocess.Exception
 import Refined
@@ -122,13 +125,28 @@ applicativeTest1 = do
     a <- ask @Double
     return $ a + a
 
-applicativeTest2 :: (Algebra sig m, Has (Reader Double) sig m) => m Double
-applicativeTest2 = applicativeTest1 <.+.> applicativeTest1
+-- applicativeTest2 :: (Algebra sig m, Has (Reader Double) sig m) => m Double
+-- applicativeTest2 = applicativeTest1 <.+.> applicativeTest1
 
-applicativeTest3 :: (Algebra sig m, Has (Reader Double) sig m) => m Double
-applicativeTest3 = applicativeTest2 <.+.> applicativeTest2 <.-.> applicativeTest2 <.*.> applicativeTest2
+-- applicativeTest3 :: (Algebra sig m, Has (Reader Double) sig m) => m Double
+-- applicativeTest3 = applicativeTest2 <.+.> applicativeTest2 <.-.> applicativeTest2 <.*.> applicativeTest2
 
 applicativeTest4 :: (Algebra sig m, Has (Reader Double) sig m) => m (Double -> Double)
 applicativeTest4 = do
     a <- applicativeTest1
     return $ \x -> a .+. x
+
+readerTest1 :: (Algebra sig m, Has (Reader (StepSize Double)) sig m) => m Double
+readerTest1 = do
+    (MkStepSize t) <- ask
+    return $ t + 1
+
+runReaderTest1 = run . runReader (0.1 :: Double) . runReader (MkStepSize (0.3 :: Double)) $ readerTest1
+
+stateTest1 :: (Algebra sig m, Member (State Double) sig) => m Double
+stateTest1 = do
+    a <- get
+    put $ a + 1
+    return a
+
+runStateTest1 = run . runState (0.1 :: Double) $ stateTest1
