@@ -74,7 +74,6 @@ selectPositionTest x = convertToMatrixE $ VS.map (VS.unsafeIndex x) sizedSimples
 -- 1.0 4.0
 -- 2.0 5.0
 
--- TODO: reportFileで指定されているファイルパスのディレクトリが存在するかどうかのを判定する関数を作成
 matrixToVectorReport path =
     defaultMainWith
         (defaultConfig{reportFile = path})

@@ -57,7 +57,6 @@ factorialRecursiveBenchNF = numBGroupNF (factorialRecursive :: Integer -> Intege
 factorialExactCombinatoricsBenchNF = numBGroupNF (factorial :: Int -> Integer) "factorial from exact-combinatorics"
 factorialExactCombinatoricsBenchWHNF = numBGroupWHNF (factorial :: Int -> Integer) "factorial from exact-combinatorics"
 
--- TODO: reportFileで指定されているファイルパスのディレクトリが存在するかどうかのを判定する関数を作成
 factorialReport path =
     defaultMainWith
         (defaultConfig{reportFile = path})

@@ -67,7 +67,6 @@ eigenTest x = x .*. x
 -- factorialExactCombinatoricsBenchNF = numBGroupNF (factorial :: Int -> Integer) "factorial from exact-combinatorics"
 -- factorialExactCombinatoricsBenchWHNF = numBGroupWHNF (factorial :: Int -> Integer) "factorial from exact-combinatorics"
 
--- TODO: reportFileで指定されているファイルパスのディレクトリが存在するかどうかのを判定する関数を作成
 matMulReport path =
     defaultMainWith
         (defaultConfig{reportFile = path})
