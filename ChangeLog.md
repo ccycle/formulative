@@ -1,3 +1,3 @@
-# Changelog for hstructure
+# Changelog for optDEC
 
 ## Unreleased changes

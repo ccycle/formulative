@@ -72,6 +72,24 @@ dPolymorphicTest = do
     d2 <- exteriorDerivative
     return $ d2 . d1 $ primal1formTest
 
+dPolymorphicTest2 :: (HasInclusionMap NEuc NatsTest Primal Double sig m) => m (DifferentialForm NEuc NatsTest Primal 2 Double)
+dPolymorphicTest2 = do
+    -- d1 <- exteriorDerivative
+    -- d2 <- exteriorDerivative
+    exteriorDerivative <*> pure primal1formTest
+
+-- dPolymorphicTest3 :: HasExteriorDerivativePrimal NEuc l k a (sig) (m) => m (DifferentialForm NEuc NatsTest Primal 3 Double)
+-- dPolymorphicTest3 = do
+--     -- d1 <- exteriorDerivative
+--     -- d2 <- exteriorDerivative
+--     exteriorDerivative >>>= exteriorDerivative <*> pure primal1formTest
+
+-- dPolymorphicTest4 :: forall n l c k a sig m. (HasExteriorDerivativePrimal n l k a (sig) (m), HasExteriorDerivativePrimal n l (SuccDeg n k) a (sig) (m)) => m (DECrepresentationMatrix n l c (SuccDeg n (SuccDeg n (k))) c k a)
+-- dPolymorphicTest4 = do
+--     d1 <- exteriorDerivativeMat @n @l @Primal @k @a
+--     d2 <- exteriorDerivativeMat @n @l @Primal @(SuccDeg n k) @a
+--     return $ d2 .@. d1
+
 -- error (KnownNat solverの問題？)
 -- dPolymorphicTest2 :: (HasInclusionMap NEuc NatsTest Primal Double sig m) => m (DifferentialForm NEuc NatsTest Primal 3 Double)
 -- dPolymorphicTest2 = (exteriorDerivative >*> exteriorDerivative) <$> pure primal1formTest

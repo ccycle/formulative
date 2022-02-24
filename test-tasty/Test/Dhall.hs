@@ -19,15 +19,15 @@ newtype ParameterTest a = MkParameterTest a
     deriving stock (Eq, Show, Generic)
     deriving anyclass (FromDhall, ToDhall)
 
-data Setting = MkSetting {parameters :: EquationParameters, meshDataPath :: MeshDataPath}
+data Setting = MkSetting {parameters :: ConstantsOfSystems, meshDataPath :: MeshDataPath}
     deriving stock (Eq, Show, Generic)
     deriving anyclass (FromDhall, ToDhall)
-data EquationParameters = MkEquationParameters {a :: ParameterTest Double, b :: Double}
+data ConstantsOfSystems = MkConstantsOfSystems {a :: ParameterTest Double, b :: Double}
     deriving stock (Eq, Show, Generic)
     deriving anyclass (FromDhall, ToDhall)
 
 unit_preprocess = do
-    params :: EquationParameters <- input auto "./test-tasty/Test/input/test.dhall"
+    params :: ConstantsOfSystems <- input auto "./test-tasty/Test/input/test.dhall"
     print params
     setting :: Setting <- input auto "./test-tasty/Test/input/mainSettingSample.dhall"
     print setting

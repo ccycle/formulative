@@ -1,6 +1,6 @@
-# hstructure
+# OptDEC
 
-OptDEC is a open-source tool for Structure-Preserving numerical methods in Haskell, supporting ODE and PDE.
+OptDEC is a open-source tool for numerical simulation of ODE/PDE based on numerical optimization.
 
 ## Usage Guide
 

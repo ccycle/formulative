@@ -1,6 +1,6 @@
-name:                hstructure
+name:                optDEC
 version:             0.1.0.0
-github:              "githubuser/hstructure"
+github:              "githubuser/optDEC"
 license:             BSD3
 author:              "Author name here"
 maintainer:          "example@example.com"
@@ -17,10 +17,11 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/hstructure#readme>
+description:         Please see the README on GitHub at <https://github.com/githubuser/optDEC#readme>
 
 dependencies:
 - ad
+- attoparsec
 - base >= 4.7 && < 5
 - base-noprelude
 - bytestring
@@ -35,7 +36,10 @@ dependencies:
 - ghc-prim
 - ghc-typelits-knownnat
 - ghc-typelits-natnormalise
+- hashable
+- Only
 - lens
+- scientific
 - matrix-sized
 - path
 - path-io
@@ -108,7 +112,7 @@ default-extensions:
 - ViewPatterns
 
 executables:
-  hstructure-exe:
+  optDEC-exe:
     main:                Main.hs
     source-dirs:         app
     other-modules:       []
@@ -118,8 +122,8 @@ executables:
     - -with-rtsopts=-N
     - -O2
     dependencies:
-    - hstructure
-  hstructure-calculation-exe:
+    - optDEC
+  optDEC-calculation-exe:
     main:                Calculation.hs
     other-modules:       []
     source-dirs:         app
@@ -129,8 +133,8 @@ executables:
     - -with-rtsopts=-N
     - -O2
     dependencies:
-    - hstructure
-  hstructure-postprocess-exe:
+    - optDEC
+  optDEC-postprocess-exe:
     main:                Postprocess.hs
     other-modules:       []
     source-dirs:         app
@@ -140,8 +144,8 @@ executables:
     - -with-rtsopts=-N
     - -O2
     dependencies:
-    - hstructure
-  hstructure-preprocess-exe:
+    - optDEC
+  optDEC-preprocess-exe:
     main:                Preprocess.hs
     other-modules:       []
     source-dirs:         app
@@ -151,10 +155,10 @@ executables:
     - -with-rtsopts=-N
     - -O2
     dependencies:
-    - hstructure
+    - optDEC
 
 tests:
-  hstructure-test:
+  optDEC-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -162,8 +166,8 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - hstructure
-  hstructure-tasty:
+    - optDEC
+  optDEC-tasty:
     main: Tasty.hs
     source-dirs: test-tasty
     ghc-options:
@@ -171,7 +175,7 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - hstructure
+    - optDEC
     - tasty
     - tasty-hunit
     - tasty-quickcheck
@@ -185,7 +189,17 @@ benchmarks:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - hstructure
+    - optDEC
+    - criterion
+  StackingEffects:
+    main: StackEffects.hs
+    source-dirs: benchmarks/FusedEffects
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - optDEC
     - criterion
   MatrixMul:
     main: MatrixMul.hs
@@ -196,7 +210,7 @@ benchmarks:
     - -with-rtsopts=-N
     - -O2
     dependencies:
-    - hstructure
+    - optDEC
     - criterion
   MatrixToVector:
     main: MatrixToVector.hs
@@ -207,7 +221,7 @@ benchmarks:
     - -with-rtsopts=-N
     - -O2
     dependencies:
-    - hstructure
+    - optDEC
     - criterion
   UnsafeIndex:
     main: UnsafeIndex.hs
@@ -218,5 +232,5 @@ benchmarks:
     - -with-rtsopts=-N
     - -O2
     dependencies:
-    - hstructure
+    - optDEC
     - criterion
