@@ -5,3 +5,4 @@
 *.cabal
 .VSCodeCounter/
 memo.md
+bin/
