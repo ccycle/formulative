@@ -11,16 +11,16 @@ import qualified Data.Matrix.Static.LinearAlgebra as MSL
 import qualified Data.Matrix.Static.LinearAlgebra.Types as MSL
 import qualified Data.Matrix.Static.Sparse as MSS
 import Data.Proxy
-import Data.Singletons
 import qualified Data.Set as S
+import Data.Singletons
 import qualified Data.Vector as V
 import qualified Data.Vector.Unboxed as VU
 import GHC.Exts
 import GHC.TypeNats
 import OptDEC.Calculation.Algebra.Arithmetic.Class
+import OptDEC.Calculation.DiscreteExteriorCalculus.Algebra
 import OptDEC.Calculation.DiscreteExteriorCalculus.Class
 import OptDEC.Calculation.DiscreteExteriorCalculus.Homology
-import OptDEC.Calculation.DiscreteExteriorCalculus.Algebra
 import OptDEC.Calculation.Internal.Infix
 import OptDEC.Calculation.Internal.TypeLevelList
 
@@ -122,14 +122,20 @@ inclusionMapFunctEffTest = do
     return $ \x -> i .@. x
 d1Dualtest = exteriorDerivativeDualInternal (Proxy :: Proxy 1) d0test
 
--- ddTest :: (Algebra sig m, AdditiveGroup a, VU.Unbox a, MSL.Numeric a,
---       KnownNat k3,
---     -- KnownNat (Mod (k3 + 1) (n + 2)),
---     --   KnownNat (Mod (Mod (k3 + 1) (n + 2) + 1) (n + 2)),
---        KnownNat n,
---       SingI l, SingI c3,
---       Member (Reader (Simplices n l)) sig) => m (DECrepresentationMatrix
---           n l c3 (Mod (Mod (k3 + 1) (n + 2) + 1) (n + 2)) c3 k3 a)
+-- ddTest ::
+--     ( Algebra sig m
+--     , AdditiveGroup a
+--     , VU.Unbox a
+--     , MSL.Numeric a
+--     , KnownNat k3
+--     , --     -- KnownNat (Mod (k3 + 1) (n + 2)),
+--       --     --   KnownNat (Mod (Mod (k3 + 1) (n + 2) + 1) (n + 2)),
+--       KnownNat n
+--     , SingI l
+--     , SingI c3
+--     , Member (Reader (Simplices n l)) sig
+--     ) =>
+--     m (DECrepresentationMatrix n l c3 (SuccDeg n (SuccDeg n (k3))) c3 k3 a)
 -- ddTest = exteriorDerivativeMat <<.@.>> exteriorDerivativeMat
 
 -- d1DualtestNotAnnotated = exteriorDerivativeDualInternal d0test
