@@ -14,8 +14,8 @@ import OptDEC.Calculation.Matrix.Class
 -- x0List : [0,1,1,0]
 -- x1List : [0,0,1,1]
 -- x2List : [0,1,0,1]
-allPositions3dTest :: AllPositions 3 4 Double
-allPositions3dTest = MkAllPositions $ fromList $ map fromList [[0, 1, 1, 0], [0, 0, 1, 1], [0, 1, 0, 1]]
+allPositions3dTest :: AllPointDataPrimal0 3 4 Double
+allPositions3dTest = MkAllPointDataPrimal0 $ fromList $ map fromList [[0, 1, 1, 0], [0, 0, 1, 1], [0, 1, 0, 1]]
 
 s2Test :: Simplex 2
 s2Test = fromList [0, 1, 2]
@@ -40,15 +40,15 @@ circumcenterTest3d = circumcenterInternalUnsafe s2Mat3d
 -- x0List : [0,0,0]
 -- x1List : [0,0,0]
 -- x2List : [0,0,0]
-allPositions2dTest :: AllPositions 2 3 Double
-allPositions2dTest = MkAllPositions $ fromList $ map fromList [[0, 0, 1], [0, 1, 1]]
+allPositions2dTest :: AllPointDataPrimal0 2 3 Double
+allPositions2dTest = MkAllPointDataPrimal0 $ fromList $ map fromList [[0, 0, 1], [0, 1, 1]]
 s2Mat2d = simplexToPositionMat allPositions2dTest s2Test
 circumcenterTest2d = circumcenterInternalUnsafe s2Mat2d
 primalVolumeTest2d = primalVolumeInternal allPositions2dTest s2Test
 
 -- case 3: obtuse angle
-allPositions2dTestObtuseAngle :: AllPositions 2 3 Double
-allPositions2dTestObtuseAngle = MkAllPositions $ fromList $ map fromList [[0, sqrt 3, sqrt 3 / 2], [0, 0, 1 / 2]]
+allPositions2dTestObtuseAngle :: AllPointDataPrimal0 2 3 Double
+allPositions2dTestObtuseAngle = MkAllPointDataPrimal0 $ fromList $ map fromList [[0, sqrt 3, sqrt 3 / 2], [0, 0, 1 / 2]]
 s2Mat2dObtuseAngle = simplexToPositionMat allPositions2dTestObtuseAngle s2Test
 circumcenterTest2dObtuseAngle = circumcenterInternalUnsafe s2Mat2dObtuseAngle
 

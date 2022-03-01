@@ -15,6 +15,7 @@ import Data.Maybe
 import GHC.Generics
 import GHC.Natural
 import OptDEC.Calculation.Algebra.Arithmetic.Class
+import OptDEC.Calculation.DiscreteExteriorCalculus.Algebra
 import OptDEC.Calculation.DiscreteExteriorCalculus.Class
 import OptDEC.Calculation.Internal.Types
 import OptDEC.Calculation.VectorSpace.Class

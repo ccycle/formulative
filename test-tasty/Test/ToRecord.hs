@@ -10,6 +10,7 @@ import Data.Csv
 import Dhall
 import GHC.Generics
 import OptDEC.Calculation.Algebra.Arithmetic.Class
+import OptDEC.Calculation.DiscreteExteriorCalculus.Algebra
 import OptDEC.Calculation.DiscreteExteriorCalculus.Class
 import OptDEC.Calculation.VectorSpace.Class
 import OptDEC.Postprocess.Export.Class
@@ -58,7 +59,7 @@ parentDirTest = parseRelDir "writeFileTestDir"
 --     runM $
 --         runSomeException printError . runReader (MkDimensionOfField 0) . runReader (MkOutputDir pDir)
 --             . runReader (MkLabelsOfVariable ["x1", "x2"])
---             . runReader (MkLocalQuantityName [])
+--             . runReader (MkLabelsOfSubLocalQuantity [])
 --             . runReader (MkGlobalQuantityName [])
 --             $ writeFileStaticM Variables testRec1
 

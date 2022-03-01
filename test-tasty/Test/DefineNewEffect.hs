@@ -9,11 +9,8 @@ import Control.Monad.IO.Class
 import Data.Kind
 import Data.Proxy
 import GHC.TypeNats
-import OptDEC.Calculation.DiscreteExteriorCalculus.Homology (
-  HDims,
-  Simplices,
-  generateSimplicialKComplexFromN,
- )
+import OptDEC.Calculation.DiscreteExteriorCalculus.Class
+import OptDEC.Calculation.DiscreteExteriorCalculus.Homology
 
 data Teletype (m :: Type -> Type) k where
   Read :: Teletype m String
@@ -96,12 +93,12 @@ instance (Algebra sig m, MonadIO m) => Algebra (Telemetry :+: sig) (TelemetryC m
     R other -> TelemetryC (alg (runTelemetryC . hdl) (R other) ctx)
 
 -- dependent type
-data Connectivity (n :: Nat) (l :: HDims) (m :: Type -> Type) k where
-  GetPrimitiveSimplicies :: Connectivity n l m (Simplices n l)
-getPrimitiveSimplicies :: (Has (Connectivity n l) sig m) => m (Simplices n l)
-getPrimitiveSimplicies = send GetPrimitiveSimplicies
+-- data Connectivity (n :: Nat) (l :: HDims) (m :: Type -> Type) k where
+--   GetPrimitiveSimplicies :: Connectivity n l m (Simplices n l)
+-- getPrimitiveSimplicies :: (Has (Connectivity n l) sig m) => m (Simplices n l)
+-- getPrimitiveSimplicies = send GetPrimitiveSimplicies
 
--- AllowAmbiguousTypesを有効化する必要あり
-getKSimplicialComplexEff :: forall k n l sig m. (KnownNat k, KnownNat n, Has (Connectivity n l) sig m) => Proxy k -> m (Simplices k l)
-getKSimplicialComplexEff _ = do
-  generateSimplicialKComplexFromN (Proxy :: Proxy k) <$> getPrimitiveSimplicies @n
+-- -- AllowAmbiguousTypesを有効化する必要あり
+-- getKSimplicialComplexEff :: forall k n l sig m. (KnownNat k, KnownNat n, Has (Connectivity n l) sig m) => Proxy k -> m (Simplices k l)
+-- getKSimplicialComplexEff _ = do
+--   generateSimplicialKComplexFromN (Proxy :: Proxy k) <$> getPrimitiveSimplicies @n

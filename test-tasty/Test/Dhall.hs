@@ -42,3 +42,4 @@ unit_preprocess = do
 --  checkMesh
 --  ...
 --
+-- data UnionTypeTest = CSV

@@ -26,7 +26,7 @@ mu = 1.0
 gradPenalty (MkLagrangianMultiplier lambda) x = lambda *. gradG x
 lambda = 0.0
 initialData = MkTestData (-1) (-1)
-augmentedLagrangianParametersTest = defaultAugmentedLagrangianParameters{penaltyCoefficient = MkPenaltyCoefficient mu, growthRateForPenaltyCoefficient = MkGrowthRateForPenaltyCoefficient 1.1, maxIterationAugmentedLagrangian = MkIterationNumberFormAugmentedLagrangian 1000}
+augmentedLagrangianParametersTest = defaultAugmentedLagrangianParameters{penaltyCoefficient = MkPenaltyCoefficient mu, growthRateForPenaltyCoefficient = MkGrowthRateForPenaltyCoefficient 1.1, maxIterationAugmentedLagrangian = MkIterationNumberForAugmentedLagrangian 1000}
 
 augmentedLagrangianMethodTest :: (MonadThrow m) => TestData -> m (TestData, LagrangianMultiplier Double)
 augmentedLagrangianMethodTest =

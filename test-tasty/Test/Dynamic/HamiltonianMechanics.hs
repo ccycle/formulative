@@ -89,8 +89,8 @@ instance (Monad m) => HasInitialConditionM m StateTest where
 
 instance (Monad m) => HasParameterConfigM m StateTest where
   -- type ParameterType StateTest = Double
-  getParameterConfigM =
-    return $ MkParameterConfig{initialValue = 1, finalValue = 0, stepSize = MkStepSize 0.1, maxIteration = 1000}
+  getParameterSettingM =
+    return $ MkParameterSetting{initialValue = 0, finalValue = 1, stepSize = 0.1, maxIteration = 1000}
 
 calcTest :: forall sig m. (Monad m, HasInitialConditionM m StateTest, Has (Lift IO) sig m) => m ()
 calcTest = do
@@ -114,7 +114,7 @@ calcDynamicTest ::
   , Monad m
   , HasMainCalculationDynamic sig m StateTest
   , Member (Reader (StepSize Double)) sig
-  , Member (Reader LabelsOfSubGlobalData) sig
+  , Member (Reader MkLabelsOfSubGlobalQuantity) sig
   , Member (Reader ConstantsOfSystem) sig
   ) =>
   m ()
