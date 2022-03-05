@@ -205,8 +205,8 @@ instance (MonadIO m, Algebra sig m) => Algebra (Teletype :+: sig) (TeletypeIOC m
 
 -- 1つのeffectに対し複数のCarrierを設定する
 -- label config test
-data EnvTest a = MkEnvTest {getLabelsTest :: Labels, getStepSizeTest :: (StepSize a)}
-defaultEnvTest = MkEnvTest{getLabelsTest = ["LabelTest1", "LabelTest2"], getStepSizeTest = (MkStepSize 0.1)}
+data EnvTest a = MkEnvTest {getLabelsTest :: Labels, getStepSizeTest :: StepSize a}
+defaultEnvTest = MkEnvTest{getLabelsTest = ["LabelTest1", "LabelTest2"], getStepSizeTest = MkStepSize 0.1}
 
 data EnvEff a (m :: Type -> Type) k where
     GetEnv :: EnvEff a m (EnvTest a)
@@ -271,7 +271,7 @@ actionTest2 = runM . runLabelsTest2 $ printLabelsTest
 -- step size
 data StepSizeEff a (m :: Type -> Type) k where
     GetStepSize :: StepSizeEff a m (StepSize a)
-getStepSize :: forall a sig m. Has (StepSizeEff a) sig m => m ((StepSize a))
+getStepSize :: forall a sig m. Has (StepSizeEff a) sig m => m (StepSize a)
 getStepSize = send GetStepSize
 
 -- carrier

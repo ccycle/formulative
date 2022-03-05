@@ -1,5 +1,5 @@
 {-# OPTIONS_GHC-fplugin GHC.TypeLits.KnownNat.Solver #-}
--- {-# OPTIONS_GHC-fplugin GHC.TypeLits.Normalise #-}
+{-# OPTIONS_GHC-fplugin GHC.TypeLits.Normalise #-}
 {-# LANGUAGE OverloadedLists #-}
 
 module Test.Homology where
@@ -58,7 +58,7 @@ dProdTest0 = d1test .@. d0test
 dProdTest1 = d2test .@. d1test
 
 inclusionMapTypeAnnotationTest ::
-    (Algebra sig m, Has (Reader (Simplices NEuc NatsTest)) sig m) =>
+    (Algebra sig m, Has (Connectivity NEuc NatsTest) sig m) =>
     m (InclusionMap NEuc NatsTest 'Primal Double)
 inclusionMapTypeAnnotationTest = inclusionMapMat
 
@@ -74,10 +74,8 @@ dPolymorphicTest = do
     d2 <- exteriorDerivative
     return $ d2 . d1 $ primal1formTest
 
-dPolymorphicTest2 :: (HasInclusionMap NEuc NatsTest Primal Double sig m) => m (DifferentialForm NEuc NatsTest Primal 2 Double)
-dPolymorphicTest2 = do
-    -- d1 <- exteriorDerivative
-    -- d2 <- exteriorDerivative
+dPolymorphicTest2 :: (Has (Connectivity NEuc NatsTest) sig m, HasInclusionMap NEuc NatsTest Primal Double sig m) => m (DifferentialForm NEuc NatsTest Primal 2 Double)
+dPolymorphicTest2 =
     exteriorDerivative <*> pure primal1formTest
 
 -- dPolymorphicTest3 :: HasExteriorDerivativePrimal NEuc l k a (sig) (m) => m (DifferentialForm NEuc NatsTest Primal 3 Double)
@@ -104,14 +102,12 @@ dPolymorphicTest2 = do
 
 inclusionMapEffMulTest ::
     forall sig m.
-    (Algebra sig m, Has (Reader (Simplices NEuc NatsTest)) sig m) =>
+    (Algebra sig m, Has (Connectivity NEuc NatsTest) sig m) =>
     m (DifferentialForm NEuc NatsTest 'Primal (NEuc - 1) Double)
-inclusionMapEffMulTest = do
-    -- i <- inclusionMapTypeAnnotationTest
-    -- return $ i .@. primal1formTest
+inclusionMapEffMulTest =
     inclusionMapTypeAnnotationTest <.@.> pure primal1formTest
 
-inclusionMapEffTest = run . runReader scTest2 $ inclusionMapMat @NEuc @NatsTest @Primal @Double
+inclusionMapEffTest = run . runConnectivity scTest2 $ inclusionMapMat @NEuc @NatsTest @Primal @Double
 
 -- inclusionMapFunctEffTest   ::  forall sig m.
 --     (Algebra sig m, Has (Reader (Simplices NEuc NatsTest)) sig m) =>
@@ -122,21 +118,19 @@ inclusionMapFunctEffTest = do
     return $ \x -> i .@. x
 d1Dualtest = exteriorDerivativeDualInternal (Proxy :: Proxy 1) d0test
 
--- ddTest ::
---     ( Algebra sig m
---     , AdditiveGroup a
---     , VU.Unbox a
---     , MSL.Numeric a
---     , KnownNat k3
---     , --     -- KnownNat (Mod (k3 + 1) (n + 2)),
---       --     --   KnownNat (Mod (Mod (k3 + 1) (n + 2) + 1) (n + 2)),
---       KnownNat n
---     , SingI l
---     , SingI c3
---     , Member (Reader (Simplices n l)) sig
---     ) =>
---     m (DECrepresentationMatrix n l c3 (SuccDeg n (SuccDeg n (k3))) c3 k3 a)
--- ddTest = exteriorDerivativeMat <<.@.>> exteriorDerivativeMat
+ddTest ::
+    ( Algebra sig m
+    , AdditiveGroup a
+    , VU.Unbox a
+    , MSL.Numeric a
+    , KnownNat k3
+    , KnownNat n
+    , SingI l
+    , SingI c3
+    , Has (Connectivity n l) sig m
+    ) =>
+    m (DECrepresentationMatrix n l c3 (k3 + 2) c3 k3 a)
+ddTest = exteriorDerivativeMat <<.@.>> exteriorDerivativeMat
 
 -- d1DualtestNotAnnotated = exteriorDerivativeDualInternal d0test
 

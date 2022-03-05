@@ -1,8 +1,14 @@
 module Test.Geometry where
 
+import Data.Constraint
+import Data.Proxy
+import Data.Singletons
+import GHC.TypeNats
 import OptDEC.Calculation.Algebra.Arithmetic.Class
+import OptDEC.Calculation.DiscreteExteriorCalculus.Class
 import OptDEC.Calculation.DiscreteExteriorCalculus.Geometry
 import OptDEC.Calculation.DiscreteExteriorCalculus.Homology
+import OptDEC.Calculation.DiscreteExteriorCalculus.Proofs
 import OptDEC.Calculation.Internal.List
 import OptDEC.Calculation.Matrix.Class
 
@@ -55,3 +61,12 @@ circumcenterTest2dObtuseAngle = circumcenterInternalUnsafe s2Mat2dObtuseAngle
 primalVolumeTest3d = primalVolumeInternal allPositions3dTest s2Test
 
 unit_sMatTest = print $ simplexToPositionMat allPositions3dTest s2Test
+
+printDeg :: (KnownNat k) => Proxy k -> IO ()
+printDeg proxyk = print (natVal proxyk)
+
+printDualDeg :: forall n k. (KnownNat n, KnownNat k) => Proxy n -> Proxy k -> IO ()
+printDualDeg n k = case dualDegDict n k of Dict -> print (natVal (Proxy :: Proxy (DualDeg n k)))
+
+printDualMap :: forall c. (SingI c) => SCellType c -> IO ()
+printDualMap s = case dualMapDict @c of Sub Dict -> print (fromSing (sing @(DualMap c)))

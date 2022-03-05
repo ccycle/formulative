@@ -11,6 +11,7 @@ import GHC.Natural
 import GHC.TypeNats
 import OptDEC.Calculation.DiscreteExteriorCalculus.Class
 import OptDEC.Calculation.Internal.TypeLevelList
+import OptDEC.Calculation.Internal.TypeLevelNatural
 import Unsafe.Coerce
 
 constrainedFunctionTest :: forall n. (1 <= n, KnownNat n) => Proxy n -> Natural

@@ -1,3 +1,4 @@
+{-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE FlexibleContexts #-}
@@ -15,14 +16,22 @@ import qualified Data.Matrix.Static.Generic as G
 import Data.Matrix.Static.LinearAlgebra
 import qualified Data.Matrix.Static.Sparse as S
 import Data.Proxy
+import Data.Singletons (Sing, SingI (sing), SingInstance (SingInstance), SingKind (toSing), SomeSing (SomeSing), singInstance)
 import qualified Data.Singletons as S
+import Data.Singletons.Prelude (SingKind (fromSing))
 import qualified Data.Singletons.Prelude as S
 import Data.Singletons.Prelude.List hiding (type (!!))
+import Data.Singletons.Prelude.Tuple (STuple2)
 import Data.Singletons.TypeLits
 import Data.Type.Equality
+import GHC.Natural
 import GHC.TypeNats
 import OptDEC.Calculation.Algebra.Arithmetic.Class
+import OptDEC.Calculation.DiscreteExteriorCalculus.Class
+import OptDEC.Calculation.DiscreteExteriorCalculus.Proofs
+import OptDEC.Calculation.Internal.Singletons
 import OptDEC.Calculation.Internal.TypeLevelList
+import OptDEC.Calculation.Internal.TypeLevelNatural
 import OptDEC.Calculation.Matrix.Class
 import Test.Tasty
 import Unsafe.Coerce (unsafeCoerce)
@@ -78,6 +87,23 @@ printFromProxy proxy = print $ natVal proxy
 
 -- >>> S.withSomeSing nInput printFromSing
 -- "2"
+
+printTypeParameterTest1 :: forall n c. (SingI n, SingI c) => SNat n -> SCellType c -> IO ()
+printTypeParameterTest1 n c = putStrLn $ show (fromSing n) <> show (fromSing c)
+
+printTypeParameterTest2 = withSomeSingI Primal $ withSomeSingI 1 printTypeParameterTest1
+
+printTypeParameterTest3 :: forall n c. (KnownNat n, SingI c) => Proxy n -> SCellType c -> IO ()
+printTypeParameterTest3 n c = putStrLn $ show (natVal n) <> show (fromSing c)
+printTypeParameterTest4 = withSomeSingI Primal $ withSomeNat 1 printTypeParameterTest3
+
+printTypeParameterTest5 :: forall n (c :: CellType). (KnownNat n, SingI c) => IO ()
+printTypeParameterTest5 = putStrLn $ show (natVal (Proxy :: Proxy n)) <> show (fromSing (sing :: SCellType c))
+printTypeParameterTest6 = case (someNatVal (1 :: Natural), toSing Primal) of (SomeNat (p :: Proxy n), SomeSing (c :: SCellType a)) -> case singInstance c of SingInstance -> printTypeParameterTest5 @n @a
+
+-- printTypeParameterTest7 :: forall (c :: CellType). (SingI c) => IO ()
+-- printTypeParameterTest7 = print (fromSing (sing :: SCellType c))
+-- printTypeParameterTest8 = withSomeSingIAmbiguous2 Primal printTypeParameterTest7
 
 unit_printNatsTest = printNats (S.Sing :: S.Sing [1, 2, 3, 4])
 unit_sing1 = S.withSomeSing nInput printFromSing
