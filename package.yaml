@@ -41,6 +41,7 @@ dependencies:
 - lens
 - scientific
 - matrix-sized
+- template-haskell
 - path
 - path-io
 - prettyprinter

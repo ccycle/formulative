@@ -5,3 +5,6 @@
 :set -XTypeApplications
 :set -XFlexibleContexts
 :set -XTypeFamilies
+:set -XTemplateHaskell
+:set -XTemplateHaskell
+:set -XQuasiQuotes
