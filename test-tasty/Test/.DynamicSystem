@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE UndecidableInstances #-}
 
-module Test.DynamicSystem where
+module Test.DynamicEff where
 
 import Control.Algebra
 import Control.Carrier.Reader

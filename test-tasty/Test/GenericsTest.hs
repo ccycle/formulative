@@ -24,7 +24,7 @@ import OptDEC.Postprocess.Export.Class
 -- https://hackage.haskell.org/package/generic-monoid-0.1.0.1/src/src/Data/Monoid/Generic.hs
 
 data Rec = Rec {pressure :: Double, density :: Double}
-    deriving stock (Show, Eq, Generic)
+    deriving stock (Generic, Show, Eq)
     deriving anyclass (VectorSpace, Additive, AdditiveGroup, NormSpace, Multiplicative)
 
 unit_RecAdd = print $ Rec 1 1 .+. Rec 2 3
@@ -37,7 +37,7 @@ unit_testRecNorm = print $ norm (Lp 2) (Rec 1 2)
 unit_RecVectorSpace = print $ 2 *. Rec 2 3
 
 data HeteroRecTest = HeteroRecTest {pressure :: Double, density :: Int}
-    deriving stock (Show, Eq, Generic)
+    deriving stock (Generic, Show, Eq)
     deriving anyclass (Additive, AdditiveGroup, Multiplicative)
 
 unit_HeteroRecAdd = print $ HeteroRecTest 1 1 .+. HeteroRecTest 1 2
@@ -58,7 +58,7 @@ prop_associativity_IntegerAdd = associativity @Integer (.+.)
 prop_associativity_IntegerMul = associativity @Integer (.*.)
 
 data HeteroRecFieldTest = HeteroRecFieldTest {pressure :: Double, density :: Float}
-    deriving stock (Show, Eq, Generic)
+    deriving stock (Generic, Show, Eq)
     deriving anyclass (Additive, AdditiveGroup, Multiplicative, Ring, Field)
 
 data DiffFormRecFieldTest = DiffFormRecFieldTest {pressure :: DifferentialForm 2 '[2, 5, 4] Dual 0 Double, density :: DifferentialForm 2 '[2, 5, 4] Dual 0 Double, hodge :: HodgeStar 2 '[2, 5, 4] Dual 0 Double}

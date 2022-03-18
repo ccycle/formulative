@@ -1,10 +1,14 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE EmptyCase #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE Rank2Types #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE StandaloneKindSignatures #-}
+{-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# OPTIONS_GHC -fplugin GHC.TypeLits.KnownNat.Solver #-}
 {-# OPTIONS_GHC -fplugin GHC.TypeLits.Normalise #-}
@@ -22,6 +26,7 @@ import Data.Singletons.Prelude (SingKind (fromSing))
 import qualified Data.Singletons.Prelude as S
 import Data.Singletons.Prelude.List hiding (type (!!))
 import Data.Singletons.Prelude.Tuple (STuple2)
+import Data.Singletons.TH
 import Data.Singletons.TypeLits
 import Data.Type.Equality
 import GHC.Natural
@@ -104,6 +109,18 @@ printTypeParameterTest6 = case (someNatVal (1 :: Natural), toSing Primal) of (So
 -- printTypeParameterTest7 :: forall (c :: CellType). (SingI c) => IO ()
 -- printTypeParameterTest7 = print (fromSing (sing :: SCellType c))
 -- printTypeParameterTest8 = withSomeSingIAmbiguous2 Primal printTypeParameterTest7
+
+$( singletons
+    [d|
+        data RGB = R | G | B
+            deriving (Show, Eq)
+
+        rotate :: RGB -> RGB
+        rotate R = G
+        rotate G = B
+        rotate B = R
+        |]
+ )
 
 unit_printNatsTest = printNats (S.Sing :: S.Sing [1, 2, 3, 4])
 unit_sing1 = S.withSomeSing nInput printFromSing

@@ -23,6 +23,7 @@ import OptDEC.Calculation.DifferentialEquation.Parameter
 import OptDEC.Calculation.Internal.Types
 import OptDEC.Postprocess.Export.Class
 import OptDEC.Preprocess.Exception
+import OptDEC.Preprocess.Label
 import Refined
 import Test.Tasty
 
@@ -165,9 +166,9 @@ runStateTest1 = run . runState (0.1 :: Double) $ stateTest1
 runStateTest2 = run . evalState (0.1 :: Double) $ stateTest1
 runStateTest3 = run . execState (0.1 :: Double) $ stateTest1
 
-printParameterNameTest :: (Member (Lift IO) sig, Algebra sig m, Member (Reader LabelOfParameter) sig) => m ()
+printParameterNameTest :: (Member (Lift IO) sig, Algebra sig m, Member (Reader LabelOfDynamicParameter) sig) => m ()
 printParameterNameTest = do
-    MkLabelOfParameter name <- ask
+    MkLabelOfDynamicParameter name <- ask
     sendIO $ putStrLn ("label name: " <> name)
 
 -- instance HasParameterName sig m where
@@ -176,10 +177,10 @@ printParameterNameTest = do
 runTest f = do
     sendIO $ putStr "input str: "
     str <- sendIO getLine
-    runReader (MkLabelOfParameter str) f
+    runReader (MkLabelOfDynamicParameter str) f
 
 runTestParameterName :: IO ()
-runTestParameterName = runM . runReader (MkLabelOfParameter "test") $ printParameterNameTest
+runTestParameterName = runM . runReader (MkLabelOfDynamicParameter "test") $ printParameterNameTest
 
 runTestParameterName2 :: IO ()
 runTestParameterName2 = runM . runTest $ printParameterNameTest

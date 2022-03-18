@@ -1,3 +1,5 @@
+{-# LANGUAGE DuplicateRecordFields #-}
+
 module Test.Optimization.LBFGS where
 
 import Control.Exception.Safe
@@ -20,7 +22,7 @@ gradf2 x = 4 * (-1 + x) * x * (1 + x)
 
 c2 = 0.9
 alpha = 1.0
-lineSearchParamsTest = defaultLineSearchParameters{lineSearchConditionType = Armijo, armijoConditionParameter = MkArmijoConditionParameter 1e-4, factorForBacktrackingLineSearch = MkBacktrackingFactor (0.5)}
+lineSearchParamsTest = defaultLineSearchParameters
 wolfeConditionTest = wolfeCondition (MkWolfeConditionParameter c2) (MkStepSizeForLineSearch alpha) x (MkDescentDirection p) (MkGradObjectiveFunction gradf)
 
 p = -1.0

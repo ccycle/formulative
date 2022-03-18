@@ -1,5 +1,6 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DuplicateRecordFields #-}
 
 module Test.Optimization.AugmentedLagrangian where
 
@@ -15,7 +16,7 @@ import OptDEC.Calculation.VectorSpace.Class
 import Test.Tasty
 
 data TestData = MkTestData Double Double
-    deriving stock (Eq, Show, Generic)
+    deriving stock (Generic, Show, Eq)
     deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace, FromDhall, ToDhall, ToRecord)
 
 f (MkTestData x y) = x + y
@@ -26,7 +27,7 @@ mu = 1.0
 gradPenalty (MkLagrangianMultiplier lambda) x = lambda *. gradG x
 lambda = 0.0
 initialData = MkTestData (-1) (-1)
-augmentedLagrangianParametersTest = defaultAugmentedLagrangianParameters{penaltyCoefficient = MkPenaltyCoefficient mu, growthRateForPenaltyCoefficient = MkGrowthRateForPenaltyCoefficient 1.1, maxIterationAugmentedLagrangian = MkIterationNumberForAugmentedLagrangian 1000}
+augmentedLagrangianParametersTest = defaultAugmentedLagrangianParameters{penaltyCoefficient = MkPenaltyCoefficient mu, growthRate = MkGrowthRateForPenaltyCoefficient 1.1, maximumIterationNumber = MkIterationNumberForALM 1000}
 
 augmentedLagrangianMethodTest :: (MonadThrow m) => TestData -> m (TestData, LagrangianMultiplier Double)
 augmentedLagrangianMethodTest =
