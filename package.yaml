@@ -21,6 +21,7 @@ description:         Please see the README on GitHub at <https://github.com/gith
 
 dependencies:
 - ad
+- aeson
 - attoparsec
 - base >= 4.7 && < 5
 - base-noprelude
@@ -37,31 +38,35 @@ dependencies:
 - ghc-typelits-knownnat
 - ghc-typelits-natnormalise
 - hashable
-- Only
 - lens
-- scientific
 - matrix-sized
-- template-haskell
+- megaparsec
+- Only
+- optparse-applicative
 - path
 - path-io
-- prettyprinter
 - physics
+- prettyprinter
 - refined
 - reflection
+- replace-megaparsec
 - rio
 - safe-exceptions
+- scientific
 - simple-reflect
 - singletons
+- string-conversions
 - tasty
 - tasty-hunit
 - tasty-quickcheck
+- template-haskell
 - text
-# - time
 - unordered-containers
-# - typenums
 - vector
 - vector-algorithms
 - vector-sized
+# - time
+# - typenums
 # - vector-space
 
 library:
@@ -102,7 +107,6 @@ default-extensions:
 - PolyKinds
 - RankNTypes
 - RecordWildCards
-# - RebindableSyntax
 - ScopedTypeVariables
 - StandaloneDeriving
 - StrictData
@@ -112,6 +116,7 @@ default-extensions:
 - TypeOperators
 - TypeSynonymInstances
 - ViewPatterns
+# - RebindableSyntax
 
 executables:
   optDEC-exe:
