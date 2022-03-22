@@ -41,6 +41,7 @@ dependencies:
 - lens
 - matrix-sized
 - megaparsec
+- numeric-limits
 - Only
 - optparse-applicative
 - path
