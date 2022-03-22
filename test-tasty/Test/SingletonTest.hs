@@ -17,7 +17,8 @@ module Test.SingletonTest where
 
 import qualified Data.Matrix.Static.Dense as D
 import qualified Data.Matrix.Static.Generic as G
-import Data.Matrix.Static.LinearAlgebra
+
+-- import Data.Matrix.Static.LinearAlgebra
 import qualified Data.Matrix.Static.Sparse as S
 import Data.Proxy
 import Data.Singletons (Sing, SingI (sing), SingInstance (SingInstance), SingKind (toSing), SomeSing (SomeSing), singInstance)
@@ -28,12 +29,17 @@ import Data.Singletons.Prelude.List hiding (type (!!))
 import Data.Singletons.Prelude.Tuple (STuple2)
 import Data.Singletons.TH
 import Data.Singletons.TypeLits
-import Data.Type.Equality
+
+-- import Data.Type.Equality
 import GHC.Natural
 import GHC.TypeNats
-import OptDEC.Calculation.Algebra.Arithmetic.Class
-import OptDEC.Calculation.DiscreteExteriorCalculus.Class
-import OptDEC.Calculation.DiscreteExteriorCalculus.Proofs
+
+-- import OptDEC.Calculation.Algebra.Arithmetic.Class
+
+-- import OptDEC.Calculation.DiscreteExteriorCalculus.Class
+-- import OptDEC.Calculation.DiscreteExteriorCalculus.Proofs
+
+import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
 import OptDEC.Calculation.Internal.Singletons
 import OptDEC.Calculation.Internal.TypeLevelList
 import OptDEC.Calculation.Internal.TypeLevelNatural

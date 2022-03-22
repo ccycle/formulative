@@ -15,8 +15,12 @@ import Data.Maybe
 import GHC.Generics
 import GHC.Natural
 import OptDEC.Calculation.Algebra.Arithmetic.Class
-import OptDEC.Calculation.DiscreteExteriorCalculus.Algebra
-import OptDEC.Calculation.DiscreteExteriorCalculus.Class
+
+-- import OptDEC.Calculation.DiscreteExteriorCalculus.Algebra
+-- import OptDEC.Calculation.DiscreteExteriorCalculus.Class
+
+import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
+import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
 import OptDEC.Calculation.Internal.Types
 import OptDEC.Calculation.VectorSpace.Class
 import OptDEC.Postprocess.Export.Class
@@ -59,7 +63,7 @@ prop_associativity_IntegerMul = associativity @Integer (.*.)
 
 data HeteroRecFieldTest = HeteroRecFieldTest {pressure :: Double, density :: Float}
     deriving stock (Generic, Show, Eq)
-    deriving anyclass (Additive, AdditiveGroup, Multiplicative, Ring, Field)
+    deriving anyclass (Additive, AdditiveGroup, Multiplicative, Rng, Ring, Field)
 
 data DiffFormRecFieldTest = DiffFormRecFieldTest {pressure :: DifferentialForm 2 '[2, 5, 4] Dual 0 Double, density :: DifferentialForm 2 '[2, 5, 4] Dual 0 Double, hodge :: HodgeStar 2 '[2, 5, 4] Dual 0 Double}
     deriving stock (Show, Generic)

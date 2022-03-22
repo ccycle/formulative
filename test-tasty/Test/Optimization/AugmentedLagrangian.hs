@@ -13,6 +13,7 @@ import OptDEC.Calculation.Optimization.AugmentedLagrangian
 import OptDEC.Calculation.Optimization.LBFGS
 import OptDEC.Calculation.Optimization.LineSearch
 import OptDEC.Calculation.VectorSpace.Class
+import OptDEC.Preprocess.DefaultValue
 import Test.Tasty
 
 data TestData = MkTestData Double Double
@@ -27,14 +28,14 @@ mu = 1.0
 gradPenalty (MkLagrangianMultiplier lambda) x = lambda *. gradG x
 lambda = 0.0
 initialData = MkTestData (-1) (-1)
-augmentedLagrangianParametersTest = defaultAugmentedLagrangianParameters{penaltyCoefficient = MkPenaltyCoefficient mu, growthRate = MkGrowthRateForPenaltyCoefficient 1.1, maximumIterationNumber = MkIterationNumberForALM 1000}
+augmentedLagrangianParametersTest = defaultValue{penaltyCoefficient = MkPenaltyCoefficient mu, growthRate = MkGrowthRateForPenaltyCoefficient 1.1, maximumIterationNumber = MkIterationNumberForALM 1000}
 
 augmentedLagrangianMethodTest :: (MonadThrow m) => TestData -> m (TestData, LagrangianMultiplier Double)
 augmentedLagrangianMethodTest =
     augmentedLagrangianMethod
-        defaultLineSearchParameters
-        defaultConvergenceTestParameters
-        defaultLBFGSParameters
+        defaultValue
+        defaultValue
+        defaultValue
         augmentedLagrangianParametersTest
         (MkObjectiveFunction f)
         (MkGradObjectiveFunction gradf)

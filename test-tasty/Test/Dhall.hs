@@ -16,7 +16,7 @@ import Dhall.Src
 import OptDEC.Calculation.Internal.TH
 import OptDEC.Preprocess.DiscreteExteriorCalculus.Read
 import OptDEC.Preprocess.Exception
-import OptDEC.Preprocess.ReadConfig
+import OptDEC.Preprocess.ReadSetting
 import qualified Prettyprinter.Render.Text as Prettyprint.Text
 import Test.Tasty
 

@@ -17,8 +17,12 @@ import qualified Data.Vector.Unboxed as VU
 import GHC.Exts
 import GHC.TypeNats
 import OptDEC.Calculation.Algebra.Arithmetic.Class
-import OptDEC.Calculation.DiscreteExteriorCalculus.Class
-import OptDEC.Calculation.DiscreteExteriorCalculus.Homology
+
+-- import OptDEC.Calculation.DiscreteExteriorCalculus.Class
+-- import OptDEC.Calculation.DiscreteExteriorCalculus.Homology
+
+import OptDEC.Calculation.DiscreteExteriorCalculus.Homology.Operators
+import OptDEC.Calculation.DiscreteExteriorCalculus.Homology.Types
 import OptDEC.Calculation.Internal.Infix
 import OptDEC.Calculation.Internal.TypeLevelList
 

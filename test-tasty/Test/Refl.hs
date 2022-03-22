@@ -9,7 +9,10 @@ import Data.Singletons
 import Data.Type.Equality
 import GHC.Natural
 import GHC.TypeNats
-import OptDEC.Calculation.DiscreteExteriorCalculus.Class
+
+-- import OptDEC.Calculation.DiscreteExteriorCalculus.Class
+
+import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
 import OptDEC.Calculation.Internal.TypeLevelList
 import OptDEC.Calculation.Internal.TypeLevelNatural
 import Unsafe.Coerce

@@ -10,11 +10,12 @@ import Data.Csv
 import Dhall
 import GHC.Generics
 import OptDEC.Calculation.Algebra.Arithmetic.Class
-import OptDEC.Calculation.DiscreteExteriorCalculus.Algebra
-import OptDEC.Calculation.DiscreteExteriorCalculus.Class
+import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
+import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
 import OptDEC.Calculation.VectorSpace.Class
 import OptDEC.Postprocess.Export.Class
-import OptDEC.Preprocess.Exception
+
+-- import OptDEC.Preprocess.Exception
 import Path
 
 data RecTest1 a b = MkRecTest1 a b

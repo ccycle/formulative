@@ -10,7 +10,7 @@ import Control.Effect.Sum
 import GHC.Generics
 import GHC.Natural
 import OptDEC.Calculation.Algebra.Arithmetic.Class
-import OptDEC.Calculation.DifferentialEquation.Parameter
+import OptDEC.Calculation.DifferentialEquation.Types
 import OptDEC.Calculation.Internal.Class
 import OptDEC.Calculation.Optimization.LineSearch
 import OptDEC.Calculation.VectorSpace.Class
@@ -51,25 +51,23 @@ gradDeltaL
     dLdx = (k ./. 2) *. (xNew .+. x) .+. (dxdt .-. (vNew .+. v) ./ 2)
     dLdv = dvdt ./ dt .+. ((k ./. 2) *. (xNew .+. x) .+. (gamma ./. 2) *. (vNew .+. v))
 
-instance (Member (Reader (ConstantsOfSystem)) sig, Algebra sig m) => HasConstantsOfSystemM m ConstantsOfSystem where
+instance (Member (Reader ConstantsOfSystem) sig, Algebra sig m) => HasConstantsOfSystemM m ConstantsOfSystem where
   getConstantsOfSystemM = ask
 
 instance (Algebra sig m, Member (State StateTest) sig, Member (Reader ConstantsOfSystem) sig, Member (Reader (StepSize Double)) sig) => HasObjectiveFunctionM m StateTest where
   getObjectiveFunctionM = do
     dt <- ask
     eqParam <- getConstantsOfSystemM
-    state <- get
-    return $ deltaL dt eqParam state
+    deltaL dt eqParam <$> get
 
 instance (Algebra sig m, Member (State StateTest) sig, Member (Reader ConstantsOfSystem) sig, Member (Reader (StepSize Double)) sig) => HasGradObjectiveFunctionM m StateTest where
   getGradientOfObjectiveFunctionM = do
     dt <- ask
     eqParam <- getConstantsOfSystemM
-    state <- get
-    return $ gradDeltaL dt eqParam state
+    gradDeltaL dt eqParam <$> get
 
 instance (Algebra sig m) => HasInitialConditionM m StateTest where
-  getInitialConditionM = do
+  getInitialConditionM =
     return $ MkTestData 1 0
 
 -- mainCalc = do mainCalculationDynamic

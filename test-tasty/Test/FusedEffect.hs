@@ -19,7 +19,7 @@ import Data.Kind
 import GHC.TypeNats
 import OptDEC.Calculation.Algebra.Arithmetic.Class
 import OptDEC.Calculation.Algebra.Arithmetic.Field
-import OptDEC.Calculation.DifferentialEquation.Parameter
+import OptDEC.Calculation.DifferentialEquation.Types
 import OptDEC.Calculation.Internal.Types
 import OptDEC.Postprocess.Export.Class
 import OptDEC.Preprocess.Exception

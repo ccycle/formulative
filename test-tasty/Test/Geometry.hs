@@ -5,10 +5,16 @@ import Data.Proxy
 import Data.Singletons
 import GHC.TypeNats
 import OptDEC.Calculation.Algebra.Arithmetic.Class
-import OptDEC.Calculation.DiscreteExteriorCalculus.Class
-import OptDEC.Calculation.DiscreteExteriorCalculus.Geometry
-import OptDEC.Calculation.DiscreteExteriorCalculus.Homology
-import OptDEC.Calculation.DiscreteExteriorCalculus.Proofs
+
+import OptDEC.Calculation.DiscreteExteriorCalculus.Geometry.Types
+
+-- import OptDEC.Calculation.DiscreteExteriorCalculus.Homology
+-- import OptDEC.Calculation.DiscreteExteriorCalculus.Proofs
+
+import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
+import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
+import OptDEC.Calculation.DiscreteExteriorCalculus.Geometry.Operators
+import OptDEC.Calculation.DiscreteExteriorCalculus.Homology.Types
 import OptDEC.Calculation.Internal.List
 import OptDEC.Calculation.Matrix.Class
 
