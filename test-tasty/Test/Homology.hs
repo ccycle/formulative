@@ -23,6 +23,7 @@ import OptDEC.Calculation.Algebra.Arithmetic.Class
 -- import OptDEC.Calculation.DiscreteExteriorCalculus.Class
 -- import OptDEC.Calculation.DiscreteExteriorCalculus.Homology
 
+import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Operators.Homology
 import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
 import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
 import OptDEC.Calculation.DiscreteExteriorCalculus.Homology.Carrier

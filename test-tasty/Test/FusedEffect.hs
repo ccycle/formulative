@@ -23,7 +23,8 @@ import OptDEC.Calculation.DifferentialEquation.Types
 import OptDEC.Calculation.Internal.Types
 import OptDEC.Postprocess.Export.Class
 import OptDEC.Preprocess.Exception
-import OptDEC.Preprocess.Label
+
+-- import OptDEC.Preprocess.Label
 import Refined
 import Test.Tasty
 
@@ -206,7 +207,7 @@ instance (MonadIO m, Algebra sig m) => Algebra (Teletype :+: sig) (TeletypeIOC m
 
 -- 1つのeffectに対し複数のCarrierを設定する
 -- label config test
-data EnvTest a = MkEnvTest {getLabelsTest :: Labels, getStepSizeTest :: StepSize a}
+data EnvTest a = MkEnvTest {getLabelsTest :: [String], getStepSizeTest :: StepSize a}
 defaultEnvTest = MkEnvTest{getLabelsTest = ["LabelTest1", "LabelTest2"], getStepSizeTest = MkStepSize 0.1}
 
 data EnvEff a (m :: Type -> Type) k where
@@ -215,8 +216,8 @@ getEnv :: Has (EnvEff a) sig m => m (EnvTest a)
 getEnv = send GetEnv
 
 -- newtype EnvC m a = EnvC (m (EnvTest a))
--- newtype LabelsC m a = ReaderC Labels m a
-newtype LabelsC m a = LabelsC {runLabels :: ReaderC Labels m a}
+-- newtype LabelsC m a = ReaderC [String] m a
+newtype LabelsC m a = LabelsC {runLabels :: ReaderC [String] m a}
     deriving stock (Functor)
     deriving newtype (Applicative, Monad)
 newtype LabelsEnvC a m b = LabelsEnvC {runLabelsEnv :: ReaderC (EnvTest a) m b}
@@ -232,14 +233,14 @@ newtype LabelsEnvC a m b = LabelsEnvC {runLabelsEnv :: ReaderC (EnvTest a) m b}
 
 --   {-# INLINE (>>=) #-}
 data LabelsEff (m :: Type -> Type) k where
-    GetLabels :: LabelsEff m Labels
-getLabels :: Has LabelsEff sig m => m Labels
+    GetLabels :: LabelsEff m [String]
+getLabels :: Has LabelsEff sig m => m [String]
 getLabels = send GetLabels
 
 instance (Algebra sig m) => Algebra (LabelsEff :+: sig) (LabelsC m) where
     alg hdl sig ctx = case sig of
         L GetLabels -> do
-            l <- LabelsC (ask @Labels)
+            l <- LabelsC (ask @[String])
             pure ((<$ ctx) l)
         R other -> LabelsC (alg (runLabels . hdl) (R other) ctx)
 

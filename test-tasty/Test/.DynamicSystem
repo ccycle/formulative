@@ -20,7 +20,7 @@ data StateTest = MkTestData {position :: Double, momentum :: Double}
   deriving (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
 
-data GlobalQuantity = MkGlobalQuantity {energy :: Double, internalEnergy :: Double}
+data GlobalQuantityType = MkGlobalQuantity {energy :: Double, internalEnergy :: Double}
 
 data ConstantsOfSystem = MkConstantsOfSystem {k :: Double, gamma :: Double}
 
