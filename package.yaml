@@ -56,7 +56,7 @@ dependencies:
 - safe-exceptions
 - scientific
 - simple-reflect
-- shake
+- turtle
 - singletons
 - string-conversions
 - tasty
