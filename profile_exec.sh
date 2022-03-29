@@ -1,0 +1,1 @@
+stack --work-dir .stack-work-profile/ exec --profile $1 +RTS -p -hp
