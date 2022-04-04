@@ -66,15 +66,3 @@ a = V.fromList [0, 1, 2] :: V.Vector Double
 v = ToRecordListTest a a
 toRecordsTest = toRecords v
 toRecordsTest1 = V.head toRecordsTest
-
--- writeTest1 :: IO ()
--- writeTest1 = do
---     pDir <- parentDirTest
---     runM $
---         runSomeException printError . runReader (MkDimensionOfManifold 0) . runReader (MkOutputDir pDir)
---             . runReader (MkLabelsOfVariable ["x1", "x2"])
---             . runReader (MkLabelsOfSubLocalQuantity [])
---             . runReader (MkGlobalQuantityName [])
---             $ writeFileStaticM Variables testRec1
-
--- handleAny printError process
