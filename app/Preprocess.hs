@@ -1,8 +1,12 @@
-module Main where
+module Main (main) where
 
+import Control.Carrier.Lift
 import Control.Exception.Safe
 import Dhall
+import OptDEC.Calculation.Internal.Setting
+import OptDEC.Preprocess.DefaultValue
 import OptDEC.Preprocess.Exception
+import OptDEC.Preprocess.ReadSetting (writeDhallFile)
 
 -- TODO: ファイルパスの解析(PathIOを使う)
 -- TODO: コマンドライン引数から設定ファイルのパスを指定できるようにする
@@ -19,14 +23,14 @@ import OptDEC.Preprocess.Exception
 --  - 座標値のチェック
 
 mainPreprocess = do
-    putStrLn "start preprocessing"
-    readtest :: Double <- readM "bad input"
-    putStrLn $ "readM test: (input value)+1=" ++ show (readtest + 1)
-    putStrLn "end"
+    sendIO $ putStrLn "Start preprocessing."
+    sendIO $ putStrLn "Export Default settings.."
+    sendIO $ writeDhallFile "./default_values.dhall" (defaultValue @(OptDECsetting Double))
+    sendIO $ putStrLn "Done."
+    sendIO $ putStrLn ""
+    sendIO $ putStrLn "End."
 
-errorHandlingPreprocess = printError
-
-main = mainPreprocess `catch` errorHandlingPreprocess
+main = runM mainPreprocess -- `catch` errorHandlingPreprocess
 
 -- Configを読み取る
 -- メッシュなどに異常がないか確認
