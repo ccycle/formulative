@@ -1,14 +1,14 @@
-name:                optDEC
-version:             0.1.0.0
-github:              "githubuser/optDEC"
-license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2021 Author name here"
+name: optDEC
+version: 0.1.0.0
+github: "githubuser/optDEC"
+license: BSD3
+author: "Author name here"
+maintainer: "example@example.com"
+copyright: "2021 Author name here"
 
 extra-source-files:
-- README.md
-- ChangeLog.md
+  - README.md
+  - ChangeLog.md
 
 # Metadata used when publishing your package
 # synopsis:            Short description of your package
@@ -17,57 +17,57 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/optDEC#readme>
+description: Please see the README on GitHub at <https://github.com/githubuser/optDEC#readme>
 
 dependencies:
-- ad
-- aeson
-- attoparsec
-- base >= 4.7 && < 5
-- base-noprelude
-- bytestring
-- cassava
-- constraints
-- containers
-- dhall
-- eigen
-- exact-combinatorics
-- finite-field
-- fused-effects
-- ghc-prim
-- ghc-typelits-knownnat
-- ghc-typelits-natnormalise
-- hashable
-- lens
-- matrix-sized
-- megaparsec
-- numeric-limits
-- Only
-- optparse-applicative
-- path
-- path-io
-- physics
-- prettyprinter
-- refined
-- reflection
-- replace-megaparsec
-- rio
-- finite-typelits
-- safe-exceptions
-- scientific
-- simple-reflect
-- turtle
-- singletons
-- string-conversions
-- tasty
-- tasty-hunit
-- tasty-quickcheck
-- template-haskell
-- text
-- unordered-containers
-- vector
-- vector-algorithms
-- vector-sized
+  - ad
+  - aeson
+  - attoparsec
+  - base >= 4.7 && < 5
+  - base-noprelude
+  - bytestring
+  - cassava
+  - constraints
+  - containers
+  - dhall
+  - eigen
+  - exact-combinatorics
+  - finite-field
+  - fused-effects
+  - ghc-prim
+  - ghc-typelits-knownnat
+  - ghc-typelits-natnormalise
+  - hashable
+  - lens
+  - matrix-sized
+  - megaparsec
+  - numeric-limits
+  - Only
+  - optparse-applicative
+  - path
+  - path-io
+  - physics
+  - prettyprinter
+  - refined
+  - reflection
+  - replace-megaparsec
+  - rio
+  - finite-typelits
+  - safe-exceptions
+  - scientific
+  - simple-reflect
+  - turtle
+  - singletons
+  - string-conversions
+  - tasty
+  - tasty-hunit
+  - tasty-quickcheck
+  - template-haskell
+  - text
+  - unordered-containers
+  - vector
+  - vector-algorithms
+  - vector-sized
 # - time
 # - typenums
 # - vector-space
@@ -75,172 +75,139 @@ dependencies:
 library:
   source-dirs: src
   other-modules:
-  - CustomPrelude
+    - CustomPrelude
 
 default-extensions:
-- ApplicativeDo
-- BangPatterns
-- BinaryLiterals
-- ConstraintKinds
-- DataKinds
-- DefaultSignatures
-- DeriveDataTypeable
-- DeriveFoldable
-- DeriveFunctor
-- DeriveGeneric
-- DeriveTraversable
-- DerivingVia
-- DoAndIfThenElse
-- EmptyDataDecls
-- ExistentialQuantification
-- FlexibleContexts
-- FlexibleInstances
-- FunctionalDependencies
-- GADTs
-- GeneralizedNewtypeDeriving
-- InstanceSigs
-- KindSignatures
-- LambdaCase
-- MultiParamTypeClasses
-- MultiWayIf
-- NamedFieldPuns
-- OverloadedStrings
-- PartialTypeSignatures
-- PatternGuards
-- PolyKinds
-- RankNTypes
-- RecordWildCards
-- ScopedTypeVariables
-- StandaloneDeriving
-- StrictData
-- TupleSections
-- TypeApplications
-- TypeFamilies
-- TypeOperators
-- TypeSynonymInstances
-- ViewPatterns
+  - ApplicativeDo
+  - BangPatterns
+  - BinaryLiterals
+  - ConstraintKinds
+  - DataKinds
+  - DefaultSignatures
+  - DeriveDataTypeable
+  - DeriveFoldable
+  - DeriveFunctor
+  - DeriveGeneric
+  - DeriveTraversable
+  - DerivingVia
+  - DoAndIfThenElse
+  - EmptyDataDecls
+  - ExistentialQuantification
+  - FlexibleContexts
+  - FlexibleInstances
+  - FunctionalDependencies
+  - GADTs
+  - GeneralizedNewtypeDeriving
+  - InstanceSigs
+  - KindSignatures
+  - LambdaCase
+  - MultiParamTypeClasses
+  - MultiWayIf
+  - NamedFieldPuns
+  - OverloadedStrings
+  - PartialTypeSignatures
+  - PatternGuards
+  - PolyKinds
+  - RankNTypes
+  - RecordWildCards
+  - ScopedTypeVariables
+  - StandaloneDeriving
+  - StrictData
+  - TupleSections
+  - TypeApplications
+  - TypeFamilies
+  - TypeOperators
+  - TypeSynonymInstances
+  - ViewPatterns
 # - RebindableSyntax
 
 executables:
-  optDEC-exe:
-    main:                Main.hs
-    source-dirs:         app
-    other-modules:       []
+  preprocess:
+    main: Preprocess.hs
+    other-modules: []
+    source-dirs: app
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    - -O2
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+      - -O2
     dependencies:
-    - optDEC
-  optDEC-calculation-exe:
-    main:                Calculation.hs
-    other-modules:       []
-    source-dirs:         app
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    - -O2
-    dependencies:
-    - optDEC
-  optDEC-postprocess-exe:
-    main:                Postprocess.hs
-    other-modules:       []
-    source-dirs:         app
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    - -O2
-    dependencies:
-    - optDEC
-  optDEC-preprocess-exe:
-    main:                Preprocess.hs
-    other-modules:       []
-    source-dirs:         app
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    - -O2
-    dependencies:
-    - optDEC
+      - optDEC
 
 tests:
   optDEC-test:
-    main:                Spec.hs
-    source-dirs:         test
+    main: Spec.hs
+    source-dirs: test
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
     dependencies:
-    - optDEC
+      - optDEC
   optDEC-tasty:
     main: Tasty.hs
     source-dirs: test-tasty
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
     dependencies:
-    - optDEC
-    - tasty
-    - tasty-hunit
-    - tasty-quickcheck
+      - optDEC
+      - tasty
+      - tasty-hunit
+      - tasty-quickcheck
 
 benchmarks:
   Factorial:
     main: Factorial.hs
     source-dirs: benchmarks/Factorial
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
     dependencies:
-    - optDEC
-    - criterion
+      - optDEC
+      - criterion
   StackingEffects:
     main: StackEffects.hs
     source-dirs: benchmarks/FusedEffects
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
     dependencies:
-    - optDEC
-    - criterion
+      - optDEC
+      - criterion
   MatrixMul:
     main: MatrixMul.hs
     source-dirs: benchmarks/MatrixMul
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    - -O2
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+      - -O2
     dependencies:
-    - optDEC
-    - criterion
+      - optDEC
+      - criterion
   MatrixToVector:
     main: MatrixToVector.hs
     source-dirs: benchmarks/MatrixToVector
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    - -O2
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+      - -O2
     dependencies:
-    - optDEC
-    - criterion
+      - optDEC
+      - criterion
   UnsafeIndex:
     main: UnsafeIndex.hs
     source-dirs: benchmarks/UnsafeIndex
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    - -O2
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+      - -O2
     dependencies:
-    - optDEC
-    - criterion
+      - optDEC
+      - criterion
