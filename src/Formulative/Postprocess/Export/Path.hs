@@ -35,7 +35,7 @@ replaceOutputRelDir x = do
   let dirStr = toFilePath dir
   return $ parseAndReplace outputDirCmdStr dirStr x
 
--- >>> replaceHash (defaultValue @(OptDECsetting Double)) (OutputDirSetting "./test/[[hash]]/data.csv")
+-- >>> replaceHash (defaultValue @(FormulativeSetting Double)) (OutputDirSetting "./test/[[hash]]/data.csv")
 -- OutputDirSetting "./test/6eb63ae0d5b0748c/data.csv"
 replaceHash :: (Hashable a) => a -> OutputDirSetting -> OutputDirSetting
 replaceHash a (OutputDirSetting x) =

@@ -20,7 +20,7 @@ import Formulative.Preprocess.ReadSetting (writeDhallFile)
 mainPreprocess = do
     sendIO $ putStrLn "Start preprocessing."
     sendIO $ putStrLn "Export Default settings.."
-    sendIO $ writeDhallFile "./default_values.dhall" (defaultValue @(OptDECsetting Double))
+    sendIO $ writeDhallFile "./default_values.dhall" (defaultValue @(FormulativeSetting Double))
     sendIO $ putStrLn "Done."
     sendIO $ putStrLn ""
     sendIO $ putStrLn "End."

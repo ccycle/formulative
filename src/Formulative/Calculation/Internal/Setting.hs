@@ -32,7 +32,7 @@ runEquationConstantsIO f = do
     x <- sendIO $ readRecordFromDhallFile "equation" txt
     runReader x f
 
-data OptDECsetting a = MkOptDECsetting
+data FormulativeSetting a = MkFormulativeSetting
     { optimization :: OptimizationParameters a
     , export :: ExportSetting
     , geometry :: GeometrySetting
