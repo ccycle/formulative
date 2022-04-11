@@ -17,14 +17,14 @@ import Control.Monad
 import Control.Monad.IO.Class
 import Data.Kind
 import GHC.TypeNats
-import OptDEC.Calculation.Algebra.Arithmetic.Class
-import OptDEC.Calculation.Algebra.Arithmetic.Field
-import OptDEC.Calculation.DifferentialEquation.Types
-import OptDEC.Calculation.Internal.Types
-import OptDEC.Postprocess.Export.Class
-import OptDEC.Preprocess.Exception
+import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic.Field
+import Formulative.Calculation.DifferentialEquation.Types
+import Formulative.Calculation.Internal.Types
+import Formulative.Postprocess.Export.Class
+import Formulative.Preprocess.Exception
 
--- import OptDEC.Preprocess.Label
+-- import Formulative.Preprocess.Label
 import Refined
 import Test.Tasty
 

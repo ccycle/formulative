@@ -6,8 +6,8 @@ import Refined
 import Test.Tasty
 
 import Control.Applicative (liftA2)
-import OptDEC.Calculation.Algebra.Arithmetic.Class
-import OptDEC.Preprocess.Exception
+import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Preprocess.Exception
 
 allNonzeroTestVec :: MonadThrow m => m (VS.Vector 3 Double)
 allNonzeroTestVec = maybeToMonadThrow FromListException (VS.fromList [2, 1, 1])

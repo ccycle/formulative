@@ -17,21 +17,21 @@ import qualified Data.Vector as V
 import qualified Data.Vector.Unboxed as VU
 import GHC.Exts
 import GHC.TypeNats
-import OptDEC.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic.Class
 
--- import OptDEC.Calculation.DiscreteExteriorCalculus.Algebra
--- import OptDEC.Calculation.DiscreteExteriorCalculus.Class
--- import OptDEC.Calculation.DiscreteExteriorCalculus.Homology
+-- import Formulative.Calculation.DiscreteExteriorCalculus.Algebra
+-- import Formulative.Calculation.DiscreteExteriorCalculus.Class
+-- import Formulative.Calculation.DiscreteExteriorCalculus.Homology
 
-import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Operators.Homology
-import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
-import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
-import OptDEC.Calculation.DiscreteExteriorCalculus.Homology.Carrier
-import OptDEC.Calculation.DiscreteExteriorCalculus.Homology.Effect
-import OptDEC.Calculation.DiscreteExteriorCalculus.Homology.Operators
-import OptDEC.Calculation.DiscreteExteriorCalculus.Homology.Types
-import OptDEC.Calculation.Internal.Infix
-import OptDEC.Calculation.Internal.TypeLevelList
+import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Operators.Homology
+import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
+import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
+import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Carrier
+import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Effect
+import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Operators
+import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Types
+import Formulative.Calculation.Internal.Infix
+import Formulative.Calculation.Internal.TypeLevelList
 
 type NEuc = 2
 type NatsTest = '[4, 5, 2]

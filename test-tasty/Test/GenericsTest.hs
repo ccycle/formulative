@@ -14,16 +14,16 @@ import qualified Data.HashMap.Strict as HM
 import Data.Maybe
 import GHC.Generics
 import GHC.Natural
-import OptDEC.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic.Class
 
--- import OptDEC.Calculation.DiscreteExteriorCalculus.Algebra
--- import OptDEC.Calculation.DiscreteExteriorCalculus.Class
+-- import Formulative.Calculation.DiscreteExteriorCalculus.Algebra
+-- import Formulative.Calculation.DiscreteExteriorCalculus.Class
 
-import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
-import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
-import OptDEC.Calculation.Internal.Types
-import OptDEC.Calculation.VectorSpace.Class
-import OptDEC.Postprocess.Export.Class
+import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
+import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
+import Formulative.Calculation.Internal.Types
+import Formulative.Calculation.VectorSpace.Class
+import Formulative.Postprocess.Export.Class
 
 -- https://hackage.haskell.org/package/generic-monoid-0.1.0.1/src/src/Data/Monoid/Generic.hs
 

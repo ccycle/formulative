@@ -7,13 +7,13 @@ module Test.Optimization.AugmentedLagrangian where
 import Control.Exception.Safe
 import Data.Csv
 import Dhall
+import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Optimization.AugmentedLagrangian
+import Formulative.Calculation.Optimization.LBFGS
+import Formulative.Calculation.Optimization.LineSearch
+import Formulative.Calculation.VectorSpace.Class
+import Formulative.Preprocess.DefaultValue
 import GHC.Generics
-import OptDEC.Calculation.Algebra.Arithmetic.Class
-import OptDEC.Calculation.Optimization.AugmentedLagrangian
-import OptDEC.Calculation.Optimization.LBFGS
-import OptDEC.Calculation.Optimization.LineSearch
-import OptDEC.Calculation.VectorSpace.Class
-import OptDEC.Preprocess.DefaultValue
 import Test.Tasty
 
 data TestData = MkTestData Double Double

@@ -1,8 +1,8 @@
 module Test.NonHomogeneousProd where
 
 import Data.Kind
+import Formulative.Calculation.Matrix.Class
 import GHC.TypeNats
-import OptDEC.Calculation.Matrix.Class
 import Test.Tasty
 
 class NonHomogeneousMultiplicative a b where

@@ -13,10 +13,10 @@ import Dhall
 import Dhall.Core
 import Dhall.Pretty
 import Dhall.Src
-import OptDEC.Calculation.Internal.TH
-import OptDEC.Preprocess.DiscreteExteriorCalculus.Read
-import OptDEC.Preprocess.Exception
-import OptDEC.Preprocess.ReadSetting
+import Formulative.Calculation.Internal.TH
+import Formulative.Preprocess.DiscreteExteriorCalculus.Read
+import Formulative.Preprocess.Exception
+import Formulative.Preprocess.ReadSetting
 import qualified Prettyprinter.Render.Text as Prettyprint.Text
 import Test.Tasty
 

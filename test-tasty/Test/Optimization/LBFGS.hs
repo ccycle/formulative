@@ -4,9 +4,9 @@ module Test.Optimization.LBFGS where
 
 import Control.Exception.Safe
 import qualified Data.Vector as V
-import OptDEC.Calculation.Optimization.LBFGS
-import OptDEC.Calculation.Optimization.LineSearch
-import OptDEC.Preprocess.DefaultValue
+import Formulative.Calculation.Optimization.LBFGS
+import Formulative.Calculation.Optimization.LineSearch
+import Formulative.Preprocess.DefaultValue
 import Test.Tasty
 
 x = 0.1 :: Double

@@ -1,3 +1,3 @@
-# Changelog for optDEC
+# Changelog for formulative
 
 ## Unreleased changes

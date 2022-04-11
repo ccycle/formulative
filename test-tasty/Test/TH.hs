@@ -3,8 +3,8 @@
 module Test.TH where
 
 import Dhall
+import Formulative.Calculation.Internal.TH
 import Language.Haskell.TH
-import OptDEC.Calculation.Internal.TH
 
 -- NOTE: 手元の環境ではこの関数を使うとhaskell-language-serverが壊れる
 -- @ $(derivingSetting [d|data Test a = Test a a|]) @

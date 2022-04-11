@@ -34,16 +34,16 @@ import Data.Singletons.TypeLits
 import GHC.Natural
 import GHC.TypeNats
 
--- import OptDEC.Calculation.Algebra.Arithmetic.Class
+-- import Formulative.Calculation.Algebra.Arithmetic.Class
 
--- import OptDEC.Calculation.DiscreteExteriorCalculus.Class
--- import OptDEC.Calculation.DiscreteExteriorCalculus.Proofs
+-- import Formulative.Calculation.DiscreteExteriorCalculus.Class
+-- import Formulative.Calculation.DiscreteExteriorCalculus.Proofs
 
-import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
-import OptDEC.Calculation.Internal.Singletons
-import OptDEC.Calculation.Internal.TypeLevelList
-import OptDEC.Calculation.Internal.TypeLevelNatural
-import OptDEC.Calculation.Matrix.Class
+import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
+import Formulative.Calculation.Internal.Singletons
+import Formulative.Calculation.Internal.TypeLevelList
+import Formulative.Calculation.Internal.TypeLevelNatural
+import Formulative.Calculation.Matrix.Class
 import Test.Tasty
 import Unsafe.Coerce (unsafeCoerce)
 

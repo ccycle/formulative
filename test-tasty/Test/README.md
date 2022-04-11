@@ -11,7 +11,7 @@
         - quickcheck
           - 接頭辞に`prop_`をつける
             - 例: `prop_func = ...`
-    - testの実行: `stack test optDEC:test:optDEC-tasty`
+    - testの実行: `stack test formulative:test:formulative-tasty`
 
 ## 参考文献
 

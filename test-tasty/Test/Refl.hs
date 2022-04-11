@@ -7,12 +7,12 @@ module Test.Refl where
 import Data.Proxy
 import Data.Singletons
 import Data.Type.Equality
+import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
+import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
+import Formulative.Calculation.Internal.TypeLevelList
+import Formulative.Calculation.Internal.TypeLevelNatural
 import GHC.Natural
 import GHC.TypeNats
-import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
-import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
-import OptDEC.Calculation.Internal.TypeLevelList
-import OptDEC.Calculation.Internal.TypeLevelNatural
 import Unsafe.Coerce
 
 constrainedFunctionTest :: forall n. (1 <= n, KnownNat n) => Proxy n -> Natural

@@ -10,8 +10,8 @@ import Data.Kind
 import Data.Proxy
 import GHC.TypeNats
 
--- import OptDEC.Calculation.DiscreteExteriorCalculus.Class
--- import OptDEC.Calculation.DiscreteExteriorCalculus.Homology
+-- import Formulative.Calculation.DiscreteExteriorCalculus.Class
+-- import Formulative.Calculation.DiscreteExteriorCalculus.Homology
 
 data Teletype (m :: Type -> Type) k where
   Read :: Teletype m String

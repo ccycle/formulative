@@ -3,10 +3,10 @@ module Main (main) where
 import Control.Carrier.Lift
 import Control.Exception.Safe
 import Dhall
-import OptDEC.Calculation.Internal.Setting
-import OptDEC.Preprocess.DefaultValue
-import OptDEC.Preprocess.Exception
-import OptDEC.Preprocess.ReadSetting (writeDhallFile)
+import Formulative.Calculation.Internal.Setting
+import Formulative.Preprocess.DefaultValue
+import Formulative.Preprocess.Exception
+import Formulative.Preprocess.ReadSetting (writeDhallFile)
 
 -- Fieldの場合
 --  - 座標データの読み込み

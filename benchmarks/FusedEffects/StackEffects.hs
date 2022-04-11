@@ -12,8 +12,8 @@ import Criterion.Types
 
 import Control.Carrier.Reader
 import Control.Effect.Sum
-import OptDEC.Calculation.Algebra.Arithmetic.Class
-import OptDEC.Calculation.Matrix.Class
+import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Matrix.Class
 import Path
 import Path.IO
 

@@ -3,8 +3,8 @@
 module Test.Physics where
 
 import Data.Coerce
-import OptDEC.Calculation.Algebra.Arithmetic.Class
-import OptDEC.Calculation.Physics.Units.SI
+import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Physics.Units.SI
 import Physics.Units
 import Test.Tasty
 

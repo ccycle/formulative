@@ -14,17 +14,17 @@ import Data.Proxy
 import qualified Data.Set as S
 import qualified Data.Vector as V
 import qualified Data.Vector.Unboxed as VU
+import Formulative.Calculation.Algebra.Arithmetic.Class
 import GHC.Exts
 import GHC.TypeNats
-import OptDEC.Calculation.Algebra.Arithmetic.Class
 
--- import OptDEC.Calculation.DiscreteExteriorCalculus.Class
--- import OptDEC.Calculation.DiscreteExteriorCalculus.Homology
+-- import Formulative.Calculation.DiscreteExteriorCalculus.Class
+-- import Formulative.Calculation.DiscreteExteriorCalculus.Homology
 
-import OptDEC.Calculation.DiscreteExteriorCalculus.Homology.Operators
-import OptDEC.Calculation.DiscreteExteriorCalculus.Homology.Types
-import OptDEC.Calculation.Internal.Infix
-import OptDEC.Calculation.Internal.TypeLevelList
+import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Operators
+import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Types
+import Formulative.Calculation.Internal.Infix
+import Formulative.Calculation.Internal.TypeLevelList
 
 type NEuc = 3
 type NatsTest = '[5, 9, 2]

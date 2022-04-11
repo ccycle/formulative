@@ -4,19 +4,19 @@ import Data.Constraint
 import Data.Proxy
 import Data.Singletons
 import GHC.TypeNats
-import OptDEC.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic.Class
 
-import OptDEC.Calculation.DiscreteExteriorCalculus.Geometry.Types
+import Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Types
 
--- import OptDEC.Calculation.DiscreteExteriorCalculus.Homology
--- import OptDEC.Calculation.DiscreteExteriorCalculus.Proofs
+-- import Formulative.Calculation.DiscreteExteriorCalculus.Homology
+-- import Formulative.Calculation.DiscreteExteriorCalculus.Proofs
 
-import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
-import OptDEC.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
-import OptDEC.Calculation.DiscreteExteriorCalculus.Geometry.Operators
-import OptDEC.Calculation.DiscreteExteriorCalculus.Homology.Types
-import OptDEC.Calculation.Internal.List
-import OptDEC.Calculation.Matrix.Class
+import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
+import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
+import Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Operators
+import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Types
+import Formulative.Calculation.Internal.List
+import Formulative.Calculation.Matrix.Class
 
 -- point 0: [0, 0, 0]
 -- point 1: [1, 0, 1]

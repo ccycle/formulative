@@ -1,6 +1,6 @@
-# OptDEC
+# Formulative
 
-OptDEC is a open-source tool for numerical simulation of ODE/PDE based on numerical optimization.
+Formulative is a open-source tool for numerical simulation of ODE/PDE based on numerical optimization.
 
 ## Usage Guide
 
