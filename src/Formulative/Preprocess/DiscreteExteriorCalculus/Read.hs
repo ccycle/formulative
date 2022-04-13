@@ -25,38 +25,38 @@ import Refined
 -- TODO: パスからファイルの拡張子の判定を行う関数を作成
 data MeshPath
   = NoData
-  | MkVTUPath {vtuPath :: FilePath}
-  | MkGmshPath {mshPath :: FilePath}
-  | MkCSVDataPath {pointData :: FilePath, connectivity :: FilePath, boundaryNameList :: FilePath}
+  | VTUPath {vtuPath :: FilePath}
+  | GmshPath {mshPath :: FilePath}
+  | CSVDataPath {pointData :: FilePath, connectivity :: FilePath, boundaryNameList :: FilePath}
   deriving stock (Generic, Show, Eq)
   deriving anyclass (FromDhall, ToDhall, Hashable)
-instance DefaultValue MeshPath where
+instance HasDefaultValue MeshPath where
   defaultValue = NoData
 
-data GeometrySetting = MkGeometrySetting
+data GeometrySetting = GeometrySetting
   { meshPath :: MeshPath
   , metricSignature :: MetricSignature
   }
   deriving stock (Generic, Show, Eq)
-  deriving anyclass (FromDhall, ToDhall, Hashable, DefaultValue)
+  deriving anyclass (FromDhall, ToDhall, Hashable, HasDefaultValue)
 
 checkMeshDataType NoData = return NoData
-checkMeshDataType (MkVTUPath path) = do
+checkMeshDataType (VTUPath path) = do
   path' <- parseRelFile path
   ext <- fileExtension path'
-  if ".vtu" == ext then return (MkVTUPath path) else throw (FileExtensionException ext (MkVTUPath path))
-checkMeshDataType (MkGmshPath path) = do
+  if ".vtu" == ext then return (VTUPath path) else throw (FileExtensionException ext (VTUPath path))
+checkMeshDataType (GmshPath path) = do
   path' <- parseRelFile path
   ext <- fileExtension path'
-  if ".vtu" == ext then return (MkGmshPath path) else throw (FileExtensionException ext (MkGmshPath path))
-checkMeshDataType (MkCSVDataPath path1 path2 path3) = do
+  if ".vtu" == ext then return (GmshPath path) else throw (FileExtensionException ext (GmshPath path))
+checkMeshDataType (CSVDataPath path1 path2 path3) = do
   path1' <- parseRelFile path1
   path2' <- parseRelFile path2
   path3' <- parseRelFile path3
   ext1 <- fileExtension path1'
   ext2 <- fileExtension path2'
   ext3 <- fileExtension path3'
-  if (".csv" == ext1) && (".csv" == ext2) && (".csv" == ext3) then return (MkCSVDataPath path1 path2 path3) else throw (FileExtensionException ".csv" (MkCSVDataPath path1 path2 path3))
+  if (".csv" == ext1) && (".csv" == ext2) && (".csv" == ext3) then return (CSVDataPath path1 path2 path3) else throw (FileExtensionException ".csv" (CSVDataPath path1 path2 path3))
 
 data FileExtensionException = FileExtensionException String MeshPath deriving (Show)
 instance Exception FileExtensionException where

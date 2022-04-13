@@ -106,7 +106,7 @@ derivingVariable dataD = Prelude.map (addDerivClause derivingClauseSetting) <$> 
 
 {-
 -- TODO: TemplateHaskellを使ってCarrierを自動で導出できるようにする
-newtype OutputDir = MkOutputDir (Path Rel Dir)
+newtype OutputDir = OutputDir (Path Rel Dir)
     deriving stock (Generic, Show, Eq)
 
 data OutputDirEff m k where

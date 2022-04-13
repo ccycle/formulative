@@ -19,12 +19,12 @@ import qualified Data.Set as S
 import qualified Data.Vector as V
 import qualified Data.Vector.Algorithms.Intro as VA
 import qualified Data.Vector.Unboxed as VU
-import GHC.Exts (IsList (Item, fromList, toList))
-import GHC.TypeNats
 import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Effect
 import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Types
 import Formulative.Calculation.Internal.List
+import GHC.Exts (IsList (Item, fromList, toList))
+import GHC.TypeNats
 
 signOfIndexListInternal :: SimplexInternal -> Index
 signOfIndexListInternal list = g (toList list)
@@ -32,14 +32,14 @@ signOfIndexListInternal list = g (toList list)
   g (x : xs) = g xs * product (fmap (signum . subtract x) xs)
   g _ = 1
 
--- >>> signOfIndexList $ MkSimplex @3 [0,1,3]
+-- >>> signOfIndexList $ Simplex @3 [0,1,3]
 -- 1
--- >>> signOfIndexList $ MkSimplex @3 [1,0,3]
+-- >>> signOfIndexList $ Simplex @3 [1,0,3]
 -- -1
--- >>> signOfIndexList $ MkSimplex @3 [1,1,3]
+-- >>> signOfIndexList $ Simplex @3 [1,1,3]
 -- 0
 signOfIndexList :: Simplex k -> Index
-signOfIndexList (MkSimplex list) = signOfIndexListInternal (coerce list)
+signOfIndexList (Simplex list) = signOfIndexListInternal (coerce list)
 
 deleteAtInternal :: Int -> SimplexInternal -> SimplexInternal
 deleteAtInternal idx xs = lft V.++ tailVN rgt
@@ -78,7 +78,7 @@ splitToSubSimplexInternal n s
   | otherwise = extractSubSimplexInternal $ splitToSubSimplexInternal (pred n) s
 
 splitToSubSimplex :: forall k1 k2. (KnownNat k1, KnownNat k2, k1 <= k2) => Proxy k1 -> Simplex k2 -> SimplexContainer (Simplex k1)
-splitToSubSimplex _ (MkSimplex s) = V.map MkSimplex $ splitToSubSimplexInternal (k2Int - k1Int) s
+splitToSubSimplex _ (Simplex s) = V.map Simplex $ splitToSubSimplexInternal (k2Int - k1Int) s
  where
   k1Int = natToInt (Proxy :: Proxy k1)
   k2Int = natToInt (Proxy :: Proxy k2)
@@ -90,19 +90,19 @@ adjacencyList ::
   Simplices k1 l ->
   Simplex k2 ->
   (Simplex k2, AdjacencyKeys k1)
-adjacencyList (MkSimplices sc) s = (s, MkAdjacencyKeys $ sortVec $ V.mapMaybe (adjacencySC sc) sList)
+adjacencyList (Simplices sc) s = (s, AdjacencyKeys $ sortVec $ V.mapMaybe (adjacencySC sc) sList)
  where
   sList = splitToSubSimplex (Proxy :: Proxy k1) s
   sList1 = V.mapMaybe (adjacencySC sc) sList
 
 -- Simplices k1 l -> Simplex k2 -> SimplexContainer Int
-adjacencyListSC sc1 (MkSimplices sc2) = S.map (adjacencyList sc1) sc2
+adjacencyListSC sc1 (Simplices sc2) = S.map (adjacencyList sc1) sc2
 
 removeIndex :: Simplex k -> SimplexContainer (Simplex (k - 1))
 removeIndex = coerce . removeIndexInternal . coerce
 
--- >>> removeIndex $ MkSimplex @3 [0,1,3]
--- [MkSimplex [1,3],MkSimplex [0,3],MkSimplex [0,1]]
+-- >>> removeIndex $ Simplex @3 [0,1,3]
+-- [Simplex [1,3],Simplex [0,3],Simplex [0,1]]
 -- removeIndex :: forall k. KnownNat k => Simplex (k + 1) -> SimplexContainer (k + 1) (Simplex k)
 -- removeIndex x = VS.map (`deleteAtS` x) $ VS.enumFromN @(k + 1) @Int 0
 --  where
@@ -119,18 +119,18 @@ natToInt :: forall n. (KnownNat n) => Proxy n -> Int
 natToInt = fromIntegral . natVal
 
 -- not signed
--- >>> removeIndexToSet $ MkSimplex @3 [0,1,3]
--- fromList [MkSimplex [0,1],MkSimplex [0,3],MkSimplex [1,3]]
+-- >>> removeIndexToSet $ Simplex @3 [0,1,3]
+-- fromList [Simplex [0,1],Simplex [0,3],Simplex [1,3]]
 removeIndexToSet :: forall k. (KnownNat k) => Simplex (k + 1) -> Set (Simplex k)
 removeIndexToSet = S.fromList . V.toList . removeIndex
 
 removeIndexToSetInternal :: SimplexInternal -> Set SimplexInternal
 removeIndexToSetInternal = S.fromList . V.toList . removeIndexInternal
 
--- >>> sortSimplex $ MkSimplex @3 [3,0,1]
--- MkSimplex [0,1,3]
+-- >>> sortSimplex $ Simplex @3 [3,0,1]
+-- Simplex [0,1,3]
 sortSimplex :: Simplex k -> Simplex k
-sortSimplex = MkSimplex . sortSimplexInternal . unMkSimplex
+sortSimplex = Simplex . sortSimplexInternal . unSimplex
 
 sortSimplexInternal :: SimplexInternal -> SimplexInternal
 sortSimplexInternal = sortVec
@@ -140,7 +140,7 @@ sortVec = V.modify VA.sort
 
 -- >>> scTest2 = S.fromList $ coerce @[[Int]] @[Simplex 3] [[0,1,2],[1,3,2]]
 -- >>> generateKSimplicialComplexToKminus1 scTest2
--- fromList [MkSimplex [0,1],MkSimplex [0,2],MkSimplex [1,2],MkSimplex [1,3],MkSimplex [2,3]]
+-- fromList [Simplex [0,1],Simplex [0,2],Simplex [1,2],Simplex [1,3],Simplex [2,3]]
 -- generateKSimplicialComplexToKminus1 :: forall k. KnownNat k => Simplices (k+1) -> Simplices k
 -- generateKSimplicialComplexToKminus1 = coerce . S.unions . S.map (S.map sortSimplex . removeIndexToSet) . coerce
 
@@ -196,13 +196,13 @@ getKSimplicialComplexEff _ =
 -- unions . S.map (S.map sortSimplex . removeIndexToSet)
 -- S.map sortSimplex . unions . S.map (removeIndexToSet)
 
--- >>> s3 = MkSimplex @3 (V.fromList [2,3,4])
+-- >>> s3 = Simplex @3 (V.fromList [2,3,4])
 -- >>> sSet3 = S.fromList $ coerce @V.Vector [Int]] @[Simplex 3] [[0,1,2],[1,3,2],[2,3,4]]
 -- >>> adjacencySC s3 sSet3
 -- Just 2
--- >>> adjacencySC (MkSimplex @3 [4,6,8]) sSet3
+-- >>> adjacencySC (Simplex @3 [4,6,8]) sSet3
 -- Nothing
--- >>> s0 = MkSimplex @0 []
+-- >>> s0 = Simplex @0 []
 -- >>> sSet0 = S.fromList $ coerce @[[Int]] @[Simplex 0] [[]]
 -- >>> adjacencySC s0 sSet0
 -- Nothing
@@ -214,10 +214,10 @@ adjacencySC ::
   Set (Simplex k2) ->
   Simplex k2 ->
   Maybe (AdjacencyKey k2)
-adjacencySC sc s = if s == MkSimplex emptySimplex then Nothing else MkAdjacencyKey <$> S.lookupIndex (sortSimplex s) sc
+adjacencySC sc s = if s == Simplex emptySimplex then Nothing else AdjacencyKey <$> S.lookupIndex (sortSimplex s) sc
 
 -- TODO: forM_を使わない形に直す
-boundaryOperatorMatrixCOOList (MkSimplices sck) (MkSimplices sckMinus1) = runST $ do
+boundaryOperatorMatrixCOOList (Simplices sck) (Simplices sckMinus1) = runST $ do
   cooLists <- newSTRef $ fromList []
   let pk = lengthV sck
   forM_ ([0 .. pk - 1] :: [Index]) $ \i -> do
@@ -228,7 +228,7 @@ boundaryOperatorMatrixCOOList (MkSimplices sck) (MkSimplices sckMinus1) = runST 
       let sSign = signOfIndexList s
       let adj = adjacencySC sckMinus1 s
       case adj of
-        Just (MkAdjacencyKey adjVal) -> do
+        Just (AdjacencyKey adjVal) -> do
           let coo = (i, adjVal, fromIntegral $ integralToSign k sSign)
           modifySTRef cooLists (`VU.snoc` coo)
         Nothing -> return ()

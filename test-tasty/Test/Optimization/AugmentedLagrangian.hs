@@ -16,19 +16,19 @@ import Formulative.Preprocess.DefaultValue
 import GHC.Generics
 import Test.Tasty
 
-data TestData = MkTestData Double Double
+data TestData = TestData Double Double
     deriving stock (Generic, Show, Eq)
     deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace, FromDhall, ToDhall, ToRecord)
 
-f (MkTestData x y) = x + y
-gradf (MkTestData x y) = MkTestData 1 1
-g (MkTestData x y) = x ^ 2 + y ^ 2 - 1
-gradG (MkTestData x y) = MkTestData (2 * x) (2 * y)
+f (TestData x y) = x + y
+gradf (TestData x y) = TestData 1 1
+g (TestData x y) = x ^ 2 + y ^ 2 - 1
+gradG (TestData x y) = TestData (2 * x) (2 * y)
 mu = 1.0
-gradPenalty (MkLagrangianMultiplier lambda) x = lambda *. gradG x
+gradPenalty (LagrangianMultiplier lambda) x = lambda *. gradG x
 lambda = 0.0
-initialData = MkTestData (-1) (-1)
-augmentedLagrangianParametersTest = defaultValue{penaltyCoefficient = MkPenaltyCoefficient mu, growthRate = MkGrowthRateForPenaltyCoefficient 1.1, maximumIterationNumber = MkIterationNumberForALM 1000}
+initialData = TestData (-1) (-1)
+augmentedLagrangianParametersTest = defaultValue{penaltyCoefficient = PenaltyCoefficient mu, growthRate = GrowthRateForPenaltyCoefficient 1.1, maximumIterationNumber = IterationNumberForALM 1000}
 
 augmentedLagrangianMethodTest :: (MonadThrow m) => TestData -> m (TestData, LagrangianMultiplier Double)
 augmentedLagrangianMethodTest =
@@ -37,8 +37,8 @@ augmentedLagrangianMethodTest =
         defaultValue
         defaultValue
         augmentedLagrangianParametersTest
-        (MkObjectiveFunction f)
-        (MkGradObjectiveFunction gradf)
-        (MkEqualityConstraint g)
-        (MkLagrangianMultiplier lambda)
-        (MkGradPenalty gradPenalty)
+        (ObjectiveFunction f)
+        (GradObjectiveFunction gradf)
+        (EqualityConstraint g)
+        (LagrangianMultiplier lambda)
+        (GradPenalty gradPenalty)

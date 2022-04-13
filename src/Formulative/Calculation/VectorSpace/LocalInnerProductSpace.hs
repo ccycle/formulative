@@ -26,7 +26,7 @@ instance (GLocalInnerSpace f, GLocalInnerSpace g) => GLocalInnerSpace (f :*: g) 
     (<<..>>) (x :*: y) (z :*: w) = (<<..>>) x z :*: (<<..>>) y w
 
 instance (Num a) => LocalInnerSpace (MyNum a) where
-    (MkMyNum a) <|.|> (MkMyNum b) = MkMyNum $ a * b
+    (MyNum a) <|.|> (MyNum b) = MyNum $ a * b
 
 deriving via (MyNum Int) instance LocalInnerSpace Int
 deriving via (MyNum Integer) instance LocalInnerSpace Integer

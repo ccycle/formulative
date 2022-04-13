@@ -11,10 +11,10 @@ import Formulative.Calculation.Optimization.LBFGS
 import Formulative.Calculation.Optimization.LineSearch
 import Formulative.Preprocess.DefaultValue
 
-data OptimizationParameters a = MkOptimizationParameters
+data OptimizationParameters a = OptimizationParameters
     { convergenceTest :: ConvergenceTestParameters a
     , lbfgsParameters :: LBFGSParameters
     , lineSearchParameters :: LineSearchParameters a
     }
     deriving stock (Generic, Show, Eq)
-    deriving anyclass (FromDhall, ToDhall, Hashable, DefaultValue)
+    deriving anyclass (FromDhall, ToDhall, Hashable, HasDefaultValue)

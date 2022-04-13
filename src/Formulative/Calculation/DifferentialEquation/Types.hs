@@ -13,15 +13,15 @@ import Control.Exception.Safe
 import Data.Hashable (Hashable (hashWithSalt))
 import Data.Typeable
 import Dhall
-import GHC.Exts (IsString)
 import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Preprocess.DefaultValue
+import GHC.Exts (IsString)
 import Refined
 
 newtype IsAdaptiveStepSize = IsAdaptiveStepSize Bool
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, Hashable)
-data DynamicParameterSetting a = MkDynamicParameterSetting
+data DynamicParameterSetting a = DynamicParameterSetting
     { label :: LabelOfDynamicParameter
     , initialValue :: a
     , finalValue :: a
@@ -31,11 +31,11 @@ data DynamicParameterSetting a = MkDynamicParameterSetting
     }
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall)
-instance (Fractional a) => DefaultValue (DynamicParameterSetting a) where
+instance (Fractional a) => HasDefaultValue (DynamicParameterSetting a) where
     defaultValue =
-        MkDynamicParameterSetting
+        DynamicParameterSetting
             { label =
-                MkLabelOfDynamicParameter "time"
+                LabelOfDynamicParameter "time"
             , initialValue = 0
             , finalValue = 1
             , stepSize = 0.01
@@ -45,24 +45,24 @@ instance (Fractional a) => DefaultValue (DynamicParameterSetting a) where
 instance (Hashable a, Fractional a) => Hashable (DynamicParameterSetting a) where
     hashWithSalt
         s
-        MkDynamicParameterSetting{..} =
+        DynamicParameterSetting{..} =
             s `hashWithSalt` initialValue `hashWithSalt` interval `hashWithSalt` stepSize
 
 type HasParameterConfig sig m a = (Algebra sig m, Member (Reader (DynamicParameterSetting a)) sig)
 
-newtype LabelOfDynamicParameter = MkLabelOfDynamicParameter String
+newtype LabelOfDynamicParameter = LabelOfDynamicParameter String
     deriving stock (Generic, Show, Eq)
     deriving newtype (IsString)
     deriving anyclass (FromDhall, ToDhall, Hashable)
 
-newtype StepSize a = MkStepSize a
+newtype StepSize a = StepSize a
     deriving stock (Generic, Show, Eq)
     deriving newtype (Num, Enum)
     deriving anyclass (FromDhall, ToDhall, Hashable)
 
 data StepSizeException
 instance (Additive a, Eq a) => Predicate StepSizeException (StepSize a) where
-    validate p (MkStepSize value) =
+    validate p (StepSize value) =
         if (== zero) value
             then Nothing
             else throwRefineOtherException (typeOf p) "*** StepSizeException: step size must be non-zero"

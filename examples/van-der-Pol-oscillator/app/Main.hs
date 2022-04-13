@@ -45,12 +45,12 @@ data MyVariable = MyVariable {x :: Double, y :: Double}
 data MyEquationConstants = MyEquationConstants {mu :: Double, x0 :: Double, y0 :: Double}
     deriving stock (Show, Generic)
     deriving anyclass (ToDhall, FromDhall, Hashable, Additive)
-instance DefaultValue MyEquationConstants where
+instance HasDefaultValue MyEquationConstants where
     defaultValue = zero
 
 data MySetting = MySetting {optimization :: OptimizationParameters Double, dynamics :: DynamicParameterSetting Double, export :: ExportSetting, equation :: MyEquationConstants}
     deriving stock (Show, Generic)
-    deriving anyclass (ToDhall, FromDhall, Hashable, DefaultValue)
+    deriving anyclass (ToDhall, FromDhall, Hashable, HasDefaultValue)
 
 ----------------------------------------------------------------
 -- export data
@@ -90,7 +90,7 @@ instance (Algebra sig m, Member (Reader MyEquationConstants) sig) => HasDependen
 -- xdot = y
 -- ydot = mu (1-x^2)y+x
 gradDeltaL
-    (MkStepSize dt)
+    (StepSize dt)
     MyEquationConstants{..}
     (MyVariable x y)
     (MyVariable xNew yNew) = MyVariable dLdx dLdy
@@ -120,8 +120,8 @@ instance (Has (Reader MyEquationConstants) sig m) => HasInitialConditionM m MyVa
         y0' <- asks y0
         return $ MyVariable x0' y0'
 
-instance (HasUpdateUnconstrainedSystem sig m MyVariable, Member (Reader MyEquationConstants) sig) => HasUpdateM m MyVariable where
-    updateM = updateUnconstrainedSystem
+instance (HasUpdateWithOptimization sig m MyVariable, Member (Reader MyEquationConstants) sig) => HasUpdateM m MyVariable where
+    updateM = updateWithOptimization
 
 ----------------------------------------------------------------
 -- main

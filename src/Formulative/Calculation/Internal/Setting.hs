@@ -32,7 +32,7 @@ runEquationConstantsIO f = do
     x <- sendIO $ readRecordFromDhallFile "equation" txt
     runReader x f
 
-data FormulativeSetting a = MkFormulativeSetting
+data FormulativeSetting a = FormulativeSetting
     { optimization :: OptimizationParameters a
     , export :: ExportSetting
     , geometry :: GeometrySetting
@@ -40,4 +40,4 @@ data FormulativeSetting a = MkFormulativeSetting
     , constrainedSystem :: ConstrainedSystemParameter a
     }
     deriving stock (Generic, Show, Eq)
-    deriving anyclass (FromDhall, ToDhall, Hashable, DefaultValue)
+    deriving anyclass (FromDhall, ToDhall, Hashable, HasDefaultValue)

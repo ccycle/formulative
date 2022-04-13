@@ -37,7 +37,7 @@ instance ToRecords () where
     toRecords _ = V.empty
 
 instance (ToField a) => ToRecord (MyNum a) where
-    toRecord (MkMyNum x) = V.singleton $ toField x
+    toRecord (MyNum x) = V.singleton $ toField x
 deriving via (MyNum Double) instance ToRecord Double
 deriving via (MyNum Float) instance ToRecord Float
 deriving via (MyNum Int) instance ToRecord Int

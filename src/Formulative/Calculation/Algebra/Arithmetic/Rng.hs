@@ -31,10 +31,10 @@ instance (Rng a) => GRng (K1 i a) where
 
 -- deriving instance
 instance (Num a) => Rng (MyNum a) where
-    fromInteger = MkMyNum . Prelude.fromInteger
+    fromInteger = MyNum . Prelude.fromInteger
 
 instance (Rng a, Applicative m) => Rng (MyApplicative m a) where
-    fromInteger = MkMyApplicative . pure . fromInteger
+    fromInteger = MyApplicative . pure . fromInteger
 
 deriving via (MyNum Word) instance Rng Word
 deriving via (MyNum Int) instance Rng Int

@@ -21,25 +21,25 @@ import GHC.Generics
 import Formulative.Postprocess.Export.ToRecords
 import Path
 
-data RecTest1 a b = MkRecTest1 a b
+data RecTest1 a b = RecTest1 a b
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromRecord, ToRecord, FromDhall, ToDhall, ToNamedRecord)
 
--- data RecTest2 a b = MkRecTest2 {getA :: a, getB :: b}
+-- data RecTest2 a b = RecTest2 {getA :: a, getB :: b}
 --     deriving stock (Generic, Show, Eq)
 --     deriving anyclass (FromRecord, ToRecord, ToNamedRecord)
 
-data DFormRecTest = MkDFormTest {mat1 :: DifferentialForm 2 '[4, 5, 2] Primal 0 Double, mat2 :: DifferentialForm 2 '[4, 5, 2] Primal 1 Double}
+data DFormRecTest = DFormTest {mat1 :: DifferentialForm 2 '[4, 5, 2] Primal 0 Double, mat2 :: DifferentialForm 2 '[4, 5, 2] Primal 1 Double}
     deriving stock (Show, Generic)
     deriving anyclass (Additive, AdditiveGroup, VectorSpace, ToRecord)
 
-newtype GlobalQuantityTest a = MkGlobalQuantityTest a
+newtype GlobalQuantityTest a = GlobalQuantityTest a
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromRecord, ToRecord, ToNamedRecord)
 
-testRec1 = MkRecTest1 1 1.0 :: RecTest1 Integer Double
+testRec1 = RecTest1 1 1.0 :: RecTest1 Integer Double
 
--- testRec2 = MkRecTest2 1 1.0 :: RecTest2 Integer Double
+-- testRec2 = RecTest2 1 1.0 :: RecTest2 Integer Double
 toRecordTest1 = toRecord testRec1
 
 -- toRecordTest2 = toRecord testRec2
@@ -49,7 +49,7 @@ toRecordTest1 = toRecord testRec1
 -- nameListTest2 = namesOfRecord testRec2
 
 matTest = one :: DifferentialForm 2 '[4, 5, 2] Primal 0 Double
-dFormTest = MkDFormTest one one
+dFormTest = DFormTest one one
 toRecordDFormTest = toRecord dFormTest
 
 -- toNamedRecordTest3 = toNamedRecord dFormTest

@@ -44,10 +44,10 @@ exportParameter ::
     IndexOfStep ->
     Parameter b ->
     m ()
-exportParameter (MkIndexOfStep i) (MkParameter t) = do
+exportParameter (IndexOfStep i) (Parameter t) = do
     ensureDirOutputM
-    (MkOutputDir parentDir) <- askOutputDir
-    (MkLabelOfDynamicParameter paramName) <- askLabelOfDynamicParameter @b
+    (OutputDir parentDir) <- askOutputDir
+    (LabelOfDynamicParameter paramName) <- askLabelOfDynamicParameter @b
     name' <- liftEither $ parseRelFile paramName
     fileName <- liftEither $ replaceExtension ".csv" name'
     let x' = encode [(i, t)]
@@ -68,19 +68,19 @@ exportVariableDynamic ::
     IndexOfStep ->
     a ->
     m ()
-exportVariableDynamic (MkIndexOfStep i) x = do
+exportVariableDynamic (IndexOfStep i) x = do
     eType <- askEquationType
     case eType of
         ODE -> exportVariableDynamicN0 x
         PDE -> do
-            (MkOutputDir parentDir) <- askOutputDir
+            (OutputDir parentDir) <- askOutputDir
             parentDir' <- liftEither $ parseRelDir $ "series/step" <> show i
-            localOutputDir (\(MkOutputDir path) -> MkOutputDir $ path </> parentDir') $ exportVariableStatic x
+            localOutputDir (\(OutputDir path) -> OutputDir $ path </> parentDir') $ exportVariableStatic x
   where
     -- n=0
     -- ファイルごとに書き出し,各時刻で追記
     exportVariableDynamicN0 x = do
-        MkOutputDir parentDir <- askOutputDir
+        OutputDir parentDir <- askOutputDir
         ensureDirOutputM
         let x' = V.zip (headerOrder x) (toRecords x)
         forM_ x' $ \(key, str) -> do
@@ -127,7 +127,7 @@ mainCalculationDynamic = do
     preprocessM @m @a
     x <- getInitialConditionM @m @a
     put x
-    MkDynamicParameterSetting
+    DynamicParameterSetting
         { label = dlabel
         , initialValue = initVal
         , finalValue = finalVal
@@ -140,23 +140,23 @@ mainCalculationDynamic = do
     msgStart
     putStrLnM ""
     -- TODO: ファイルから初期状態を与えられるようにする
-    go 0 nInterval iMax initVal finalVal (MkStepSize dtDefault) x
+    go 0 nInterval iMax initVal finalVal (StepSize dtDefault) x
     putStrLnM ""
-    (MkOutputDir outputPath) <- askOutputDir
+    (OutputDir outputPath) <- askOutputDir
     sendIO $ putStrLn $ "output directory: " <> toFilePath outputPath
     putStrLnM ""
   where
-    go i nInterval iMax t finalVal (MkStepSize dt) y =
+    go i nInterval iMax t finalVal (StepSize dt) y =
         if iMax <= i || (2 .*. finalVal <= (2 .*. t .+. dt) && 2 .*. t <= (2 .*. finalVal .+. dt)) || finalVal < t
             then do
                 putStrLnM $ "step " ++ show i
                 putStrLnM $ "parameter: " ++ show t
                 putStrLnM "Exporting data.."
-                exportParameter (MkIndexOfStep i) (MkParameter t)
-                exportVariableDynamic (MkIndexOfStep i) y
+                exportParameter (IndexOfStep i) (Parameter t)
+                exportVariableDynamic (IndexOfStep i) y
                 msgDone
                 putStrLnM "Exporting sub data.."
-                exportDependentVariableLocalDynamic (MkIndexOfStep i) y
+                exportDependentVariableLocalDynamic (IndexOfStep i) y
                 exportDependentVariableGlobal y
                 msgDone
                 putStrLnM ""
@@ -166,11 +166,11 @@ mainCalculationDynamic = do
                 putStrLnM $ "parameter: " ++ show t
                 when (i `mod` nInterval == 0) $ do
                     putStrLnM "Exporting data.."
-                    exportParameter (MkIndexOfStep i) (MkParameter t)
-                    exportVariableDynamic (MkIndexOfStep i) y
+                    exportParameter (IndexOfStep i) (Parameter t)
+                    exportVariableDynamic (IndexOfStep i) y
                     msgDone
                     putStrLnM "Exporting sub data.."
-                    exportDependentVariableLocalDynamic (MkIndexOfStep i) y
+                    exportDependentVariableLocalDynamic (IndexOfStep i) y
                     exportDependentVariableGlobal y
                     msgDone
                 putStrLnM "Updating variable.."
@@ -178,4 +178,4 @@ mainCalculationDynamic = do
                 put x'
                 msgDone
                 putStrLnM ""
-                go (succ i) nInterval iMax (t .+. dt) finalVal (MkStepSize dt) x'
+                go (succ i) nInterval iMax (t .+. dt) finalVal (StepSize dt) x'

@@ -3,8 +3,8 @@ module Test.Geometry where
 import Data.Constraint
 import Data.Proxy
 import Data.Singletons
-import GHC.TypeNats
 import Formulative.Calculation.Algebra.Arithmetic.Class
+import GHC.TypeNats
 
 import Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Types
 
@@ -27,16 +27,16 @@ import Formulative.Calculation.Matrix.Class
 -- x1List : [0,0,1,1]
 -- x2List : [0,1,0,1]
 allPositions3dTest :: AllPointDataPrimal0 3 4 Double
-allPositions3dTest = MkAllPointDataPrimal0 $ fromList $ map fromList [[0, 1, 1, 0], [0, 0, 1, 1], [0, 1, 0, 1]]
+allPositions3dTest = AllPointDataPrimal0 $ fromList $ map fromList [[0, 1, 1, 0], [0, 0, 1, 1], [0, 1, 0, 1]]
 
 s2Test :: Simplex 2
 s2Test = fromList [0, 1, 2]
 
 s2Mat3d = simplexToPositionMat allPositions3dTest s2Test
 
-sMatUnMk = unMkPositionMatrix s2Mat3d
+sMatUn = unPositionMatrix s2Mat3d
 
-sMatG = sMatUnMk .@. transpose sMatUnMk
+sMatG = sMatUn .@. transpose sMatUn
 
 gMatTest3d = circumcenterAMat s2Mat3d
 
@@ -53,14 +53,14 @@ circumcenterTest3d = circumcenterInternalUnsafe s2Mat3d
 -- x1List : [0,0,0]
 -- x2List : [0,0,0]
 allPositions2dTest :: AllPointDataPrimal0 2 3 Double
-allPositions2dTest = MkAllPointDataPrimal0 $ fromList $ map fromList [[0, 0, 1], [0, 1, 1]]
+allPositions2dTest = AllPointDataPrimal0 $ fromList $ map fromList [[0, 0, 1], [0, 1, 1]]
 s2Mat2d = simplexToPositionMat allPositions2dTest s2Test
 circumcenterTest2d = circumcenterInternalUnsafe s2Mat2d
 primalVolumeTest2d = primalVolumeInternal allPositions2dTest s2Test
 
 -- case 3: obtuse angle
 allPositions2dTestObtuseAngle :: AllPointDataPrimal0 2 3 Double
-allPositions2dTestObtuseAngle = MkAllPointDataPrimal0 $ fromList $ map fromList [[0, sqrt 3, sqrt 3 / 2], [0, 0, 1 / 2]]
+allPositions2dTestObtuseAngle = AllPointDataPrimal0 $ fromList $ map fromList [[0, sqrt 3, sqrt 3 / 2], [0, 0, 1 / 2]]
 s2Mat2dObtuseAngle = simplexToPositionMat allPositions2dTestObtuseAngle s2Test
 circumcenterTest2dObtuseAngle = circumcenterInternalUnsafe s2Mat2dObtuseAngle
 

@@ -27,9 +27,9 @@
 , geometry =
   { meshPath =
       < NoData
-      | MkVTUPath : { vtuPath : Text }
-      | MkGmshPath : { mshPath : Text }
-      | MkCSVDataPath :
+      | VTUPath : { vtuPath : Text }
+      | GmshPath : { mshPath : Text }
+      | CSVDataPath :
           { pointData : Text, connectivity : Text, boundaryNameList : Text }
       >.NoData
   , metricSignature = < Timelike | Spacelike >.Spacelike

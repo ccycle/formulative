@@ -36,7 +36,7 @@ instance (GVectorSpace f, GVectorSpace g, GScalar f ~ GScalar g) => GVectorSpace
 -- deriving instance
 instance {-# OVERLAPS #-} (Num a) => VectorSpace (MyNum a) where
     type Scalar (MyNum a) = a
-    a *. (MkMyNum b) = MkMyNum (a * b)
+    a *. (MyNum b) = MyNum (a * b)
 
 deriving via (MyNum Int) instance VectorSpace Int
 deriving via (MyNum Integer) instance VectorSpace Integer
@@ -48,20 +48,20 @@ deriving via (MyNum Natural) instance VectorSpace Natural
 
 instance {-# OVERLAPS #-} (RealFloat a) => VectorSpace (MyComplex a) where
     type Scalar (MyComplex a) = Complex a
-    a *. (MkMyComplex b) = MkMyComplex (a * b)
+    a *. (MyComplex b) = MyComplex (a * b)
 
 ----------------------------------------------------------------
 ------ applicative
 ----------------------------------------------------------------
 instance {-# OVERLAPS #-} (VectorSpace a, Multiplicative a, Applicative m) => VectorSpace (MyApplicative m a) where
     type Scalar (MyApplicative m a) = a
-    (*.) x (MkMyApplicative y) = MkMyApplicative (fmap (x .*.) y)
+    (*.) x (MyApplicative y) = MyApplicative (fmap (x .*.) y)
 
 deriving via (MyApplicative (VS.Vector n) a) instance (VectorSpace a, Multiplicative a, KnownNat n) => VectorSpace (VS.Vector n a)
 
 instance (VectorSpace a, Applicative m, Foldable m) => VectorSpace (MyFoldable m a) where
     type Scalar (MyFoldable m a) = Scalar a
-    (*.) x (MkMyFoldable y) = MkMyFoldable (fmap (x *.) y)
+    (*.) x (MyFoldable y) = MyFoldable (fmap (x *.) y)
 
 x ./ a = reciprocal a *. x
 infixl 7 ./

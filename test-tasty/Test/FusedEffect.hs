@@ -16,13 +16,13 @@ import Control.Exception.Safe
 import Control.Monad
 import Control.Monad.IO.Class
 import Data.Kind
-import GHC.TypeNats
 import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.Algebra.Arithmetic.Field
 import Formulative.Calculation.DifferentialEquation.Types
 import Formulative.Calculation.Internal.Types
 import Formulative.Postprocess.Export.Class
 import Formulative.Preprocess.Exception
+import GHC.TypeNats
 
 -- import Formulative.Preprocess.Label
 import Refined
@@ -146,10 +146,10 @@ applicativeTest4 = do
 
 readerTest1 :: (Algebra sig m, Has (Reader (StepSize Double)) sig m) => m Double
 readerTest1 = do
-    (MkStepSize t) <- ask
+    (StepSize t) <- ask
     return $ t + 1
 
-runReaderTest1 = run . runReader (0.1 :: Double) . runReader (MkStepSize (0.3 :: Double)) $ readerTest1
+runReaderTest1 = run . runReader (0.1 :: Double) . runReader (StepSize (0.3 :: Double)) $ readerTest1
 
 stateTest1 :: (Algebra sig m, Member (State Double) sig) => m Double
 stateTest1 = do
@@ -169,7 +169,7 @@ runStateTest3 = run . execState (0.1 :: Double) $ stateTest1
 
 printParameterNameTest :: (Member (Lift IO) sig, Algebra sig m, Member (Reader LabelOfDynamicParameter) sig) => m ()
 printParameterNameTest = do
-    MkLabelOfDynamicParameter name <- ask
+    LabelOfDynamicParameter name <- ask
     sendIO $ putStrLn ("label name: " <> name)
 
 -- instance HasParameterName sig m where
@@ -178,10 +178,10 @@ printParameterNameTest = do
 runTest f = do
     sendIO $ putStr "input str: "
     str <- sendIO getLine
-    runReader (MkLabelOfDynamicParameter str) f
+    runReader (LabelOfDynamicParameter str) f
 
 runTestParameterName :: IO ()
-runTestParameterName = runM . runReader (MkLabelOfDynamicParameter "test") $ printParameterNameTest
+runTestParameterName = runM . runReader (LabelOfDynamicParameter "test") $ printParameterNameTest
 
 runTestParameterName2 :: IO ()
 runTestParameterName2 = runM . runTest $ printParameterNameTest
@@ -207,8 +207,8 @@ instance (MonadIO m, Algebra sig m) => Algebra (Teletype :+: sig) (TeletypeIOC m
 
 -- 1つのeffectに対し複数のCarrierを設定する
 -- label config test
-data EnvTest a = MkEnvTest {getLabelsTest :: [String], getStepSizeTest :: StepSize a}
-defaultEnvTest = MkEnvTest{getLabelsTest = ["LabelTest1", "LabelTest2"], getStepSizeTest = MkStepSize 0.1}
+data EnvTest a = EnvTest {getLabelsTest :: [String], getStepSizeTest :: StepSize a}
+defaultEnvTest = EnvTest{getLabelsTest = ["LabelTest1", "LabelTest2"], getStepSizeTest = StepSize 0.1}
 
 data EnvEff a (m :: Type -> Type) k where
     GetEnv :: EnvEff a m (EnvTest a)

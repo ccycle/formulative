@@ -21,7 +21,7 @@ instance HasRecordField a a where
 data ExportFormat = CSV
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall)
-instance DefaultValue ExportFormat where
+instance HasDefaultValue ExportFormat where
     defaultValue = CSV
 instance Hashable ExportFormat where
     hashWithSalt s a = hashWithSalt s (1 :: Int)
@@ -39,26 +39,26 @@ instance Hashable OutputDirSetting where
 
 outputDirHashCmdStr :: FilePath
 outputDirHashCmdStr = "[[hash]]"
-instance DefaultValue OutputDirSetting where
+instance HasDefaultValue OutputDirSetting where
     defaultValue = OutputDirSetting ("./output/" ++ convertString outputDirHashCmdStr)
 
 data ExportQuantityFormat = ExportQuantityFormat {variable :: ExportFormat, local :: ExportFormat, global :: ExportFormat}
     deriving stock (Generic, Show, Eq)
-    deriving anyclass (FromDhall, ToDhall, DefaultValue, Hashable)
+    deriving anyclass (FromDhall, ToDhall, HasDefaultValue, Hashable)
 
 data ExportSetting = ExportSetting {format :: ExportQuantityFormat, output :: OutputDirSetting}
     deriving stock (Generic, Show, Eq)
-    deriving anyclass (FromDhall, ToDhall, Hashable, DefaultValue)
+    deriving anyclass (FromDhall, ToDhall, Hashable, HasDefaultValue)
 
-newtype IndexOfStep = MkIndexOfStep Natural
+newtype IndexOfStep = IndexOfStep Natural
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, Hashable)
-newtype Parameter a = MkParameter a
+newtype Parameter a = Parameter a
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, Hashable)
 
 -- configで設定できるようにする
 -- 相対パスの指定かautoか
 -- 過去の計算結果をもとに再計算させるなどの使い方を想定
-newtype OutputDir = MkOutputDir (Path Rel Dir)
+newtype OutputDir = OutputDir (Path Rel Dir)
     deriving stock (Generic, Show, Eq)

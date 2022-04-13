@@ -22,25 +22,25 @@ import Test.Tasty
 
 {- $( derivingSetting
      [d|
-         data ParameterTest a = MkParameterTest {parameterTest1 :: a, parameterTest2 :: a}
+         data ParameterTest a = ParameterTest {parameterTest1 :: a, parameterTest2 :: a}
              deriving anyclass (ToNamedRecord, ToJSON)
          |]
   )
 -}
 
-data ParameterTest a = MkParameterTest {parameterTest1 :: a, parameterTest2 :: a}
+data ParameterTest a = ParameterTest {parameterTest1 :: a, parameterTest2 :: a}
     deriving anyclass (ToNamedRecord, ToJSON)
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, Hashable, ToRecord)
 
--- data Setting = MkSetting {parameters :: ConstantsOfSystems, meshPath :: MeshPath}
+-- data Setting = Setting {parameters :: ConstantsOfSystems, meshPath :: MeshPath}
 --     deriving stock (Generic, Show, Eq)
 --     deriving anyclass (FromDhall, ToDhall, Hashable)
-data ConstantsOfSystems = MkConstantsOfSystems {a :: ParameterTest Double, b :: Double}
+data ConstantsOfSystems = ConstantsOfSystems {a :: ParameterTest Double, b :: Double}
     deriving stock (Generic, Show, Eq)
     deriving anyclass (ToJSON)
     deriving anyclass (FromDhall, ToDhall, Hashable)
-defaultConstantsOfSystems = MkConstantsOfSystems (MkParameterTest 0.1 1e20) 0.0
+defaultConstantsOfSystems = ConstantsOfSystems (ParameterTest 0.1 1e20) 0.0
 
 -- unit_preprocess = do
 --     params :: ConstantsOfSystems <- input auto "./test-tasty/Test/input/test.dhall"

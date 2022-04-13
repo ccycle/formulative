@@ -23,45 +23,45 @@ import RIO.List
 -- TODO: machine epsilon以下に指定しないように警告を出すようにする
 -- NOTE: Numeric-Limitsを使う
 -- https://hackage.haskell.org/package/numeric-limits-0.1.0.0/docs/Numeric-Limits.html
-newtype NumericalError a = MkNumericalError a
+newtype NumericalError a = NumericalError a
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, Hashable)
-instance (Fractional a) => DefaultValue (NumericalError a) where
-    defaultValue = MkNumericalError 1e-8
+instance (Fractional a) => HasDefaultValue (NumericalError a) where
+    defaultValue = NumericalError 1e-8
 data ConvergenceTestType = AbsoluteError | RelativeError
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, Hashable)
-instance DefaultValue ConvergenceTestType where
+instance HasDefaultValue ConvergenceTestType where
     defaultValue = RelativeError
-data ConvergenceTestParameters a = MkConvergenceTestParameters {numericalError :: NumericalError a, convergenceTestType :: ConvergenceTestType, normType :: NormType a}
+data ConvergenceTestParameters a = ConvergenceTestParameters {numericalError :: NumericalError a, convergenceTestType :: ConvergenceTestType, normType :: NormType a}
     deriving stock (Generic, Show, Eq)
-    deriving anyclass (FromDhall, ToDhall, Hashable, DefaultValue)
+    deriving anyclass (FromDhall, ToDhall, Hashable, HasDefaultValue)
 
 -- convergence test
 -- Absolute: |x-x0|<epsilon_A
 -- Relative: \frac{|x-x0|}{|x|}<epsilon_R
-convergenceTestFunc (MkConvergenceTestParameters ((MkNumericalError epA)) AbsoluteError t) x0 x = norm t (x .-. x0) < epA
-convergenceTestFunc (MkConvergenceTestParameters ((MkNumericalError epR)) RelativeError t) x0 x = norm t (x .-. x0) < epR .*. norm t x
+convergenceTestFunc (ConvergenceTestParameters ((NumericalError epA)) AbsoluteError t) x0 x = norm t (x .-. x0) < epA
+convergenceTestFunc (ConvergenceTestParameters ((NumericalError epR)) RelativeError t) x0 x = norm t (x .-. x0) < epR .*. norm t x
 
-newtype MaxIterationLBFGS = MkMaxIterationLBFGS Natural
+newtype MaxIterationLBFGS = MaxIterationLBFGS Natural
     deriving stock (Show, Eq, Ord, Generic)
     deriving newtype (Enum, Num)
     deriving anyclass (FromDhall, ToDhall, Hashable)
-instance DefaultValue MaxIterationLBFGS where
+instance HasDefaultValue MaxIterationLBFGS where
     defaultValue = 10000
-newtype HistorySize = MkHistorySize Natural
+newtype HistorySize = HistorySize Natural
     deriving stock (Show, Eq, Ord, Generic)
     deriving newtype (Num)
     deriving anyclass (FromDhall, ToDhall, Hashable)
-instance DefaultValue HistorySize where
+instance HasDefaultValue HistorySize where
     defaultValue = 10
-data LBFGSParameters = MkLBFGSParameters {historySize :: HistorySize, maximumIterationNumber :: MaxIterationLBFGS}
+data LBFGSParameters = LBFGSParameters {historySize :: HistorySize, maximumIterationNumber :: MaxIterationLBFGS}
     deriving stock (Generic, Show, Eq)
-    deriving anyclass (FromDhall, ToDhall, Hashable, DefaultValue)
+    deriving anyclass (FromDhall, ToDhall, Hashable, HasDefaultValue)
 
 initN list = fromMaybe [] (initMaybe list)
 
-searchDirectionLBFGS x (MkGradObjectiveFunction gradf) ysList = MkDescentDirection $ if descentTest gradf x d then d else negation d
+searchDirectionLBFGS x (GradObjectiveFunction gradf) ysList = DescentDirection $ if descentTest gradf x d then d else negation d
   where
     rho (y, s) = reciprocal $ y <.> s
     alpha (y, s) q = rho (y, s) .*. s <.> q
@@ -86,16 +86,16 @@ searchDirectionLBFGS x (MkGradObjectiveFunction gradf) ysList = MkDescentDirecti
         modifySTRef discentDirection negation
         readSTRef discentDirection
 
-updateYsList xOld xNew (MkGradObjectiveFunction gradF) ysList (MkHistorySize historySize) =
+updateYsList xOld xNew (GradObjectiveFunction gradF) ysList (HistorySize historySize) =
     if length ysList <= fromIntegral historySize
         then (gradF xNew .-. gradF xOld, xNew .-. xOld) : ysList
         else (gradF xNew .-. gradF xOld, xNew .-. xOld) : initN ysList
 
-updateLBFGS lineSearchParam x (MkObjectiveFunction f) (MkGradObjectiveFunction gradf) ysList =
-    (x .+. (unMkStepSizeForLineSearch alpha' *. unMkDescentDirection p), alpha', p)
+updateLBFGS lineSearchParam x (ObjectiveFunction f) (GradObjectiveFunction gradf) ysList =
+    (x .+. (unStepSizeForLineSearch alpha' *. unDescentDirection p), alpha', p)
   where
-    p = searchDirectionLBFGS x (MkGradObjectiveFunction gradf) ysList
-    alpha' = lineSearch lineSearchParam x p (MkObjectiveFunction f) (MkGradObjectiveFunction gradf)
+    p = searchDirectionLBFGS x (GradObjectiveFunction gradf) ysList
+    alpha' = lineSearch lineSearchParam x p (ObjectiveFunction f) (GradObjectiveFunction gradf)
 
 lbfgsMethod lineSearchParam convergenceTestParam lbfgsParam f gradf =
     go
@@ -109,9 +109,9 @@ lbfgsMethod lineSearchParam convergenceTestParam lbfgsParam f gradf =
     go
         lineSearchParam
         convergenceParam
-        lbfgsParam@(MkLBFGSParameters historySize k)
-        (MkObjectiveFunction f)
-        (MkGradObjectiveFunction gradf)
+        lbfgsParam@(LBFGSParameters historySize k)
+        (ObjectiveFunction f)
+        (GradObjectiveFunction gradf)
         ysList
         x =
             do
@@ -122,7 +122,7 @@ lbfgsMethod lineSearchParam convergenceTestParam lbfgsParam f gradf =
                             ConvergenceException
                                 (norm (normType convergenceParam) $ gradf x)
                     else do
-                        let (xNew, alphaNew, p) = updateLBFGS lineSearchParam x (MkObjectiveFunction f) (MkGradObjectiveFunction gradf) ysList
+                        let (xNew, alphaNew, p) = updateLBFGS lineSearchParam x (ObjectiveFunction f) (GradObjectiveFunction gradf) ysList
                         let gradfxNew = gradf xNew
                         if convergenceTestFunc convergenceParam x xNew
                             then return x
@@ -130,8 +130,8 @@ lbfgsMethod lineSearchParam convergenceTestParam lbfgsParam f gradf =
                                 go
                                     lineSearchParam
                                     convergenceParam
-                                    (MkLBFGSParameters historySize (pred k))
-                                    (MkObjectiveFunction f)
-                                    (MkGradObjectiveFunction gradf)
-                                    (updateYsList x xNew (MkGradObjectiveFunction gradf) ysList historySize)
+                                    (LBFGSParameters historySize (pred k))
+                                    (ObjectiveFunction f)
+                                    (GradObjectiveFunction gradf)
+                                    (updateYsList x xNew (GradObjectiveFunction gradf) ysList historySize)
                                     xNew

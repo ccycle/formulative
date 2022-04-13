@@ -17,12 +17,12 @@ import Data.Singletons.TH hiding (type (<=))
 import qualified Data.Text as T
 import qualified Data.Vector.Storable as VST
 import Dhall
-import GHC.TypeNats
 import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
 import Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Types
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Preprocess.DefaultValue
+import GHC.TypeNats
 import Unsafe.Coerce
 
 -- import Formulative.Calculation.DiscreteExteriorCalculus.Proofs
@@ -64,7 +64,7 @@ import Unsafe.Coerce
 --     fromSing = undefined
 
 --     toSing :: List (Demote k) -> SomeSing (List k)
---     toSing = undefined -- ??? -- type instance HodgeDual n (MkDegreeOfForm (n + 1)) = Phi
+--     toSing = undefined -- ??? -- type instance HodgeDual n (DegreeOfForm (n + 1)) = Phi
 
 -- primal n-form -> (d) -> primal (n+1)-form (empty) -> (star) -> dual (-1)-form (empty) -> (d) -> dual 0-form (empty) -> (star) -> primal n-form (empty)
 -- primal 0-form -> (star) -> dual n-form -> (d) -> dual (n+1)-form (empty) -> (star) -> primal (-1)-form (empty) -> (d) -> primal 0-form (empty)
@@ -105,8 +105,8 @@ type DegreeOfForm = Nat
 -- 例: "repmat: primal k-form -> dual l-form" "differential dual l-form"
 -- repmatの次数を見て場合分け
 newtype DECrepresentationMatrix (n :: Nat) (l :: [Nat]) (c1 :: CellType) (k1 :: DegreeOfForm) (c2 :: CellType) (k2 :: DegreeOfForm) a = DECrepresentationMatrix (SizedMatrix (ToMatSize n l c1 k1) (ToMatSize n l c2 k2) a) deriving (Show)
-unMkDECrepresentationMatrix :: DECrepresentationMatrix n l c1 k1 c2 k2 a -> SizedMatrix (ToMatSize n l c1 k1) (ToMatSize n l c2 k2) a
-unMkDECrepresentationMatrix = coerce
+unDECrepresentationMatrix :: DECrepresentationMatrix n l c1 k1 c2 k2 a -> SizedMatrix (ToMatSize n l c1 k1) (ToMatSize n l c2 k2) a
+unDECrepresentationMatrix = coerce
 
 -- simplicial complex
 -- [0,1,2], [1,3,2]
@@ -128,7 +128,7 @@ type InteriorProduct n l c k a = DifferentialForm n l (DualMap c) 1 a -> DECrepr
 data MetricSignature = Timelike | Spacelike
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, Hashable)
-instance DefaultValue MetricSignature where
+instance HasDefaultValue MetricSignature where
     defaultValue = Spacelike
 
 type Codifferential n l c k a = DECrepresentationMatrix n l c (PredDeg n k) c k a

@@ -53,12 +53,12 @@ data MyVariable = MyVariable {x :: Vector 3 Double, p :: Vector 3 Double}
 data MyEquationConstants = MyEquationConstants {m :: Double, g :: Double, a :: Double, b :: Double, xinit :: Double, yinit :: Double, pxInit :: Double, pyInit :: Double}
   deriving stock (Show, Generic)
   deriving anyclass (ToDhall, FromDhall, Hashable, Additive)
-instance DefaultValue MyEquationConstants where
+instance HasDefaultValue MyEquationConstants where
   defaultValue = zero
 
 data MySetting = MySetting {optimization :: OptimizationParameters Double, constrainedSystem :: ConstrainedSystemParameter Double, dynamics :: DynamicParameterSetting Double, export :: ExportSetting, equation :: MyEquationConstants}
   deriving stock (Show, Generic)
-  deriving anyclass (ToDhall, FromDhall, Hashable, DefaultValue)
+  deriving anyclass (ToDhall, FromDhall, Hashable, HasDefaultValue)
 
 ----------------------------------------------------------------
 -- export quantoties
@@ -90,7 +90,7 @@ instance (Algebra sig m, Member (ConstrainedSystem MyConstraintCondition) sig, M
   type DependentVariableLocalType MyVariable = MyDependentVariableLocal
   dependentVariableLocalM MyVariable{..} = do
     MyEquationConstants{..} <- ask
-    MkLagrangianMultiplier (MyConstraintCondition l1) <- getLagrangianMultiplier
+    LagrangianMultiplier (MyConstraintCondition l1) <- getLagrangianMultiplier
     g1 <- constraintCondition1 x
     return $ MyDependentVariableLocal g1 l1
 
@@ -102,7 +102,7 @@ constraintCondition1 x = do
 -- define system equation
 ----------------------------------------------------------------
 gradDeltaL
-  (MkStepSize dt)
+  (StepSize dt)
   MyEquationConstants{..}
   (MyVariable x p)
   (MyVariable xNew pNew) = MyVariable dLdx dLdp
@@ -144,7 +144,7 @@ instance (Member (Reader MyEquationConstants) sig, Algebra sig m, Member (State 
   getGradPenaltyM = do
     c <- ask
     varOld <- get
-    return $ \(MkLagrangianMultiplier l) var -> gradConstraint c l varOld var
+    return $ \(LagrangianMultiplier l) var -> gradConstraint c l varOld var
 
 newtype MyConstraintCondition = MyConstraintCondition {l1 :: Double}
   deriving stock (Generic, Show)
@@ -167,8 +167,8 @@ instance (Has (Reader MyEquationConstants) sig m) => HasInitialConditionM m MyVa
     let p0 = p0' VS.// [(0, pxInit), (1, pyInit), (2, p3init)]
     return $ MyVariable x0 p0
 
-instance (HasUpdateConstrainedSystem sig m MyVariable, Member (Reader MyEquationConstants) sig) => HasUpdateM m MyVariable where
-  updateM = updateConstrainedSystem
+instance (HasUpdateWithConstrainedOptimization sig m MyVariable, Member (Reader MyEquationConstants) sig) => HasUpdateM m MyVariable where
+  updateM = updateWithConstrainedOptimization
 
 ----------------------------------------------------------------
 -- main

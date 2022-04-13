@@ -31,7 +31,7 @@ hashHexadecimalString x = showHex (i - i0) ""
 outputDirCmdStr = "[[output]]"
 replaceOutputRelDir :: (Has Export sig m) => String -> m String
 replaceOutputRelDir x = do
-  (MkOutputDir dir) <- askOutputDir
+  (OutputDir dir) <- askOutputDir
   let dirStr = toFilePath dir
   return $ parseAndReplace outputDirCmdStr dirStr x
 

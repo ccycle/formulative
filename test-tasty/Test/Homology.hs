@@ -15,9 +15,9 @@ import qualified Data.Set as S
 import Data.Singletons
 import qualified Data.Vector as V
 import qualified Data.Vector.Unboxed as VU
+import Formulative.Calculation.Algebra.Arithmetic.Class
 import GHC.Exts
 import GHC.TypeNats
-import Formulative.Calculation.Algebra.Arithmetic.Class
 
 -- import Formulative.Calculation.DiscreteExteriorCalculus.Algebra
 -- import Formulative.Calculation.DiscreteExteriorCalculus.Class
@@ -61,7 +61,7 @@ d3test = zero :: ExteriorDerivative NEuc NatsTest Primal 3 Double
 
 inclusionMapTest = inclusionMapMatrixInternal @_ @_ @Primal @Double scTest2
 
-length_scTest2 = length $ unMkSimplicialComplex scTest2
+length_scTest2 = length $ unSimplicialComplex scTest2
 
 dProdTest0 = d1test .@. d0test
 dProdTest1 = d2test .@. d1test

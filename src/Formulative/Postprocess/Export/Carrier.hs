@@ -17,7 +17,7 @@ import Formulative.Internal.ReExport.Effect (askSettingHash)
 import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.Path
 import Formulative.Postprocess.Export.Types
-import Formulative.Preprocess.DefaultValue (DefaultValue)
+import Formulative.Preprocess.DefaultValue (HasDefaultValue)
 import Formulative.Preprocess.ReadSetting
 import Formulative.Preprocess.SettingFile.Effect
 import Path
@@ -61,7 +61,7 @@ runExport e x f = do
     let (ExportSetting r (OutputDirSetting str)) = x
     let z = parseAndReplace outputDirHashCmdStr hashStr str
     outputDir <- liftEither $ parseRelDir z
-    runReader (e, r, MkOutputDir outputDir) . runExportC $ f
+    runReader (e, r, OutputDir outputDir) . runExportC $ f
 
 runExportIO ::
     forall a m b sig.

@@ -15,14 +15,6 @@ import Unsafe.Coerce (unsafeCoerce)
 natDict :: KnownNat n => Proxy n -> Dict (KnownNat n)
 natDict _ = Dict
 
--- elemAtKnownNatProof :: (KnownNat n, SingI l) => SList l -> Proxy n -> Dict (KnownNat (l !! n))
--- elemAtKnownNatProof proxyn1s proxyn1 =
---   let ns = fromSing proxyn1s
---       n = natVal proxyn1
---       val = ns !!! n
---    in case someNatVal val of
---         SomeNat p3 -> unsafeCoerce (natDict p3)
-
 data CompareNatException
     = LEQNatError Natural Natural
     | GEQNatError Natural Natural
@@ -56,16 +48,6 @@ leqNat proxyn1 proxyn2
 
 geqNat :: forall m n1 n2. (KnownNat n1, KnownNat n2, MonadThrow m) => Proxy n1 -> Proxy n2 -> m ((n2 <=? n1) :~: 'True)
 geqNat = flip leqNat
-
--- withSomeSingI :: (SingKind k) => Demote k -> (forall (a :: k). (SingI a) => Sing a -> r) -> r
--- withSomeSingI dk f = case toSing dk of
---   SomeSing (s :: Sing a) -> withSingI s (f @a s)
-
--- withSomeSingIAmbiguous :: (SingKind k) => Demote k -> (forall (a :: k). (SingI a) => r) -> r
--- withSomeSingIAmbiguous dk f = case toSing dk of
---   SomeSing (s :: Sing a) -> withSingI s (f @a)
-
--- case (someNatVal nEucVal, someNatVal nVal, toSing l) of (SomeNat (Proxy :: Proxy n), SomeNat (Proxy :: Proxy n), SomeSing (Sing :: SList l)) ->
 
 -----------
 -- Data.Reflection

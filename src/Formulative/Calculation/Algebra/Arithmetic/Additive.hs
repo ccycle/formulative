@@ -51,8 +51,8 @@ instance Additive a => GAdditive (K1 i a) where
 
 -- deriving instance: Num
 instance (Num a) => Additive (MyNum a) where
-    zero = MkMyNum 0
-    (MkMyNum a) .+. (MkMyNum b) = MkMyNum (a + b)
+    zero = MyNum 0
+    (MyNum a) .+. (MyNum b) = MyNum (a + b)
 
 deriving via (MyNum Int) instance Additive Int
 deriving via (MyNum Integer) instance Additive Integer
@@ -65,8 +65,8 @@ deriving via (MyNum (Complex Float)) instance Additive (Complex Float)
 deriving via (MyNum (Complex Double)) instance Additive (Complex Double)
 
 instance (RealFloat a) => Additive (MyComplex a) where
-    zero = MkMyComplex 0
-    (MkMyComplex a) .+. (MkMyComplex b) = MkMyComplex (a + b)
+    zero = MyComplex 0
+    (MyComplex a) .+. (MyComplex b) = MyComplex (a + b)
 
 -- deriving via (MyComplex Float) instance Additive (Complex Float)
 -- deriving via (MyComplex Double) instance Additive (Complex Double)
@@ -80,8 +80,8 @@ instance Additive Bool where
 
 -- applicative
 instance (Additive a, Applicative m) => Additive (MyApplicative m a) where
-    (.+.) (MkMyApplicative x) (MkMyApplicative y) = MkMyApplicative (liftA2 (.+.) x y)
-    zero = MkMyApplicative (pure zero)
+    (.+.) (MyApplicative x) (MyApplicative y) = MyApplicative (liftA2 (.+.) x y)
+    zero = MyApplicative (pure zero)
 deriving via (MyApplicative Maybe a) instance (Additive a) => Additive (Maybe a)
 deriving via (MyApplicative IO a) instance (Additive a) => Additive (IO a)
 deriving via (MyApplicative (Either a) b) instance (Additive b) => Additive (Either a b)

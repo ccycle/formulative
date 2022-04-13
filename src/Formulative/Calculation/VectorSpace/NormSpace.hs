@@ -20,7 +20,7 @@ import Prelude hiding (fromInteger)
 data NormType a = Lp a | LInfinity
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, Hashable)
-instance DefaultValue (NormType a) where
+instance HasDefaultValue (NormType a) where
     defaultValue = LInfinity
 
 class (VectorSpace v) => NormSpace v where
@@ -57,7 +57,7 @@ instance (GNormSpace f, Ord (GRealField f), GNormSpace g, GRealField g ~ GRealFi
 
 instance (Num a) => NormSpace (MyNum a) where
     type RealField (MyNum a) = a
-    norm _ (MkMyNum a) = abs a
+    norm _ (MyNum a) = abs a
 
 deriving via (MyNum Int) instance NormSpace Int
 deriving via (MyNum Integer) instance NormSpace Integer
@@ -67,14 +67,14 @@ deriving via (MyNum Float) instance NormSpace Float
 
 instance (RealFloat a) => NormSpace (MyComplex a) where
     type RealField (MyComplex a) = a
-    norm _ (MkMyComplex a) = realPart $ abs a
+    norm _ (MyComplex a) = realPart $ abs a
 
 deriving via (MyComplex Double) instance NormSpace (Complex Double)
 deriving via (MyComplex Float) instance NormSpace (Complex Float)
 
 instance (Foldable m, Applicative m, Transcendental (RealField a), NormSpace a, Ord (RealField a), NormSpace (RealField a)) => NormSpace (MyFoldable m a) where
     type RealField (MyFoldable m a) = RealField a
-    norm LInfinity (MkMyFoldable a) = foldl' (binaryOpLp LInfinity) zero (fmap (norm LInfinity) a)
-    norm (Lp p) (MkMyFoldable a) = (.**. reciprocal p) $ foldl' (binaryOpLp (Lp p)) zero (fmap ((.**. p) . norm (Lp p)) a)
+    norm LInfinity (MyFoldable a) = foldl' (binaryOpLp LInfinity) zero (fmap (norm LInfinity) a)
+    norm (Lp p) (MyFoldable a) = (.**. reciprocal p) $ foldl' (binaryOpLp (Lp p)) zero (fmap ((.**. p) . norm (Lp p)) a)
 
 deriving via (MyFoldable (VS.Vector n) a) instance (KnownNat n, Transcendental (RealField a), Multiplicative a, NormSpace a, Ord (RealField a), NormSpace (RealField a)) => NormSpace (VS.Vector n a)

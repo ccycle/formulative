@@ -25,18 +25,18 @@ c2 = 0.9
 alpha = 1.0
 lineSearchParamsTest = defaultValue
 
--- wolfeConditionTest = wolfeCondition (MkWolfeConditionParameter c2) (MkStepSizeForLineSearch alpha) x (MkDescentDirection p) (MkGradObjectiveFunction gradf)
+-- wolfeConditionTest = wolfeCondition (WolfeConditionParameter c2) (StepSizeForLineSearch alpha) x (DescentDirection p) (GradObjectiveFunction gradf)
 
 p = -1.0
 
 -- backtrackingLineSearchTest :: (StepSizeForLineSearch Double)
--- backtrackingLineSearchTest = backtrackingLineSearch lineSearchParamsTest x (MkDescentDirection p) (MkObjectiveFunction f) (MkGradObjectiveFunction gradf)
+-- backtrackingLineSearchTest = backtrackingLineSearch lineSearchParamsTest x (DescentDirection p) (ObjectiveFunction f) (GradObjectiveFunction gradf)
 
 -- lbfgsMethodTest :: MonadThrow m => m (Double, Residuals ((Double)), Residuals (DescentDirection Double))
--- lbfgsMethodTest = lbfgsMethod defaultLineSearchParameters defaultValue defaultValue (MkObjectiveFunction f) (MkGradObjectiveFunction gradf) x
+-- lbfgsMethodTest = lbfgsMethod defaultLineSearchParameters defaultValue defaultValue (ObjectiveFunction f) (GradObjectiveFunction gradf) x
 
 -- lbfgsMethodTest1 :: MonadThrow m => m (Double, Residuals ((Double)), Residuals (DescentDirection Double))
--- lbfgsMethodTest1 = lbfgsMethod defaultLineSearchParameters defaultValue defaultValue (MkObjectiveFunction f1) (MkGradObjectiveFunction gradf1) x1
+-- lbfgsMethodTest1 = lbfgsMethod defaultLineSearchParameters defaultValue defaultValue (ObjectiveFunction f1) (GradObjectiveFunction gradf1) x1
 
 lbfgsMethodTest2 :: MonadThrow m => Double -> m Double
-lbfgsMethodTest2 = lbfgsMethod lineSearchParamsTest defaultValue defaultValue (MkObjectiveFunction f2) (MkGradObjectiveFunction gradf2)
+lbfgsMethodTest2 = lbfgsMethod lineSearchParamsTest defaultValue defaultValue (ObjectiveFunction f2) (GradObjectiveFunction gradf2)

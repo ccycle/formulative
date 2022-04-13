@@ -11,10 +11,9 @@ import Formulative.Calculation.Optimization.Constrained.Effect
 import Formulative.Calculation.Optimization.Effect
 import Formulative.Calculation.Optimization.LBFGS
 import Formulative.Calculation.Optimization.LineSearch
-import Formulative.Calculation.Optimization.Parameter
 import Formulative.Calculation.VectorSpace.Class
 
-type HasUpdateUnconstrainedSystem sig m b =
+type HasUpdateWithOptimization sig m b =
     ( Algebra sig m
     , NormSpace b
     , InnerProductSpace b
@@ -29,8 +28,8 @@ type HasUpdateUnconstrainedSystem sig m b =
     , HasGradObjectiveFunctionM m b
     , HasObjectiveFunctionM m b
     )
-updateUnconstrainedSystem :: forall sig m b. HasUpdateUnconstrainedSystem sig m b => b -> m b
-updateUnconstrainedSystem variable = do
+updateWithOptimization :: forall sig m b. HasUpdateWithOptimization sig m b => b -> m b
+updateWithOptimization variable = do
     objFunc <- getObjectiveFunctionM
     gradObjFunc <- getGradientOfObjectiveFunctionM
     lbfgsParam <- askLBFGSParameters @(RealField b)
@@ -41,12 +40,12 @@ updateUnconstrainedSystem variable = do
             lineSearchParam
             convergenceParam
             lbfgsParam
-            (MkObjectiveFunction objFunc)
-            (MkGradObjectiveFunction gradObjFunc)
+            (ObjectiveFunction objFunc)
+            (GradObjectiveFunction gradObjFunc)
             variable
 
-type HasUpdateConstrainedSystem sig m b =
-    ( HasUpdateUnconstrainedSystem sig m b
+type HasUpdateWithConstrainedOptimization sig m b =
+    ( HasUpdateWithOptimization sig m b
     , HasEqualityConstraintM m b
     , HasGradPenaltyM m b
     , InnerProductSpace (EqualityConstraintType b)
@@ -56,8 +55,8 @@ type HasUpdateConstrainedSystem sig m b =
     , NormSpace (EqualityConstraintType b)
     , Member (ConstrainedSystem (EqualityConstraintType b)) sig
     )
-updateConstrainedSystem :: forall b sig m. HasUpdateConstrainedSystem sig m b => b -> m b
-updateConstrainedSystem variable = do
+updateWithConstrainedOptimization :: forall b sig m. HasUpdateWithConstrainedOptimization sig m b => b -> m b
+updateWithConstrainedOptimization variable = do
     objFunc <- getObjectiveFunctionM
     gradObjFunc <- getGradientOfObjectiveFunctionM
     eqConst <- getEqualityConstraintM
@@ -74,11 +73,11 @@ updateConstrainedSystem variable = do
                 convergenceParam
                 lbfgsParam
                 aParam
-                (MkObjectiveFunction objFunc)
-                (MkGradObjectiveFunction gradObjFunc)
-                (MkEqualityConstraint eqConst)
+                (ObjectiveFunction objFunc)
+                (GradObjectiveFunction gradObjFunc)
+                (EqualityConstraint eqConst)
                 lagrangianMultiplier
-                (MkGradPenalty gradPenalty)
+                (GradPenalty gradPenalty)
                 variable
     putLagrangianMultiplier l
     return x

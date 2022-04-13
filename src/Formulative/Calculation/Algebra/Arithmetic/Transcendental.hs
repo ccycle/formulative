@@ -89,19 +89,19 @@ deriving via (MyTranscendental Double) instance Transcendental Double
 deriving via (MyTranscendental Float) instance Transcendental Float
 
 instance (Transcendental a, Eq a, Applicative m, Foldable m) => Transcendental (MyApplicative m a) where
-    pi' = MkMyApplicative $ pure pi'
-    exp' = MkMyApplicative . fmap exp' . unMkMyApplicative
-    log' = MkMyApplicative . fmap log' . unMkMyApplicative
-    sin' = MkMyApplicative . fmap sin' . unMkMyApplicative
-    cos' = MkMyApplicative . fmap cos' . unMkMyApplicative
-    asin' = MkMyApplicative . fmap asin' . unMkMyApplicative
-    acos' = MkMyApplicative . fmap acos' . unMkMyApplicative
-    atan' = MkMyApplicative . fmap atan' . unMkMyApplicative
-    sinh' = MkMyApplicative . fmap sinh' . unMkMyApplicative
-    cosh' = MkMyApplicative . fmap cosh' . unMkMyApplicative
-    asinh' = MkMyApplicative . fmap asinh' . unMkMyApplicative
-    acosh' = MkMyApplicative . fmap acosh' . unMkMyApplicative
-    atanh' = MkMyApplicative . fmap atanh' . unMkMyApplicative
+    pi' = MyApplicative $ pure pi'
+    exp' = MyApplicative . fmap exp' . unMyApplicative
+    log' = MyApplicative . fmap log' . unMyApplicative
+    sin' = MyApplicative . fmap sin' . unMyApplicative
+    cos' = MyApplicative . fmap cos' . unMyApplicative
+    asin' = MyApplicative . fmap asin' . unMyApplicative
+    acos' = MyApplicative . fmap acos' . unMyApplicative
+    atan' = MyApplicative . fmap atan' . unMyApplicative
+    sinh' = MyApplicative . fmap sinh' . unMyApplicative
+    cosh' = MyApplicative . fmap cosh' . unMyApplicative
+    asinh' = MyApplicative . fmap asinh' . unMyApplicative
+    acosh' = MyApplicative . fmap acosh' . unMyApplicative
+    atanh' = MyApplicative . fmap atanh' . unMyApplicative
 
 deriving via (MyApplicative Maybe a) instance (Transcendental a, Eq a) => Transcendental (Maybe a)
 deriving via (MyApplicative (Either a) b) instance (Transcendental b, Eq b) => Transcendental (Either a b)

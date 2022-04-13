@@ -1,6 +1,6 @@
 let MeshPath_ =
-      < MkVTUPath : { vtuPath : Text }
-      | MkCSVDataPath : { pointData : Text, connectivity : Text }
+      < VTUPath : { vtuPath : Text }
+      | CSVDataPath : { pointData : Text, connectivity : Text }
       >
 
 in  { MeshPath = MeshPath_ }

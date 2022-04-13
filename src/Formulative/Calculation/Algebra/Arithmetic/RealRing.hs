@@ -30,10 +30,10 @@ import qualified Prelude
 
 -- -- deriving instance
 -- instance (Num a) => Ring (MyNum a) where
---     fromInteger = MkMyNum . Prelude.fromInteger
+--     fromInteger = MyNum . Prelude.fromInteger
 
 -- instance (Ring a, Applicative m) => Ring (MyApplicative m a) where
---     fromInteger = MkMyApplicative . pure . fromInteger
+--     fromInteger = MyApplicative . pure . fromInteger
 
 -- deriving via (MyNum Word) instance Ring Word
 -- deriving via (MyNum Int) instance Ring Int

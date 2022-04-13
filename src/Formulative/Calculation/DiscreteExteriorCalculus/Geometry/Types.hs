@@ -22,15 +22,15 @@ import GHC.TypeNats
 
 type EucDim = Nat
 
-newtype DimensionOfEuclideanSpace = MkDimensionOfEuclideanSpace Natural
+newtype DimensionOfEuclideanSpace = DimensionOfEuclideanSpace Natural
     deriving stock (Generic, Show, Eq)
     deriving newtype (Enum, Num)
     deriving anyclass (FromDhall, ToDhall, Hashable)
 
 type GMatrixContainer k1 k2 a = E.Matrix k1 k2 a
-newtype GMatrix k a = MkGMatrix (GMatrixContainer k k a) deriving (Show)
-unMkGMatrix :: GMatrix k a -> GMatrixContainer k k a
-unMkGMatrix = coerce
+newtype GMatrix k a = GMatrix (GMatrixContainer k k a) deriving (Show)
+unGMatrix :: GMatrix k a -> GMatrixContainer k k a
+unGMatrix = coerce
 type SizedVector n a = VS.Vector n a
 
 -- data PointData (nEuc :: EucDim) (p :: Nat) a (m :: Type -> Type) k where
@@ -72,26 +72,26 @@ type DualPredDeg (n :: Nat) (k :: Nat) = DualDeg n (PredDeg n k)
 
 type SizedMatrix p1 p2 a = MSL.SparseMatrix p1 p2 a -- 実装に使う型を選択
 
-newtype AllPointData nEuc nBase l c k a = MkAllPointData (SizedVector nEuc (SizedVector (ToMatSize nBase l c k) a))
+newtype AllPointData nEuc nBase l c k a = AllPointData (SizedVector nEuc (SizedVector (ToMatSize nBase l c k) a))
     deriving stock (Show, Eq)
-newtype AllPointDataPrimal0 nEuc p a = MkAllPointDataPrimal0 (SizedVector nEuc (SizedVector p a))
+newtype AllPointDataPrimal0 nEuc p a = AllPointDataPrimal0 (SizedVector nEuc (SizedVector p a))
     deriving (Show, Eq)
-newtype PositionMatrix nEuc k a = MkPositionMatrix {unMkPositionMatrix :: GMatrixContainer (k + 1) nEuc a}
+newtype PositionMatrix nEuc k a = PositionMatrix {unPositionMatrix :: GMatrixContainer (k + 1) nEuc a}
     deriving stock (Show)
     deriving newtype (Additive)
-newtype AllPositionMatrix nEuc p a = MkAllPositionMatrix {unMkAllPositionMatrix :: SizedMatrix p nEuc a}
+newtype AllPositionMatrix nEuc p a = AllPositionMatrix {unAllPositionMatrix :: SizedMatrix p nEuc a}
     deriving stock (Show, Eq)
     deriving newtype (Additive)
-newtype BarycentricCoordinate k a = MkBarycentricCoordinate (GMatrixContainer k 1 a)
+newtype BarycentricCoordinate k a = BarycentricCoordinate (GMatrixContainer k 1 a)
     deriving stock (Show)
 
-newtype Circumcenter n a = MkCircumcenter (GMatrixContainer 1 n a)
+newtype Circumcenter n a = Circumcenter (GMatrixContainer 1 n a)
     deriving stock (Show)
-newtype Circumradius a = MkCircumradius a deriving (Show)
-newtype AllCircumcenter n l k a = MkAllCircumcenter (SizedVector (l !! k) (Circumcenter n a)) deriving (Show)
-newtype CircumcentersOfSimplex nEuc l k a = CircumcenterSimplex {unMkCircumcentersVector :: SizedMatrix (l !! k) 1 a} deriving (Eq, Show)
+newtype Circumradius a = Circumradius a deriving (Show)
+newtype AllCircumcenter n l k a = AllCircumcenter (SizedVector (l !! k) (Circumcenter n a)) deriving (Show)
+newtype CircumcentersOfSimplex nEuc l k a = CircumcenterSimplex {unCircumcentersVector :: SizedMatrix (l !! k) 1 a} deriving (Eq, Show)
 
 type Component = Double
 
-newtype Volume c k a = MkVolume a deriving (Show)
-newtype AllVolume n l c k a = MkAllVolume (SizedVector (l !! k) (Circumcenter n a)) deriving (Show)
+newtype Volume c k a = Volume a deriving (Show)
+newtype AllVolume n l c k a = AllVolume (SizedVector (l !! k) (Circumcenter n a)) deriving (Show)

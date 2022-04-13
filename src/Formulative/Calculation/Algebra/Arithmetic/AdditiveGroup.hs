@@ -42,8 +42,8 @@ instance (AdditiveGroup a) => GAdditiveGroup (K1 i a) where
 ----------------------------------------------------------------
 
 instance (Num a) => AdditiveGroup (MyNum a) where
-    negation (MkMyNum a) = MkMyNum (negate a)
-    (MkMyNum a) .-. (MkMyNum b) = MkMyNum (a - b)
+    negation (MyNum a) = MyNum (negate a)
+    (MyNum a) .-. (MyNum b) = MyNum (a - b)
 
 deriving via (MyNum Int) instance AdditiveGroup Int
 deriving via (MyNum Integer) instance AdditiveGroup Integer
@@ -56,8 +56,8 @@ deriving via (MyNum (Complex Double)) instance AdditiveGroup (Complex Double)
 deriving via (MyNum Expr) instance AdditiveGroup Expr
 
 instance {-# OVERLAPS #-} (RealFloat a) => AdditiveGroup (MyComplex a) where
-    negation (MkMyComplex a) = MkMyComplex (negate a)
-    (MkMyComplex a) .-. (MkMyComplex b) = MkMyComplex (a - b)
+    negation (MyComplex a) = MyComplex (negate a)
+    (MyComplex a) .-. (MyComplex b) = MyComplex (a - b)
 
 instance {-# OVERLAPS #-} (AdditiveGroup a, AdditiveGroup b) => AdditiveGroup (a -> b) where
     (f .-. g) x = f x .-. g x
@@ -69,7 +69,7 @@ instance AdditiveGroup Bool where
 
 -- applicative
 instance (Additive a, AdditiveGroup a, Applicative m) => AdditiveGroup (MyApplicative m a) where
-    negation (MkMyApplicative a) = MkMyApplicative (fmap negation a)
+    negation (MyApplicative a) = MyApplicative (fmap negation a)
 
 deriving via (MyApplicative (VS.Vector n) a) instance (KnownNat n, Additive a, AdditiveGroup a) => AdditiveGroup (VS.Vector n a)
 deriving via (MyApplicative Maybe a) instance (AdditiveGroup a) => AdditiveGroup (Maybe a)

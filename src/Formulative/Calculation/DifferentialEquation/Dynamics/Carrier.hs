@@ -23,7 +23,7 @@ instance (Algebra sig m) => Algebra (Dynamics a :+: sig) (DynamicsC a m) where
             pure ((<$ ctx) env)
         L AskStepSize -> do
             env <- DynamicsC ask
-            pure ((<$ ctx) (MkStepSize $ stepSize env))
+            pure ((<$ ctx) (StepSize $ stepSize env))
         R other -> DynamicsC (alg (runDynamicsC . hdl) (R other) ctx)
 
 runDynamics :: forall a m b. DynamicParameterSetting a -> DynamicsC a m b -> m b

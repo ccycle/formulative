@@ -29,9 +29,6 @@ import qualified Data.Vector.Algorithms.Intro as VA
 import qualified Data.Vector.Sized as VS
 import qualified Data.Vector.Storable as VST
 import qualified Data.Vector.Unboxed as VU
-import GHC.Exts (IsList (Item, fromList, toList))
-import GHC.Natural
-import GHC.TypeNats
 import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
@@ -39,6 +36,9 @@ import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Effect
 import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Operators
 import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Types
 import Formulative.Calculation.Internal.TypeLevelNatural
+import GHC.Exts (IsList (Item, fromList, toList))
+import GHC.Natural
+import GHC.TypeNats
 
 -- import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
 -- import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Types
@@ -92,7 +92,7 @@ exteriorDerivativeDualInternal _ =
         Refl ->
             case poincareDualitySucc @n @l @c @k of
                 Refl -> case knownMatSizeDict @n @l @c @k @ExteriorDerivativeType of
-                    (Dict, Dict) -> DECrepresentationMatrix . integralToSign (nInt - kInt) . MSG.transpose . unMkDECrepresentationMatrix
+                    (Dict, Dict) -> DECrepresentationMatrix . integralToSign (nInt - kInt) . MSG.transpose . unDECrepresentationMatrix
   where
     nInt = natToInt (Proxy :: Proxy n)
     kInt = natToInt (Proxy :: Proxy k)
@@ -148,14 +148,14 @@ exteriorDerivative =
 -- fromList [[0,1],[0,3],[1,2],[2,3]]
 removeIntersection x y = S.union x y `S.difference` S.intersection x y
 
--- >>> sc3 = MkSimplices $ S.fromList $ coerce @[[Int]] @[Simplex 3] [[0,1,2],[1,3,2],[2,3,4]]
+-- >>> sc3 = Simplices $ S.fromList $ coerce @[[Int]] @[Simplex 3] [[0,1,2],[1,3,2],[2,3,4]]
 -- >>> extractBoundaryElements sc3
--- MkSimplices (fromList [MkSimplex [0,1],MkSimplex [0,2],MkSimplex [1,3],MkSimplex [2,4],MkSimplex [3,4]])
+-- Simplices (fromList [Simplex [0,1],Simplex [0,2],Simplex [1,3],Simplex [2,4],Simplex [3,4]])
 extractBoundaryElements :: forall n l. (KnownNat n, 1 <= n) => Simplices n l -> BoundarySimplices (n - 1) l
-extractBoundaryElements x = MkBoundarySimplices $ foldl' removeIntersection (S.fromList []) (S.map (S.map sortSimplex . removeIndexToSet) $ coerce x)
+extractBoundaryElements x = BoundarySimplices $ foldl' removeIntersection (S.fromList []) (S.map (S.map sortSimplex . removeIndexToSet) $ coerce x)
 
 -- inclusionMapIndices :: forall n l. KnownNat n => Simplices n l -> BoundarySimplices n l -> Set Index
-inclusionMapIndices (MkSimplices sc) (MkBoundarySimplices bs) = S.map (fromMaybe 0) $ S.map (adjacencySC sc) bs
+inclusionMapIndices (Simplices sc) (BoundarySimplices bs) = S.map (fromMaybe 0) $ S.map (adjacencySC sc) bs
 
 indexToCOO :: Multiplicative a => Index -> COO a
 indexToCOO i = (i, i, one)

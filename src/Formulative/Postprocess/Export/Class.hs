@@ -20,7 +20,6 @@ import Data.Singletons.Prelude (SList)
 import qualified Data.Text.IO as T
 import qualified Data.Vector.Storable as VST
 import Dhall
-import GHC.TypeNats
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
 import Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Types
 import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Types
@@ -32,6 +31,7 @@ import Formulative.Postprocess.Export.Types
 import Formulative.Preprocess.CommandLineOptions
 import Formulative.Preprocess.ReadSetting
 import Formulative.Preprocess.SettingFile.Effect (SettingFile, askSettingFileText)
+import GHC.TypeNats
 import Path
 import Path.IO
 import RIO.Time
@@ -50,12 +50,12 @@ instance (ToField a, VST.Storable a, MSS.Zero a) => ToField (DECrepresentationMa
 -- configで設定できるようにする
 -- 相対パスの指定かautoか
 -- 過去の計算結果をもとに再計算させるなどの使い方を想定
--- newtype OutputDir = MkOutputDir (Path Rel Dir)
+-- newtype OutputDir = OutputDir (Path Rel Dir)
 --     deriving stock (Generic, Show, Eq)
 -- exportSettingFile :: m ()
 exportSettingFile :: forall m sig. (Algebra sig m, Member Export sig, Member SettingFile sig, Member (Lift IO) sig) => m ()
 exportSettingFile = do
-    (MkOutputDir outputDir) <- askOutputDir
+    (OutputDir outputDir) <- askOutputDir
     (DhallSettingText x) <- askSettingFileText
     sendIO $ putStrLn "Export setting file.."
     sendIO $ ensureDir outputDir
@@ -76,7 +76,7 @@ exportDependentParameterFile = do
     x <- dependentParameterM @m @a
     let y = toDhallText x
     when (y /= toDhallText ()) $ do
-        (MkOutputDir outputDir) <- askOutputDir
+        (OutputDir outputDir) <- askOutputDir
         sendIO $ putStrLn "Export dependent parameter file.."
         sendIO $ ensureDir outputDir
         sName <- sendIO $ parseRelFile "dependentParamater.dhall"
@@ -86,7 +86,7 @@ exportDependentParameterFile = do
 -- exportDhallSettingTextFile :: (Algebra sig m, Member (Lift IO) sig, Member SettingFile sig,
 --  Member Export sig) => m ()
 -- exportDhallSettingTextFile = do
---     (MkOutputDir outputDir) <- askOutputDir
+--     (OutputDir outputDir) <- askOutputDir
 --     (DhallSettingText x) <- askSettingFileText
 --     sendIO $ putStrLn "Export setting file.."
 --     sendIO $ ensureDir outputDir
@@ -110,7 +110,7 @@ exportDependentVariableGlobal ::
     m ()
 exportDependentVariableGlobal x = do
     x' <- dependentVariableGlobalM x
-    (MkOutputDir parentDir) <- askOutputDir
+    (OutputDir parentDir) <- askOutputDir
     ensureDirOutputM
     parseKey <- liftEither $ parseRelFile "dependentVariableGlobal"
     -- TODO: CSV以外にもに対応させる
@@ -129,21 +129,21 @@ exportDependentVariableGlobal x = do
 
 ensureDirOutputM :: (Algebra sig m, Member Export sig, Member (Lift IO) sig) => m ()
 ensureDirOutputM = do
-    (MkOutputDir relDir) <- askOutputDir
+    (OutputDir relDir) <- askOutputDir
     sendIO . ensureDir $ relDir
 
 doesDirExistsOutputM :: (Algebra sig m, Member Export sig, Member (Lift IO) sig) => m Bool
 doesDirExistsOutputM = do
-    (MkOutputDir relDir) <- askOutputDir
+    (OutputDir relDir) <- askOutputDir
     sendIO . doesDirExist $ relDir
 
 removeDirRecurOutputM :: (Algebra sig m, Member (Lift IO) sig) => OutputDir -> m ()
-removeDirRecurOutputM (MkOutputDir relDir) =
+removeDirRecurOutputM (OutputDir relDir) =
     sendIO . removeDirRecur $ relDir
 
 -- TODO: logger作成
 warningForOverwrite :: (Has (Lift IO) sig m, Member (Throw SomeException) sig) => OutputDir -> m RecalculationOption
-warningForOverwrite (MkOutputDir dir) = do
+warningForOverwrite (OutputDir dir) = do
     sendIO $ putStrLn $ "[WARNING] The output directory (" <> toFilePath dir <> ") already exists: The calculation may have already been executed."
     sendIO $ putStrLn ""
     sendIO $ putStrLn "Overwrite ([y]/n)?"
@@ -168,12 +168,12 @@ warningForOverwrite (MkOutputDir dir) = do
 
 removeDirRecurWithWarningM :: (Algebra sig m, Member (Lift IO) sig, Member Export sig, Member (Throw SomeException) sig) => m ()
 removeDirRecurWithWarningM = do
-    (MkOutputDir x) <- askOutputDir
+    (OutputDir x) <- askOutputDir
     d <- sendIO $ doesDirExist x
     when d $ do
-        r <- warningForOverwrite (MkOutputDir x)
+        r <- warningForOverwrite (OutputDir x)
         case r of
-            Overwrite -> removeDirRecurOutputM (MkOutputDir x)
+            Overwrite -> removeDirRecurOutputM (OutputDir x)
             NoOperation -> liftEither $ throwString "Exit."
 
 parentDirM :: (Algebra sig m, Member (Lift IO) sig, Member (Throw SomeException) sig) => m (Path Rel Dir)
@@ -182,16 +182,16 @@ parentDirM = do
     let dir = formatTime defaultTimeLocale "%Y%m%d-%H%M%S" t
     liftEither $ parseRelDir $ "./output/" <> dir
 
--- newtype IndexOfStep = MkIndexOfStep Natural
+-- newtype IndexOfStep = IndexOfStep Natural
 --     deriving stock (Generic, Show, Eq)
 --     deriving anyclass (FromDhall, ToDhall, Hashable)
--- newtype Parameter a = MkParameter a
+-- newtype Parameter a = Parameter a
 --     deriving stock (Generic, Show, Eq)
 --     deriving anyclass (FromDhall, ToDhall, Hashable)
 
 -- TODO: adaptive step sizeの実装
--- adaptiveStepSize (IsAdaptiveStepSize True) (MkStepSize dt) = MkStepSize dt
--- adaptiveStepSize (IsAdaptiveStepSize False) (MkStepSize dt) = MkStepSize dt
+-- adaptiveStepSize (IsAdaptiveStepSize True) (StepSize dt) = StepSize dt
+-- adaptiveStepSize (IsAdaptiveStepSize False) (StepSize dt) = StepSize dt
 
 -- indexはexportのパスでも使う可能性があるので state を使う
 -- mainCalculationDynamic :: (Algebra sig m, HasUpdateM m t, Ord a1, Show a1, ExportSubDataM m t,
@@ -236,8 +236,8 @@ mainCalcPDEproxy _ _ _ = do
     mainCalcPDESubmanifold @m @s @nEuc @n @l x
 
 runMainCalcPDE
-    (MkDimensionOfEuclideanSpace nEuc)
-    (MkDimensionOfManifold n)
+    (DimensionOfEuclideanSpace nEuc)
+    (DimensionOfManifold n)
     (l :: [Natural]) =
         case (someNatVal nEuc, someNatVal n, someSingVal l) of
             (SomeNat (pnEuc :: Proxy nEuc'), SomeNat (pn :: Proxy n'), SomeSingI (sl :: Sing l')) ->

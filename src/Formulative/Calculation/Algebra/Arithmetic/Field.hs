@@ -84,9 +84,9 @@ deriving via (MyNum a) instance (Fractional a) => Multiplicative (MyFractional a
 deriving via (MyNum a) instance (Fractional a) => Rng (MyFractional a)
 deriving via (MyNum a) instance (Fractional a) => Ring (MyFractional a)
 instance (Eq a, Fractional a) => Field (MyFractional a) where
-    reciprocal (MkMyFractional a) = MkMyFractional (recip a)
-    (MkMyFractional a) ./. (MkMyFractional b) = MkMyFractional (a / b)
-    fromRational' = MkMyFractional . fromRational
+    reciprocal (MyFractional a) = MyFractional (recip a)
+    (MyFractional a) ./. (MyFractional b) = MyFractional (a / b)
+    fromRational' = MyFractional . fromRational
     isDividable x = zero /= x
 
 deriving via (MyFractional Double) instance Field Double
@@ -95,9 +95,9 @@ deriving via (MyFractional Expr) instance Field Expr
 
 -- applicative
 instance (Eq a, Field a, Applicative m, Foldable m) => Field (MyApplicative m a) where
-    reciprocal (MkMyApplicative x) = MkMyApplicative $ fmap reciprocal x
-    fromRational' = MkMyApplicative . pure . fromRational'
-    isDividable (MkMyApplicative x) = zero `notElem` x
+    reciprocal (MyApplicative x) = MyApplicative $ fmap reciprocal x
+    fromRational' = MyApplicative . pure . fromRational'
+    isDividable (MyApplicative x) = zero `notElem` x
 
 -- - isDividableが定義できないのでIOの場合はFieldのインスタンスにはなれない
 --   - dividableかどうかが毎回実行時に変わるため

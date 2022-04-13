@@ -40,4 +40,4 @@ simplex3Test1 = [0, 1, 2, 3] :: Simplex 3
 -- >>>  adjacencyList scTest1 simplex3Test1
 -- [0,1,2,3,4,6]
 -- >>> scTest1
--- MkSimplices (fromList [MkSimplex [0,1],MkSimplex [0,2],MkSimplex [0,3],MkSimplex [1,2],MkSimplex [1,3],MkSimplex [1,4],MkSimplex [2,3],MkSimplex [2,4],MkSimplex [3,4]])
+-- Simplices (fromList [Simplex [0,1],Simplex [0,2],Simplex [0,3],Simplex [1,2],Simplex [1,3],Simplex [1,4],Simplex [2,3],Simplex [2,4],Simplex [3,4]])

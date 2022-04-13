@@ -56,13 +56,13 @@ cmdOptionToDhallSettingText = do
   pathRelFile <- liftEither $ parseRelFile filePath
   sendIO $ readDhallFile filePath
 
-fillInMissingValuesWithDefaultValues :: forall a. (FromDhall a, ToDhall a, DefaultValue a) => Text -> IO a
+fillInMissingValuesWithDefaultValues :: forall a. (FromDhall a, ToDhall a, HasDefaultValue a) => Text -> IO a
 fillInMissingValuesWithDefaultValues txt = input auto $ T.concat [toDhallText (defaultValue @a), " // ", txt]
 
 -- input txt to data record
 -- no input :: "{=}""
 -- fillInSetting "export" txt :: IO (ExportSetting)
-fillInSetting :: forall a. (ToDhall a, FromDhall a, DefaultValue a) => Text -> Text -> IO a
+fillInSetting :: forall a. (ToDhall a, FromDhall a, HasDefaultValue a) => Text -> Text -> IO a
 fillInSetting name txt = input auto $ T.concat ["(", "{", name, " = ", toDhallText (defaultValue @a), "}", " // ", txt, ")", ".", name]
 
 -- 設定を読み込む

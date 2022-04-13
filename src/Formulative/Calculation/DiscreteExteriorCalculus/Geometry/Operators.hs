@@ -36,8 +36,8 @@ simplexToPositionMat ::
   AllPointDataPrimal0 nEuc p a ->
   Simplex k ->
   PositionMatrix nEuc k a
-simplexToPositionMat (MkAllPointDataPrimal0 vec) (MkSimplex s) =
-  MkPositionMatrix mat
+simplexToPositionMat (AllPointDataPrimal0 vec) (Simplex s) =
+  PositionMatrix mat
  where
   f v i = mapG (`unsafeIndex` i) v
   vec' = mapG (f vec) s
@@ -53,7 +53,7 @@ simplexToPositionMat (MkAllPointDataPrimal0 vec) (MkSimplex s) =
 -- ] .@. [x0,x1,x2]
 -- = [x1-x0,x2-x0]
 positionsMatRelative :: forall n k a. (KnownNat n, KnownNat k, 1 <= k, Additive a, E.Elem a) => PositionMatrix n k a -> PositionMatrix n (k - 1) a
-positionsMatRelative (MkPositionMatrix mat) = MkPositionMatrix $ mat' .@. mat
+positionsMatRelative (PositionMatrix mat) = PositionMatrix $ mat' .@. mat
  where
   f (i, j) x
     | j == 0 = -1
@@ -77,7 +77,7 @@ primalVolumeInternal' ::
   a
 primalVolumeInternal' mat s = recip (factorialNum kInt) * (sqrt . det $ mat' .@. transpose mat')
  where
-  mat' = unMkPositionMatrix $ positionsMatRelative $ simplexToPositionMat mat s
+  mat' = unPositionMatrix $ positionsMatRelative $ simplexToPositionMat mat s
   kInt = natToInt (Proxy :: Proxy k)
 
 primalVolume0Internal ::
@@ -145,7 +145,7 @@ convertToMatrixE = fromList . toList . mapG toList
 -- add zero
 -- [v0,v1,v2] -> [v0,v1,v2,0]
 addZeroPosMat :: forall n k a. (KnownNat k, E.Elem a, MSS.Zero a, KnownNat n) => PositionMatrix n k a -> PositionMatrix n (k + 1) a
-addZeroPosMat (MkPositionMatrix sMat) = MkPositionMatrix $ (identity :: GMatrixContainer (k + 2) (k + 1) a) .@. sMat
+addZeroPosMat (PositionMatrix sMat) = PositionMatrix $ (identity :: GMatrixContainer (k + 2) (k + 1) a) .@. sMat
 
 -- generate the following matrix from vectors:
 -- Ax = b,
@@ -168,9 +168,9 @@ addZeroPosMat (MkPositionMatrix sMat) = MkPositionMatrix $ (identity :: GMatrixC
 -- Bell, Hirani 2011 https://arxiv.org/abs/1103.3076v2
 -- http://mtao.graphics/2017-11-03-simpliical-circumcenters.html
 circumcenterAMat :: forall n k a. (E.Elem a, MSS.Zero a, KnownNat n, KnownNat k) => PositionMatrix n k a -> GMatrixContainer (k + 2) (k + 2) a
-circumcenterAMat (MkPositionMatrix sMat) = sMat'''
+circumcenterAMat (PositionMatrix sMat) = sMat'''
  where
-  sMat' = unMkPositionMatrix $ addZeroPosMat (MkPositionMatrix sMat)
+  sMat' = unPositionMatrix $ addZeroPosMat (PositionMatrix sMat)
   sMat'' = sMat' .@. transpose sMat'
   sMat''' = imap f sMat''
   kInt = natToInt (Proxy :: Proxy k)
@@ -188,7 +188,7 @@ circumcenterAMat (MkPositionMatrix sMat) = sMat'''
 --       1
 --      ]
 circumcenterbVec :: forall n k a. (Field a, E.Elem a, MSS.Zero a, KnownNat n, KnownNat k) => PositionMatrix n k a -> GMatrixContainer (k + 2) 1 a
-circumcenterbVec (MkPositionMatrix mat) = imap f $ (identity :: GMatrixContainer (k + 2) (k + 1) a) .@. mat .^ 2 .@. (one :: GMatrixContainer n 1 a)
+circumcenterbVec (PositionMatrix mat) = imap f $ (identity :: GMatrixContainer (k + 2) (k + 1) a) .@. mat .^ 2 .@. (one :: GMatrixContainer n 1 a)
  where
   kInt = natToInt (Proxy :: Proxy k)
   f (i, j) x
@@ -211,7 +211,7 @@ circumcenterInternalUnsafe ::
   ) =>
   PositionMatrix n k a ->
   (BarycentricCoordinate (k + 1) a, Circumcenter n a, Circumradius a)
-circumcenterInternalUnsafe sMat = (MkBarycentricCoordinate x', MkCircumcenter bx, MkCircumradius r)
+circumcenterInternalUnsafe sMat = (BarycentricCoordinate x', Circumcenter bx, Circumradius r)
  where
   a = circumcenterAMat sMat
   b = circumcenterbVec sMat
@@ -220,7 +220,7 @@ circumcenterInternalUnsafe sMat = (MkBarycentricCoordinate x', MkCircumcenter bx
   x' = (identity :: GMatrixContainer (k + 1) (k + 2) a) .@. x
   kInt = natToInt (Proxy :: Proxy k)
   q = unsafeIndexMat x (kInt + 1, 0)
-  bx = transpose x' .@. unMkPositionMatrix sMat
+  bx = transpose x' .@. unPositionMatrix sMat
   r = sqrt $ q .+. bx <.> bx
 
 -- dualVolume :: forall n l k. Simplices (n-k) l ->

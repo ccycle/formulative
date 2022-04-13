@@ -26,13 +26,13 @@ import Path.IO
 -- eigenTest :: forall n. KnownNat n => ES.SparseMatrix n n Double -> ES.SparseMatrix n n Double
 -- eigenTest x = x .*. x
 
-newtype ConfigTest1 = MkConfigTest1 String
-newtype ConfigTest2 = MkConfigTest2 String
-newtype ConfigTest3 = MkConfigTest3 String
-newtype ConfigTest4 = MkConfigTest4 String
-newtype ConfigTest5 = MkConfigTest5 String
+newtype ConfigTest1 = ConfigTest1 String
+newtype ConfigTest2 = ConfigTest2 String
+newtype ConfigTest3 = ConfigTest3 String
+newtype ConfigTest4 = ConfigTest4 String
+newtype ConfigTest5 = ConfigTest5 String
 
-data EnvTest = MkEnvTest
+data EnvTest = EnvTest
     { test1 :: ConfigTest1
     , test2 :: ConfigTest2
     , test3 :: ConfigTest3
@@ -41,19 +41,19 @@ data EnvTest = MkEnvTest
     }
 
 runTest
-    ( MkEnvTest
-            (MkConfigTest1 test1)
-            (MkConfigTest2 test2)
-            (MkConfigTest3 test3)
-            (MkConfigTest4 test4)
-            (MkConfigTest5 test5)
+    ( EnvTest
+            (ConfigTest1 test1)
+            (ConfigTest2 test2)
+            (ConfigTest3 test3)
+            (ConfigTest4 test4)
+            (ConfigTest5 test5)
         ) =
         runReader
-            (MkConfigTest1 test1)
-            . runReader (MkConfigTest2 test2)
-            . runReader (MkConfigTest3 test3)
-            . runReader (MkConfigTest4 test4)
-            . runReader (MkConfigTest5 test5)
+            (ConfigTest1 test1)
+            . runReader (ConfigTest2 test2)
+            . runReader (ConfigTest3 test3)
+            . runReader (ConfigTest4 test4)
+            . runReader (ConfigTest5 test5)
 effTest ::
     ( Monad m
     , Algebra sig m
@@ -65,19 +65,19 @@ effTest ::
     ) =>
     m [Char]
 effTest = do
-    MkConfigTest1 t1 <- ask
-    MkConfigTest2 t2 <- ask
-    MkConfigTest3 t3 <- ask
-    MkConfigTest4 t4 <- ask
-    MkConfigTest5 t5 <- ask
+    ConfigTest1 t1 <- ask
+    ConfigTest2 t2 <- ask
+    ConfigTest3 t3 <- ask
+    ConfigTest4 t4 <- ask
+    ConfigTest5 t5 <- ask
     return $ concat [t1, t2, t3, t4, t5]
 
 -- actionTest
-defaultEnvTest = MkEnvTest (MkConfigTest1 "test1") (MkConfigTest2 "test2") (MkConfigTest3 "test3") (MkConfigTest4 "test4") (MkConfigTest5 "test5")
+defaultEnvTest = EnvTest (ConfigTest1 "test1") (ConfigTest2 "test2") (ConfigTest3 "test3") (ConfigTest4 "test4") (ConfigTest5 "test5")
 runEffTest1 str = run $ runTest str effTest
 effTest2 :: (Monad m, Member (Reader EnvTest) sig, Algebra sig m) => m [Char]
 effTest2 = do
-    MkEnvTest (MkConfigTest1 t1) (MkConfigTest2 t2) (MkConfigTest3 t3) (MkConfigTest4 t4) (MkConfigTest5 t5) <- ask
+    EnvTest (ConfigTest1 t1) (ConfigTest2 t2) (ConfigTest3 t3) (ConfigTest4 t4) (ConfigTest5 t5) <- ask
     return $ concat [t1, t2, t3, t4, t5]
 runEffTest2 str = run $ runReader @EnvTest str effTest2
 

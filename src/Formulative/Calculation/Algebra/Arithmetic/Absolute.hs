@@ -11,8 +11,8 @@ class (Ring a) => Absolute a where
     signum' :: a -> a
 
 instance (Num a) => Absolute (MyNum a) where
-    abs' = MkMyNum . Prelude.abs . unMkMyNum
-    signum' = MkMyNum . Prelude.signum . unMkMyNum
+    abs' = MyNum . Prelude.abs . unMyNum
+    signum' = MyNum . Prelude.signum . unMyNum
 
 deriving via (MyNum Double) instance Absolute Double
 deriving via (MyNum Float) instance Absolute Float
@@ -21,8 +21,8 @@ deriving via (MyNum Integer) instance Absolute Integer
 
 -- applicative
 instance (Absolute a, Applicative m) => Absolute (MyApplicative m a) where
-    abs' = MkMyApplicative . fmap abs' . unMkMyApplicative
-    signum' = MkMyApplicative . fmap signum' . unMkMyApplicative
+    abs' = MyApplicative . fmap abs' . unMyApplicative
+    signum' = MyApplicative . fmap signum' . unMyApplicative
 
 deriving via (MyApplicative IO a) instance (Absolute a) => Absolute (IO a)
 deriving via (MyApplicative Maybe a) instance (Absolute a) => Absolute (Maybe a)

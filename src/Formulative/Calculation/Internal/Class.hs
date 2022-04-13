@@ -48,7 +48,7 @@ class HasGradPenaltyM m a where
 class (HasInitialConditionM m a) => HasUpdateM m a where
     updateM :: a -> m a
 
-newtype Variable a = MkVariable a
+newtype Variable a = Variable a
 
 class HasDependentVariableGlobalM m a where
     type DependentVariableGlobalType a :: *

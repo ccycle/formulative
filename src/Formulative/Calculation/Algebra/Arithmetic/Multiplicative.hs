@@ -57,8 +57,8 @@ instance Multiplicative a => GMultiplicative (K1 i a) where
     gOne = K1 one
 
 instance (Num a) => Multiplicative (MyNum a) where
-    one = MkMyNum 1
-    (MkMyNum a) .*. (MkMyNum b) = MkMyNum (a * b)
+    one = MyNum 1
+    (MyNum a) .*. (MyNum b) = MyNum (a * b)
 
 deriving via (MyNum Int) instance Multiplicative Int
 deriving via (MyNum Integer) instance Multiplicative Integer
@@ -76,8 +76,8 @@ instance Multiplicative Bool where
     (.*.) = (&&)
 
 instance (Multiplicative a, Applicative m) => Multiplicative (MyApplicative m a) where
-    (.*.) (MkMyApplicative a) (MkMyApplicative b) = MkMyApplicative (liftA2 (.*.) a b)
-    one = MkMyApplicative (pure one)
+    (.*.) (MyApplicative a) (MyApplicative b) = MyApplicative (liftA2 (.*.) a b)
+    one = MyApplicative (pure one)
 
 deriving via (MyNum Expr) instance Multiplicative Expr
 deriving via (MyApplicative (VS.Vector n) a) instance (KnownNat n, Multiplicative a) => Multiplicative (VS.Vector n a)

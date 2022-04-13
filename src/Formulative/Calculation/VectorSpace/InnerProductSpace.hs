@@ -31,7 +31,7 @@ instance (GInnerProductSpace f, GInnerProductSpace g, GScalar g ~ GScalar f, Add
     (<..>) (x :*: y) (z :*: w) = (<..>) x z .+. (<..>) y w
 
 instance (Num a) => InnerProductSpace (MyNum a) where
-    (MkMyNum a) <.> (MkMyNum b) = a * b
+    (MyNum a) <.> (MyNum b) = a * b
 
 deriving via (MyNum Int) instance InnerProductSpace Int
 deriving via (MyNum Integer) instance InnerProductSpace Integer
@@ -40,7 +40,7 @@ deriving via (MyNum Double) instance InnerProductSpace Double
 deriving via (MyNum Float) instance InnerProductSpace Float
 
 instance {-# OVERLAPS #-} (VectorSpace a, Multiplicative a, Applicative m, Foldable m) => InnerProductSpace (MyApplicative m a) where
-    (<.>) (MkMyApplicative x) (MkMyApplicative y) = foldl' (.+.) (zero) (liftA2 (.*.) x y)
+    (<.>) (MyApplicative x) (MyApplicative y) = foldl' (.+.) (zero) (liftA2 (.*.) x y)
 
 deriving via (MyApplicative (VS.Vector n) a) instance (Multiplicative a, VectorSpace a, KnownNat n) => InnerProductSpace (VS.Vector n a)
 

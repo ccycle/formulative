@@ -34,9 +34,9 @@ class (AdditiveGroup a, Rng a) => Ring a
 -- -- deriving instance
 instance (Num a) => Ring (MyNum a)
 
--- fromInteger = MkMyNum . Prelude.fromInteger
+-- fromInteger = MyNum . Prelude.fromInteger
 
--- fromInteger = MkMyApplicative . pure . fromInteger
+-- fromInteger = MyApplicative . pure . fromInteger
 
 deriving via (MyNum Word) instance Ring Word
 deriving via (MyNum Int) instance Ring Int

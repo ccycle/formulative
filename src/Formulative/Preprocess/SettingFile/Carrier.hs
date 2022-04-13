@@ -41,7 +41,7 @@ runSettingFileIO ::
     forall a sig m b.
     ( Algebra sig m
     , Member (Lift IO) sig
-    , DefaultValue a
+    , HasDefaultValue a
     , Hashable a
     , FromDhall a
     , ToDhall a

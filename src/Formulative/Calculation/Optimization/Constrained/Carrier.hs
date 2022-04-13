@@ -36,7 +36,7 @@ instance (Algebra sig m) => Algebra (ConstrainedSystem a :+: sig) (ConstrainedSy
         R other -> ConstrainedSystemC (alg (runConstrainedSystemC . hdl) (R (R other)) ctx)
 
 runConstrainedSystem r =
-    runReader r . evalState (MkLagrangianMultiplier zero) . runConstrainedSystemC
+    runReader r . evalState (LagrangianMultiplier zero) . runConstrainedSystemC
 
 -- Carrier 2: IO
 -- ./setting.dhallから読み込む

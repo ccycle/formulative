@@ -22,7 +22,7 @@ import Formulative.Preprocess.SettingFile.Effect
 import Path
 
 exportVariableStatic x = do
-    MkOutputDir parentDir <- askOutputDir
+    OutputDir parentDir <- askOutputDir
     ensureDirOutputM
     -- let x' = toList (toNamedRecord x)
     let x' = V.zip (headerOrder x) (toRecords x)
