@@ -2,6 +2,7 @@
 .stack-work-profile/
 *~
 
+*.prof
 *.lock
 *.cabal
 .VSCodeCounter/
