@@ -11,12 +11,6 @@ import Formulative.Preprocess.DefaultValue
 import GHC.Generics
 import Path
 
-class HasRecordField a b where
-    getRecordField :: a -> b
-
-instance HasRecordField a a where
-    getRecordField = id
-
 -- TODO: add VTU
 data ExportFormat = CSV
     deriving stock (Generic, Show, Eq)
