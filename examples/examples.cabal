@@ -129,7 +129,109 @@ executable harmonic-oscillator
   other-modules:
       Paths_examples
   hs-source-dirs:
-      harmonic-oscillator/app
+      equations/harmonic-oscillator/app
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      BinaryLiterals
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveDataTypeable
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingVia
+      DoAndIfThenElse
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternGuards
+      PolyKinds
+      RankNTypes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      StrictData
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      TypeSynonymInstances
+      ViewPatterns
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      Only
+    , ad
+    , aeson
+    , attoparsec
+    , base >=4.7 && <5
+    , base-noprelude
+    , bytestring
+    , cassava
+    , constraints
+    , containers
+    , dhall
+    , eigen
+    , exact-combinatorics
+    , examples
+    , finite-field
+    , finite-typelits
+    , formulative
+    , fused-effects
+    , ghc-prim
+    , ghc-typelits-knownnat
+    , ghc-typelits-natnormalise
+    , hashable
+    , lens
+    , matrix-sized
+    , megaparsec
+    , numeric-limits
+    , optparse-applicative
+    , path
+    , path-io
+    , physics
+    , prettyprinter
+    , refined
+    , reflection
+    , replace-megaparsec
+    , rio
+    , safe-exceptions
+    , scientific
+    , simple-reflect
+    , singletons
+    , string-conversions
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , text
+    , turtle
+    , unordered-containers
+    , vector
+    , vector-algorithms
+    , vector-sized
+  default-language: Haskell2010
+
+executable harmonic-van-der-Pol-oscillator
+  main-is: Main.hs
+  other-modules:
+      Paths_examples
+  hs-source-dirs:
+      equations/van-der-Pol-oscillator/app
   default-extensions:
       ApplicativeDo
       BangPatterns
@@ -231,110 +333,7 @@ executable particle-on-paraboloid
   other-modules:
       Paths_examples
   hs-source-dirs:
-      particle-on-paraboloid/app
-  default-extensions:
-      ApplicativeDo
-      BangPatterns
-      BinaryLiterals
-      ConstraintKinds
-      DataKinds
-      DefaultSignatures
-      DeriveDataTypeable
-      DeriveFoldable
-      DeriveFunctor
-      DeriveGeneric
-      DeriveTraversable
-      DerivingVia
-      DoAndIfThenElse
-      EmptyDataDecls
-      ExistentialQuantification
-      FlexibleContexts
-      FlexibleInstances
-      FunctionalDependencies
-      GADTs
-      GeneralizedNewtypeDeriving
-      InstanceSigs
-      KindSignatures
-      LambdaCase
-      MultiParamTypeClasses
-      MultiWayIf
-      NamedFieldPuns
-      OverloadedStrings
-      PartialTypeSignatures
-      PatternGuards
-      PolyKinds
-      RankNTypes
-      RecordWildCards
-      ScopedTypeVariables
-      StandaloneDeriving
-      StrictData
-      TupleSections
-      TypeApplications
-      TypeFamilies
-      TypeOperators
-      TypeSynonymInstances
-      ViewPatterns
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
-  build-depends:
-      Only
-    , ad
-    , aeson
-    , attoparsec
-    , base >=4.7 && <5
-    , base-noprelude
-    , bytestring
-    , cassava
-    , constraints
-    , containers
-    , dhall
-    , eigen
-    , exact-combinatorics
-    , examples
-    , finite-field
-    , finite-typelits
-    , formulative
-    , fused-effects
-    , ghc-prim
-    , ghc-typelits-knownnat
-    , ghc-typelits-natnormalise
-    , hashable
-    , lens
-    , matrix-sized
-    , megaparsec
-    , numeric-limits
-    , optparse-applicative
-    , path
-    , path-io
-    , physics
-    , prettyprinter
-    , refined
-    , reflection
-    , replace-megaparsec
-    , rio
-    , safe-exceptions
-    , scientific
-    , simple-reflect
-    , singletons
-    , string-conversions
-    , tasty
-    , tasty-hunit
-    , tasty-quickcheck
-    , template-haskell
-    , text
-    , turtle
-    , unordered-containers
-    , vector
-    , vector-algorithms
-    , vector-sized
-  default-language: Haskell2010
-
-test-suite examples-test
-  type: exitcode-stdio-1.0
-  main-is: Spec.hs
-  other-modules:
-      Paths_examples
-  hs-source-dirs:
-      test
+      equations/particle-on-paraboloid/app
   default-extensions:
       ApplicativeDo
       BangPatterns

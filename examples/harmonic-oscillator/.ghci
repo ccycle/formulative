@@ -1,9 +1,0 @@
-:set prompt ">>> "
-:set +s
-:set -XDataKinds
-:set -XOverloadedStrings
-:set -XTypeApplications
-:set -XFlexibleContexts
-:set -XTypeFamilies
-:set -XTemplateHaskell
-:set -XQuasiQuotes

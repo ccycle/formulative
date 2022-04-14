@@ -84,9 +84,6 @@ build:
   haddock-hyperlink-source: true
 
 ghc-options:
-  "$everything": "-O2"
-# profiling
-# apply-ghc-options: everything
-# rebuild-ghc-options: true
+  "$everything": "-O2 -dynamic"
 
-# work-dir: "../.stack-work/"
+work-dir: ".stack-work"

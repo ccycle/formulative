@@ -115,12 +115,13 @@ default-extensions:
 
 
 library:
-  source-dirs: src
+  source-dirs:
+  - src
 
 executables:
   particle-on-paraboloid:
     main:                Main.hs
-    source-dirs:         particle-on-paraboloid/app
+    source-dirs:         equations/particle-on-paraboloid/app
     ghc-options:
     - -threaded
     - -rtsopts
@@ -129,20 +130,20 @@ executables:
     - examples
   harmonic-oscillator:
     main:                Main.hs
-    source-dirs:         harmonic-oscillator/app
+    source-dirs:         equations/harmonic-oscillator/app
     ghc-options:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
     - examples
-tests:
-  examples-test:
-    main:                Spec.hs
-    source-dirs:         test
+  harmonic-van-der-Pol-oscillator:
+    main:                Main.hs
+    source-dirs:         equations/van-der-Pol-oscillator/app
     ghc-options:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
     - examples
+

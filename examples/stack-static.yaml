@@ -31,7 +31,7 @@ resolver:
 #   - wai
 packages:
   - .
-  - ../../../formulative
+  - ../../formulative
 # Dependency packages to be pulled from upstream that are not in the resolver.
 # These entries can reference officially published versions as well as
 # forks / in-progress versions pinned to a git hash. For example:
@@ -83,5 +83,9 @@ build:
   haddock-internal: false
   haddock-hyperlink-source: true
 
+local-bin-path: "./bin"
+
 ghc-options:
   "$everything": "-O2"
+
+work-dir: ".stack-work-static"

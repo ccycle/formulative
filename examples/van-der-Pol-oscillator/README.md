@@ -1,1 +1,0 @@
-# van-der-Pol-oscillator
