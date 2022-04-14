@@ -1,0 +1,1062 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--
+-- see: https://github.com/sol/hpack
+
+name:           formulative
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/formulative#readme>
+homepage:       https://github.com/githubuser/formulative#readme
+bug-reports:    https://github.com/githubuser/formulative/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2021 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/formulative
+
+library
+  exposed-modules:
+      Formulative.Calculation.Algebra.Arithmetic.Absolute
+      Formulative.Calculation.Algebra.Arithmetic.Additive
+      Formulative.Calculation.Algebra.Arithmetic.AdditiveGroup
+      Formulative.Calculation.Algebra.Arithmetic.Class
+      Formulative.Calculation.Algebra.Arithmetic.Div
+      Formulative.Calculation.Algebra.Arithmetic.Field
+      Formulative.Calculation.Algebra.Arithmetic.Mul
+      Formulative.Calculation.Algebra.Arithmetic.Multiplicative
+      Formulative.Calculation.Algebra.Arithmetic.RealRing
+      Formulative.Calculation.Algebra.Arithmetic.Ring
+      Formulative.Calculation.Algebra.Arithmetic.Rng
+      Formulative.Calculation.Algebra.Arithmetic.Transcendental
+      Formulative.Calculation.Algebra.ComplexNumber
+      Formulative.Calculation.Algebra.DiscreteVariation
+      Formulative.Calculation.Algebra.DualNumber
+      Formulative.Calculation.Algebra.HyperComplex
+      Formulative.Calculation.Algebra.MaxPlus
+      Formulative.Calculation.Algebra.SetTheory.FiniteField
+      Formulative.Calculation.Algebra.SetTheory.Group
+      Formulative.Calculation.Algebra.SetTheory.Set
+      Formulative.Calculation.Calculus.Series
+      Formulative.Calculation.Calculus.Variation
+      Formulative.Calculation.DifferentialEquation.Dynamics.Carrier
+      Formulative.Calculation.DifferentialEquation.Dynamics.Effect
+      Formulative.Calculation.DifferentialEquation.TimeEvolution
+      Formulative.Calculation.DifferentialEquation.Types
+      Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Operators
+      Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Operators.Geometry
+      Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Operators.Homology
+      Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
+      Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
+      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Carrier
+      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Effect
+      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Operators
+      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Submanifold.Operators
+      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Submanifold.Types
+      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Types
+      Formulative.Calculation.DiscreteExteriorCalculus.Homology.Carrier
+      Formulative.Calculation.DiscreteExteriorCalculus.Homology.Effect
+      Formulative.Calculation.DiscreteExteriorCalculus.Homology.Operators
+      Formulative.Calculation.DiscreteExteriorCalculus.Homology.Types
+      Formulative.Calculation.Internal.Class
+      Formulative.Calculation.Internal.DerivingPrelude
+      Formulative.Calculation.Internal.DerivingPrelude.Floating
+      Formulative.Calculation.Internal.DerivingPrelude.Fractional
+      Formulative.Calculation.Internal.DerivingPrelude.Num
+      Formulative.Calculation.Internal.Infix
+      Formulative.Calculation.Internal.List
+      Formulative.Calculation.Internal.Setting
+      Formulative.Calculation.Internal.Singletons
+      Formulative.Calculation.Internal.TH
+      Formulative.Calculation.Internal.TypeLevelList
+      Formulative.Calculation.Internal.TypeLevelNatural
+      Formulative.Calculation.Internal.Types
+      Formulative.Calculation.Matrix.Class
+      Formulative.Calculation.Matrix.Solve
+      Formulative.Calculation.Optimization.AugmentedLagrangian
+      Formulative.Calculation.Optimization.Carrier
+      Formulative.Calculation.Optimization.Constrained.Carrier
+      Formulative.Calculation.Optimization.Constrained.Effect
+      Formulative.Calculation.Optimization.Effect
+      Formulative.Calculation.Optimization.LBFGS
+      Formulative.Calculation.Optimization.LineSearch
+      Formulative.Calculation.Optimization.Parameter
+      Formulative.Calculation.Optimization.Update
+      Formulative.Calculation.Physics.Units.Planck
+      Formulative.Calculation.Physics.Units.SI
+      Formulative.Calculation.VectorSpace.Class
+      Formulative.Calculation.VectorSpace.InnerProductSpace
+      Formulative.Calculation.VectorSpace.LocalInnerProductSpace
+      Formulative.Calculation.VectorSpace.NormSpace
+      Formulative.Calculation.VectorSpace.Tensor
+      Formulative.Calculation.VectorSpace.VectorSpace
+      Formulative.Internal.ReExport.Carrier
+      Formulative.Internal.ReExport.Effect
+      Formulative.Postprocess.Export.Carrier
+      Formulative.Postprocess.Export.Class
+      Formulative.Postprocess.Export.CSV
+      Formulative.Postprocess.Export.Dynamics
+      Formulative.Postprocess.Export.Effect
+      Formulative.Postprocess.Export.Path
+      Formulative.Postprocess.Export.Statics
+      Formulative.Postprocess.Export.ToRecords
+      Formulative.Postprocess.Export.Types
+      Formulative.Postprocess.Export.VTU
+      Formulative.Postprocess.Organization
+      Formulative.Preprocess.CommandLineOptions
+      Formulative.Preprocess.DefaultValue
+      Formulative.Preprocess.DiscreteExteriorCalculus.CheckMesh
+      Formulative.Preprocess.DiscreteExteriorCalculus.Read
+      Formulative.Preprocess.Exception
+      Formulative.Preprocess.MakeDirectory
+      Formulative.Preprocess.ReadFile
+      Formulative.Preprocess.ReadSetting
+      Formulative.Preprocess.SettingFile.Carrier
+      Formulative.Preprocess.SettingFile.Effect
+  other-modules:
+      CustomPrelude
+  hs-source-dirs:
+      src
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      BinaryLiterals
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveDataTypeable
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingVia
+      DoAndIfThenElse
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternGuards
+      PolyKinds
+      RankNTypes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      StrictData
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      TypeSynonymInstances
+      ViewPatterns
+  build-depends:
+      Only
+    , ad
+    , aeson
+    , attoparsec
+    , base >=4.7 && <5
+    , base-noprelude
+    , bytestring
+    , cassava
+    , constraints
+    , containers
+    , dhall
+    , eigen
+    , exact-combinatorics
+    , finite-field
+    , finite-typelits
+    , fused-effects
+    , ghc-prim
+    , ghc-typelits-knownnat
+    , ghc-typelits-natnormalise
+    , hashable
+    , lens
+    , matrix-sized
+    , megaparsec
+    , numeric-limits
+    , optparse-applicative
+    , path
+    , path-io
+    , physics
+    , prettyprinter
+    , refined
+    , reflection
+    , replace-megaparsec
+    , rio
+    , safe-exceptions
+    , scientific
+    , simple-reflect
+    , singletons
+    , string-conversions
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , text
+    , turtle
+    , unordered-containers
+    , vector
+    , vector-algorithms
+    , vector-sized
+  default-language: Haskell2010
+
+executable preprocess
+  main-is: Preprocess.hs
+  hs-source-dirs:
+      app
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      BinaryLiterals
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveDataTypeable
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingVia
+      DoAndIfThenElse
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternGuards
+      PolyKinds
+      RankNTypes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      StrictData
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      TypeSynonymInstances
+      ViewPatterns
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -O2
+  build-depends:
+      Only
+    , ad
+    , aeson
+    , attoparsec
+    , base >=4.7 && <5
+    , base-noprelude
+    , bytestring
+    , cassava
+    , constraints
+    , containers
+    , dhall
+    , eigen
+    , exact-combinatorics
+    , finite-field
+    , finite-typelits
+    , formulative
+    , fused-effects
+    , ghc-prim
+    , ghc-typelits-knownnat
+    , ghc-typelits-natnormalise
+    , hashable
+    , lens
+    , matrix-sized
+    , megaparsec
+    , numeric-limits
+    , optparse-applicative
+    , path
+    , path-io
+    , physics
+    , prettyprinter
+    , refined
+    , reflection
+    , replace-megaparsec
+    , rio
+    , safe-exceptions
+    , scientific
+    , simple-reflect
+    , singletons
+    , string-conversions
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , text
+    , turtle
+    , unordered-containers
+    , vector
+    , vector-algorithms
+    , vector-sized
+  default-language: Haskell2010
+
+test-suite formulative-tasty
+  type: exitcode-stdio-1.0
+  main-is: Tasty.hs
+  other-modules:
+      Test.Adjacency
+      Test.DefineNewEffect
+      Test.Dhall
+      Test.EigenSparseMatrixTest
+      Test.Factorial
+      Test.FusedEffect
+      Test.GenericsTest
+      Test.Geometry
+      Test.Homology
+      Test.KnownNatSolver
+      Test.Matrix
+      Test.MonoidInstance
+      Test.NonHomogeneousProd
+      Test.Optimization.AugmentedLagrangian
+      Test.Optimization.LBFGS
+      Test.Physics
+      Test.RebindableSyntax
+      Test.RefineException
+      Test.Refl
+      Test.SingletonTest
+      Test.TastyTest
+      Test.TH
+      Test.ToRecord
+      Test.Turtle
+      Test.VectorSpace.InnerProductSpace
+      Paths_formulative
+  hs-source-dirs:
+      test-tasty
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      BinaryLiterals
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveDataTypeable
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingVia
+      DoAndIfThenElse
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternGuards
+      PolyKinds
+      RankNTypes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      StrictData
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      TypeSynonymInstances
+      ViewPatterns
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      Only
+    , ad
+    , aeson
+    , attoparsec
+    , base >=4.7 && <5
+    , base-noprelude
+    , bytestring
+    , cassava
+    , constraints
+    , containers
+    , dhall
+    , eigen
+    , exact-combinatorics
+    , finite-field
+    , finite-typelits
+    , formulative
+    , fused-effects
+    , ghc-prim
+    , ghc-typelits-knownnat
+    , ghc-typelits-natnormalise
+    , hashable
+    , lens
+    , matrix-sized
+    , megaparsec
+    , numeric-limits
+    , optparse-applicative
+    , path
+    , path-io
+    , physics
+    , prettyprinter
+    , refined
+    , reflection
+    , replace-megaparsec
+    , rio
+    , safe-exceptions
+    , scientific
+    , simple-reflect
+    , singletons
+    , string-conversions
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , text
+    , turtle
+    , unordered-containers
+    , vector
+    , vector-algorithms
+    , vector-sized
+  default-language: Haskell2010
+
+test-suite formulative-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_formulative
+  hs-source-dirs:
+      test
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      BinaryLiterals
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveDataTypeable
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingVia
+      DoAndIfThenElse
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternGuards
+      PolyKinds
+      RankNTypes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      StrictData
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      TypeSynonymInstances
+      ViewPatterns
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      Only
+    , ad
+    , aeson
+    , attoparsec
+    , base >=4.7 && <5
+    , base-noprelude
+    , bytestring
+    , cassava
+    , constraints
+    , containers
+    , dhall
+    , eigen
+    , exact-combinatorics
+    , finite-field
+    , finite-typelits
+    , formulative
+    , fused-effects
+    , ghc-prim
+    , ghc-typelits-knownnat
+    , ghc-typelits-natnormalise
+    , hashable
+    , lens
+    , matrix-sized
+    , megaparsec
+    , numeric-limits
+    , optparse-applicative
+    , path
+    , path-io
+    , physics
+    , prettyprinter
+    , refined
+    , reflection
+    , replace-megaparsec
+    , rio
+    , safe-exceptions
+    , scientific
+    , simple-reflect
+    , singletons
+    , string-conversions
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , text
+    , turtle
+    , unordered-containers
+    , vector
+    , vector-algorithms
+    , vector-sized
+  default-language: Haskell2010
+
+benchmark Factorial
+  type: exitcode-stdio-1.0
+  main-is: Factorial.hs
+  other-modules:
+      Paths_formulative
+  hs-source-dirs:
+      benchmarks/Factorial
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      BinaryLiterals
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveDataTypeable
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingVia
+      DoAndIfThenElse
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternGuards
+      PolyKinds
+      RankNTypes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      StrictData
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      TypeSynonymInstances
+      ViewPatterns
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      Only
+    , ad
+    , aeson
+    , attoparsec
+    , base >=4.7 && <5
+    , base-noprelude
+    , bytestring
+    , cassava
+    , constraints
+    , containers
+    , criterion
+    , dhall
+    , eigen
+    , exact-combinatorics
+    , finite-field
+    , finite-typelits
+    , formulative
+    , fused-effects
+    , ghc-prim
+    , ghc-typelits-knownnat
+    , ghc-typelits-natnormalise
+    , hashable
+    , lens
+    , matrix-sized
+    , megaparsec
+    , numeric-limits
+    , optparse-applicative
+    , path
+    , path-io
+    , physics
+    , prettyprinter
+    , refined
+    , reflection
+    , replace-megaparsec
+    , rio
+    , safe-exceptions
+    , scientific
+    , simple-reflect
+    , singletons
+    , string-conversions
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , text
+    , turtle
+    , unordered-containers
+    , vector
+    , vector-algorithms
+    , vector-sized
+  default-language: Haskell2010
+
+benchmark MatrixMul
+  type: exitcode-stdio-1.0
+  main-is: MatrixMul.hs
+  other-modules:
+      Paths_formulative
+  hs-source-dirs:
+      benchmarks/MatrixMul
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      BinaryLiterals
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveDataTypeable
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingVia
+      DoAndIfThenElse
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternGuards
+      PolyKinds
+      RankNTypes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      StrictData
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      TypeSynonymInstances
+      ViewPatterns
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -O2
+  build-depends:
+      Only
+    , ad
+    , aeson
+    , attoparsec
+    , base >=4.7 && <5
+    , base-noprelude
+    , bytestring
+    , cassava
+    , constraints
+    , containers
+    , criterion
+    , dhall
+    , eigen
+    , exact-combinatorics
+    , finite-field
+    , finite-typelits
+    , formulative
+    , fused-effects
+    , ghc-prim
+    , ghc-typelits-knownnat
+    , ghc-typelits-natnormalise
+    , hashable
+    , lens
+    , matrix-sized
+    , megaparsec
+    , numeric-limits
+    , optparse-applicative
+    , path
+    , path-io
+    , physics
+    , prettyprinter
+    , refined
+    , reflection
+    , replace-megaparsec
+    , rio
+    , safe-exceptions
+    , scientific
+    , simple-reflect
+    , singletons
+    , string-conversions
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , text
+    , turtle
+    , unordered-containers
+    , vector
+    , vector-algorithms
+    , vector-sized
+  default-language: Haskell2010
+
+benchmark MatrixToVector
+  type: exitcode-stdio-1.0
+  main-is: MatrixToVector.hs
+  other-modules:
+      Paths_formulative
+  hs-source-dirs:
+      benchmarks/MatrixToVector
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      BinaryLiterals
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveDataTypeable
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingVia
+      DoAndIfThenElse
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternGuards
+      PolyKinds
+      RankNTypes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      StrictData
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      TypeSynonymInstances
+      ViewPatterns
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -O2
+  build-depends:
+      Only
+    , ad
+    , aeson
+    , attoparsec
+    , base >=4.7 && <5
+    , base-noprelude
+    , bytestring
+    , cassava
+    , constraints
+    , containers
+    , criterion
+    , dhall
+    , eigen
+    , exact-combinatorics
+    , finite-field
+    , finite-typelits
+    , formulative
+    , fused-effects
+    , ghc-prim
+    , ghc-typelits-knownnat
+    , ghc-typelits-natnormalise
+    , hashable
+    , lens
+    , matrix-sized
+    , megaparsec
+    , numeric-limits
+    , optparse-applicative
+    , path
+    , path-io
+    , physics
+    , prettyprinter
+    , refined
+    , reflection
+    , replace-megaparsec
+    , rio
+    , safe-exceptions
+    , scientific
+    , simple-reflect
+    , singletons
+    , string-conversions
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , text
+    , turtle
+    , unordered-containers
+    , vector
+    , vector-algorithms
+    , vector-sized
+  default-language: Haskell2010
+
+benchmark StackingEffects
+  type: exitcode-stdio-1.0
+  main-is: StackEffects.hs
+  other-modules:
+      Paths_formulative
+  hs-source-dirs:
+      benchmarks/FusedEffects
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      BinaryLiterals
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveDataTypeable
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingVia
+      DoAndIfThenElse
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternGuards
+      PolyKinds
+      RankNTypes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      StrictData
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      TypeSynonymInstances
+      ViewPatterns
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      Only
+    , ad
+    , aeson
+    , attoparsec
+    , base >=4.7 && <5
+    , base-noprelude
+    , bytestring
+    , cassava
+    , constraints
+    , containers
+    , criterion
+    , dhall
+    , eigen
+    , exact-combinatorics
+    , finite-field
+    , finite-typelits
+    , formulative
+    , fused-effects
+    , ghc-prim
+    , ghc-typelits-knownnat
+    , ghc-typelits-natnormalise
+    , hashable
+    , lens
+    , matrix-sized
+    , megaparsec
+    , numeric-limits
+    , optparse-applicative
+    , path
+    , path-io
+    , physics
+    , prettyprinter
+    , refined
+    , reflection
+    , replace-megaparsec
+    , rio
+    , safe-exceptions
+    , scientific
+    , simple-reflect
+    , singletons
+    , string-conversions
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , text
+    , turtle
+    , unordered-containers
+    , vector
+    , vector-algorithms
+    , vector-sized
+  default-language: Haskell2010
+
+benchmark UnsafeIndex
+  type: exitcode-stdio-1.0
+  main-is: UnsafeIndex.hs
+  other-modules:
+      Paths_formulative
+  hs-source-dirs:
+      benchmarks/UnsafeIndex
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      BinaryLiterals
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveDataTypeable
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingVia
+      DoAndIfThenElse
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternGuards
+      PolyKinds
+      RankNTypes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      StrictData
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      TypeSynonymInstances
+      ViewPatterns
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -O2
+  build-depends:
+      Only
+    , ad
+    , aeson
+    , attoparsec
+    , base >=4.7 && <5
+    , base-noprelude
+    , bytestring
+    , cassava
+    , constraints
+    , containers
+    , criterion
+    , dhall
+    , eigen
+    , exact-combinatorics
+    , finite-field
+    , finite-typelits
+    , formulative
+    , fused-effects
+    , ghc-prim
+    , ghc-typelits-knownnat
+    , ghc-typelits-natnormalise
+    , hashable
+    , lens
+    , matrix-sized
+    , megaparsec
+    , numeric-limits
+    , optparse-applicative
+    , path
+    , path-io
+    , physics
+    , prettyprinter
+    , refined
+    , reflection
+    , replace-megaparsec
+    , rio
+    , safe-exceptions
+    , scientific
+    , simple-reflect
+    , singletons
+    , string-conversions
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , text
+    , turtle
+    , unordered-containers
+    , vector
+    , vector-algorithms
+    , vector-sized
+  default-language: Haskell2010

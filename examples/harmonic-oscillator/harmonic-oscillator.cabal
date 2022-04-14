@@ -1,0 +1,227 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--
+-- see: https://github.com/sol/hpack
+
+name:           harmonic-oscillator
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/harmonic-oscillator#readme>
+homepage:       https://github.com/githubuser/harmonic-oscillator#readme
+bug-reports:    https://github.com/githubuser/harmonic-oscillator/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2022 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/harmonic-oscillator
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_harmonic_oscillator
+  hs-source-dirs:
+      src
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      BinaryLiterals
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveDataTypeable
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingVia
+      DoAndIfThenElse
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternGuards
+      PolyKinds
+      RankNTypes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      StrictData
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      TypeSynonymInstances
+      ViewPatterns
+  build-depends:
+      Only
+    , ad
+    , aeson
+    , attoparsec
+    , base >=4.7 && <5
+    , base-noprelude
+    , bytestring
+    , cassava
+    , constraints
+    , containers
+    , dhall
+    , eigen
+    , exact-combinatorics
+    , finite-field
+    , finite-typelits
+    , formulative
+    , fused-effects
+    , ghc-prim
+    , ghc-typelits-knownnat
+    , ghc-typelits-natnormalise
+    , hashable
+    , lens
+    , matrix-sized
+    , megaparsec
+    , numeric-limits
+    , optparse-applicative
+    , path
+    , path-io
+    , physics
+    , prettyprinter
+    , refined
+    , reflection
+    , replace-megaparsec
+    , rio
+    , safe-exceptions
+    , scientific
+    , simple-reflect
+    , singletons
+    , string-conversions
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , text
+    , turtle
+    , unordered-containers
+    , vector
+    , vector-algorithms
+    , vector-sized
+  default-language: Haskell2010
+
+executable harmonic-oscillator
+  main-is: Main.hs
+  other-modules:
+      Paths_harmonic_oscillator
+  hs-source-dirs:
+      app
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      BinaryLiterals
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveDataTypeable
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingVia
+      DoAndIfThenElse
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternGuards
+      PolyKinds
+      RankNTypes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      StrictData
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      TypeSynonymInstances
+      ViewPatterns
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      Only
+    , ad
+    , aeson
+    , attoparsec
+    , base >=4.7 && <5
+    , base-noprelude
+    , bytestring
+    , cassava
+    , constraints
+    , containers
+    , dhall
+    , eigen
+    , exact-combinatorics
+    , finite-field
+    , finite-typelits
+    , formulative
+    , fused-effects
+    , ghc-prim
+    , ghc-typelits-knownnat
+    , ghc-typelits-natnormalise
+    , harmonic-oscillator
+    , hashable
+    , lens
+    , matrix-sized
+    , megaparsec
+    , numeric-limits
+    , optparse-applicative
+    , path
+    , path-io
+    , physics
+    , prettyprinter
+    , refined
+    , reflection
+    , replace-megaparsec
+    , rio
+    , safe-exceptions
+    , scientific
+    , simple-reflect
+    , singletons
+    , string-conversions
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , text
+    , turtle
+    , unordered-containers
+    , vector
+    , vector-algorithms
+    , vector-sized
+  default-language: Haskell2010

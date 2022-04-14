@@ -4,7 +4,6 @@
 
 *.prof
 *.lock
-*.cabal
 .VSCodeCounter/
 memo.md
 bin/
