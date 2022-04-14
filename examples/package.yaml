@@ -1,6 +1,6 @@
-name:                particle-on-paraboloid
+name:                examples
 version:             0.1.0.0
-github:              "githubuser/particle-on-paraboloid"
+github:              "githubuser/examples"
 license:             BSD3
 author:              "Author name here"
 maintainer:          "example@example.com"
@@ -17,7 +17,7 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/particle-on-paraboloid#readme>
+description:         Please see the README on GitHub at <https://github.com/githubuser/examples#readme>
 
 dependencies:
 - formulative
@@ -70,9 +70,6 @@ dependencies:
 - vector-algorithms
 - vector-sized
 
-library:
-  source-dirs: src
-
 default-extensions:
 - ApplicativeDo
 - BangPatterns
@@ -116,13 +113,36 @@ default-extensions:
 - TypeSynonymInstances
 - ViewPatterns
 
+
+library:
+  source-dirs: src
+
 executables:
   particle-on-paraboloid:
     main:                Main.hs
-    source-dirs:         app
+    source-dirs:         particle-on-paraboloid/app
     ghc-options:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - particle-on-paraboloid
+    - examples
+  harmonic-oscillator:
+    main:                Main.hs
+    source-dirs:         harmonic-oscillator/app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - examples
+tests:
+  examples-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - examples
