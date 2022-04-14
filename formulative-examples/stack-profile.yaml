@@ -92,4 +92,4 @@ ghc-options:
 
 work-dir: ".stack-work-profile"
 
-local-bin-path: "./bin/profile"
+local-bin-path: "./profile-bin"

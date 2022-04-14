@@ -1,6 +1,6 @@
-name:                examples
+name:                formulative-examples
 version:             0.1.0.0
-github:              "githubuser/examples"
+github:              "githubuser/formulative-examples"
 license:             BSD3
 author:              "Author name here"
 maintainer:          "example@example.com"
@@ -17,7 +17,7 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/examples#readme>
+description:         Please see the README on GitHub at <https://github.com/githubuser/formulative-examples#readme>
 
 dependencies:
 - formulative
@@ -127,7 +127,7 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - examples
+    - formulative-examples
   harmonic-oscillator:
     main:                Main.hs
     source-dirs:         equations/harmonic-oscillator/app
@@ -136,8 +136,8 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - examples
-  harmonic-van-der-Pol-oscillator:
+    - formulative-examples
+  van-der-Pol-oscillator:
     main:                Main.hs
     source-dirs:         equations/van-der-Pol-oscillator/app
     ghc-options:
@@ -145,5 +145,5 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - examples
+    - formulative-examples
 
