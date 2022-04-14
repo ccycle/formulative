@@ -44,24 +44,25 @@ putStrLnM = sendIO . putStrLn
 --     toField x = toStrict . encode $ (Prelude.map (: []) . MSG.toList $ x)
 
 -- TODO: toStrictを使わない形に直す
-instance (ToField a, VST.Storable a, MSS.Zero a) => ToField (DECrepresentationMatrix n l c1 k1 c2 k2 a) where
-    toField (DECrepresentationMatrix mat) = BSL.toStrict . encode $ Prelude.map (: []) . MSG.toList $ mat
+-- instance (ToField a, VST.Storable a, MSS.Zero a) => ToField (DECrepresentationMatrix n l c1 k1 c2 k2 a) where
+--     toField (DECrepresentationMatrix mat) = BSL.toStrict . encode $ Prelude.map (: []) . MSG.toList $ mat
 
--- configで設定できるようにする
--- 相対パスの指定かautoか
--- 過去の計算結果をもとに再計算させるなどの使い方を想定
--- newtype OutputDir = OutputDir (Path Rel Dir)
---     deriving stock (Generic, Show, Eq)
--- exportSettingFile :: m ()
-exportSettingFile :: forall m sig. (Algebra sig m, Member Export sig, Member SettingFile sig, Member (Lift IO) sig) => m ()
+exportSettingFile ::
+    forall m sig.
+    ( Algebra sig m
+    , Member Export sig
+    , Member SettingFile sig
+    , Member (Lift IO) sig
+    ) =>
+    m ()
 exportSettingFile = do
     (OutputDir outputDir) <- askOutputDir
     (DhallSettingText x) <- askSettingFileText
-    sendIO $ putStrLn "Export setting file.."
+    putStrLnM "Export setting file.."
     sendIO $ ensureDir outputDir
     sName <- sendIO $ parseRelFile "setting.dhall"
     sendIO $ T.writeFile (toFilePath (outputDir </> sName)) x
-    sendIO $ putStrLn "Done."
+    putStrLnM "Done."
 
 exportDependentParameterFile ::
     forall a m sig.
@@ -77,32 +78,21 @@ exportDependentParameterFile = do
     let y = toDhallText x
     when (y /= toDhallText ()) $ do
         (OutputDir outputDir) <- askOutputDir
-        sendIO $ putStrLn "Export dependent parameter file.."
+        putStrLnM "Export dependent parameter file.."
         sendIO $ ensureDir outputDir
         sName <- sendIO $ parseRelFile "dependentParamater.dhall"
         sendIO $ T.writeFile (toFilePath (outputDir </> sName)) y
-        sendIO $ putStrLn "Done."
-
--- exportDhallSettingTextFile :: (Algebra sig m, Member (Lift IO) sig, Member SettingFile sig,
---  Member Export sig) => m ()
--- exportDhallSettingTextFile = do
---     (OutputDir outputDir) <- askOutputDir
---     (DhallSettingText x) <- askSettingFileText
---     sendIO $ putStrLn "Export setting file.."
---     sendIO $ ensureDir outputDir
---     sName <- sendIO $ parseRelFile "setting.dhall"
---     sendIO $ T.writeFile (toFilePath (outputDir </> sName)) x
---     sendIO $ putStrLn "Done."
+        putStrLnM "Done."
 
 -- 1ファイルに追記
 exportDependentVariableGlobal ::
     forall a sig m.
     ( Algebra sig m
-    , DefaultOrdered (DependentVariableGlobalType a)
-    , HasDependentVariableGlobalM m a
     , Member (Lift IO) sig
     , Member (Throw SomeException) sig
     , Member Export sig
+    , HasDependentVariableGlobalM m a
+    , DefaultOrdered (DependentVariableGlobalType a)
     , ToNamedRecord (DependentVariableGlobalType a)
     , ToRecord (DependentVariableGlobalType a)
     ) =>
@@ -144,9 +134,9 @@ removeDirRecurOutputM (OutputDir relDir) =
 -- TODO: logger作成
 warningForOverwrite :: (Has (Lift IO) sig m, Member (Throw SomeException) sig) => OutputDir -> m RecalculationOption
 warningForOverwrite (OutputDir dir) = do
-    sendIO $ putStrLn $ "[WARNING] The output directory (" <> toFilePath dir <> ") already exists: The calculation may have already been executed."
-    sendIO $ putStrLn ""
-    sendIO $ putStrLn "Overwrite ([y]/n)?"
+    putStrLnM $ "[WARNING] The output directory (" <> toFilePath dir <> ") already exists: The calculation may have already been executed."
+    putStrLnM ""
+    putStrLnM "Overwrite ([y]/n)?"
     f 5
   where
     f i =
@@ -159,11 +149,11 @@ warningForOverwrite (OutputDir dir) = do
                     "y" -> return Overwrite
                     "n" -> return NoOperation
                     _ -> do
-                        sendIO $ putStrLn ""
-                        sendIO $ putStrLn $ "Invalid input: " <> str
-                        sendIO $ putStrLn "RETURN -> Exec and Overwrite"
-                        sendIO $ putStrLn "\'y\', RETURN -> Exec and Overwrite"
-                        sendIO $ putStrLn "\'n\', RETURN -> Exit"
+                        putStrLnM ""
+                        putStrLnM $ "Invalid input: " <> str
+                        putStrLnM "RETURN -> Exec and Overwrite"
+                        putStrLnM "\'y\', RETURN -> Exec and Overwrite"
+                        putStrLnM "\'n\', RETURN -> Exit"
                         f (pred i)
 
 removeDirRecurWithWarningM :: (Algebra sig m, Member (Lift IO) sig, Member Export sig, Member (Throw SomeException) sig) => m ()
@@ -182,68 +172,63 @@ parentDirM = do
     let dir = formatTime defaultTimeLocale "%Y%m%d-%H%M%S" t
     liftEither $ parseRelDir $ "./output/" <> dir
 
--- newtype IndexOfStep = IndexOfStep Natural
---     deriving stock (Generic, Show, Eq)
---     deriving anyclass (FromDhall, ToDhall, Hashable)
--- newtype Parameter a = Parameter a
---     deriving stock (Generic, Show, Eq)
---     deriving anyclass (FromDhall, ToDhall, Hashable)
-
 -- TODO: adaptive step sizeの実装
--- adaptiveStepSize (IsAdaptiveStepSize True) (StepSize dt) = StepSize dt
--- adaptiveStepSize (IsAdaptiveStepSize False) (StepSize dt) = StepSize dt
 
--- indexはexportのパスでも使う可能性があるので state を使う
--- mainCalculationDynamic :: (Algebra sig m, HasUpdateM m t, Ord a1, Show a1, ExportSubDataM m t,
---  Member (Lift IO) sig, Member (Reader a2) sig,
---  Member (Reader (DynamicParameterSetting a1)) sig,
---  Member (Export) sig, Member (State (Parameter a1)) sig,
---  Member (State (Variable t)) sig, Member (State (StepSize a1)) sig,
---  Member (State IndexOfStep) sig, Additive a1) =>
---  t -> m ()
-
-msgDone :: (Has (Lift IO) sig m) => m ()
-msgDone = putStrLnM "Done."
+msgNewLine :: (Has (Lift IO) sig m) => m ()
+msgNewLine = putStrLnM ""
 
 msgStart :: (Has (Lift IO) sig m) => m ()
 msgStart = putStrLnM "Start."
 
+msgDone :: (Has (Lift IO) sig m) => m ()
+msgDone = putStrLnM "Done."
+
 msgEnd :: (Has (Lift IO) sig m) => m ()
 msgEnd = putStrLnM "End."
 
-class MainCalcPDEManifold m (s :: Nat -> [Nat] -> *) where
-    mainCalcPDEManifold :: (KnownNat n, SingI l) => s n l -> m ()
-    initialStatePDEManifold :: (KnownNat n, SingI l) => m (s n l)
+-- class MainCalcPDEManifold m (s :: Nat -> [Nat] -> *) where
+--     mainCalcPDEManifold :: (KnownNat n, SingI l) => s n l -> m ()
+--     initialStatePDEManifold :: (KnownNat n, SingI l) => m (s n l)
 
-class MainCalcPDESubmanifold m (s :: EucDim -> Dim -> [Nat] -> *) where
-    mainCalcPDESubmanifold :: (KnownNat nEuc, KnownNat n, SingI l) => s nEuc n l -> m ()
-    initialStatePDESubmanifold :: (KnownNat nEuc, KnownNat n, SingI (l :: [Nat])) => m (s nEuc n l)
+-- class MainCalcPDESubmanifold m (s :: EucDim -> Dim -> [Nat] -> *) where
+--     mainCalcPDESubmanifold :: (KnownNat nEuc, KnownNat n, SingI l) => s nEuc n l -> m ()
+--     initialStatePDESubmanifold :: (KnownNat nEuc, KnownNat n, SingI (l :: [Nat])) => m (s nEuc n l)
 
-mainCalcPDEproxy ::
-    forall s nEuc n (l :: [Nat]) sig m.
-    ( MainCalcPDESubmanifold m s
-    , KnownNat nEuc
-    , KnownNat n
-    , SingI l
-    , Monad m
+-- mainCalcPDEproxy ::
+--     forall s nEuc n (l :: [Nat]) sig m.
+--     ( MainCalcPDESubmanifold m s
+--     , KnownNat nEuc
+--     , KnownNat n
+--     , SingI l
+--     , Monad m
+--     ) =>
+--     Proxy nEuc ->
+--     Proxy n ->
+--     SList l ->
+--     m ()
+-- mainCalcPDEproxy _ _ _ = do
+--     x <- (initialStatePDESubmanifold @m @s @nEuc @n @l)
+--     mainCalcPDESubmanifold @m @s @nEuc @n @l x
+
+-- runMainCalcPDE
+--     (DimensionOfEuclideanSpace nEuc)
+--     (DimensionOfManifold n)
+--     (l :: [Natural]) =
+--         case (someNatVal nEuc, someNatVal n, someSingVal l) of
+--             (SomeNat (pnEuc :: Proxy nEuc'), SomeNat (pn :: Proxy n'), SomeSingI (sl :: Sing l')) ->
+--                 mainCalcPDEproxy pnEuc pn sl
+
+preprocessM ::
+    forall m a sig.
+    ( Algebra sig m
+    , Member (Throw SomeException) sig
+    , Member (Lift IO) sig
+    , Member Export sig
+    , Member SettingFile sig
+    , HasDependentParameterM m a
+    , ToDhall (DependentParameterType a)
     ) =>
-    Proxy nEuc ->
-    Proxy n ->
-    SList l ->
     m ()
-mainCalcPDEproxy _ _ _ = do
-    x <- (initialStatePDESubmanifold @m @s @nEuc @n @l)
-    mainCalcPDESubmanifold @m @s @nEuc @n @l x
-
-runMainCalcPDE
-    (DimensionOfEuclideanSpace nEuc)
-    (DimensionOfManifold n)
-    (l :: [Natural]) =
-        case (someNatVal nEuc, someNatVal n, someSingVal l) of
-            (SomeNat (pnEuc :: Proxy nEuc'), SomeNat (pn :: Proxy n'), SomeSingI (sl :: Sing l')) ->
-                mainCalcPDEproxy pnEuc pn sl
-
-preprocessM :: forall m a sig. (Algebra sig m, Member (Throw SomeException) sig, Member (Lift IO) sig, Member Export sig, Member SettingFile sig, HasDependentParameterM m a, ToDhall (DependentParameterType a)) => m ()
 preprocessM = do
     removeDirRecurWithWarningM
     ensureDirOutputM

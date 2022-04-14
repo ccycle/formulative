@@ -20,7 +20,6 @@ import Formulative.Calculation.DifferentialEquation.Dynamics.Effect
 import Formulative.Calculation.DifferentialEquation.Types
 import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Types
 import Formulative.Calculation.Internal.Class
-import Formulative.Calculation.Internal.List
 import Formulative.Postprocess.Export.Class
 import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.Statics
@@ -127,24 +126,15 @@ mainCalculationDynamic = do
     preprocessM @m @a
     x <- getInitialConditionM @m @a
     put x
-    DynamicParameterSetting
-        { label = dlabel
-        , initialValue = initVal
-        , finalValue = finalVal
-        , stepSize = dtDefault
-        , interval = nInterval
-        , maximumIterationNumber = iMax
-        } <-
-        askDynamicParameterSetting @b
-    putStrLnM ""
+    DynamicParameterSetting{..} <- askDynamicParameterSetting @b
+    msgNewLine
     msgStart
-    putStrLnM ""
-    -- TODO: ファイルから初期状態を与えられるようにする
-    go 0 nInterval iMax initVal finalVal (StepSize dtDefault) x
-    putStrLnM ""
+    msgNewLine
+    go 0 interval maximumIterationNumber initialValue finalValue (StepSize stepSize) x
+    msgNewLine
     (OutputDir outputPath) <- askOutputDir
-    sendIO $ putStrLn $ "output directory: " <> toFilePath outputPath
-    putStrLnM ""
+    putStrLnM $ "output directory: " <> toFilePath outputPath
+    msgNewLine
   where
     go i nInterval iMax t finalVal (StepSize dt) y =
         if iMax <= i || (2 .*. finalVal <= (2 .*. t .+. dt) && 2 .*. t <= (2 .*. finalVal .+. dt)) || finalVal < t
@@ -154,13 +144,11 @@ mainCalculationDynamic = do
                 putStrLnM "Exporting data.."
                 exportParameter (IndexOfStep i) (Parameter t)
                 exportVariableDynamic (IndexOfStep i) y
-                msgDone
-                putStrLnM "Exporting sub data.."
                 exportDependentVariableLocalDynamic (IndexOfStep i) y
                 exportDependentVariableGlobal y
                 msgDone
-                putStrLnM ""
-                putStrLnM "End."
+                msgNewLine
+                msgEnd
             else do
                 putStrLnM $ "step " ++ show i
                 putStrLnM $ "parameter: " ++ show t
@@ -168,8 +156,6 @@ mainCalculationDynamic = do
                     putStrLnM "Exporting data.."
                     exportParameter (IndexOfStep i) (Parameter t)
                     exportVariableDynamic (IndexOfStep i) y
-                    msgDone
-                    putStrLnM "Exporting sub data.."
                     exportDependentVariableLocalDynamic (IndexOfStep i) y
                     exportDependentVariableGlobal y
                     msgDone
@@ -177,5 +163,5 @@ mainCalculationDynamic = do
                 x' <- updateM y
                 put x'
                 msgDone
-                putStrLnM ""
+                msgNewLine
                 go (succ i) nInterval iMax (t .+. dt) finalVal (StepSize dt) x'

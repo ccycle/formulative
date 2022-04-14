@@ -19,10 +19,6 @@ class (VectorSpace a) => HasObjectiveFunctionM m a where
         gradf <- getGradientOfObjectiveFunctionM
         return $ \x -> (x .-. xOld) <.> gradf x
 
-delta x = do
-    xOld <- get
-    return $ x .-. xOld
-
 class (VectorSpace a) => HasGradObjectiveFunctionM m a where
     getGradientOfObjectiveFunctionM :: m (a -> a)
 
@@ -41,10 +37,6 @@ class HasEqualityConstraintM m a where
 class HasGradPenaltyM m a where
     getGradPenaltyM :: m (LagrangianMultiplier (EqualityConstraintType a) -> a -> a)
 
-----------------------------
--- Lagrangian Multiplier
-----------------------------
-
 class (HasInitialConditionM m a) => HasUpdateM m a where
     updateM :: a -> m a
 
@@ -62,12 +54,6 @@ class HasDependentVariableLocalM m a where
     dependentVariableLocalM :: a -> m (DependentVariableLocalType a)
     default dependentVariableLocalM :: (Monad m, DependentVariableLocalType a ~ ()) => a -> m (DependentVariableLocalType a)
     dependentVariableLocalM x = return ()
-
--- examples:
--- data MyDependentParameter = MyDependentParameter {frequency::Double, dampingRatio::Double}
--- instance () => HasDependentParameterM m MyVariables where
---    type DependentParameterType MyVariables = MyDependentParameter
---    dependentParameterM = do
 
 class HasDependentParameterM m a where
     type DependentParameterType a :: *

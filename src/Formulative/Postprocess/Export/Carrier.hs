@@ -14,6 +14,7 @@ import Control.Exception.Safe
 import Data.Hashable
 import Dhall
 import Formulative.Internal.ReExport.Effect (askSettingHash)
+import Formulative.Postprocess.Export.Class
 import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.Path
 import Formulative.Postprocess.Export.Types
@@ -75,7 +76,7 @@ runExportIO ::
     m b
 runExportIO e f = do
     (DhallSettingText txt) <- cmdOptionToDhallSettingText
-    sendIO $ putStrLn "Read setting file (Export).."
+    putStrLnM "Read setting file (Export).."
     x <- sendIO $ fillInSetting @ExportSetting "export" txt
-    sendIO $ putStrLn "Done."
+    putStrLnM "Done."
     runExport e x f

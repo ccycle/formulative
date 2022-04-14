@@ -11,6 +11,7 @@ import Control.Exception.Safe
 import Dhall
 import Formulative.Calculation.DifferentialEquation.Dynamics.Effect
 import Formulative.Calculation.DifferentialEquation.Types
+import Formulative.Postprocess.Export.Class
 import Formulative.Preprocess.ReadSetting
 
 newtype DynamicsC a m b = DynamicsC {runDynamicsC :: ReaderC (DynamicParameterSetting a) m b}
@@ -42,7 +43,7 @@ runDynamicsIO ::
     m b
 runDynamicsIO f = do
     (DhallSettingText txt) <- cmdOptionToDhallSettingText
-    sendIO $ putStrLn "Read setting file (Dynamics).."
+    putStrLnM "Read setting file (Dynamics).."
     r <- sendIO $ readRecordFromDhallFile @(DynamicParameterSetting a) "dynamics" txt
-    sendIO $ putStrLn "Done."
+    msgDone
     runReader r . runDynamicsC $ f

@@ -34,8 +34,7 @@ data DynamicParameterSetting a = DynamicParameterSetting
 instance (Fractional a) => HasDefaultValue (DynamicParameterSetting a) where
     defaultValue =
         DynamicParameterSetting
-            { label =
-                LabelOfDynamicParameter "time"
+            { label = LabelOfDynamicParameter "time"
             , initialValue = 0
             , finalValue = 1
             , stepSize = 0.01

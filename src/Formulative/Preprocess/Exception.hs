@@ -11,10 +11,9 @@ import Data.Proxy
 import qualified Data.Text as T
 import Data.Typeable (Proxy, TypeRep, typeOf, typeRep)
 import qualified Data.Vector.Sized as VS
+import Formulative.Calculation.Algebra.Arithmetic.Additive
 import GHC.Generics
 import GHC.TypeNats
-import Formulative.Calculation.Algebra.Arithmetic.Additive
-import Path.Posix
 import Refined
 import Text.Read
 
