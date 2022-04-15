@@ -2,9 +2,20 @@ module Formulative.Calculation.Calculus.Series where
 
 import Data.Maybe
 import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Internal.List
 import Formulative.Calculation.VectorSpace.Class
 import Numeric.AD.Rank1.Tower
-import RIO.List
+
+-- safeListCall :: Foldable t => (t a -> b) -> t a -> Maybe b
+-- safeListCall f xs
+--     | null xs = Nothing
+--     | otherwise = Just $ f xs
+
+-- headMaybe :: [a] -> Maybe a
+-- headMaybe = safeListCall head
+
+-- tailMaybe :: [a] -> Maybe [a]
+-- tailMaybe = safeListCall tail
 
 headN list = fromMaybe zero (headMaybe list)
 tailN list = fromMaybe [] (tailMaybe list)

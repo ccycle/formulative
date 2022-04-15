@@ -78,7 +78,6 @@ library
     , aeson
     , attoparsec
     , base >=4.7 && <5
-    , base-noprelude
     , bytestring
     , cassava
     , constraints
@@ -179,7 +178,6 @@ executable harmonic-oscillator
     , aeson
     , attoparsec
     , base >=4.7 && <5
-    , base-noprelude
     , bytestring
     , cassava
     , constraints
@@ -281,7 +279,6 @@ executable particle-on-paraboloid
     , aeson
     , attoparsec
     , base >=4.7 && <5
-    , base-noprelude
     , bytestring
     , cassava
     , constraints
@@ -383,7 +380,6 @@ executable van-der-Pol-oscillator
     , aeson
     , attoparsec
     , base >=4.7 && <5
-    , base-noprelude
     , bytestring
     , cassava
     , constraints

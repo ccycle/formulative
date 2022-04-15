@@ -9,17 +9,17 @@ import Control.Effect.Error
 import Control.Effect.Sum
 import Control.Exception.Safe
 import Control.Monad
-import CustomPrelude hiding (toList)
 import qualified Data.ByteString.Lazy as BSL
 import Data.Csv hiding (Field)
+import Data.String
 import Data.String.Conversions
 import qualified Data.Vector as V
 import Dhall
 import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.DifferentialEquation.Dynamics.Effect
 import Formulative.Calculation.DifferentialEquation.Types
-import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Types
 import Formulative.Calculation.Internal.Class
+import Formulative.Calculation.Internal.IfThenElse
 import Formulative.Postprocess.Export.Class
 import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.Statics
@@ -28,7 +28,6 @@ import Formulative.Postprocess.Export.Types
 import Formulative.Preprocess.SettingFile.Effect
 import Path
 import Path.IO
-import RIO.Partial (succ)
 import Prelude hiding (fromInteger)
 
 exportParameter ::

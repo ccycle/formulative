@@ -12,12 +12,12 @@ import Data.STRef.Strict
 import qualified Data.Vector as V
 import Dhall
 import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Internal.List
 import Formulative.Calculation.Optimization.LineSearch
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Preprocess.DefaultValue
 import Formulative.Preprocess.Exception
 import GHC.Exts (fromList)
-import RIO.List
 
 -- paremeters
 -- TODO: machine epsilon以下に指定しないように警告を出すようにする

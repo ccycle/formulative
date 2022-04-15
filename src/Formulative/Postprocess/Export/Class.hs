@@ -18,6 +18,7 @@ import Data.Proxy
 import Data.Singletons (Sing (..), SingI, SingInstance (SingInstance), SingKind (toSing), SomeSing (SomeSing), singInstance)
 import Data.Singletons.Prelude (SList)
 import qualified Data.Text.IO as T
+import Data.Time
 import qualified Data.Vector.Storable as VST
 import Dhall
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
@@ -34,7 +35,6 @@ import Formulative.Preprocess.SettingFile.Effect (SettingFile, askSettingFileTex
 import GHC.TypeNats
 import Path
 import Path.IO
-import RIO.Time
 
 putStrLnM :: (Algebra sig m, Member (Lift IO) sig) => String -> m ()
 putStrLnM = sendIO . putStrLn

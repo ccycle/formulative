@@ -1,11 +1,6 @@
 module Formulative.Calculation.Internal.List (
     module GHC.Exts,
-    MapClass (..),
-    LengthV (..),
-    UnsafeIndex (..),
-    IsVector (..),
-    singleton,
-    ZipWithV (..),
+    module Formulative.Calculation.Internal.List,
 ) where
 
 import Data.List
@@ -27,6 +22,20 @@ import GHC.TypeNats
 
 singleton :: a -> [a]
 singleton x = [x]
+
+safeListCall :: Foldable t => (t a -> b) -> t a -> Maybe b
+safeListCall f xs
+    | null xs = Nothing
+    | otherwise = Just $ f xs
+
+headMaybe :: [a] -> Maybe a
+headMaybe = safeListCall head
+
+tailMaybe :: [a] -> Maybe [a]
+tailMaybe = safeListCall tail
+
+initMaybe :: [a] -> Maybe [a]
+initMaybe = safeListCall Data.List.init
 
 class (IsList a) => IsListMaybe a where
     fromListMaybe :: [Item a] -> Maybe a

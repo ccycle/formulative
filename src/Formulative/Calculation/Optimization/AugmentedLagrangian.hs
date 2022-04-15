@@ -6,8 +6,8 @@
 module Formulative.Calculation.Optimization.AugmentedLagrangian where
 
 import Control.Exception.Safe
-import CustomPrelude
 import Data.Coerce
+import Data.Hashable
 import Dhall
 import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.Optimization.LBFGS
@@ -15,7 +15,6 @@ import Formulative.Calculation.Optimization.LineSearch
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Preprocess.DefaultValue
 import Formulative.Preprocess.Exception
-import RIO.Partial (pred)
 import Prelude hiding (fromInteger)
 
 newtype EqualityConstraint a b = EqualityConstraint (a -> b)

@@ -5,11 +5,6 @@ module Formulative.Preprocess.MakeDirectory where
 import Control.Exception.Safe
 import Data.Hashable
 import Dhall hiding (auto)
-import GHC.Generics
-import Options.Applicative
-import Path
-import RIO (MonadIO)
-import RIO.Time
 
 -- TODO: ファイルの変更を検知できるようにする
 -- ソースコードが変更されれば別のファイルになるようにする
