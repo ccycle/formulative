@@ -85,3 +85,5 @@ build:
 
 ghc-options:
   "$everything": "-O2"
+
+work-dir: ".stack-work"

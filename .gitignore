@@ -2,10 +2,8 @@
 .stack-work-*/
 *~
 
-*.prof
 *.lock
 .VSCodeCounter/
 memo.md
-bin/
 haddock/
 output/
