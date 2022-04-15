@@ -113,7 +113,6 @@ default-extensions:
 - TypeSynonymInstances
 - ViewPatterns
 
-
 library:
   source-dirs:
   - src
@@ -146,4 +145,3 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - formulative-examples
-

@@ -2,7 +2,7 @@
 , dynamics =
   { label = "time"
   , initialValue = 0.0
-  , finalValue = 1.0
+  , finalValue = 10.0
   , stepSize = 1.0e-2
   , interval = 10
   , maximumIterationNumber = 1000000

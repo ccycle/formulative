@@ -1,0 +1,8 @@
+.stack-work/
+.stack-work-*/
+*~
+
+*.svg
+*.prof
+bin/
+output/
