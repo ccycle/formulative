@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.4.
+-- This file has been generated from package.yaml by hpack version 0.34.5.
 --
 -- see: https://github.com/sol/hpack
 
@@ -71,6 +71,7 @@ library
       Formulative.Calculation.Internal.DerivingPrelude.Floating
       Formulative.Calculation.Internal.DerivingPrelude.Fractional
       Formulative.Calculation.Internal.DerivingPrelude.Num
+      Formulative.Calculation.Internal.IfThenElse
       Formulative.Calculation.Internal.Infix
       Formulative.Calculation.Internal.List
       Formulative.Calculation.Internal.Setting
@@ -122,7 +123,7 @@ library
       Formulative.Preprocess.SettingFile.Carrier
       Formulative.Preprocess.SettingFile.Effect
   other-modules:
-      CustomPrelude
+      Paths_formulative
   hs-source-dirs:
       src
   default-extensions:
@@ -168,12 +169,10 @@ library
       TypeSynonymInstances
       ViewPatterns
   build-depends:
-      Only
-    , ad
+      ad
     , aeson
     , attoparsec
     , base >=4.7 && <5
-    , base-noprelude
     , bytestring
     , cassava
     , constraints
@@ -200,7 +199,6 @@ library
     , refined
     , reflection
     , replace-megaparsec
-    , rio
     , safe-exceptions
     , scientific
     , simple-reflect
@@ -211,6 +209,7 @@ library
     , tasty-quickcheck
     , template-haskell
     , text
+    , time
     , turtle
     , unordered-containers
     , vector
@@ -264,14 +263,12 @@ executable preprocess
       TypeOperators
       TypeSynonymInstances
       ViewPatterns
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N -O2
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      Only
-    , ad
+      ad
     , aeson
     , attoparsec
     , base >=4.7 && <5
-    , base-noprelude
     , bytestring
     , cassava
     , constraints
@@ -299,7 +296,6 @@ executable preprocess
     , refined
     , reflection
     , replace-megaparsec
-    , rio
     , safe-exceptions
     , scientific
     , simple-reflect
@@ -310,6 +306,7 @@ executable preprocess
     , tasty-quickcheck
     , template-haskell
     , text
+    , time
     , turtle
     , unordered-containers
     , vector
@@ -393,12 +390,10 @@ test-suite formulative-tasty
       ViewPatterns
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      Only
-    , ad
+      ad
     , aeson
     , attoparsec
     , base >=4.7 && <5
-    , base-noprelude
     , bytestring
     , cassava
     , constraints
@@ -426,7 +421,6 @@ test-suite formulative-tasty
     , refined
     , reflection
     , replace-megaparsec
-    , rio
     , safe-exceptions
     , scientific
     , simple-reflect
@@ -437,6 +431,7 @@ test-suite formulative-tasty
     , tasty-quickcheck
     , template-haskell
     , text
+    , time
     , turtle
     , unordered-containers
     , vector
@@ -495,12 +490,10 @@ test-suite formulative-test
       ViewPatterns
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      Only
-    , ad
+      ad
     , aeson
     , attoparsec
     , base >=4.7 && <5
-    , base-noprelude
     , bytestring
     , cassava
     , constraints
@@ -528,7 +521,6 @@ test-suite formulative-test
     , refined
     , reflection
     , replace-megaparsec
-    , rio
     , safe-exceptions
     , scientific
     , simple-reflect
@@ -539,6 +531,7 @@ test-suite formulative-test
     , tasty-quickcheck
     , template-haskell
     , text
+    , time
     , turtle
     , unordered-containers
     , vector
@@ -597,12 +590,10 @@ benchmark Factorial
       ViewPatterns
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      Only
-    , ad
+      ad
     , aeson
     , attoparsec
     , base >=4.7 && <5
-    , base-noprelude
     , bytestring
     , cassava
     , constraints
@@ -631,7 +622,6 @@ benchmark Factorial
     , refined
     , reflection
     , replace-megaparsec
-    , rio
     , safe-exceptions
     , scientific
     , simple-reflect
@@ -642,6 +632,7 @@ benchmark Factorial
     , tasty-quickcheck
     , template-haskell
     , text
+    , time
     , turtle
     , unordered-containers
     , vector
@@ -698,14 +689,12 @@ benchmark MatrixMul
       TypeOperators
       TypeSynonymInstances
       ViewPatterns
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N -O2
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -O1
   build-depends:
-      Only
-    , ad
+      ad
     , aeson
     , attoparsec
     , base >=4.7 && <5
-    , base-noprelude
     , bytestring
     , cassava
     , constraints
@@ -734,7 +723,6 @@ benchmark MatrixMul
     , refined
     , reflection
     , replace-megaparsec
-    , rio
     , safe-exceptions
     , scientific
     , simple-reflect
@@ -745,6 +733,7 @@ benchmark MatrixMul
     , tasty-quickcheck
     , template-haskell
     , text
+    , time
     , turtle
     , unordered-containers
     , vector
@@ -801,14 +790,12 @@ benchmark MatrixToVector
       TypeOperators
       TypeSynonymInstances
       ViewPatterns
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N -O2
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -O1
   build-depends:
-      Only
-    , ad
+      ad
     , aeson
     , attoparsec
     , base >=4.7 && <5
-    , base-noprelude
     , bytestring
     , cassava
     , constraints
@@ -837,7 +824,6 @@ benchmark MatrixToVector
     , refined
     , reflection
     , replace-megaparsec
-    , rio
     , safe-exceptions
     , scientific
     , simple-reflect
@@ -848,6 +834,7 @@ benchmark MatrixToVector
     , tasty-quickcheck
     , template-haskell
     , text
+    , time
     , turtle
     , unordered-containers
     , vector
@@ -906,12 +893,10 @@ benchmark StackingEffects
       ViewPatterns
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      Only
-    , ad
+      ad
     , aeson
     , attoparsec
     , base >=4.7 && <5
-    , base-noprelude
     , bytestring
     , cassava
     , constraints
@@ -940,7 +925,6 @@ benchmark StackingEffects
     , refined
     , reflection
     , replace-megaparsec
-    , rio
     , safe-exceptions
     , scientific
     , simple-reflect
@@ -951,6 +935,7 @@ benchmark StackingEffects
     , tasty-quickcheck
     , template-haskell
     , text
+    , time
     , turtle
     , unordered-containers
     , vector
@@ -1007,14 +992,12 @@ benchmark UnsafeIndex
       TypeOperators
       TypeSynonymInstances
       ViewPatterns
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N -O2
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -O1
   build-depends:
-      Only
-    , ad
+      ad
     , aeson
     , attoparsec
     , base >=4.7 && <5
-    , base-noprelude
     , bytestring
     , cassava
     , constraints
@@ -1043,7 +1026,6 @@ benchmark UnsafeIndex
     , refined
     , reflection
     , replace-megaparsec
-    , rio
     , safe-exceptions
     , scientific
     , simple-reflect
@@ -1054,6 +1036,7 @@ benchmark UnsafeIndex
     , tasty-quickcheck
     , template-haskell
     , text
+    , time
     , turtle
     , unordered-containers
     , vector

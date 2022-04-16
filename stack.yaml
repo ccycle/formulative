@@ -17,8 +17,7 @@
 #
 # resolver: ./custom-snapshot.yaml
 # resolver: https://example.com/snapshots/2018-01-01.yaml
-resolver:
-  url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/14.yaml
+resolver: lts-18.14
   # ghc-8.10.2
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -83,6 +82,6 @@ build:
   haddock-hyperlink-source: true
 
 ghc-options:
-  "$everything": "-O2"
+  "$everything": "-O1"
 
 work-dir: ".stack-work"
