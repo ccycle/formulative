@@ -8,7 +8,6 @@ module Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Operato
 -- wedge product
 
 import Control.Algebra
-import qualified Control.Lens as MSS
 import Data.Coerce
 import Data.Constraint
 import Data.Foldable (Foldable (foldl'))
@@ -39,9 +38,6 @@ import Formulative.Calculation.Internal.TypeLevelNatural
 import GHC.Exts (IsList (Item, fromList, toList))
 import GHC.Natural
 import GHC.TypeNats
-
--- import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
--- import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Types
 
 exteriorDerivativePrimalInternal ::
     forall n l k a.
@@ -214,7 +210,3 @@ eulerCharacteristics l = sum $ zipWith (*) a l'
     a = map ((-1) ^) [0, 1 ..]
     n = length l
     l' = map fromIntegral l
-
--- type family EulerCharacteristics (l::SSizes) where
---   EulerCharacteristics '[] = 0
---   EulerCharacteristics (x ': xs) = 0

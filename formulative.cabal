@@ -171,7 +171,6 @@ library
   build-depends:
       ad
     , aeson
-    , attoparsec
     , base >=4.7 && <5
     , bytestring
     , cassava
@@ -180,14 +179,11 @@ library
     , dhall
     , eigen
     , exact-combinatorics
-    , finite-field
-    , finite-typelits
     , fused-effects
     , ghc-prim
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , lens
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -197,10 +193,8 @@ library
     , physics
     , prettyprinter
     , refined
-    , reflection
     , replace-megaparsec
     , safe-exceptions
-    , scientific
     , simple-reflect
     , singletons
     , string-conversions
@@ -210,7 +204,6 @@ library
     , template-haskell
     , text
     , time
-    , turtle
     , unordered-containers
     , vector
     , vector-algorithms
@@ -267,7 +260,6 @@ executable preprocess
   build-depends:
       ad
     , aeson
-    , attoparsec
     , base >=4.7 && <5
     , bytestring
     , cassava
@@ -276,15 +268,12 @@ executable preprocess
     , dhall
     , eigen
     , exact-combinatorics
-    , finite-field
-    , finite-typelits
     , formulative
     , fused-effects
     , ghc-prim
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , lens
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -294,10 +283,8 @@ executable preprocess
     , physics
     , prettyprinter
     , refined
-    , reflection
     , replace-megaparsec
     , safe-exceptions
-    , scientific
     , simple-reflect
     , singletons
     , string-conversions
@@ -307,7 +294,6 @@ executable preprocess
     , template-haskell
     , text
     , time
-    , turtle
     , unordered-containers
     , vector
     , vector-algorithms
@@ -392,7 +378,6 @@ test-suite formulative-tasty
   build-depends:
       ad
     , aeson
-    , attoparsec
     , base >=4.7 && <5
     , bytestring
     , cassava
@@ -401,15 +386,12 @@ test-suite formulative-tasty
     , dhall
     , eigen
     , exact-combinatorics
-    , finite-field
-    , finite-typelits
     , formulative
     , fused-effects
     , ghc-prim
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , lens
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -419,10 +401,8 @@ test-suite formulative-tasty
     , physics
     , prettyprinter
     , refined
-    , reflection
     , replace-megaparsec
     , safe-exceptions
-    , scientific
     , simple-reflect
     , singletons
     , string-conversions
@@ -432,7 +412,6 @@ test-suite formulative-tasty
     , template-haskell
     , text
     , time
-    , turtle
     , unordered-containers
     , vector
     , vector-algorithms
@@ -492,7 +471,6 @@ test-suite formulative-test
   build-depends:
       ad
     , aeson
-    , attoparsec
     , base >=4.7 && <5
     , bytestring
     , cassava
@@ -501,15 +479,12 @@ test-suite formulative-test
     , dhall
     , eigen
     , exact-combinatorics
-    , finite-field
-    , finite-typelits
     , formulative
     , fused-effects
     , ghc-prim
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , lens
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -519,10 +494,8 @@ test-suite formulative-test
     , physics
     , prettyprinter
     , refined
-    , reflection
     , replace-megaparsec
     , safe-exceptions
-    , scientific
     , simple-reflect
     , singletons
     , string-conversions
@@ -532,7 +505,6 @@ test-suite formulative-test
     , template-haskell
     , text
     , time
-    , turtle
     , unordered-containers
     , vector
     , vector-algorithms
@@ -592,7 +564,6 @@ benchmark Factorial
   build-depends:
       ad
     , aeson
-    , attoparsec
     , base >=4.7 && <5
     , bytestring
     , cassava
@@ -602,15 +573,12 @@ benchmark Factorial
     , dhall
     , eigen
     , exact-combinatorics
-    , finite-field
-    , finite-typelits
     , formulative
     , fused-effects
     , ghc-prim
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , lens
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -620,10 +588,8 @@ benchmark Factorial
     , physics
     , prettyprinter
     , refined
-    , reflection
     , replace-megaparsec
     , safe-exceptions
-    , scientific
     , simple-reflect
     , singletons
     , string-conversions
@@ -633,7 +599,6 @@ benchmark Factorial
     , template-haskell
     , text
     , time
-    , turtle
     , unordered-containers
     , vector
     , vector-algorithms
@@ -693,7 +658,6 @@ benchmark MatrixMul
   build-depends:
       ad
     , aeson
-    , attoparsec
     , base >=4.7 && <5
     , bytestring
     , cassava
@@ -703,15 +667,12 @@ benchmark MatrixMul
     , dhall
     , eigen
     , exact-combinatorics
-    , finite-field
-    , finite-typelits
     , formulative
     , fused-effects
     , ghc-prim
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , lens
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -721,10 +682,8 @@ benchmark MatrixMul
     , physics
     , prettyprinter
     , refined
-    , reflection
     , replace-megaparsec
     , safe-exceptions
-    , scientific
     , simple-reflect
     , singletons
     , string-conversions
@@ -734,7 +693,6 @@ benchmark MatrixMul
     , template-haskell
     , text
     , time
-    , turtle
     , unordered-containers
     , vector
     , vector-algorithms
@@ -794,7 +752,6 @@ benchmark MatrixToVector
   build-depends:
       ad
     , aeson
-    , attoparsec
     , base >=4.7 && <5
     , bytestring
     , cassava
@@ -804,15 +761,12 @@ benchmark MatrixToVector
     , dhall
     , eigen
     , exact-combinatorics
-    , finite-field
-    , finite-typelits
     , formulative
     , fused-effects
     , ghc-prim
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , lens
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -822,10 +776,8 @@ benchmark MatrixToVector
     , physics
     , prettyprinter
     , refined
-    , reflection
     , replace-megaparsec
     , safe-exceptions
-    , scientific
     , simple-reflect
     , singletons
     , string-conversions
@@ -835,7 +787,6 @@ benchmark MatrixToVector
     , template-haskell
     , text
     , time
-    , turtle
     , unordered-containers
     , vector
     , vector-algorithms
@@ -895,7 +846,6 @@ benchmark StackingEffects
   build-depends:
       ad
     , aeson
-    , attoparsec
     , base >=4.7 && <5
     , bytestring
     , cassava
@@ -905,15 +855,12 @@ benchmark StackingEffects
     , dhall
     , eigen
     , exact-combinatorics
-    , finite-field
-    , finite-typelits
     , formulative
     , fused-effects
     , ghc-prim
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , lens
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -923,10 +870,8 @@ benchmark StackingEffects
     , physics
     , prettyprinter
     , refined
-    , reflection
     , replace-megaparsec
     , safe-exceptions
-    , scientific
     , simple-reflect
     , singletons
     , string-conversions
@@ -936,7 +881,6 @@ benchmark StackingEffects
     , template-haskell
     , text
     , time
-    , turtle
     , unordered-containers
     , vector
     , vector-algorithms
@@ -996,7 +940,6 @@ benchmark UnsafeIndex
   build-depends:
       ad
     , aeson
-    , attoparsec
     , base >=4.7 && <5
     , bytestring
     , cassava
@@ -1006,15 +949,12 @@ benchmark UnsafeIndex
     , dhall
     , eigen
     , exact-combinatorics
-    , finite-field
-    , finite-typelits
     , formulative
     , fused-effects
     , ghc-prim
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , lens
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -1024,10 +964,8 @@ benchmark UnsafeIndex
     , physics
     , prettyprinter
     , refined
-    , reflection
     , replace-megaparsec
     , safe-exceptions
-    , scientific
     , simple-reflect
     , singletons
     , string-conversions
@@ -1037,7 +975,6 @@ benchmark UnsafeIndex
     , template-haskell
     , text
     , time
-    , turtle
     , unordered-containers
     , vector
     , vector-algorithms

@@ -20,7 +20,6 @@ import Formulative.Calculation.DifferentialEquation.Types
 import Formulative.Calculation.Internal.Class
 import Formulative.Calculation.Internal.Setting
 import Formulative.Calculation.Optimization.Carrier
-import Formulative.Calculation.Optimization.LineSearch
 import Formulative.Calculation.Optimization.Parameter
 import Formulative.Calculation.Optimization.Update
 import Formulative.Calculation.VectorSpace.Class
@@ -80,7 +79,7 @@ instance (Has (Reader MyEquationConstants) sig m) => HasDependentParameterM m My
         }
 
 ----------------------------------------------------------------
--- export quantoties
+-- export quantities
 ----------------------------------------------------------------
 data MyDependentVariableGlobal = MyDependentVariableGlobal
   { kineticEnergy :: Double

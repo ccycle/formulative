@@ -4,8 +4,6 @@ module Formulative.Calculation.Internal.TH (
     pprintIO,
     derivingVariable,
     derivingSetting,
-    -- module Formulative.Calculation.Algebra.Arithmetic.Class,
-    -- module Formulative.Calculation.VectorSpace.Class,
     module GHC.Generics,
     module Dhall.Marshal.Decode,
     module Dhall.Marshal.Encode,
@@ -79,7 +77,6 @@ derivingClauseVariable =
         ]
     ]
 
--- derivingSetting :: Q [Dec] -> Q [Dec]
 derivingSetting dataD = Prelude.map (addDerivClause derivingClauseSetting) <$> dataD
 
 {- | Funtion for automatic deriving. The following GHC extensions must be added to the header:

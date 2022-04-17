@@ -22,7 +22,6 @@ description: Please see the README on GitHub at <https://github.com/githubuser/f
 dependencies:
   - ad
   - aeson
-  - attoparsec
   - base >= 4.7 && < 5
   - bytestring
   - cassava
@@ -31,13 +30,11 @@ dependencies:
   - dhall
   - eigen
   - exact-combinatorics
-  - finite-field
   - fused-effects
   - ghc-prim
   - ghc-typelits-knownnat
   - ghc-typelits-natnormalise
   - hashable
-  - lens
   - matrix-sized
   - megaparsec
   - numeric-limits
@@ -47,13 +44,9 @@ dependencies:
   - physics
   - prettyprinter
   - refined
-  - reflection
   - replace-megaparsec
-  - finite-typelits
   - safe-exceptions
-  - scientific
   - simple-reflect
-  - turtle
   - time
   - singletons
   - string-conversions

@@ -20,7 +20,6 @@ import Formulative.Calculation.DifferentialEquation.Types
 import Formulative.Calculation.Internal.Class
 import Formulative.Calculation.Internal.Setting
 import Formulative.Calculation.Optimization.Carrier
-import Formulative.Calculation.Optimization.LineSearch
 import Formulative.Calculation.Optimization.Parameter
 import Formulative.Calculation.Optimization.Update
 import Formulative.Calculation.VectorSpace.Class
@@ -44,9 +43,7 @@ data MyVariable = MyVariable {x :: Double, y :: Double}
 ----------------------------------------------------------------
 data MyEquationConstants = MyEquationConstants {mu :: Double, x0 :: Double, y0 :: Double}
     deriving stock (Show, Generic)
-    deriving anyclass (ToDhall, FromDhall, Hashable, Additive)
-instance HasDefaultValue MyEquationConstants where
-    defaultValue = zero
+    deriving anyclass (ToDhall, FromDhall, Hashable, HasDefaultValue)
 
 data MySetting = MySetting {optimization :: OptimizationParameters Double, dynamics :: DynamicParameterSetting Double, export :: ExportSetting, equation :: MyEquationConstants}
     deriving stock (Show, Generic)

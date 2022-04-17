@@ -6,7 +6,6 @@
 module Formulative.Calculation.DiscreteExteriorCalculus.Homology.Operators where
 
 import Control.Algebra
-import qualified Control.Lens as MSS
 import Control.Monad
 import Control.Monad.ST.Strict
 import Data.Coerce

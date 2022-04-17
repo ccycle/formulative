@@ -9,15 +9,9 @@
 module Formulative.Calculation.Internal.TypeLevelList where
 
 import Data.Constraint
-
--- import Data.Singletons.Prelude.Instances
-import Data.Constraint.Nat
 import Data.Proxy
-import Data.Reflection
 import Data.Singletons
-
 import Data.Singletons.Prelude.List (SList)
-import Data.Type.Equality
 import Formulative.Calculation.Internal.TypeLevelNatural
 import GHC.Natural
 import GHC.TypeNats

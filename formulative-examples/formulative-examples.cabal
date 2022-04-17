@@ -73,50 +73,24 @@ library
       TypeSynonymInstances
       ViewPatterns
   build-depends:
-      Only
-    , ad
-    , aeson
-    , attoparsec
-    , base >=4.7 && <5
-    , bytestring
+      base >=4.7 && <5
     , cassava
-    , constraints
-    , containers
     , dhall
-    , eigen
-    , exact-combinatorics
-    , finite-field
-    , finite-typelits
     , formulative
     , fused-effects
     , ghc-prim
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , lens
     , matrix-sized
     , megaparsec
     , numeric-limits
-    , optparse-applicative
-    , path
-    , path-io
-    , physics
     , prettyprinter
-    , refined
-    , reflection
-    , replace-megaparsec
     , safe-exceptions
-    , scientific
-    , simple-reflect
-    , singletons
-    , string-conversions
     , tasty
     , tasty-hunit
     , tasty-quickcheck
     , template-haskell
-    , text
-    , turtle
-    , unordered-containers
     , vector
     , vector-algorithms
     , vector-sized
@@ -172,20 +146,9 @@ executable harmonic-oscillator
       ViewPatterns
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      Only
-    , ad
-    , aeson
-    , attoparsec
-    , base >=4.7 && <5
-    , bytestring
+      base >=4.7 && <5
     , cassava
-    , constraints
-    , containers
     , dhall
-    , eigen
-    , exact-combinatorics
-    , finite-field
-    , finite-typelits
     , formulative
     , formulative-examples
     , fused-effects
@@ -193,30 +156,15 @@ executable harmonic-oscillator
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , lens
     , matrix-sized
     , megaparsec
     , numeric-limits
-    , optparse-applicative
-    , path
-    , path-io
-    , physics
     , prettyprinter
-    , refined
-    , reflection
-    , replace-megaparsec
     , safe-exceptions
-    , scientific
-    , simple-reflect
-    , singletons
-    , string-conversions
     , tasty
     , tasty-hunit
     , tasty-quickcheck
     , template-haskell
-    , text
-    , turtle
-    , unordered-containers
     , vector
     , vector-algorithms
     , vector-sized
@@ -272,20 +220,9 @@ executable particle-on-paraboloid
       ViewPatterns
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      Only
-    , ad
-    , aeson
-    , attoparsec
-    , base >=4.7 && <5
-    , bytestring
+      base >=4.7 && <5
     , cassava
-    , constraints
-    , containers
     , dhall
-    , eigen
-    , exact-combinatorics
-    , finite-field
-    , finite-typelits
     , formulative
     , formulative-examples
     , fused-effects
@@ -293,30 +230,15 @@ executable particle-on-paraboloid
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , lens
     , matrix-sized
     , megaparsec
     , numeric-limits
-    , optparse-applicative
-    , path
-    , path-io
-    , physics
     , prettyprinter
-    , refined
-    , reflection
-    , replace-megaparsec
     , safe-exceptions
-    , scientific
-    , simple-reflect
-    , singletons
-    , string-conversions
     , tasty
     , tasty-hunit
     , tasty-quickcheck
     , template-haskell
-    , text
-    , turtle
-    , unordered-containers
     , vector
     , vector-algorithms
     , vector-sized
@@ -372,20 +294,9 @@ executable van-der-Pol-oscillator
       ViewPatterns
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      Only
-    , ad
-    , aeson
-    , attoparsec
-    , base >=4.7 && <5
-    , bytestring
+      base >=4.7 && <5
     , cassava
-    , constraints
-    , containers
     , dhall
-    , eigen
-    , exact-combinatorics
-    , finite-field
-    , finite-typelits
     , formulative
     , formulative-examples
     , fused-effects
@@ -393,30 +304,15 @@ executable van-der-Pol-oscillator
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , lens
     , matrix-sized
     , megaparsec
     , numeric-limits
-    , optparse-applicative
-    , path
-    , path-io
-    , physics
     , prettyprinter
-    , refined
-    , reflection
-    , replace-megaparsec
     , safe-exceptions
-    , scientific
-    , simple-reflect
-    , singletons
-    , string-conversions
     , tasty
     , tasty-hunit
     , tasty-quickcheck
     , template-haskell
-    , text
-    , turtle
-    , unordered-containers
     , vector
     , vector-algorithms
     , vector-sized

@@ -10,7 +10,6 @@ import Control.Carrier.Reader
 import Control.Carrier.State.Strict
 import Control.Effect.Sum
 import Data.Csv hiding (index)
-import Data.Finite.Internal
 import Data.Hashable
 import Data.Vector.Sized
 import qualified Data.Vector.Sized as VS
@@ -61,7 +60,7 @@ data MySetting = MySetting {optimization :: OptimizationParameters Double, const
   deriving anyclass (ToDhall, FromDhall, Hashable, HasDefaultValue)
 
 ----------------------------------------------------------------
--- export quantoties
+-- export quantities
 ----------------------------------------------------------------
 instance (Monad m) => HasDependentParameterM m MyVariable
 data MyDependentVariableGlobal = MyDependentVariableGlobal {kineticEnergy :: Double, potentialEnergy :: Double, lagrangian :: Double, hamiltonian :: Double}

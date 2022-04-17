@@ -22,20 +22,17 @@ import Data.Singletons
 import Data.Singletons.Prelude.List (SList)
 import Data.Singletons.TH hiding (type (<=))
 import Data.Type.Equality
-import Formulative.Calculation.Algebra.Arithmetic.Class
-import GHC.Natural
-import GHC.TypeLits (Symbol)
-import GHC.TypeLits.KnownNat
-import GHC.TypeNats
-
--- import Formulative.Calculation.DiscreteExteriorCalculus.Class
-
 import qualified Data.Vector.Storable as VST
+import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Types
 import Formulative.Calculation.Internal.TypeLevelList
 import Formulative.Calculation.Internal.TypeLevelNatural
 import Formulative.Calculation.Matrix.Class
 import Formulative.Calculation.VectorSpace.Class
+import GHC.Natural
+import GHC.TypeLits (Symbol)
+import GHC.TypeLits.KnownNat
+import GHC.TypeNats
 import Unsafe.Coerce
 
 sameCellType :: forall (c :: CellType) (c' :: CellType). (SingI c, SingI c') => Sing c -> Sing c' -> Maybe (c :~: c')
@@ -136,7 +133,6 @@ dualDegDict proxyn proxyk = let n = natVal proxyn; k = natVal proxyk; val = dual
 
 -- TODO: modを使わない形にする
 --  素直にk+1などを使ったほうがコンパイラが式変形しやすい
---  例:外微分 If (k~(n+1)) 0 k+1
 succDeg :: Natural -> Natural -> Natural
 succDeg n k = mod (k + 1) (n + 2)
 succDegDict :: forall n k. (KnownNat n, KnownNat k) => Dict (KnownNat (SuccDeg n k))
@@ -247,28 +243,6 @@ instance (KnownNat a, KnownNat b) => KnownNat2 $(nameToSymbol ''DualSuccDeg) a b
          in SNatKn z
     {-# INLINE natSing2 #-}
 
--- class KnownNat2l (f :: Symbol) (a :: [Nat]) (b :: Nat) where
---     natSing2l :: SNatKn f
-
--- instance (SingI a, KnownNat b) => KnownNat2l $(nameToSymbol ''(!!)) a b where
---     natSing2l = SNatKn $ fromSing (Sing :: Sing a) !!! natVal (Proxy @b)
---     {-# INLINE natSing2l #-}
--- instance (SingI a) => KnownNat2l $(nameToSymbol ''(!!)) a 0 where
---     natSing2l = SNatKn $ fromSing (Sing :: Sing a) !!! 0
---     {-# INLINE natSing2l #-}
-
--- instance (KnownNat (ToMatSize n l c1 k1), KnownNat (ToMatSize n l c2 k2), MSL.Numeric a) => Additive (DECrepresentationMatrix n l c1 k1 c2 k2 a) where
---     DECrepresentationMatrix a .+. DECrepresentationMatrix b = DECrepresentationMatrix (a .+. b)
---     zero = DECrepresentationMatrix zero
-
--- instance (KnownNat (ToMatSize n l c1 k1), KnownNat (ToMatSize n l c2 k2), MSL.Numeric a, AdditiveGroup a) => AdditiveGroup (DECrepresentationMatrix n l c1 k1 c2 k2 a) where
---     DECrepresentationMatrix a .-. DECrepresentationMatrix b = DECrepresentationMatrix (a .-. b)
---     negation (DECrepresentationMatrix a) = DECrepresentationMatrix (negation a)
-
--- instance (KnownNat n, KnownNat (ToMatSize n l c1 k1), KnownNat (ToMatSize n l c2 k2), MSL.Numeric a, Multiplicative a) => Multiplicative (DECrepresentationMatrix n l c1 k1 c2 k2 a) where
---     one = DECrepresentationMatrix one
---     (DECrepresentationMatrix x) .*. (DECrepresentationMatrix y) = DECrepresentationMatrix $ x .*. y
-
 knownMatSizeDoublet ::
     forall n l c1 c2 k1 k2.
     ( KnownNat n
@@ -304,163 +278,3 @@ knownMatSizeTriplet =
     , toMatSizeDict @n @l @c2 @k2
     , toMatSizeDict @n @l @c3 @k3
     )
-
--- degreeの計算はphantom type上でのみ行う
--- instance (MSL.Numeric a, KnownNat n, SingI l, SingI c1, SingI c2, SingI c3, KnownNat k1, KnownNat k2, KnownNat k3) => Mul (DECrepresentationMatrix n l c1 k1 c2 k2 a) (DECrepresentationMatrix n l c2 k2 c3 k3 a) (DECrepresentationMatrix n l c1 k1 c3 k3 a) where
---     DECrepresentationMatrix a .@. DECrepresentationMatrix b =
---         let proxyn = Proxy :: Proxy n
---             proxyl = sing :: Sing l
---             proxyc1 = sing :: SCellType c1
---             proxyc2 = sing :: SCellType c2
---             proxyc3 = sing :: SCellType c3
---             proxyk1 = Proxy :: Proxy k1
---             proxyk2 = Proxy :: Proxy k2
---             proxyk3 = Proxy :: Proxy k3
---          in case (toMatSizeDict proxyn proxyl proxyc1 proxyk1, toMatSizeDict proxyn proxyl proxyc2 proxyk2, toMatSizeDict proxyn proxyl proxyc3 proxyk3) of
---                 (Dict, Dict, Dict) -> DECrepresentationMatrix (a .@. b)
-
--- instance (KnownNat (ToMatSize n l c1 k1), KnownNat (ToMatSize n l c2 k2), MSL.Numeric a, Multiplicative a, VectorSpace a) => VectorSpace (DECrepresentationMatrix n l c1 k1 c2 k2 a) where
---     type
---         Scalar (DECrepresentationMatrix n l c1 k1 c2 k2 a) =
---             ( Scalar
---                 (SizedMatrix (ToMatSize n l c1 k1) (ToMatSize n l c2 k2) a)
---             )
---     (*.) a (DECrepresentationMatrix x) = DECrepresentationMatrix (a *. x)
--- instance
---     ( KnownNat n
---     , SingI l
---     , SingI c1
---     , KnownNat k1
---     , SingI c2
---     , KnownNat k2
---     , MSL.Numeric a
---     ) =>
---     Additive (DECrepresentationMatrix n l c1 k1 c2 k2 a)
---     where
---     DECrepresentationMatrix a .+. DECrepresentationMatrix b =
---         case knownMatSizeDoublet @n @l @c1 @c2 @k1 @k2 of
---             (Dict, Dict) -> DECrepresentationMatrix (a .+. b)
---     zero = case knownMatSizeDoublet @n @l @c1 @c2 @k1 @k2 of
---         (Dict, Dict) -> DECrepresentationMatrix zero
-
--- instance
---     ( KnownNat n
---     , SingI l
---     , SingI c1
---     , KnownNat k1
---     , SingI c2
---     , KnownNat k2
---     , MSL.Numeric a
---     , AdditiveGroup a
---     ) =>
---     AdditiveGroup (DECrepresentationMatrix n l c1 k1 c2 k2 a)
---     where
---     DECrepresentationMatrix a .-. DECrepresentationMatrix b = case knownMatSizeDoublet @n @l @c1 @c2 @k1 @k2 of
---         (Dict, Dict) -> DECrepresentationMatrix (a .-. b)
---     negation (DECrepresentationMatrix a) = case knownMatSizeDoublet @n @l @c1 @c2 @k1 @k2 of
---         (Dict, Dict) -> DECrepresentationMatrix (negation a)
-
--- instance
---     ( KnownNat n
---     , SingI l
---     , SingI c1
---     , KnownNat k1
---     , SingI c2
---     , KnownNat k2
---     , MSL.Numeric a
---     , Multiplicative a
---     ) =>
---     Multiplicative (DECrepresentationMatrix n l c1 k1 c2 k2 a)
---     where
---     one = case knownMatSizeDoublet @n @l @c1 @c2 @k1 @k2 of
---         (Dict, Dict) -> DECrepresentationMatrix one
---     (DECrepresentationMatrix x) .*. (DECrepresentationMatrix y) = case knownMatSizeDoublet @n @l @c1 @c2 @k1 @k2 of
---         (Dict, Dict) -> DECrepresentationMatrix $ x .*. y
-
--- -- -- degreeの計算はphantom type上でのみ行う
--- instance
---     ( MSL.Numeric a
---     , KnownNat n
---     , SingI l
---     , SingI c1
---     , SingI c2
---     , SingI c3
---     , KnownNat k1
---     , KnownNat k2
---     , KnownNat k3
---     ) =>
---     Mul (DECrepresentationMatrix n l c1 k1 c2 k2 a) (DECrepresentationMatrix n l c2 k2 c3 k3 a) (DECrepresentationMatrix n l c1 k1 c3 k3 a)
---     where
---     DECrepresentationMatrix a .@. DECrepresentationMatrix b =
---         let proxyn = Proxy :: Proxy n
---             proxyl = sing :: Sing l
---             proxyc1 = sing :: SCellType c1
---             proxyc2 = sing :: SCellType c2
---             proxyc3 = sing :: SCellType c3
---             proxyk1 = Proxy :: Proxy k1
---             proxyk2 = Proxy :: Proxy k2
---             proxyk3 = Proxy :: Proxy k3
---          in case knownMatSizeTriplet @n @l @c1 @c2 @c3 @k1 @k2 @k3 of (Dict, Dict, Dict) -> DECrepresentationMatrix (a .@. b)
-
--- instance
---     ( MSL.Numeric a
---     , KnownNat n
---     , SingI l
---     , SingI c1
---     , KnownNat k1
---     , SingI c2
---     , KnownNat k2
---     , Multiplicative a
---     , VectorSpace a
---     ) =>
---     VectorSpace (DECrepresentationMatrix n l c1 k1 c2 k2 a)
---     where
---     type
---         Scalar (DECrepresentationMatrix n l c1 k1 c2 k2 a) =
---             ( Scalar
---                 (SizedMatrix (ToMatSize n l c1 k1) (ToMatSize n l c2 k2) a)
---             )
---     (*.) a (DECrepresentationMatrix x) = case knownMatSizeDoublet @n @l @c1 @c2 @k1 @k2 of
---         (Dict, Dict) -> DECrepresentationMatrix (a *. x)
-
--- instance
---     ( KnownNat n
---     , SingI l
---     , SingI c1
---     , KnownNat k1
---     , SingI c2
---     , KnownNat k2
---     , MSL.Numeric a
---     , VST.Storable (RealField a)
---     , Additive (RealField a)
---     , NormSpace a
---     , MSL.Numeric a
---     , Ord (RealField a)
---     , VectorSpace a
---     , Multiplicative a
---     , Transcendental (RealField a)
---     ) =>
---     NormSpace (DECrepresentationMatrix n l c1 k1 c2 k2 a)
---     where
---     type RealField (DECrepresentationMatrix n l c1 k1 c2 k2 a) = RealField a
---     norm t (DECrepresentationMatrix x) = case knownMatSizeDoublet @n @l @c1 @c2 @k1 @k2 of
---         (Dict, Dict) -> norm t x
-
--- instance
---     ( MSL.Numeric a
---     , NormSpace a
---     , Multiplicative a
---     , KnownNat n
---     , SingI l
---     , SingI c1
---     , KnownNat k1
---     , SingI c2
---     , KnownNat k2
---     ) =>
---     InnerProductSpace (DECrepresentationMatrix n l c1 k1 c2 k2 a)
---     where
---     (DECrepresentationMatrix x) <.> (DECrepresentationMatrix y) = case knownMatSizeDoublet @n @l @c1 @c2 @k1 @k2 of
---         (Dict, Dict) -> x <.> y
--- (<<.@.>>) :: forall n l c1 k1 c2 k2 c3 k3 a m. (KnownNat n, SingI l, SingI c1, SingI c2, SingI c3, KnownNat k1, KnownNat k2, KnownNat k3, Applicative m, MSL.Numeric a) => m (DECrepresentationMatrix n l c1 k1 c2 k2 a) -> m (DECrepresentationMatrix n l c2 k2 c3 k3 a) -> m (DECrepresentationMatrix n l c1 k1 c3 k3 a)
--- (<<.@.>>) = liftA2 (.@.)
--- infixl 7 <<.@.>>
