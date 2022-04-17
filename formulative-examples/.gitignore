@@ -2,7 +2,12 @@
 .stack-work-*/
 *~
 
-*.svg
-*.prof
 bin/
 output/
+
+# profiling
+*.ps
+*.hp
+*.aux
+*.prof
+*.svg
