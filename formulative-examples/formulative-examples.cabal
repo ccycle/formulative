@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.4.
+-- This file has been generated from package.yaml by hpack version 0.34.5.
 --
 -- see: https://github.com/sol/hpack
 
@@ -105,7 +105,6 @@ library
     , refined
     , reflection
     , replace-megaparsec
-    , rio
     , safe-exceptions
     , scientific
     , simple-reflect
@@ -206,7 +205,6 @@ executable harmonic-oscillator
     , refined
     , reflection
     , replace-megaparsec
-    , rio
     , safe-exceptions
     , scientific
     , simple-reflect
@@ -307,7 +305,6 @@ executable particle-on-paraboloid
     , refined
     , reflection
     , replace-megaparsec
-    , rio
     , safe-exceptions
     , scientific
     , simple-reflect
@@ -408,7 +405,6 @@ executable van-der-Pol-oscillator
     , refined
     , reflection
     , replace-megaparsec
-    , rio
     , safe-exceptions
     , scientific
     , simple-reflect
