@@ -7,7 +7,6 @@ module Main (main) where
 import Control.Algebra
 import Control.Carrier.Lift
 import Control.Carrier.Reader
-import Control.Carrier.State.Strict
 import Control.Effect.Sum
 import Data.Csv (DefaultOrdered, ToField, ToNamedRecord, ToRecord)
 import Data.Hashable
@@ -19,6 +18,8 @@ import Formulative.Calculation.DifferentialEquation.Dynamics.Effect
 import Formulative.Calculation.DifferentialEquation.Types
 import Formulative.Calculation.Internal.Class
 import Formulative.Calculation.Internal.Setting
+import Formulative.Calculation.Internal.Variable.Carrier
+import Formulative.Calculation.Internal.Variable.Effect
 import Formulative.Calculation.Optimization.Carrier
 import Formulative.Calculation.Optimization.Parameter
 import Formulative.Calculation.Optimization.Update
@@ -103,13 +104,14 @@ gradDeltaL
         dLdx = dxdt .-. mu *. (x' .-. x3' ./ 3 - y')
         dLdy = dydt .-. x' ./ mu
 
-instance (Algebra sig m, Member (State MyVariable) sig, Member (Reader MyEquationConstants) sig, Member (Dynamics Double) sig) => HasGradObjectiveFunctionM m MyVariable where
+instance (Algebra sig m, Member (Variable MyVariable) sig, Member (Reader MyEquationConstants) sig, Member (Dynamics Double) sig) => HasGradObjectiveFunctionM m MyVariable where
     getGradientOfObjectiveFunctionM = do
         dt <- askStepSize
         eqParam <- ask
-        gradDeltaL dt eqParam <$> get
+        VariableOld x <- getVariableOld
+        return $ gradDeltaL dt eqParam x
 
-instance (Algebra sig m, Member (State MyVariable) sig, Member (Reader MyEquationConstants) sig, Member (Dynamics Double) sig) => HasObjectiveFunctionM m MyVariable
+instance (Algebra sig m, Member (Variable MyVariable) sig, Member (Reader MyEquationConstants) sig, Member (Dynamics Double) sig) => HasObjectiveFunctionM m MyVariable
 
 instance (Has (Reader MyEquationConstants) sig m) => HasInitialConditionM m MyVariable where
     getInitialConditionM = do
