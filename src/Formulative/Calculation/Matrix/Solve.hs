@@ -1,6 +1,3 @@
--- {-# LANGUAGE AllowAmbiguousTypes #-}
--- {-# LANGUAGE InstanceSigs #-}
-
 module Formulative.Calculation.Matrix.Solve where
 
 import Data.Complex

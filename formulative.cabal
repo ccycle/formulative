@@ -82,6 +82,7 @@ library
       Formulative.Calculation.Internal.Types
       Formulative.Calculation.Matrix.Class
       Formulative.Calculation.Matrix.Solve
+      Formulative.Calculation.Matrix.Types
       Formulative.Calculation.Optimization.AugmentedLagrangian
       Formulative.Calculation.Optimization.Carrier
       Formulative.Calculation.Optimization.Constrained.Carrier
@@ -177,13 +178,13 @@ library
     , constraints
     , containers
     , dhall
-    , eigen
     , exact-combinatorics
     , fused-effects
     , ghc-prim
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
+    , hmatrix
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -266,7 +267,6 @@ executable preprocess
     , constraints
     , containers
     , dhall
-    , eigen
     , exact-combinatorics
     , formulative
     , fused-effects
@@ -274,6 +274,7 @@ executable preprocess
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
+    , hmatrix
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -384,7 +385,6 @@ test-suite formulative-tasty
     , constraints
     , containers
     , dhall
-    , eigen
     , exact-combinatorics
     , formulative
     , fused-effects
@@ -392,6 +392,7 @@ test-suite formulative-tasty
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
+    , hmatrix
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -477,7 +478,6 @@ test-suite formulative-test
     , constraints
     , containers
     , dhall
-    , eigen
     , exact-combinatorics
     , formulative
     , fused-effects
@@ -485,6 +485,7 @@ test-suite formulative-test
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
+    , hmatrix
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -571,7 +572,6 @@ benchmark Factorial
     , containers
     , criterion
     , dhall
-    , eigen
     , exact-combinatorics
     , formulative
     , fused-effects
@@ -579,6 +579,7 @@ benchmark Factorial
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
+    , hmatrix
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -665,7 +666,6 @@ benchmark MatrixMul
     , containers
     , criterion
     , dhall
-    , eigen
     , exact-combinatorics
     , formulative
     , fused-effects
@@ -673,6 +673,7 @@ benchmark MatrixMul
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
+    , hmatrix
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -759,7 +760,6 @@ benchmark MatrixToVector
     , containers
     , criterion
     , dhall
-    , eigen
     , exact-combinatorics
     , formulative
     , fused-effects
@@ -767,6 +767,7 @@ benchmark MatrixToVector
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
+    , hmatrix
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -853,7 +854,6 @@ benchmark StackingEffects
     , containers
     , criterion
     , dhall
-    , eigen
     , exact-combinatorics
     , formulative
     , fused-effects
@@ -861,6 +861,7 @@ benchmark StackingEffects
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
+    , hmatrix
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -947,7 +948,6 @@ benchmark UnsafeIndex
     , containers
     , criterion
     , dhall
-    , eigen
     , exact-combinatorics
     , formulative
     , fused-effects
@@ -955,6 +955,7 @@ benchmark UnsafeIndex
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
+    , hmatrix
     , matrix-sized
     , megaparsec
     , numeric-limits

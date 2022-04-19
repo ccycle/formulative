@@ -12,7 +12,8 @@ import Data.Type.Equality
 import qualified Data.Vector as V
 import qualified Data.Vector.Sized as VS
 import Data.Vector.Storable (Storable)
-import qualified Eigen.Matrix as E
+
+-- import qualified Eigen.Matrix as E
 import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Types
 import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Operators
@@ -20,6 +21,7 @@ import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Types
 import Formulative.Calculation.Internal.List
 import Formulative.Calculation.Internal.TypeLevelNatural
 import Formulative.Calculation.Matrix.Class
+import Formulative.Calculation.Matrix.Types
 import Formulative.Calculation.VectorSpace.Class
 import GHC.Exts (IsList (Item, fromList, toList))
 import GHC.TypeNats
@@ -27,7 +29,7 @@ import GHC.TypeNats
 -- TODO: Euclidean dimとBase dimは区別する 型レベル自然数も同様
 simplexToPositionMat ::
   forall nEuc p k a.
-  ( E.Elem a
+  ( HMatrixElement a
   , MSS.Zero a
   , KnownNat nEuc
   , KnownNat k
@@ -52,7 +54,7 @@ simplexToPositionMat (AllPointDataPrimal0 vec) (Simplex s) =
 -- , [ 0,  1]
 -- ] .@. [x0,x1,x2]
 -- = [x1-x0,x2-x0]
-positionsMatRelative :: forall n k a. (KnownNat n, KnownNat k, 1 <= k, Additive a, E.Elem a) => PositionMatrix n k a -> PositionMatrix n (k - 1) a
+positionsMatRelative :: forall n k a. (KnownNat n, KnownNat k, 1 <= k, Additive a, HMatrixElement a) => PositionMatrix n k a -> PositionMatrix n (k - 1) a
 positionsMatRelative (PositionMatrix mat) = PositionMatrix $ mat' .@. mat
  where
   f (i, j) x
@@ -63,7 +65,7 @@ positionsMatRelative (PositionMatrix mat) = PositionMatrix $ mat' .@. mat
 
 primalVolumeInternal' ::
   forall nEuc l k a p.
-  ( E.Elem a
+  ( HMatrixElement a
   , Floating a
   , MSS.Zero a
   , Additive a
@@ -81,7 +83,7 @@ primalVolumeInternal' mat s = recip (factorialNum kInt) * (sqrt . det $ mat' .@.
   kInt = natToInt (Proxy :: Proxy k)
 
 primalVolume0Internal ::
-  ( E.Elem a
+  ( HMatrixElement a
   , MSS.Zero a
   , Additive a
   , Multiplicative a
@@ -93,7 +95,7 @@ primalVolume0Internal _ _ = one
 
 primalVolumeInternal ::
   forall nEuc p k a.
-  ( E.Elem a
+  ( HMatrixElement a
   , MSS.Zero a
   , Floating a
   , Additive a
@@ -126,7 +128,7 @@ convertVectorToMatrixMS = MSS.fromVector . V.convert . VS.foldl' (<>) (fromList 
 -- 3.0     4.0     5.0
 convertToMatrixE ::
   forall n p a t1 t2.
-  ( E.Elem a
+  ( HMatrixElement a
   , IsList t1
   , MapClass t2 t1
   , Item t1 ~ a
@@ -139,13 +141,13 @@ convertToMatrixE ::
   , KnownNat p
   ) =>
   t2 t1 ->
-  E.Matrix n p a
+  HMatrixSized n p a
 convertToMatrixE = fromList . toList . mapG toList
 
 -- add zero
 -- [v0,v1,v2] -> [v0,v1,v2,0]
-addZeroPosMat :: forall n k a. (KnownNat k, E.Elem a, MSS.Zero a, KnownNat n) => PositionMatrix n k a -> PositionMatrix n (k + 1) a
-addZeroPosMat (PositionMatrix sMat) = PositionMatrix $ (identity :: GMatrixContainer (k + 2) (k + 1) a) .@. sMat
+addZeroPosMat :: forall n k a. (KnownNat k, HMatrixElement a, MSS.Zero a, KnownNat n) => PositionMatrix n k a -> PositionMatrix n (k + 1) a
+addZeroPosMat (PositionMatrix sMat) = PositionMatrix $ vConcat sMat (zero :: HMatrixSized 1 n a)
 
 -- generate the following matrix from vectors:
 -- Ax = b,
@@ -167,7 +169,7 @@ addZeroPosMat (PositionMatrix sMat) = PositionMatrix $ (identity :: GMatrixConta
 -- References:
 -- Bell, Hirani 2011 https://arxiv.org/abs/1103.3076v2
 -- http://mtao.graphics/2017-11-03-simpliical-circumcenters.html
-circumcenterAMat :: forall n k a. (E.Elem a, MSS.Zero a, KnownNat n, KnownNat k) => PositionMatrix n k a -> GMatrixContainer (k + 2) (k + 2) a
+circumcenterAMat :: forall n k a. (HMatrixElement a, MSS.Zero a, KnownNat n, KnownNat k) => PositionMatrix n k a -> GMatrixContainer (k + 2) (k + 2) a
 circumcenterAMat (PositionMatrix sMat) = sMat'''
  where
   sMat' = unPositionMatrix $ addZeroPosMat (PositionMatrix sMat)
@@ -187,15 +189,15 @@ circumcenterAMat (PositionMatrix sMat) = sMat'''
 --       ||vp||^2
 --       1
 --      ]
-circumcenterbVec :: forall n k a. (Field a, E.Elem a, MSS.Zero a, KnownNat n, KnownNat k) => PositionMatrix n k a -> GMatrixContainer (k + 2) 1 a
-circumcenterbVec (PositionMatrix mat) = imap f $ (identity :: GMatrixContainer (k + 2) (k + 1) a) .@. mat .^ 2 .@. (one :: GMatrixContainer n 1 a)
+circumcenterbVec :: forall n k a. (Field a, HMatrixElement a, MSS.Zero a, KnownNat n, KnownNat k) => PositionMatrix n k a -> GMatrixContainer (k + 2) 1 a
+circumcenterbVec (PositionMatrix mat) = (mat .^ 2 .@. (one :: GMatrixContainer n 1 a)) `vConcat` one
  where
   kInt = natToInt (Proxy :: Proxy k)
   f (i, j) x
     | i == kInt + 1 = 1
     | otherwise = x
 
-circumcenterInternal sMat = solveQR a b
+circumcenterInternal sMat = solveCG a b
  where
   a = circumcenterAMat sMat
   b = circumcenterbVec sMat
@@ -203,7 +205,7 @@ circumcenterInternal sMat = solveQR a b
 circumcenterInternalUnsafe ::
   forall n k a.
   ( Field a
-  , E.Elem a
+  , HMatrixElement a
   , MSS.Zero a
   , RealFloat a
   , KnownNat k
@@ -215,9 +217,9 @@ circumcenterInternalUnsafe sMat = (BarycentricCoordinate x', Circumcenter bx, Ci
  where
   a = circumcenterAMat sMat
   b = circumcenterbVec sMat
-  b' = (identity :: GMatrixContainer (k + 1) (k + 2) a) .@. b
-  x = solveQRUnsafe a b
-  x' = (identity :: GMatrixContainer (k + 1) (k + 2) a) .@. x
+  b' = dropLastRow b
+  x = solveCGunsafe a b
+  x' = dropLastRow x
   kInt = natToInt (Proxy :: Proxy k)
   q = unsafeIndexMat x (kInt + 1, 0)
   bx = transpose x' .@. unPositionMatrix sMat

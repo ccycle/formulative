@@ -16,9 +16,12 @@ import qualified Data.Vector.Algorithms.Intro as VA
 import qualified Data.Vector.Sized as VS
 import qualified Data.Vector.Storable as VST
 import qualified Data.Vector.Unboxed as VU
-import qualified Eigen.Matrix as E
+import Formulative.Calculation.Matrix.Types
 import GHC.Exts (IsList (Item, fromList, toList))
 import GHC.TypeNats
+import Numeric.LinearAlgebra (Element)
+import Numeric.LinearAlgebra.Data ((><))
+import Numeric.LinearAlgebra.HMatrix (fromLists, toLists)
 
 singleton :: a -> [a]
 singleton x = [x]
@@ -61,10 +64,15 @@ instance (KnownNat n) => IsList (VS.Vector n a) where
     toList = VS.toList
 
 -- TODO: 失敗可能性を考慮したクラスを用意(IsListMaybe？)
-instance (KnownNat m, KnownNat n, E.Elem a) => IsList (E.Matrix m n a) where
-    type Item (E.Matrix m n a) = [a]
-    fromList = fromJust . E.fromList
-    toList = E.toList
+-- instance (KnownNat m, KnownNat n, E.Elem a) => IsList (HMatrixSized m n a) where
+--     type Item (HMatrixSized m n a) = [a]
+--     fromList = fromJust . E.fromList
+--     toList = E.toList
+
+instance (Element a, KnownNat m, KnownNat n) => IsList (HMatrixSized m n a) where
+    type Item (HMatrixSized m n a) = [a]
+    fromList (x) = HMatrixSized $ fromLists x
+    toList (HMatrixSized x) = toLists x
 
 instance (MSG.Matrix mat v a, KnownNat r, KnownNat c) => IsList (mat r c v a) where
     type Item (mat r c v a) = a

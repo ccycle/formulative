@@ -28,13 +28,13 @@ dependencies:
   - constraints
   - containers
   - dhall
-  - eigen
   - exact-combinatorics
   - fused-effects
   - ghc-prim
   - ghc-typelits-knownnat
   - ghc-typelits-natnormalise
   - hashable
+  - hmatrix
   - matrix-sized
   - megaparsec
   - numeric-limits

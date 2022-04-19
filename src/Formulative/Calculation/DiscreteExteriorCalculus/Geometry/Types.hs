@@ -14,10 +14,10 @@ import qualified Data.Matrix.Static.LinearAlgebra.Types as MSL
 import Data.Singletons.TH hiding (type (<=))
 import qualified Data.Vector.Sized as VS
 import Dhall
-import qualified Eigen.Matrix as E
 import Formulative.Calculation.Algebra.Arithmetic.Additive
 import Formulative.Calculation.Internal.TypeLevelList
 import Formulative.Calculation.Matrix.Class
+import Formulative.Calculation.Matrix.Types
 import GHC.TypeNats
 
 type EucDim = Nat
@@ -27,8 +27,9 @@ newtype DimensionOfEuclideanSpace = DimensionOfEuclideanSpace Natural
     deriving newtype (Enum, Num)
     deriving anyclass (FromDhall, ToDhall, Hashable)
 
-type GMatrixContainer k1 k2 a = E.Matrix k1 k2 a
-newtype GMatrix k a = GMatrix (GMatrixContainer k k a) deriving (Show)
+type GMatrixContainer k1 k2 a = HMatrixSized k1 k2 a
+newtype GMatrix k a = GMatrix (GMatrixContainer k k a)
+    deriving stock (Generic, Show)
 unGMatrix :: GMatrix k a -> GMatrixContainer k k a
 unGMatrix = coerce
 type SizedVector n a = VS.Vector n a
@@ -78,7 +79,6 @@ newtype AllPointDataPrimal0 nEuc p a = AllPointDataPrimal0 (SizedVector nEuc (Si
     deriving (Show, Eq)
 newtype PositionMatrix nEuc k a = PositionMatrix {unPositionMatrix :: GMatrixContainer (k + 1) nEuc a}
     deriving stock (Show)
-    deriving newtype (Additive)
 newtype AllPositionMatrix nEuc p a = AllPositionMatrix {unAllPositionMatrix :: SizedMatrix p nEuc a}
     deriving stock (Show, Eq)
     deriving newtype (Additive)
