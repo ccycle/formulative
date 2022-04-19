@@ -39,7 +39,7 @@ data MyVariable = MyVariable {position :: Double, momentum :: Double}
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace, DefaultOrdered, ToNamedRecord, ToRecords)
 
 ----------------------------------------------------------------
--- User-defined Mysetting
+-- User-defined data for setting
 ----------------------------------------------------------------
 data MyEquationConstants = MyEquationConstants
   { m :: Double
@@ -49,9 +49,7 @@ data MyEquationConstants = MyEquationConstants
   , p0 :: Double
   }
   deriving stock (Show, Generic)
-  deriving anyclass (ToDhall, FromDhall, Hashable, Additive)
-instance HasDefaultValue MyEquationConstants where
-  defaultValue = zero
+  deriving anyclass (ToDhall, FromDhall, Hashable, HasDefaultValue)
 
 data MySetting = MySetting
   { optimization :: OptimizationParameters Double
@@ -68,6 +66,8 @@ data MyDependentParameter = MyDependentParameter
   }
   deriving stock (Show, Generic)
   deriving anyclass (ToDhall, FromDhall, Hashable)
+
+-- https://en.wikipedia.org/wiki/Harmonic_oscillator#Damped_harmonic_oscillator
 instance (Has (Reader MyEquationConstants) sig m) => HasDependentParameterM m MyVariable where
   type DependentParameterType MyVariable = MyDependentParameter
   dependentParameterM = do
@@ -86,24 +86,35 @@ data MyDependentVariableGlobal = MyDependentVariableGlobal
   , potentialEnergy :: Double
   , lagrangian :: Double
   , hamiltonian :: Double
+  , deltaH :: Double
+  , power :: Double
+  , totalChange :: Double
   }
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace, DefaultOrdered, ToRecord, ToNamedRecord)
 
-instance (Has (Reader MyEquationConstants) sig m) => HasDependentVariableGlobalM m MyVariable where
+instance (Has (Reader MyEquationConstants) sig m, Member (State MyVariable) sig, Member (Dynamics Double) sig) => HasDependentVariableGlobalM m MyVariable where
   type DependentVariableGlobalType MyVariable = MyDependentVariableGlobal
   dependentVariableGlobalM (MyVariable x p) = do
+    (MyVariable xOld pOld) <- get
     MyEquationConstants{..} <- ask
+    (StepSize dt) <- askStepSize
     let eK = p .^ 2 / (2 *. m)
     let eP = 1 ./. 2 * k .*. x .^ 2
     let e = eK .+. eP
+    let h (MyVariable x p) = p .^ 2 / (2 *. m) .+. 1 ./. 2 * k .*. x .^ 2
     let l = eK .-. eP
+    let dH = h (MyVariable x p) - h (MyVariable xOld pOld)
+    let deltaW = (x .-. xOld) <.> (negation (gamma ./. m) *. p)
     return $
       MyDependentVariableGlobal
         { kineticEnergy = eK
         , potentialEnergy = eP
         , lagrangian = l
         , hamiltonian = e
+        , deltaH = dH
+        , power = deltaW ./. dt
+        , totalChange = dH .+. deltaW
         }
 
 -- no data (default)

@@ -39,7 +39,7 @@ data MyVariable = MyVariable {x :: Double, y :: Double}
     deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace, DefaultOrdered, ToNamedRecord, ToRecords)
 
 ----------------------------------------------------------------
--- User-defined Mysetting
+-- User-defined data for setting
 ----------------------------------------------------------------
 data MyEquationConstants = MyEquationConstants {mu :: Double, x0 :: Double, y0 :: Double}
     deriving stock (Show, Generic)

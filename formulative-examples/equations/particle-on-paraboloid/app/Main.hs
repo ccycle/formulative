@@ -47,13 +47,11 @@ data MyVariable = MyVariable {x :: Vector 3 Double, p :: Vector 3 Double}
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace, DefaultOrdered, ToRecords)
 
 ----------------------------------------------------------------
--- User-defined Mysetting
+-- User-defined data for setting
 ----------------------------------------------------------------
 data MyEquationConstants = MyEquationConstants {m :: Double, g :: Double, a :: Double, b :: Double, xinit :: Double, yinit :: Double, pxInit :: Double, pyInit :: Double}
   deriving stock (Show, Generic)
-  deriving anyclass (ToDhall, FromDhall, Hashable, Additive)
-instance HasDefaultValue MyEquationConstants where
-  defaultValue = zero
+  deriving anyclass (ToDhall, FromDhall, Hashable, HasDefaultValue)
 
 data MySetting = MySetting {optimization :: OptimizationParameters Double, constrainedSystem :: ConstrainedSystemParameter Double, dynamics :: DynamicParameterSetting Double, export :: ExportSetting, equation :: MyEquationConstants}
   deriving stock (Show, Generic)
