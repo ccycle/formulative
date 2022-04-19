@@ -97,16 +97,16 @@ data MyDependentVariableGlobal = MyDependentVariableGlobal
 instance (Has (Reader MyEquationConstants) sig m, Member (Variable MyVariable) sig, Member (Dynamics Double) sig) => HasDependentVariableGlobalM m MyVariable where
   type DependentVariableGlobalType MyVariable = MyDependentVariableGlobal
   dependentVariableGlobalM (MyVariable x p) = do
-    VariableOld (MyVariable xOld pOld) <- getVariableOld
+    (MyVariable xOld pOld) <- getVariableOld
     MyEquationConstants{..} <- ask
     (StepSize dt) <- askStepSize
     let eK = p .^ 2 / (2 *. m)
     let eP = 1 ./. 2 * k .*. x .^ 2
     let e = eK .+. eP
-    let h (MyVariable x p) = p .^ 2 / (2 *. m) .+. 1 ./. 2 * k .*. x .^ 2
+    let h (MyVariable x' p') = (p' <.> p') ./. (2 .*. m) .+. (1 ./. 2 .*. k .*. x' <.> x')
     let l = eK .-. eP
-    let dH = (h (MyVariable x p) .-. h (MyVariable xOld pOld) )
-    let dW = (x .-. xOld) <.> (negation (gamma ./. m) *. ((p .+. pOld)./ 2))
+    let dH = h (MyVariable x p) .-. h (MyVariable xOld pOld)
+    let dW = (x .-. xOld) <.> (negation (gamma ./. m) *. ((p .+. pOld) ./ 2))
     return $
       MyDependentVariableGlobal
         { kineticEnergy = eK
@@ -147,8 +147,7 @@ instance
   getGradientOfObjectiveFunctionM = do
     dt <- askStepSize
     eqParam <- ask
-    VariableOld xOld <- getVariableOld
-    return $ gradDeltaL dt eqParam xOld
+    gradDeltaL dt eqParam <$> getVariableOld
 
 instance
   ( Algebra sig m

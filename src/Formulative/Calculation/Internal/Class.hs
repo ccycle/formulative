@@ -16,7 +16,7 @@ class (VectorSpace a) => HasObjectiveFunctionM m a where
     getObjectiveFunctionM :: m (a -> Scalar a)
     default getObjectiveFunctionM :: (Has (Variable a) sig m, InnerProductSpace a, HasGradObjectiveFunctionM m a) => m (a -> Scalar a)
     getObjectiveFunctionM = do
-        (VariableOld xOld) <- getVariableOld @a
+        (xOld) <- getVariableOld @a
         gradf <- getGradientOfObjectiveFunctionM
         return $ \x -> (x .-. xOld) <.> gradf x
 

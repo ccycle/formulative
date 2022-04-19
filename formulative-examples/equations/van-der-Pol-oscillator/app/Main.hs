@@ -108,8 +108,7 @@ instance (Algebra sig m, Member (Variable MyVariable) sig, Member (Reader MyEqua
     getGradientOfObjectiveFunctionM = do
         dt <- askStepSize
         eqParam <- ask
-        VariableOld x <- getVariableOld
-        return $ gradDeltaL dt eqParam x
+        gradDeltaL dt eqParam <$> getVariableOld
 
 instance (Algebra sig m, Member (Variable MyVariable) sig, Member (Reader MyEquationConstants) sig, Member (Dynamics Double) sig) => HasObjectiveFunctionM m MyVariable
 

@@ -160,8 +160,8 @@ mainCalculationDynamic = do
                     msgDone
                 putStrLnM "Updating variable.."
                 x' <- updateM y
-                putVariableOld (VariableOld y)
-                putVariableNew (VariableNew x')
+                putVariableOld (y)
+                putVariableNew (x')
                 msgDone
                 msgNewLine
                 go (succ i) nInterval iMax (t .+. dt) finalVal (StepSize dt) x'
