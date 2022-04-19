@@ -83,6 +83,6 @@ build:
   haddock-hyperlink-source: true
 
 ghc-options:
-  "$everything": "-O2"
+  "$everything": "-O1"
 
 work-dir: ".stack-work-static"
