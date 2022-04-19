@@ -7,7 +7,6 @@ module Main (main) where
 import Control.Algebra
 import Control.Carrier.Lift
 import Control.Carrier.Reader
-import Control.Carrier.State.Strict
 import Control.Effect.Sum
 import Data.Csv (DefaultOrdered, ToField, ToNamedRecord, ToRecord)
 import Data.Hashable
@@ -88,17 +87,17 @@ data MyDependentVariableGlobal = MyDependentVariableGlobal
   , potentialEnergy :: Double
   , lagrangian :: Double
   , hamiltonian :: Double
-  , deltaH :: Double
+  , dHdt :: Double
   , power :: Double
   , totalChange :: Double
   }
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace, DefaultOrdered, ToRecord, ToNamedRecord)
 
-instance (Has (Reader MyEquationConstants) sig m, Member (State MyVariable) sig, Member (Dynamics Double) sig) => HasDependentVariableGlobalM m MyVariable where
+instance (Has (Reader MyEquationConstants) sig m, Member (Variable MyVariable) sig, Member (Dynamics Double) sig) => HasDependentVariableGlobalM m MyVariable where
   type DependentVariableGlobalType MyVariable = MyDependentVariableGlobal
   dependentVariableGlobalM (MyVariable x p) = do
-    (MyVariable xOld pOld) <- get
+    VariableOld (MyVariable xOld pOld) <- getVariableOld
     MyEquationConstants{..} <- ask
     (StepSize dt) <- askStepSize
     let eK = p .^ 2 / (2 *. m)
@@ -106,17 +105,17 @@ instance (Has (Reader MyEquationConstants) sig m, Member (State MyVariable) sig,
     let e = eK .+. eP
     let h (MyVariable x p) = p .^ 2 / (2 *. m) .+. 1 ./. 2 * k .*. x .^ 2
     let l = eK .-. eP
-    let dH = h (MyVariable x p) - h (MyVariable xOld pOld)
-    let deltaW = (x .-. xOld) <.> (negation (gamma ./. m) *. p)
+    let dH = (h (MyVariable x p) .-. h (MyVariable xOld pOld) )
+    let dW = (x .-. xOld) <.> (negation (gamma ./. m) *. ((p .+. pOld)./ 2))
     return $
       MyDependentVariableGlobal
         { kineticEnergy = eK
         , potentialEnergy = eP
         , lagrangian = l
         , hamiltonian = e
-        , deltaH = dH
-        , power = deltaW ./. dt
-        , totalChange = dH .+. deltaW
+        , dHdt = dH ./. dt
+        , power = dW ./. dt
+        , totalChange = dH ./. dt .+. dW ./. dt
         }
 
 -- no data (default)
