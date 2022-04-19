@@ -80,6 +80,8 @@ library
       Formulative.Calculation.Internal.TypeLevelList
       Formulative.Calculation.Internal.TypeLevelNatural
       Formulative.Calculation.Internal.Types
+      Formulative.Calculation.Internal.Variable.Carrier
+      Formulative.Calculation.Internal.Variable.Effect
       Formulative.Calculation.Matrix.Class
       Formulative.Calculation.Matrix.Solve
       Formulative.Calculation.Matrix.Types
