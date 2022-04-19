@@ -1,11 +1,6 @@
 # Formulative
 
-Formulative is a open-source tool for numerical simulation of ODE/PDE based on numerical optimization.
+`Formulative` is an open source tool for numerical simulation based on polymorphism in Haskell.
 
-## Usage Guide
+Examples of executable are in [formulative-examples](formulative-examples).
 
-1. create `Main.hs` file
-1. import module
-1. define types and derive instance
-1. make dhall file
-1. build and execute

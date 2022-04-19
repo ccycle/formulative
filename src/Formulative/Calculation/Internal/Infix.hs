@@ -12,6 +12,11 @@ infixl 3 ^>
 (^>) :: Applicative f => f (a -> b) -> f a -> f b
 (^>) = (<*>)
 
+($>) :: Applicative f => f (a -> b -> c) -> a -> f (b -> c)
+($>) g x = do
+    g' <- g
+    return $ g' x
+
 (<$<) :: Functor f => (b -> c) -> f (a -> b) -> f (a -> c)
 (<$<) a b = (a .) <$> b
 infixr 4 <$<
