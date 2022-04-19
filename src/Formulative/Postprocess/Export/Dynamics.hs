@@ -20,6 +20,7 @@ import Formulative.Calculation.DifferentialEquation.Dynamics.Effect
 import Formulative.Calculation.DifferentialEquation.Types
 import Formulative.Calculation.Internal.Class
 import Formulative.Calculation.Internal.IfThenElse
+import Formulative.Calculation.Internal.Variable.Effect
 import Formulative.Postprocess.Export.Class
 import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.Statics
@@ -101,10 +102,10 @@ mainCalculationDynamic ::
     , HasDependentVariableLocalM m a
     , HasUpdateM m a
     , Member (Dynamics b) sig
+    , Member (Variable a) sig
     , Member (Lift IO) sig
     , Member (Throw SomeException) sig
     , Member Export sig
-    , Member (State a) sig
     , Member SettingFile sig
     , Ord b
     , Show b
@@ -124,7 +125,6 @@ mainCalculationDynamic ::
 mainCalculationDynamic = do
     preprocessM @m @a
     x <- getInitialConditionM @m @a
-    put x
     DynamicParameterSetting{..} <- askDynamicParameterSetting @b
     msgNewLine
     msgStart
@@ -160,7 +160,8 @@ mainCalculationDynamic = do
                     msgDone
                 putStrLnM "Updating variable.."
                 x' <- updateM y
-                put x'
+                putVariableOld (VariableOld y)
+                putVariableNew (VariableNew x')
                 msgDone
                 msgNewLine
                 go (succ i) nInterval iMax (t .+. dt) finalVal (StepSize dt) x'

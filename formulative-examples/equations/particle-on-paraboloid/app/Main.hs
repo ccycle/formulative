@@ -7,15 +7,12 @@ module Main (main) where
 import Control.Algebra
 import Control.Carrier.Lift
 import Control.Carrier.Reader
-import Control.Carrier.State.Strict
 import Control.Effect.Sum
 import Data.Csv hiding (index)
 import Data.Hashable
 import Data.Vector.Sized
 import qualified Data.Vector.Sized as VS
 import Dhall hiding (Vector)
-import GHC.Generics
-import GHC.Natural
 import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.Algebra.DiscreteVariation (symmetrizePoly)
 import Formulative.Calculation.DifferentialEquation.Dynamics.Carrier
@@ -23,6 +20,8 @@ import Formulative.Calculation.DifferentialEquation.Dynamics.Effect
 import Formulative.Calculation.DifferentialEquation.Types
 import Formulative.Calculation.Internal.Class
 import Formulative.Calculation.Internal.Setting
+import Formulative.Calculation.Internal.Variable.Carrier
+import Formulative.Calculation.Internal.Variable.Effect
 import Formulative.Calculation.Optimization.AugmentedLagrangian
 import Formulative.Calculation.Optimization.Carrier
 import Formulative.Calculation.Optimization.Constrained.Carrier (runConstrainedSystem, runConstrainedSystemIO)
@@ -38,6 +37,8 @@ import Formulative.Postprocess.Export.Types
 import Formulative.Preprocess.DefaultValue
 import Formulative.Preprocess.Exception
 import Formulative.Preprocess.SettingFile.Carrier
+import GHC.Generics
+import GHC.Natural
 
 ----------------------------------------------------------------
 -- User-defined variable
@@ -113,11 +114,12 @@ gradDeltaL
     dHdp = p' ./ m
     dLdx = dxdt .-. dHdp
     dLdp = dpdt .+. dHdx
-instance (Algebra sig m, Member (State MyVariable) sig, Member (Reader MyEquationConstants) sig, Member (Dynamics Double) sig) => HasGradObjectiveFunctionM m MyVariable where
+instance (Algebra sig m, Member (Variable MyVariable) sig, Member (Reader MyEquationConstants) sig, Member (Dynamics Double) sig) => HasGradObjectiveFunctionM m MyVariable where
   getGradientOfObjectiveFunctionM = do
     dt <- askStepSize
     eqParam <- ask
-    gradDeltaL dt eqParam <$> get
+    VariableOld x <- getVariableOld
+    return $ gradDeltaL dt eqParam x
 
 equalityConstraint
   MyEquationConstants{..}
@@ -137,23 +139,23 @@ gradConstraint
     y = symmetrizePoly 1 xNew xOld `index` 1
     dg1 = zero VS.// [(0, 2 .*. x ./. (a .^ 2)), (1, 2 .*. y ./. (b .^ 2)), (2, -1)]
 
-instance (Member (Reader MyEquationConstants) sig, Algebra sig m, Member (State MyVariable) sig) => HasGradPenaltyM m MyVariable where
+instance (Member (Reader MyEquationConstants) sig, Algebra sig m, Member (Variable MyVariable) sig) => HasGradPenaltyM m MyVariable where
   getGradPenaltyM = do
     c <- ask
-    varOld <- get
+    (VariableOld varOld) <- getVariableOld
     return $ \(LagrangianMultiplier l) var -> gradConstraint c l varOld var
 
 newtype MyConstraintCondition = MyConstraintCondition {l1 :: Double}
   deriving stock (Generic, Show)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, InnerProductSpace, NormSpace, FromDhall, ToDhall, DefaultOrdered, ToRecord, ToNamedRecord)
-instance (Algebra sig m, Member (State MyVariable) sig, Member (Reader MyEquationConstants) sig) => HasEqualityConstraintM m MyVariable where
+instance (Algebra sig m, Member (Variable MyVariable) sig, Member (Reader MyEquationConstants) sig) => HasEqualityConstraintM m MyVariable where
   type EqualityConstraintType MyVariable = MyConstraintCondition
   getEqualityConstraintM = do
     c <- ask
-    varOld <- get
+    (VariableOld varOld) <- getVariableOld
     return $ \x -> equalityConstraint c varOld x
 
-instance (Algebra sig m, Member (State MyVariable) sig, Member (Reader MyEquationConstants) sig, Member (Dynamics Double) sig) => HasObjectiveFunctionM m MyVariable
+instance (Algebra sig m, Member (Variable MyVariable) sig, Member (Reader MyEquationConstants) sig, Member (Dynamics Double) sig) => HasObjectiveFunctionM m MyVariable
 instance (Has (Reader MyEquationConstants) sig m) => HasInitialConditionM m MyVariable where
   getInitialConditionM = do
     MyEquationConstants{..} <- ask

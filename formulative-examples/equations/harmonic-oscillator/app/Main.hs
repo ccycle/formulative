@@ -19,6 +19,8 @@ import Formulative.Calculation.DifferentialEquation.Dynamics.Effect
 import Formulative.Calculation.DifferentialEquation.Types
 import Formulative.Calculation.Internal.Class
 import Formulative.Calculation.Internal.Setting
+import Formulative.Calculation.Internal.Variable.Carrier
+import Formulative.Calculation.Internal.Variable.Effect
 import Formulative.Calculation.Optimization.Carrier
 import Formulative.Calculation.Optimization.Parameter
 import Formulative.Calculation.Optimization.Update
@@ -137,7 +139,7 @@ gradDeltaL
     dLdp = dpdt .+. (k *. x .+. (gamma ./. m) *. p)
 instance
   ( Algebra sig m
-  , Member (State MyVariable) sig
+  , Member (Variable MyVariable) sig
   , Member (Reader MyEquationConstants) sig
   , Member (Dynamics Double) sig
   ) =>
@@ -146,11 +148,12 @@ instance
   getGradientOfObjectiveFunctionM = do
     dt <- askStepSize
     eqParam <- ask
-    gradDeltaL dt eqParam <$> get
+    VariableOld xOld <- getVariableOld
+    return $ gradDeltaL dt eqParam xOld
 
 instance
   ( Algebra sig m
-  , Member (State MyVariable) sig
+  , Member (Variable MyVariable) sig
   , Member (Reader MyEquationConstants) sig
   , Member (Dynamics Double) sig
   ) =>
