@@ -129,22 +129,23 @@ mainCalculationDynamic = do
     msgNewLine
     msgStart
     msgNewLine
-    go 0 interval maximumIterationNumber initialValue finalValue (StepSize stepSize) x
+    go 0 interval maximumIterationNumber initialValue finalValue (StepSize stepSize) x x
     msgNewLine
     (OutputDir outputPath) <- askOutputDir
-    putStrLnM $ "output directory: " <> toFilePath outputPath
+    absOutputDir <- sendIO $ makeAbsolute outputPath
+    putStrLnM $ "output directory: " <> toFilePath absOutputDir
     msgNewLine
   where
-    go i nInterval iMax t finalVal (StepSize dt) y =
+    go i nInterval iMax t finalVal (StepSize dt) xiMinus1 xi =
         if iMax <= i || (2 .*. finalVal <= (2 .*. t .+. dt) && 2 .*. t <= (2 .*. finalVal .+. dt)) || finalVal < t
             then do
                 putStrLnM $ "step " ++ show i
                 putStrLnM $ "parameter: " ++ show t
                 putStrLnM "Exporting data.."
                 exportParameter (IndexOfStep i) (Parameter t)
-                exportVariableDynamic (IndexOfStep i) y
-                exportDependentVariableLocalDynamic (IndexOfStep i) y
-                exportDependentVariableGlobal y
+                exportVariableDynamic (IndexOfStep i) xi
+                exportDependentVariableLocalDynamic (IndexOfStep i) xi
+                exportDependentVariableGlobal xi
                 msgDone
                 msgNewLine
                 msgEnd
@@ -153,15 +154,15 @@ mainCalculationDynamic = do
                 putStrLnM $ "parameter: " ++ show t
                 when (i `mod` nInterval == 0) $ do
                     putStrLnM "Exporting data.."
+                    putVariableOld xiMinus1
                     exportParameter (IndexOfStep i) (Parameter t)
-                    exportVariableDynamic (IndexOfStep i) y
-                    exportDependentVariableLocalDynamic (IndexOfStep i) y
-                    exportDependentVariableGlobal y
+                    exportVariableDynamic (IndexOfStep i) xi
+                    exportDependentVariableLocalDynamic (IndexOfStep i) xi
+                    exportDependentVariableGlobal xi
                     msgDone
                 putStrLnM "Updating variable.."
-                x' <- updateM y
-                putVariableOld (y)
-                putVariableNew (x')
+                putVariableOld xi
+                xiPlus1 <- updateM xi
                 msgDone
                 msgNewLine
-                go (succ i) nInterval iMax (t .+. dt) finalVal (StepSize dt) x'
+                go (succ i) nInterval iMax (t .+. dt) finalVal (StepSize dt) xi xiPlus1
