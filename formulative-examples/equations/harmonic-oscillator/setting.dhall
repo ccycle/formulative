@@ -1,4 +1,4 @@
-{ equation = { m = 1.0, k = 2.0, gamma = 2.0, x0 = 1.0, p0 = 0.5 }
+{ equation = { m = 1.0, k = 1.0, gamma = 1.0, x0 = 1.0, p0 = 1.0 }
 , dynamics =
   { label = "time"
   , initialValue = 0.0
