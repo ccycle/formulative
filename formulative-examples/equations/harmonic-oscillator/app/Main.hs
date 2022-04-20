@@ -102,11 +102,11 @@ instance (Has (Reader MyEquationConstants) sig m, Member (Variable MyVariable) s
     (StepSize dt) <- askStepSize
     let eK = p .^ 2 / (2 *. m)
     let eP = 1 ./. 2 * k .*. x .^ 2
-    let e = eK .+. eP
-    let h (MyVariable x' p') = (p' <.> p') ./. (2 .*. m) .+. (1 ./. 2 .*. k .*. x' <.> x')
+    let h (MyVariable x' p') = (p' .^ 2) ./. (2 .*. m) .+. (1 ./. 2 .*. k .*. (x' .^ 2))
+    let e = h (MyVariable x p)
     let l = eK .-. eP
     let dH = h (MyVariable x p) .-. h (MyVariable xOld pOld)
-    let dW = (x .-. xOld) <.> (negation (gamma ./. m) *. ((p .+. pOld) ./ 2))
+    let dW = (x .-. xOld) <.> (gamma ./. m) *. ((p .+. pOld) ./ 2)
     return $
       MyDependentVariableGlobal
         { kineticEnergy = eK
