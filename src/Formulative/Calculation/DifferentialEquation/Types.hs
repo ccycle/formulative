@@ -54,7 +54,7 @@ newtype LabelOfDynamicParameter = LabelOfDynamicParameter String
     deriving newtype (IsString)
     deriving anyclass (FromDhall, ToDhall, Hashable)
 
-newtype StepSize a = StepSize a
+newtype StepSize a = StepSize {unStepSize :: a}
     deriving stock (Generic, Show, Eq)
     deriving newtype (Num, Enum)
     deriving anyclass (FromDhall, ToDhall, Hashable)

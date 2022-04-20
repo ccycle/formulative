@@ -12,12 +12,12 @@ data Variable a (m :: Type -> Type) k where
     GetVariableNew :: Variable a m (VariableNew a)
     PutVariableNew :: VariableNew a -> Variable a m ()
 
-getVariableNew :: (Has (Variable a) sig m) => m (a)
-getVariableNew = unVariableNew <$> send GetVariableNew
-putVariableNew :: forall a sig m. (Has (Variable a) sig m) => a -> m ()
-putVariableNew x = send (PutVariableNew . VariableNew $ x)
+getVariable :: (Has (Variable a) sig m) => m a
+getVariable = unVariableNew <$> send GetVariableNew
+putVariable :: forall a sig m. (Has (Variable a) sig m) => a -> m ()
+putVariable x = send (PutVariableNew . VariableNew $ x)
 
-getVariableOld :: (Has (Variable a) sig m) => m (a)
+getVariableOld :: (Has (Variable a) sig m) => m a
 getVariableOld = unVariableOld <$> send GetVariableOld
 putVariableOld :: forall a sig m. (Has (Variable a) sig m) => a -> m ()
 putVariableOld x = send (PutVariableOld . VariableOld $ x)
