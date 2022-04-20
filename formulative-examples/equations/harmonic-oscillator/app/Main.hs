@@ -180,7 +180,7 @@ main =
   runM . runSomeException printSomeException
     . runSettingFileIO @MySetting
     . runExportIO ODE
-    . runOptimization @Double defaultValue
+    . runOptimizationIO @Double
     . runEquationConstantsIO @MyEquationConstants
     . runDynamicsIO @Double
     . runInitialConditionM @MyVariable

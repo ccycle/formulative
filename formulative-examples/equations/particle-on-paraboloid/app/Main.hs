@@ -118,8 +118,7 @@ instance (Algebra sig m, Member (Variable MyVariable) sig, Member (Reader MyEqua
   getGradientOfObjectiveFunctionM = do
     dt <- askStepSize
     eqParam <- ask
-    x <- getVariableOld
-    return $ gradDeltaL dt eqParam x
+    gradDeltaL dt eqParam <$> getVariableOld
 
 equalityConstraint
   MyEquationConstants{..}
@@ -142,7 +141,7 @@ gradConstraint
 instance (Member (Reader MyEquationConstants) sig, Algebra sig m, Member (Variable MyVariable) sig) => HasGradPenaltyM m MyVariable where
   getGradPenaltyM = do
     c <- ask
-    (varOld) <- getVariableOld
+    varOld <- getVariableOld
     return $ \(LagrangianMultiplier l) var -> gradConstraint c l varOld var
 
 newtype MyConstraintCondition = MyConstraintCondition {l1 :: Double}
@@ -152,7 +151,7 @@ instance (Algebra sig m, Member (Variable MyVariable) sig, Member (Reader MyEqua
   type EqualityConstraintType MyVariable = MyConstraintCondition
   getEqualityConstraintM = do
     c <- ask
-    (varOld) <- getVariableOld
+    varOld <- getVariableOld
     return $ \x -> equalityConstraint c varOld x
 
 instance (Algebra sig m, Member (Variable MyVariable) sig, Member (Reader MyEquationConstants) sig, Member (Dynamics Double) sig) => HasObjectiveFunctionM m MyVariable
