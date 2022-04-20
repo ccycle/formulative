@@ -76,7 +76,7 @@ updateWithConstrainedOptimization variable = do
                 (ObjectiveFunction objFunc)
                 (GradObjectiveFunction gradObjFunc)
                 (EqualityConstraint eqConst)
-                lagrangianMultiplier
+                (LagrangianMultiplier lagrangianMultiplier)
                 (GradPenalty gradPenalty)
                 variable
     putLagrangianMultiplier l

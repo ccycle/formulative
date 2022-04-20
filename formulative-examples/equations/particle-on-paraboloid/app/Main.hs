@@ -88,7 +88,7 @@ instance (Algebra sig m, Member (ConstrainedSystem MyConstraintCondition) sig, M
   type DependentVariableLocalType MyVariable = MyDependentVariableLocal
   dependentVariableLocalM MyVariable{..} = do
     MyEquationConstants{..} <- ask
-    LagrangianMultiplier (MyConstraintCondition l1) <- getLagrangianMultiplier
+    (MyConstraintCondition l1) <- getLagrangianMultiplier
     g1 <- constraintCondition1 x
     return $ MyDependentVariableLocal g1 l1
 

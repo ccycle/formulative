@@ -19,7 +19,7 @@ askConstrainedSystemParameter = send (AskConstrainedSystemParameter @a)
 askAugmentedLagrangianParameter :: forall a sig m. (Has (ConstrainedSystem a) sig m) => m (AugmentedLagrangianMethodParameters (Scalar a))
 askAugmentedLagrangianParameter = augmentedLagrangianMethodParameters <$> (askConstrainedSystemParameter @a)
 
-getLagrangianMultiplier :: (Has (ConstrainedSystem a) sig m) => m (LagrangianMultiplier a)
-getLagrangianMultiplier = send GetLagrangianMultiplier
+getLagrangianMultiplier :: (Has (ConstrainedSystem a) sig m) => m a
+getLagrangianMultiplier = unLagrangianMultiplier <$> send GetLagrangianMultiplier
 putLagrangianMultiplier :: forall a sig m. (Has (ConstrainedSystem a) sig m) => LagrangianMultiplier a -> m ()
 putLagrangianMultiplier x = send (PutLagrangianMultiplier x)
