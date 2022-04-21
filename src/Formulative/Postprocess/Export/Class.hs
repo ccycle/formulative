@@ -186,6 +186,12 @@ msgDone = putStrLnM "Done."
 msgEnd :: (Has (Lift IO) sig m) => m ()
 msgEnd = putStrLnM "End."
 
+msgOutputDir :: (Member Export sig, Member (Lift IO) sig, Algebra sig m) => m ()
+msgOutputDir = do
+    (OutputDir outputPath) <- askOutputDir
+    absOutputDir <- sendIO $ makeAbsolute outputPath
+    putStrLnM $ "output directory: " <> toFilePath absOutputDir
+
 -- class MainCalcPDEManifold m (s :: Nat -> [Nat] -> *) where
 --     mainCalcPDEManifold :: (KnownNat n, SingI l) => s n l -> m ()
 --     initialStatePDEManifold :: (KnownNat n, SingI l) => m (s n l)

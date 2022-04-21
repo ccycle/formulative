@@ -4,7 +4,6 @@
 module Formulative.Postprocess.Export.Dynamics where
 
 import Control.Carrier.Lift
-import Control.Carrier.State.Strict
 import Control.Effect.Error
 import Control.Effect.Sum
 import Control.Exception.Safe
@@ -126,15 +125,9 @@ mainCalculationDynamic = do
     preprocessM @m @a
     x <- getInitialConditionM @m @a
     DynamicParameterSetting{..} <- askDynamicParameterSetting @b
-    msgNewLine
     msgStart
-    msgNewLine
     go 0 interval maximumIterationNumber initialValue finalValue (StepSize stepSize) x x
-    msgNewLine
-    (OutputDir outputPath) <- askOutputDir
-    absOutputDir <- sendIO $ makeAbsolute outputPath
-    putStrLnM $ "output directory: " <> toFilePath absOutputDir
-    msgNewLine
+    msgOutputDir
   where
     go i nInterval iMax t finalVal (StepSize dt) xiMinus1 xi =
         if iMax <= i || (2 .*. finalVal <= (2 .*. t .+. dt) && 2 .*. t <= (2 .*. finalVal .+. dt)) || finalVal < t
@@ -147,7 +140,6 @@ mainCalculationDynamic = do
                 exportDependentVariableLocalDynamic (IndexOfStep i) xi
                 exportDependentVariableGlobal xi
                 msgDone
-                msgNewLine
                 msgEnd
             else do
                 putStrLnM $ "step " ++ show i
@@ -163,6 +155,6 @@ mainCalculationDynamic = do
                 putStrLnM "Updating variable.."
                 putVariableOld xi
                 xiPlus1 <- updateM xi
+                putVariable xiPlus1
                 msgDone
-                msgNewLine
                 go (succ i) nInterval iMax (t .+. dt) finalVal (StepSize dt) xi xiPlus1
