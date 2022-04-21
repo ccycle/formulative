@@ -3,10 +3,10 @@
 ## Executables
 
 - Unconstrained system
-  - [harmonic-oscillator](equations/harmonic-oscillator/app/Main.hs)
-  - [van-der-Pol-oscillator](equations/van-der-Pol-oscillator/app/Main.hs)
+  - [harmonic-oscillator](equations/harmonic-oscillator/)
+  - [van-der-Pol-oscillator](equations/van-der-Pol-oscillator/)
 - Constrained system
-  - [particle-on-paraboloid](equations/particle-on-paraboloid/app/Main.hs)
+  - [particle-on-paraboloid](equations/particle-on-paraboloid/)
 
 ## Build and Execute
 
