@@ -13,10 +13,6 @@
 - get a list of the available binaries:
 
   ```
-  stack ide targets
-  ```
-  or
-  ```
   cabal list-bin .
   ```
 
@@ -26,10 +22,16 @@
   cabal build <exec_name>
   ```
 
+  - if you want to reduce the binary size, use cabal options `--enable-executable-dynamic`.
+
+    ```
+    cabal build <exec_name> --enable-executable-dynamic
+    ```
+
 - build all binary:
 
   ```
-  cabal build
+  cabal build --enable-executable-dynamic
   ```
 
 - execute:

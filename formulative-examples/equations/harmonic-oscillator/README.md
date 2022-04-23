@@ -34,25 +34,48 @@ $$
 ### execute
 
 ```sh
-cabal exec -- harmonic-oscillator
+cabal exec -- harmonic-oscillator -s setting.dhall
 ```
 
 ### visualize
 
-plot phase space:
+Time evolution:
+
+```sh
+python ../../visualization-scripts/plot_time_evolution.py --outputDirRegExp "output/*" --x position.csv --y momentum.csv
+```
+
+Phase space:
 
 ```sh
 python ../../visualization-scripts/plot2d.py --outputDirRegExp "output/*" --x position.csv --y momentum.csv
 ```
 
-plot all global quantities:
+Global quantities:
 
 ```sh
 python ../../visualization-scripts/plot_global_quantity.py --outputDirRegExp "output/*" --parameter time.csv --data dependentVariableGlobal.csv
 ```
 
-plot global quantities for selected labels:
+Global quantities for selected labels (`hamiltonian`, `dHdt`, `power`):
 
 ```sh
 python ../../visualization-scripts/plot_global_quantity.py --outputDirRegExp "output/*" --parameter time.csv --data dependentVariableGlobal.csv --labels hamiltonian dHdt power
+```
+
+## Exmaples
+
+setting.dhall
+
+```setting.dhall
+{ equation = { m = 1.0, k = 1.0, gamma = 1.0, x0 = 1.0, p0 = 1.0 }
+, dynamics =
+  { label = "time"
+  , initialValue = 0.0
+  , finalValue = 10.0
+  , stepSize = 1.0e-2
+  , interval = 10
+  , maximumIterationNumber = 1000000
+  }
+}
 ```
