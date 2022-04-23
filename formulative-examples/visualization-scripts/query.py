@@ -36,9 +36,9 @@ if __name__ == "__main__":
      help="Whether to export the results of the query execution",
      default="query_result.csv"
      )
-    parser.add_argument("-o","--indices",
-     help="indices",
-     default="query_result.csv"
+    parser.add_argument("-H","--header",
+     help="header",
+     default="export_outputDirectory"
      )
     args = parser.parse_args()
     dbPath =  args.databaseDir
