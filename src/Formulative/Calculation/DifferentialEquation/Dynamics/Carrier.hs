@@ -43,7 +43,6 @@ runDynamicsIO ::
     m b
 runDynamicsIO f = do
     (DhallSettingText txt) <- cmdOptionToDhallSettingText
-    putStrLnM "Read setting file (Dynamics).."
+    putStrLnM "Reading setting file (Dynamics).."
     r <- sendIO $ readRecordFromDhallFile @(DynamicParameterSetting a) "dynamics" txt
-    msgDone
     runReader r . runDynamicsC $ f
