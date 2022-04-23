@@ -58,11 +58,10 @@ exportSettingFile ::
 exportSettingFile = do
     (OutputDir outputDir) <- askOutputDir
     (DhallSettingText x) <- askSettingFileText
-    putStrLnM "Export setting file.."
+    putStrLnM "Exporting setting file.."
     sendIO $ ensureDir outputDir
     sName <- sendIO $ parseRelFile "setting.dhall"
     sendIO $ T.writeFile (toFilePath (outputDir </> sName)) x
-    putStrLnM "Done."
 
 exportDependentParameterFile ::
     forall a m sig.
@@ -78,11 +77,10 @@ exportDependentParameterFile = do
     let y = toDhallText x
     when (y /= toDhallText ()) $ do
         (OutputDir outputDir) <- askOutputDir
-        putStrLnM "Export dependent parameter file.."
+        putStrLnM "Exporting dependent parameter file.."
         sendIO $ ensureDir outputDir
         sName <- sendIO $ parseRelFile "dependentParamater.dhall"
         sendIO $ T.writeFile (toFilePath (outputDir </> sName)) y
-        putStrLnM "Done."
 
 -- 1ファイルに追記
 exportDependentVariableGlobal ::
@@ -132,8 +130,9 @@ removeDirRecurOutputM (OutputDir relDir) =
     sendIO . removeDirRecur $ relDir
 
 -- TODO: logger作成
-warningForOverwrite :: (Has (Lift IO) sig m, Member (Throw SomeException) sig) => OutputDir -> m RecalculationOption
-warningForOverwrite (OutputDir dir) = do
+warningForOverwrite :: (Has (Lift IO) sig m, Member (Throw SomeException) sig, Member Export sig) => m RecalculationOption
+warningForOverwrite = do
+    dir <- askOutputDirAbsPath
     putStrLnM $ "[WARNING] The output directory (" <> toFilePath dir <> ") already exists: The calculation may have already been executed."
     putStrLnM ""
     putStrLnM "Overwrite ([y]/n)?"
@@ -161,7 +160,7 @@ removeDirRecurWithWarningM = do
     (OutputDir x) <- askOutputDir
     d <- sendIO $ doesDirExist x
     when d $ do
-        r <- warningForOverwrite (OutputDir x)
+        r <- warningForOverwrite
         case r of
             Overwrite -> removeDirRecurOutputM (OutputDir x)
             NoOperation -> liftEither $ throwString "Exit."
@@ -178,19 +177,25 @@ msgNewLine :: (Has (Lift IO) sig m) => m ()
 msgNewLine = putStrLnM ""
 
 msgStart :: (Has (Lift IO) sig m) => m ()
-msgStart = putStrLnM "Start."
+msgStart = msgNewLine >> putStrLnM "Start."
 
 msgDone :: (Has (Lift IO) sig m) => m ()
-msgDone = putStrLnM "Done."
+msgDone = putStrLnM "Done." >> msgNewLine
 
 msgEnd :: (Has (Lift IO) sig m) => m ()
-msgEnd = putStrLnM "End."
+msgEnd = msgNewLine >> putStrLnM "End." >> msgNewLine
 
 msgOutputDir :: (Member Export sig, Member (Lift IO) sig, Algebra sig m) => m ()
 msgOutputDir = do
     (OutputDir outputPath) <- askOutputDir
     absOutputDir <- sendIO $ makeAbsolute outputPath
     putStrLnM $ "output directory: " <> toFilePath absOutputDir
+    msgNewLine
+
+askOutputDirAbsPath :: (Member Export sig, Algebra sig m, Member (Lift IO) sig) => m (Path Abs Dir)
+askOutputDirAbsPath = do
+    (OutputDir outputPath) <- askOutputDir
+    sendIO $ makeAbsolute outputPath
 
 -- class MainCalcPDEManifold m (s :: Nat -> [Nat] -> *) where
 --     mainCalcPDEManifold :: (KnownNat n, SingI l) => s n l -> m ()

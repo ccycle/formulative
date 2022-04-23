@@ -40,7 +40,7 @@ data ExportQuantityFormat = ExportQuantityFormat {variable :: ExportFormat, loca
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, HasDefaultValue, Hashable)
 
-data ExportSetting = ExportSetting {format :: ExportQuantityFormat, output :: OutputDirSetting}
+data ExportSetting = ExportSetting {format :: ExportQuantityFormat, outputDirectory :: OutputDirSetting}
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, Hashable, HasDefaultValue)
 
