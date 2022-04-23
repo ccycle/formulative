@@ -127,34 +127,25 @@ mainCalculationDynamic = do
     DynamicParameterSetting{..} <- askDynamicParameterSetting @b
     msgStart
     go 0 interval maximumIterationNumber initialValue finalValue (StepSize stepSize) x x
-    msgOutputDir
   where
-    go i nInterval iMax t finalVal (StepSize dt) xiMinus1 xi =
-        if iMax <= i || (2 .*. finalVal <= (2 .*. t .+. dt) && 2 .*. t <= (2 .*. finalVal .+. dt)) || finalVal < t
+    go i nInterval iMax t finalVal (StepSize dt) xiMinus1 xi = do
+        msgNewLine
+        putStrLnM $ "step " ++ show i
+        putStrLnM $ "parameter: " ++ show t
+        when (i `mod` nInterval == 0) $ do
+            putStrLnM "Exporting data.."
+            putVariableOld xiMinus1
+            exportParameter (IndexOfStep i) (Parameter t)
+            exportVariableDynamic (IndexOfStep i) xi
+            exportDependentVariableLocalDynamic (IndexOfStep i) xi
+            exportDependentVariableGlobal xi
+        if iMax <= i || 2 .*. finalVal <= (2 .*. t .+. dt) -- End condition
             then do
-                putStrLnM $ "step " ++ show i
-                putStrLnM $ "parameter: " ++ show t
-                putStrLnM "Exporting data.."
-                exportParameter (IndexOfStep i) (Parameter t)
-                exportVariableDynamic (IndexOfStep i) xi
-                exportDependentVariableLocalDynamic (IndexOfStep i) xi
-                exportDependentVariableGlobal xi
-                msgDone
                 msgEnd
+                msgOutputDir
             else do
-                putStrLnM $ "step " ++ show i
-                putStrLnM $ "parameter: " ++ show t
-                when (i `mod` nInterval == 0) $ do
-                    putStrLnM "Exporting data.."
-                    putVariableOld xiMinus1
-                    exportParameter (IndexOfStep i) (Parameter t)
-                    exportVariableDynamic (IndexOfStep i) xi
-                    exportDependentVariableLocalDynamic (IndexOfStep i) xi
-                    exportDependentVariableGlobal xi
-                    msgDone
                 putStrLnM "Updating variable.."
                 putVariableOld xi
                 xiPlus1 <- updateM xi
                 putVariable xiPlus1
-                msgDone
                 go (succ i) nInterval iMax (t .+. dt) finalVal (StepSize dt) xi xiPlus1
