@@ -177,13 +177,19 @@ msgNewLine :: (Has (Lift IO) sig m) => m ()
 msgNewLine = putStrLnM ""
 
 msgStart :: (Has (Lift IO) sig m) => m ()
-msgStart = msgNewLine >> putStrLnM "Start."
+msgStart = msgNewLine >> putStrLnM "--- Start ---"
 
 msgDone :: (Has (Lift IO) sig m) => m ()
 msgDone = putStrLnM "Done." >> msgNewLine
 
 msgEnd :: (Has (Lift IO) sig m) => m ()
-msgEnd = msgNewLine >> putStrLnM "End." >> msgNewLine
+msgEnd = msgNewLine >> putStrLnM "--- End ---" >> msgNewLine
+
+msgExportFileIO :: Path b File -> IO ()
+msgExportFileIO path = putStrLn $ concat ["Exporting ", toFilePath path, " .."]
+
+msgExportFileM :: (Has (Lift IO) sig m) => Path b File -> m ()
+msgExportFileM path = sendIO $ msgExportFileIO path
 
 msgOutputDir :: (Member Export sig, Member (Lift IO) sig, Algebra sig m) => m ()
 msgOutputDir = do
