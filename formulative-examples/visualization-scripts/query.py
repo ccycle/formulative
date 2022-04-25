@@ -38,6 +38,8 @@ if __name__ == "__main__":
      )
     parser.add_argument("-H","--header",
      help="header",
+     nargs="*",
+     type=str,
      default="export_outputDirectory"
      )
     args = parser.parse_args()
@@ -47,10 +49,11 @@ if __name__ == "__main__":
     df1 = str_to_df_query(df,queryStr)
     # target
     fileName1 = args.fileName
-    df2 = df1["export_output"].map(lambda x: x+"/"+fileName1)
-    print(df2)
+    df2 = df1.copy()
+    df2["export_outputDirectory"] = df2["export_outputDirectory"].map(lambda x: (x+"/"+fileName1))
+    headerArg = args.header
     outputPath = args.output
-    print(df2.to_string(index=False,header=False))
+    print(df2[["export_outputDirectory"]+headerArg].to_string(index=False))
     if outputPath != "":
         df1.to_csv(outputPath)
         print("Successfully exported to "+relPathToAbsPath(outputPath))

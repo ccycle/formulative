@@ -25,7 +25,7 @@ def dhallPathToDataFrame(path):
         s = f.read()
     dhallToDict = dhall.loads(s)
     parentPath = str(pathlib.Path(path).parent)
-    dhallToDict["export"]["output"] = parentPath
+    dhallToDict["export"]["outputDirectory"] = parentPath
 
     # add dependent parameter to dictionary
     parentDir = getParentDirStr(path)
