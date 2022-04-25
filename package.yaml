@@ -27,6 +27,7 @@ dependencies:
   - cassava
   - constraints
   - containers
+  - cryptonite
   - dhall
   - exact-combinatorics
   - fused-effects
@@ -47,7 +48,6 @@ dependencies:
   - replace-megaparsec
   - safe-exceptions
   - simple-reflect
-  - time
   - singletons
   - string-conversions
   - tasty
@@ -55,6 +55,7 @@ dependencies:
   - tasty-quickcheck
   - template-haskell
   - text
+  - time
   - unordered-containers
   - vector
   - vector-algorithms
@@ -95,6 +96,7 @@ default-extensions:
   - PatternGuards
   - PolyKinds
   - RankNTypes
+  # - RebindableSyntax
   - RecordWildCards
   - ScopedTypeVariables
   - StandaloneDeriving
@@ -105,7 +107,6 @@ default-extensions:
   - TypeOperators
   - TypeSynonymInstances
   - ViewPatterns
-# - RebindableSyntax
 
 executables:
   preprocess:

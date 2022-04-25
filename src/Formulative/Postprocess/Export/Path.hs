@@ -2,6 +2,9 @@ module Formulative.Postprocess.Export.Path where
 
 import Control.Algebra
 import Control.Effect.Sum
+import Crypto.Hash hiding (hash)
+import Data.ByteString (ByteString)
+import Data.Csv (ToField (toField))
 import Data.Hashable
 import Data.Void
 import Formulative.Postprocess.Export.Effect
@@ -23,10 +26,11 @@ import Text.Megaparsec.Char.Lexer
 -}
 parseAndReplace x y = streamEdit (chunk x :: Parsec Void String String) (const y)
 
-hashHexadecimalString x = showHex (i - i0) ""
+hashHexadecimalString x = show iHash
  where
-  i = toInteger $ hash x
-  i0 = toInteger (minBound :: Int)
+  i = hash x
+  iBS = toField i
+  iHash = hashWith SHA1 iBS
 
 outputDirCmdStr = "[[output]]"
 replaceOutputRelDir :: (Has Export sig m) => String -> m String
@@ -43,5 +47,3 @@ replaceHash a (OutputDirSetting x) =
    in OutputDirSetting $ parseAndReplace outputDirHashCmdStr hashVal x
 
 newtype SettingHash = SettingHash String
-
--- input setting file -> hash setting file -> replace "$(hash)" to hash value
