@@ -7,6 +7,8 @@ output/
 
 settingFiles/
 
+query_result.csv
+
 # profiling
 *.ps
 *.hp
