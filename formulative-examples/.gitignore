@@ -5,6 +5,8 @@
 bin/
 output/
 
+settingFiles/
+
 # profiling
 *.ps
 *.hp
