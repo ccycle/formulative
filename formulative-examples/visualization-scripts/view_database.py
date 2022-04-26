@@ -52,7 +52,8 @@ if __name__ == "__main__":
      help="header to sort",
      metavar='HEADER',
      type=str,
-     default = ""
+     nargs="*",
+     default = []
      )
     parser.add_argument("-A","--isAscending",
      help="sort type",
@@ -78,11 +79,12 @@ if __name__ == "__main__":
     fileName1 = args.fileName
     df2 = df1.copy()
     df2["export_outputDirectory"] = df2["export_outputDirectory"].map(lambda x: (x+"/"+fileName1))
+    df2
     headerArg = args.header
     headerToSortArg = args.headerToSort
     isAscendingArg = args.isAscending
     df3 = df2[["export_outputDirectory"]+headerArg]
-    if headerToSortArg != "":
+    if headerToSortArg != []:
         df3 = df3.sort_values(headerToSortArg, ascending = isAscendingArg)
     outputPath = args.output
 
@@ -95,5 +97,5 @@ if __name__ == "__main__":
 
     # export
     if outputPath != "":
-        df3.to_csv(outputPath)
-        print("Successfully exported to "+relPathToAbsPath(outputPath))
+        df3.to_csv(outputPath,index=False)
+        print("Exporting "+relPathToAbsPath(outputPath)+" ..")

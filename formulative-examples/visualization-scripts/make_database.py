@@ -63,4 +63,4 @@ if __name__ == "__main__":
     data = dhallPathListToDataFrame(settingFilePathList).sort_index(axis=1)
     outputPath_ = args.output
     data.to_csv(outputPath_, index=False)
-    print("Successfully exported to "+relPathToAbsPath(outputPath_))
+    print("Exporting "+relPathToAbsPath(outputPath_)+" ..")

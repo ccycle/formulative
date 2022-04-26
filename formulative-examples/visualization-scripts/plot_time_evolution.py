@@ -36,6 +36,7 @@ def plot2d(outputDirList, xPathArgv, yPathArgv, fileNameArgv):
         # ax.plot(t,t)
         # plt.ioff()
         imgOutputPath = os.path.join(outputDirRegExp, fileNameArgv)
+        print("Exporting "+imgOutputPath+" ..")
         plt.savefig(imgOutputPath)
         plt.close("all")
 
