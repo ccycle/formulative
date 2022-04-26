@@ -36,6 +36,7 @@ def plot2d(outputDirList, xPathArgv, yPathArgv, fileNameArgv):
         # ax.plot(t,t)
         # plt.ioff()
         imgOutputPath = os.path.join(outputDirRegExp, fileNameArgv)
+        print("Exporting "+imgOutputPath+" ..")
         plt.savefig(imgOutputPath)
         plt.close("all")
 
@@ -46,7 +47,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--outputDirRegExp",
         help="parent directory of data. example: --outputDirRegExp=output/*/",
-        required=True,
+        default="output/*/"
     )
 
     parser.add_argument("--t", help="t data. example: --t time.csv", required=True)

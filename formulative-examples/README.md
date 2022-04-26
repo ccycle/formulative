@@ -1,6 +1,6 @@
 # formulative-examples
 
-## Executables
+## List of Executables
 
 - Unconstrained system
   - [harmonic-oscillator](equations/harmonic-oscillator/)
@@ -39,3 +39,9 @@
   ```
   cabal exec -- <exec_name>
   ```
+
+## Data organization
+
+```sh
+python ../../visualization-scripts/query.py -q "equation_dampingRatio >= 0.5" -H equation_dampingRatio --fileName "position.svg" -S equation_dampingRatio
+```

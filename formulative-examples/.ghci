@@ -1,5 +1,6 @@
 :set prompt ">>> "
 :set +s
+:def source readFile
 :set -XDataKinds
 :set -XOverloadedStrings
 :set -XTypeApplications
@@ -7,3 +8,4 @@
 :set -XTypeFamilies
 :set -XTemplateHaskell
 :set -XQuasiQuotes
+:set -XDuplicateRecordFields

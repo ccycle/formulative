@@ -31,10 +31,16 @@ $$
 
 ## scripts
 
-### execute
+execute:
 
 ```sh
 cabal exec -- harmonic-oscillator -s setting.dhall
+```
+
+execute multiple setting files:
+
+```sh
+find ./settingFiles -name "*.dhall" -exec cabal exec -- harmonic-oscillator -s {} \;
 ```
 
 ### visualize

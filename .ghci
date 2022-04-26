@@ -7,3 +7,4 @@
 :set -XTypeFamilies
 :set -XTemplateHaskell
 :set -XQuasiQuotes
+:set -XDuplicateRecordFields

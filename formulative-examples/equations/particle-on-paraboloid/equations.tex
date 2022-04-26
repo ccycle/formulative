@@ -1,0 +1,543 @@
+%% LyX 2.3.4.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[10pt,xelatex,10pt,a4paper]{bxjsarticle}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{fontspec}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setcounter{tocdepth}{2}
+\usepackage{mathtools}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\newlength{\lyxlabelwidth}      % auxiliary length 
+
+\@ifundefined{date}{}{\date{}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%デバッグ用
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%枠の確認
+%\usepackage{showframe}
+
+%Fixme
+\usepackage{fixme}
+\fxsetup{draft}
+\usepackage{lipsum}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%条件分岐の設定
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%ifthenパッケージを使った条件分岐
+\usepackage{ifthen}
+
+\newcounter{BXJSBOOK}
+\newcounter{BXJSARTICLE}
+\newcounter{SIDENOTE}%sidenote用の余白を使用するかどうか
+\newcounter{FRAME}%定理環境に枠をつけるかどうか
+\newcounter{listofthm}%mythm環境を定義するかどうか
+\newcounter{MARGINNOTE}%marginnoteの表示/非表示
+
+%カウンターで設定を制御 
+%0:False,1:True
+\setcounter{BXJSBOOK}{0}
+\setcounter{BXJSARTICLE}{1}
+\setcounter{SIDENOTE}{0}%sidenoteに合わせたスタイルを使うかどうか
+\setcounter{FRAME}{1}%枠を表示するかどうか
+\setcounter{listofthm}{0}%定理リストを出力するかどうか defn,thm環境を文章中に入れていない場合は0にする
+\setcounter{MARGINNOTE}{0}%marginnoteを出力するかどうか
+
+
+%classごとに条件分岐
+%https://tex.stackexchange.com/questions/46223/if-document-class-is-equal-to-something-then-do-not-use-package
+\newcommand{\Ifclassloaded}[2]{
+  \makeatletter
+  \@ifclassloaded{#1}{#2}{}
+  \makeatother
+}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%枠の調整
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%estions/20752/layout-with-captions-in-margin-and-margin-notes
+\ifthenelse{\value{SIDENOTE}=1}{
+  \usepackage{geometry}
+  \geometry{top=0.075\paperheight,
+    bottom=0.075\paperheight,
+    inner=0.075\paperwidth,
+    outer=0.075\paperwidth,
+    marginparwidth=0.175\paperwidth,
+    marginparsep=2em,
+    includemp,
+    twoside,
+    asymmetric,
+    %heightrounded
+  }
+}
+{\usepackage{geometry}
+  \geometry{top=0.1\paperheight,
+    bottom=0.1\paperheight,
+    inner=0.15\paperwidth,
+    outer=0.15\paperwidth,
+    twoside,
+  }
+}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%fontの調整
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{fontspec}
+%\setmainfont{Times}
+\setsansfont{Helvetica}
+\usepackage{xeCJK}
+\setCJKmainfont[
+  BoldFont=HiraginoSans-W5,
+  BoldItalicFont=HiraMinProN-W6
+]{HiraMinProN-W3}
+\setCJKsansfont{HiraginoSans-W6}
+\setCJKmonofont{HiraginoSans-W6}
+\CJKsetecglue{\hspace{1.5pt}}
+\setlength{\mathsurround}{1.5pt}
+
+%https://tex.stackexchange.com/questions/258918/marginnote-apparent-bug-with-geometry
+%\edef\marginnotetextwidth{\the\textwidth}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%脚注の設定
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%https://tex.stackexchange.com/questions/301769/text-margin-and-text-margin-width-floats-without-using-tufte-class
+%\usepackage{mparhack}
+\ifthenelse{\value{SIDENOTE}=1}{
+  \usepackage[side]{footmisc}
+}{}
+%\usepackage{marginnote}
+\usepackage{marginfix}
+\usepackage{sidenotes}
+
+%marginnoteをすべて右に置く
+%https://tex.stackexchange.com/questions/73102/marginnote-on-left-side-only-using-document-class-book-with-twoside
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@mn@margintest}{\@tempswafalse}{\@tempswatrue}{}{}
+\patchcmd{\@mn@margintest}{\@tempswafalse}{\@tempswatrue}{}{}
+\makeatother
+
+%marginnoteの微調整
+%https://tex.stackexchange.com/questions/47351/can-i-redefine-a-command-to-contain-itself
+\newlength\myadjust
+\ifthenelse{\value{FRAME}=1}{
+  \setlength{\myadjust}{\parindent}
+}{
+  \setlength{\myadjust}{0pt}
+}
+\let\oldmarginnote\marginnote
+\ifthenelse{\value{MARGINNOTE}=1}{
+  \newcommand{\tcbmarginnote}[1]{\oldmarginnote{\hspace{-\myadjust}\parbox[t]{0.175\paperwidth}{#1}}[1pt]}
+}{
+  \newcommand{\tcbmarginnote}[1]{}
+  \renewcommand{\marginnote}[1]{}
+}
+
+%https://tex.stackexchange.com/questions/258918/marginnote-apparent-bug-with-geometry
+\edef\marginnotetextwidth{\the\textwidth}
+
+%https://tex.stackexchange.com/questions/30473/specifying-font-size-in-a-newcommand
+\renewcommand*{\marginfont}{\footnotesize}
+
+%figureをmarginに置く
+\ifthenelse{\value{SIDENOTE}=1}{
+  \renewenvironment{figure}{\begin{marginfigure}}{\end{marginfigure}}
+}{}
+
+%https://tex.stackexchange.com/questions/69595/marginnote-always-on-right-side-of-the-page
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%headerの調整
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\setlength{\headheight}{15pt}
+\setlength{\headwidth}{\marginparsep+\marginparwidth+\textwidth}
+\fancyhf{}
+\ifthenelse{\value{SIDENOTE}=1}{
+  \fancyhfoffset[RE]{\marginparsep+\marginparwidth}%
+}
+{
+  \fancyhfoffset[RE]{0pt}%
+}
+\fancyhfoffset[LE]{0pt}%
+
+\ifthenelse{\value{SIDENOTE}=1}{
+  \fancyhfoffset[RO]{\marginparsep+\marginparwidth}%
+}
+{
+  \fancyhfoffset[RO]{0pt}%
+}
+
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter\quad#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\quad#1}}
+\Ifclassloaded{bxjsbook}{
+  \renewcommand{\headrulewidth}{0.4pt}
+  \renewcommand{\footrulewidth}{0pt}
+  \fancyhead[LE,RO]{\bfseries\thepage}
+  \fancyhead[CE]{\leftmark}
+  \fancyhead[CO]{\rightmark}
+}
+\Ifclassloaded{bxjsarticle}{
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+  \fancyfoot[CE,CO]{\bfseries\thepage}
+%  \fancyhead[CE]{\rightmark}
+%  \fancyhead[CO]{\rightmark}
+  \fancyhead[CE]{}
+}
+
+%章の始めの設定
+\fancypagestyle{chap}{%
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhf{}
+\renewcommand{\chaptermark}[1]{}
+\renewcommand{\sectionmark}[1]{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+  \fancyhead[LE,RO]{\bfseries\thepage}
+}
+
+%plainスタイルは章はじめと同様
+\fancypagestyle{plain}{%
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhf{}
+\renewcommand{\chaptermark}[1]{}
+\renewcommand{\sectionmark}[1]{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+  \fancyhead[LE,RO]{\bfseries\thepage}
+}
+
+\ifthenelse{\value{BXJSBOOK}=1}{
+\fancypagestyle{title}{%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}
+  \fancyhf{}%
+  \fancyfoot[LE,RO]{\bfseries\thepage}%
+}
+}{}
+
+\ifthenelse{\value{BXJSARTICLE}=1}{
+\fancypagestyle{title}{%
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+  \fancyhf{}%
+  \renewcommand{\chaptermark}[1]{}
+  \renewcommand{\sectionmark}[1]{}
+  \fancyfoot[CE,CO]{\bfseries\thepage}%
+}
+}{}
+
+%titleの調整
+\ifthenelse{\value{BXJSARTICLE}=1}{
+  \AtBeginDocument{\thispagestyle{title}}
+}{}
+
+%章の初めのページ数を非表示
+\usepackage{titlesec}
+\assignpagestyle{\chapter}{chap}
+\pagestyle{fancy}
+
+%章の見出しを変更
+%\usepackage{titlesec}
+%\titleformat{\chapter}[display]
+%{\bfseries\Huge}
+%{\Huge 第\thechapter 章}
+%{1ex}{}[]
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%雑多な調整
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{braket}%braket記法用
+\usepackage{tensor}
+\usepackage{multicol}%多段組
+
+\Ifclassloaded{bxjsbook}{
+  \renewcommand{\headfont}{\bfseries}%sectionの書体をボールド体にする
+}
+\Ifclassloaded{bxjsarticle}{
+  \renewcommand{\headfont}{\bfseries}%sectionの書体をボールド体にする
+}
+
+\usepackage{graphicx}%図の描画
+\renewcommand{\proofname}{\bfseries{証明}}%証明環境の名前変更
+\usepackage{blkarray}%行列に矢印を付ける用
+%\allowdisplaybreaks%数式の改ページを許可
+
+%\left(, \right) の空白調整
+\let\originalleft\left
+\let\originalright\right
+\renewcommand{\left}{\mathopen{}\mathclose\bgroup\originalleft}
+\renewcommand{\right}{\aftergroup\egroup\originalright}
+
+%索引の作成
+\usepackage[square,numbers,sectionbib]{natbib}
+\usepackage{chapterbib}
+%\usepackage{imakeidx}
+%\makeindex[columns=3]
+%\makeindex[columns=2,options={-s dot.ist}]
+
+%formatted reference用に再定義
+
+\usepackage{prettyref}
+\newcommand{\ec}{\CJKecglue}
+\newrefformat{eq}{式(\ref{#1})}
+\newrefformat{fig}{図\ec\ref{#1}\ec}
+\newrefformat{tab}{表\ec\ref{#1}\ec}
+\newrefformat{que}{問\ec\ref{#1}\ec}
+\newrefformat{thm}{定理\ec\ref{#1}\ec}
+\newrefformat{chap}{第\ec\ref{#1}\ec 章}
+\newrefformat{sec}{第\ec\ref{#1}\ec 節}
+\newrefformat{sub}{第\ec\ref{#1}\ec 節}
+\newrefformat{exa}{例\ec\ref{#1}\ec}
+\newrefformat{def}{定義\ec\ref{#1}\ec}
+
+%演習問題用
+\usepackage{comment}
+\includecomment{answer}%表示
+%\excludecomment{answer}%非表示
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%定理、定義環境の設定
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+\usepackage{thmtools}
+
+\declaretheoremstyle[
+  headfont=\normalfont\bfseries,
+  bodyfont=\normalfont,
+]{mystyle}
+
+%thm,defnを自作環境に置き換え
+%numberwithinのところはbookの場合chapter,articleの場合section
+\Ifclassloaded{bxjsbook}{
+  \declaretheorem[style=mystyle,name={定理},numberwithin=chapter]{mythm}
+  \declaretheorem[style=mystyle,name={定義},numberwithin=chapter]{mydefn}
+  \ifthenelse{\value{listofthm}=1}{
+    \renewenvironment{defn}{\begin{mydefn}}{\end{mydefn}}
+    \renewenvironment{thm}{\begin{mythm}}{\end{mythm}}
+  }{}
+}
+
+\Ifclassloaded{bxjsarticle}{
+  \declaretheorem[style=mystyle,name={定理},numberwithin=section]{mythm}
+  \declaretheorem[style=mystyle,name={定義},numberwithin=section]{mydefn}  
+  \ifthenelse{\value{listofthm}=1}{
+    \renewenvironment{thm}{\begin{mythm}}{\end{mythm}}
+    \renewenvironment{defn}{\begin{mydefn}}{\end{mydefn}}
+  }{}
+}
+
+%listoftheoremsを使わない場合これを無効にする
+%https://stackoverflow.com/questions/1812214/latex-optional-arguments
+\ifthenelse{\value{listofthm}=0}{
+\renewcommand{\listoftheorems}[1][]{}
+}{}
+
+%listoftheoremsのカスタマイズ
+%https://tex.stackexchange.com/questions/74857/toc-like-list-of-definitions-using-theorem-environments/74871
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\thmtlo@chaptervspacehack
+  {\addtocontents{loe}{\protect\addvspace{10\p@}}}
+  {\addtocontents{loe}{\protect\thmlopatch@endchapter\protect\thmlopatch@chapter{\thechapter}}}
+  {}{}
+\AtEndDocument{\addtocontents{loe}{\protect\thmlopatch@endchapter}}
+\long\def\thmlopatch@chapter#1#2\thmlopatch@endchapter{
+  \setbox\z@=\vbox{#2}
+  \ifdim\ht\z@>\z@
+    \hbox{\bfseries{第}#1\bfseries{章}}\nobreak
+    #2
+    \addvspace{10\p@}
+  \fi
+}
+\def\thmlopatch@endchapter{}
+
+%mydefn
+\def\ll@mydefn{
+   \protect\thmtopatch@numbernametext
+     \ifx\@empty\thmt@shortoptarg\else[\thmt@shortoptarg]\fi
+     {\csname the\thmt@envname\endcsname}
+     {\thmt@thmname}
+}
+\newcommand\thmtopatch@numbernametext[3][]{
+    #3 #2
+  \if\relax\detokenize{#1}\relax\else\space -- #1\fi
+}
+
+%mythm
+\def\ll@mythm{
+   \protect\thmtopatch@numbernametext
+     \ifx\@empty\thmt@shortoptarg\else[\thmt@shortoptarg]\fi
+     {\csname the\thmt@envname\endcsname}
+     {\thmt@thmname}
+}
+
+\makeatother
+
+\renewcommand{\thmtformatoptarg}[1]{ -- #1}
+
+%tcolorboxの設定
+\usepackage[most]{tcolorbox}
+
+\ifthenelse{\value{FRAME}=1}{
+  %定理環境
+  \tcolorboxenvironment{thm}{
+    enhanced jigsaw,
+    breakable,
+    %size=fbox,
+    sharp corners,
+    colframe=black,
+    interior hidden,
+    top=0em,
+    bottom=0em,
+    left=0pt,
+    right=0pt,
+    boxsep=\parindent,
+    boxrule=0.4pt,
+    before skip=1em,
+    after skip=1em,
+  }
+
+  %定義環境
+  \tcolorboxenvironment{defn}{
+    enhanced jigsaw,
+    breakable,
+    %size=fbox,
+    sharp corners,
+    colframe=black,
+    interior hidden,
+    top=0em,
+    bottom=0em,
+    left=0pt,
+    right=0pt,
+    boxsep=\parindent,
+    boxrule=0.4pt,
+    before skip=1em,
+    after skip=1em,
+  }
+
+  %証明環境
+  \tcolorboxenvironment{proof}{
+    blanker,
+    breakable,
+    before skip=1em,
+    after skip=1em,
+    top=0.5em,
+    bottom=0.5em,
+    left=\parindent,
+    right=0pt,
+    borderline west={1mm}{0pt}{gray}
+  }
+}{}
+
+\usepackage{enumitem}
+\setlist[itemize,1]{leftmargin=*} 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%ハイパーリンク埋め込み設定
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%他のパッケージと競合してリンクが消える可能性があるのでhyperrefは必ず最後尾に置く
+\usepackage[bookmarksopenlevel=4]{hyperref}
+\hypersetup{colorlinks=true}
+\hypersetup{citecolor=blue}
+\hypersetup{linkcolor=blue}
+\hypersetup{urlcolor=blue}
+%\usepackage{pxjahyper}
+
+
+%https://tex.stackexchange.com/questions/37935/table-of-contents-without-title
+
+\makeatletter %これを宣言しておかないとsubfigureを使ったときエラーが出る
+
+\AtBeginDocument{
+  \def\labelitemii{\tiny\(\blacksquare\)}
+  \def\labelitemiii{\scriptsize\(\blacktriangleright\)}
+}
+
+\makeatother
+
+
+\begin{document}
+\global\long\def\d{\mathrm{d}}%
+
+\global\long\def\v#1{\mathbf{#1}}%
+
+\global\long\def\cd{\cdot}%
+
+\global\long\def\D#1#2{\frac{\d#1}{\d#2}}%
+\global\long\def\vari{\v x}%
+\global\long\def\varii{\mathbf{p}}%
+
+\global\long\def\xVec{\mathbf{e}_{x}}%
+
+\global\long\def\yVec{\mathbf{e}_{y}}%
+
+\global\long\def\zVec{\mathbf{e}_{z}}%
+
+\global\long\def\xComponentI{x}%
+
+\global\long\def\xComponentII{y}%
+
+\global\long\def\xComponentIII{z}%
+
+\global\long\def\LagrangianMultiplier{\lambda}%
+
+\global\long\def\constantI{a}%
+
+\global\long\def\constantII{b}%
+
+\global\long\def\equalityConstraint{f}%
+\global\long\def\parami{t}%
+\global\long\def\mass{m}%
+\global\long\def\gravitationalConstant{g}%
+\global\long\def\indexI{i}%
+
+\begin{align*}
+\D{\vari}{\parami} & =\frac{\varii}{\mass}\\
+\D{\varii}{\parami} & =-\gravitationalConstant\xComponentIII\zVec\\
+\equalityConstraint\left(\vari\right) & =\frac{\xComponentI^{2}}{\constantI^{2}}+\frac{\xComponentII^{2}}{\constantII^{2}}-\xComponentIII
+\end{align*}
+
+\begin{align*}
+\frac{\vari_{\indexI+1}-\vari_{\indexI}}{\Delta t} & -\frac{\varii_{\indexI+1}+\varii_{\indexI}}{m}=\v 0\\
+\frac{\varii_{\indexI+1}-\varii_{\indexI}}{\Delta t} & +\gravitationalConstant\frac{\xComponentIII_{\indexI+1}+\xComponentIII_{\indexI}}{2}\zVec+\LagrangianMultiplier\left(\frac{2\xComponentI}{\constantI^{2}}\xVec+\frac{2\xComponentII}{\constantII^{2}}\yVec-\zVec\right)=\v 0
+\end{align*}
+
+\begin{align*}
+\delta L= & \left(x_{\indexI+1}-x_{\indexI}\right)\cdot\left(\frac{x_{\indexI+1}-x_{\indexI}}{\Delta t}-\frac{p_{\indexI+1}+p_{\indexI}}{m}\right)\\
+ & +\left(p_{\indexI+1}-p_{\indexI}\right)\cdot\left(\frac{p_{\indexI+1}-p_{\indexI}}{\Delta t}+\frac{\gamma}{m}\frac{p_{\indexI+1}+p_{\indexI}}{2}+k\frac{\vari_{\indexI+1}+\vari_{\indexI}}{2}\right)
+\end{align*}
+
+\end{document}

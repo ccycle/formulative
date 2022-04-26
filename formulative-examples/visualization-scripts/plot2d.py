@@ -45,7 +45,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--outputDirRegExp",
         help="parent directory of data. example: --outputDirRegExp=output/*/",
-        required=True,
+        default="output/*/",
     )
 
     parser.add_argument(

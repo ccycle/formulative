@@ -179,6 +179,7 @@ library
     , cassava
     , constraints
     , containers
+    , cryptonite
     , dhall
     , exact-combinatorics
     , fused-effects
@@ -268,6 +269,7 @@ executable preprocess
     , cassava
     , constraints
     , containers
+    , cryptonite
     , dhall
     , exact-combinatorics
     , formulative
@@ -386,6 +388,7 @@ test-suite formulative-tasty
     , cassava
     , constraints
     , containers
+    , cryptonite
     , dhall
     , exact-combinatorics
     , formulative
@@ -479,6 +482,7 @@ test-suite formulative-test
     , cassava
     , constraints
     , containers
+    , cryptonite
     , dhall
     , exact-combinatorics
     , formulative
@@ -573,6 +577,7 @@ benchmark Factorial
     , constraints
     , containers
     , criterion
+    , cryptonite
     , dhall
     , exact-combinatorics
     , formulative
@@ -667,6 +672,7 @@ benchmark MatrixMul
     , constraints
     , containers
     , criterion
+    , cryptonite
     , dhall
     , exact-combinatorics
     , formulative
@@ -761,6 +767,7 @@ benchmark MatrixToVector
     , constraints
     , containers
     , criterion
+    , cryptonite
     , dhall
     , exact-combinatorics
     , formulative
@@ -855,6 +862,7 @@ benchmark StackingEffects
     , constraints
     , containers
     , criterion
+    , cryptonite
     , dhall
     , exact-combinatorics
     , formulative
@@ -949,6 +957,7 @@ benchmark UnsafeIndex
     , constraints
     , containers
     , criterion
+    , cryptonite
     , dhall
     , exact-combinatorics
     , formulative

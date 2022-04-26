@@ -4,9 +4,11 @@ import Control.Carrier.Lift
 import Control.Exception.Safe
 import Dhall
 import Formulative.Calculation.Internal.Setting
+import Formulative.Postprocess.Export.Class
 import Formulative.Preprocess.DefaultValue
 import Formulative.Preprocess.Exception
 import Formulative.Preprocess.ReadSetting (writeDhallFile)
+import Path (parseRelFile)
 
 -- Fieldの場合
 --  - 座標データの読み込み
@@ -18,12 +20,10 @@ import Formulative.Preprocess.ReadSetting (writeDhallFile)
 --  - 座標値のチェック
 
 mainPreprocess = do
-    sendIO $ putStrLn "Start preprocessing."
     sendIO $ putStrLn "Exporting Default settings.."
+    a <- sendIO $ parseRelFile "./default_values.dhall"
+    msgExportFileM a
     sendIO $ writeDhallFile "./default_values.dhall" (defaultValue @(FormulativeSetting Double))
-    sendIO $ putStrLn "Done."
-    sendIO $ putStrLn ""
-    sendIO $ putStrLn "End."
 
 main = runM mainPreprocess -- `catch` errorHandlingPreprocess
 

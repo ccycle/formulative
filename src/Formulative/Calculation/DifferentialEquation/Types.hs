@@ -10,6 +10,7 @@ import Control.Algebra
 import Control.Carrier.Reader
 import Control.Effect.Sum (Member)
 import Control.Exception.Safe
+import Data.Coerce (coerce)
 import Data.Hashable (Hashable (hashWithSalt))
 import Data.Typeable
 import Dhall
@@ -54,10 +55,13 @@ newtype LabelOfDynamicParameter = LabelOfDynamicParameter String
     deriving newtype (IsString)
     deriving anyclass (FromDhall, ToDhall, Hashable)
 
-newtype StepSize a = StepSize {unStepSize :: a}
+newtype StepSize a = StepSize a
     deriving stock (Generic, Show, Eq)
-    deriving newtype (Num, Enum)
+    deriving newtype (Num, Enum, Fractional)
     deriving anyclass (FromDhall, ToDhall, Hashable)
+
+unStepSize :: StepSize a -> a
+unStepSize = coerce
 
 data StepSizeException
 instance (Additive a, Eq a) => Predicate StepSizeException (StepSize a) where

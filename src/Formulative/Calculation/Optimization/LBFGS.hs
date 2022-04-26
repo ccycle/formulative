@@ -25,6 +25,7 @@ import GHC.Exts (fromList)
 -- https://hackage.haskell.org/package/numeric-limits-0.1.0.0/docs/Numeric-Limits.html
 newtype NumericalError a = NumericalError a
     deriving stock (Generic, Show, Eq)
+    deriving newtype (Enum, Num, Fractional)
     deriving anyclass (FromDhall, ToDhall, Hashable)
 instance (Fractional a) => HasDefaultValue (NumericalError a) where
     defaultValue = NumericalError 1e-8
