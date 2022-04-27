@@ -71,8 +71,9 @@ data DiffFormRecFieldTest = DiffFormRecFieldTest {pressure :: DifferentialForm 2
 
 toRecordTest = Csv.genericToNamedRecord Csv.defaultOptions (HeteroRecFieldTest zero zero)
 writeFileTest = BSL.writeFile "testDouble.csv" $ BSL.fromStrict (fromJust $ HM.lookup "pressure" toRecordTest)
-toRecordDiffTest = Csv.genericToNamedRecord Csv.defaultOptions (DiffFormRecFieldTest zero zero zero)
-writeFileTest2 = BSL.writeFile "testSparseMatrix.csv" $ BSL.fromStrict (fromJust $ HM.lookup "pressure" toRecordDiffTest)
-writeFileTest3 = BSL.writeFile "testHodgeStarMatrix.csv" $ BSL.fromStrict (fromJust $ HM.lookup "hodge" toRecordDiffTest)
+
+-- toRecordDiffTest = Csv.genericToNamedRecord Csv.defaultOptions (DiffFormRecFieldTest zero zero zero)
+-- writeFileTest2 = BSL.writeFile "testSparseMatrix.csv" $ BSL.fromStrict (fromJust $ HM.lookup "pressure" toRecordDiffTest)
+-- writeFileTest3 = BSL.writeFile "testHodgeStarMatrix.csv" $ BSL.fromStrict (fromJust $ HM.lookup "hodge" toRecordDiffTest)
 
 unit_lookup = print $ HM.lookup "pressure" toRecordTest

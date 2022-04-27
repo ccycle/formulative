@@ -13,11 +13,6 @@ import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
 import Formulative.Calculation.VectorSpace.Class
-import Formulative.Postprocess.Export.Class
-import GHC.Generics
-
--- import Formulative.Preprocess.Exception
-
 import Formulative.Postprocess.Export.ToRecords
 import Path
 
@@ -31,7 +26,7 @@ data RecTest1 a b = RecTest1 a b
 
 data DFormRecTest = DFormTest {mat1 :: DifferentialForm 2 '[4, 5, 2] Primal 0 Double, mat2 :: DifferentialForm 2 '[4, 5, 2] Primal 1 Double}
     deriving stock (Show, Generic)
-    deriving anyclass (Additive, AdditiveGroup, VectorSpace, ToRecord)
+    deriving anyclass (Additive, AdditiveGroup, VectorSpace)
 
 newtype GlobalQuantityTest a = GlobalQuantityTest a
     deriving stock (Generic, Show, Eq)
@@ -50,7 +45,8 @@ toRecordTest1 = toRecord testRec1
 
 matTest = one :: DifferentialForm 2 '[4, 5, 2] Primal 0 Double
 dFormTest = DFormTest one one
-toRecordDFormTest = toRecord dFormTest
+
+-- toRecordDFormTest = toRecord dFormTest
 
 -- toNamedRecordTest3 = toNamedRecord dFormTest
 
