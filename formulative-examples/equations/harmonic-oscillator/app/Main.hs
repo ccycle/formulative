@@ -37,7 +37,8 @@ import Formulative.Preprocess.SettingFile.Carrier
 ----------------------------------------------------------------
 data MyVariable = MyVariable {position :: Double, momentum :: Double}
   deriving stock (Show, Generic)
-  deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace, DefaultOrdered, ToNamedRecord, ToRecords)
+  deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
+  deriving anyclass (DefaultOrdered, ToRecords)
 
 ----------------------------------------------------------------
 -- User-defined data for setting
@@ -53,9 +54,9 @@ data MyEquationConstants = MyEquationConstants
   deriving anyclass (ToDhall, FromDhall, Hashable, HasDefaultValue)
 
 data MySetting = MySetting
-  { optimization :: OptimizationParameters Double
+  { optimization :: OptimizationSetting Double
   , export :: ExportSetting
-  , dynamics :: DynamicParameterSetting Double
+  , dynamics :: DynamicsSetting Double
   , equation :: MyEquationConstants
   }
   deriving stock (Show, Generic)
@@ -92,9 +93,15 @@ data MyDependentVariableGlobal = MyDependentVariableGlobal
   , totalChange :: Double
   }
   deriving stock (Show, Generic)
-  deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace, DefaultOrdered, ToRecord, ToNamedRecord)
+  deriving anyclass (DefaultOrdered, ToRecord, ToNamedRecord)
 
-instance (Has (Reader MyEquationConstants) sig m, Member (Variable MyVariable) sig, Member (Dynamics Double) sig) => HasDependentVariableGlobalM m MyVariable where
+instance
+  ( Has (Reader MyEquationConstants) sig m
+  , Member (Variable MyVariable) sig
+  , Member (Dynamics Double) sig
+  ) =>
+  HasDependentVariableGlobalM m MyVariable
+  where
   type DependentVariableGlobalType MyVariable = MyDependentVariableGlobal
   dependentVariableGlobalM (MyVariable x p) = do
     (MyVariable xOld pOld) <- getVariableOld
@@ -102,17 +109,15 @@ instance (Has (Reader MyEquationConstants) sig m, Member (Variable MyVariable) s
     (StepSize dt) <- askStepSize
     let eK = p .^ 2 / (2 *. m)
     let eP = 1 ./. 2 * k .*. x .^ 2
-    let h (MyVariable x' p') = (p' .^ 2) ./. (2 .*. m) .+. (1 ./. 2 .*. k .*. (x' .^ 2))
-    let e = h (MyVariable x p)
-    let l = eK .-. eP
-    let dH = h (MyVariable x p) .-. h (MyVariable xOld pOld)
+    let h x' p' = (p' .^ 2) ./. (2 .*. m) .+. (1 ./. 2 .*. k .*. (x' .^ 2))
+    let dH = h x p .-. h xOld pOld
     let dW = (x .-. xOld) <.> (gamma ./. m) *. ((p .+. pOld) ./ 2)
     return $
       MyDependentVariableGlobal
         { kineticEnergy = eK
         , potentialEnergy = eP
-        , lagrangian = l
-        , hamiltonian = e
+        , lagrangian = eK .-. eP
+        , hamiltonian = h x p
         , dHdt = dH ./. dt
         , power = dW ./. dt
         , totalChange = dH ./. dt .+. dW ./. dt

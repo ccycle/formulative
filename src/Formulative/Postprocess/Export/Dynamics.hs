@@ -124,7 +124,7 @@ mainCalculationDynamic ::
 mainCalculationDynamic = do
     preprocessM @m @a
     x <- getInitialConditionM @m @a
-    DynamicParameterSetting{..} <- askDynamicParameterSetting @b
+    DynamicsSetting{..} <- askDynamicsSetting @b
     msgStart
     go 0 interval maximumIterationNumber initialValue finalValue (StepSize stepSize) x x
   where

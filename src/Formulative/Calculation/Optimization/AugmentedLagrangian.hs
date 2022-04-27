@@ -57,7 +57,7 @@ data AugmentedLagrangianMethodParameters a = AugmentedLagrangianMethodParameters
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, Hashable, HasDefaultValue)
 
-newtype ConstrainedSystemParameter a = ConstrainedSystemParameter
+newtype ConstrainedSystemSetting a = ConstrainedSystemSetting
     { augmentedLagrangianMethodParameters :: AugmentedLagrangianMethodParameters a
     }
     deriving stock (Generic, Show, Eq)

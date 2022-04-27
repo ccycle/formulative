@@ -22,7 +22,7 @@ import Refined
 newtype IsAdaptiveStepSize = IsAdaptiveStepSize Bool
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, Hashable)
-data DynamicParameterSetting a = DynamicParameterSetting
+data DynamicsSetting a = DynamicsSetting
     { label :: LabelOfDynamicParameter
     , initialValue :: a
     , finalValue :: a
@@ -32,9 +32,9 @@ data DynamicParameterSetting a = DynamicParameterSetting
     }
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall)
-instance (Fractional a) => HasDefaultValue (DynamicParameterSetting a) where
+instance (Fractional a) => HasDefaultValue (DynamicsSetting a) where
     defaultValue =
-        DynamicParameterSetting
+        DynamicsSetting
             { label = LabelOfDynamicParameter "time"
             , initialValue = 0
             , finalValue = 1
@@ -42,13 +42,11 @@ instance (Fractional a) => HasDefaultValue (DynamicParameterSetting a) where
             , interval = 10
             , maximumIterationNumber = 1000
             }
-instance (Hashable a, Fractional a) => Hashable (DynamicParameterSetting a) where
+instance (Hashable a, Fractional a) => Hashable (DynamicsSetting a) where
     hashWithSalt
         s
-        DynamicParameterSetting{..} =
+        DynamicsSetting{..} =
             s `hashWithSalt` initialValue `hashWithSalt` interval `hashWithSalt` stepSize
-
-type HasParameterConfig sig m a = (Algebra sig m, Member (Reader (DynamicParameterSetting a)) sig)
 
 newtype LabelOfDynamicParameter = LabelOfDynamicParameter String
     deriving stock (Generic, Show, Eq)

@@ -96,7 +96,7 @@ updateLBFGS lineSearchParam x (ObjectiveFunction f) (GradObjectiveFunction gradf
     (x .+. (unStepSizeForLineSearch alpha' *. unDescentDirection p), alpha', p)
   where
     p = searchDirectionLBFGS x (GradObjectiveFunction gradf) ysList
-    alpha' = lineSearch lineSearchParam x p (ObjectiveFunction f) (GradObjectiveFunction gradf)
+    alpha' = getStepSizeFromLineSearch lineSearchParam x p (ObjectiveFunction f) (GradObjectiveFunction gradf)
 
 lbfgsMethod lineSearchParam convergenceTestParam lbfgsParam f gradf =
     go

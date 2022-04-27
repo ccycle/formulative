@@ -28,7 +28,7 @@ toDhallText x = pack $ show doc
   expression = Dhall.embed Dhall.inject x
   doc = Dhall.Pretty.prettyCharacterSet Unicode expression
 
--- usage: toDhallTypeText @(DynamicParameterSetting Double)
+-- usage: toDhallTypeText @(DynamicsSetting Double)
 toDhallTypeText :: forall a. (ToDhall a) => Text
 toDhallTypeText = pack $ show doc
  where

@@ -136,68 +136,6 @@ type Laplacian n l c k a = DECrepresentationMatrix n l c k c k a
 
 type InclusionMap n l c a = DECrepresentationMatrix n l c (PredDeg n n) c (PredDeg n n) a
 
--- singletons
---     [d|
---         data OperatorType
---             = DifferentialFormType
---             | ExteriorDerivativeType
---             | HodgeStarType
---             | InteriorProductType
---             | LieDerivativeType
---             | CodifferentialType
---             | LaplacianType
---             | InclusionMapType
---             deriving (Show, Eq)
---         |]
-
--- -- size : p2*p1 のうちp2の部分を取得
--- type family ToMatSizeFromType n l c k t where
---     ToMatSizeFromType n l c k DifferentialFormType = (ToMatSize n l c k)
---     ToMatSizeFromType n l c k ExteriorDerivativeType = (ToMatSize n l c (SuccDeg n k))
---     ToMatSizeFromType n l c k InteriorProductType = (ToMatSize n l c (PredDeg n n))
---     ToMatSizeFromType n l c k LieDerivativeType = (ToMatSize n l c k)
---     ToMatSizeFromType n l c _ InclusionMapType = (ToMatSize n l c (PredDeg n n))
---     ToMatSizeFromType n l c k HodgeStarType = (ToMatSize n l (DualMap c) (DualDeg n k))
---     ToMatSizeFromType n l c k CodifferentialType = (ToMatSize n l c (PredDeg n k))
---     ToMatSizeFromType n l c k LaplacianType = (ToMatSize n l c k)
-
--- TODO: 削除してDictに置き換え
--- type KnownMatSize n l c k t = (KnownNat (ToMatSizeFromType n l c k t), KnownNat (ToMatSize n l c k))
-
--- deriving instance
--- instance (KnownNat (ToMatSize n l c1 k1), KnownNat (ToMatSize n l c2 k2), MSL.Numeric a) => Additive (DECrepresentationMatrix n l c1 k1 c2 k2 a) where
---     DECrepresentationMatrix a .+. DECrepresentationMatrix b = DECrepresentationMatrix (a .+. b)
---     zero = DECrepresentationMatrix zero
-
--- instance (KnownNat (ToMatSize n l c1 k1), KnownNat (ToMatSize n l c2 k2), MSL.Numeric a, AdditiveGroup a) => AdditiveGroup (DECrepresentationMatrix n l c1 k1 c2 k2 a) where
---     DECrepresentationMatrix a .-. DECrepresentationMatrix b = DECrepresentationMatrix (a .-. b)
---     negation (DECrepresentationMatrix a) = DECrepresentationMatrix (negation a)
-
--- instance (KnownNat n, KnownNat (ToMatSize n l c1 k1), KnownNat (ToMatSize n l c2 k2), MSL.Numeric a, Multiplicative a) => Multiplicative (DECrepresentationMatrix n l c1 k1 c2 k2 a) where
---     one = DECrepresentationMatrix one
---     (DECrepresentationMatrix x) .*. (DECrepresentationMatrix y) = DECrepresentationMatrix $ x .*. y
-
--- -- -- degreeの計算はphantom type上でのみ行う
--- -- instance (MSL.Numeric a, KnownNat k1, KnownNat k2, KnownNat k3, KnownNat (ToMatSize n l c1 k1), KnownNat (ToMatSize n l c2 k2), KnownNat (ToMatSize n l c3 k3)) => Mul (DECrepresentationMatrix n l c1 k1 c2 k2 a) (DECrepresentationMatrix n l c2 k2 c3 k3 a) (DECrepresentationMatrix n l c1 k1 c3 k3 a) where
--- --     DECrepresentationMatrix a .@. DECrepresentationMatrix b =
--- --         let proxyn = Proxy :: Proxy n
--- --             proxyl = sing :: Sing l
--- --             proxyc1 = sing :: SCellType c1
--- --             proxyc2 = sing :: SCellType c2
--- --             proxyc3 = sing :: SCellType c3
--- --             proxyk1 = Proxy :: Proxy k1
--- --             proxyk2 = Proxy :: Proxy k2
--- --             proxyk3 = Proxy :: Proxy k3
--- --          in case (toMatSizeDict proxyn proxyl proxyc1 proxyk1) of Dict -> DECrepresentationMatrix (a .@. b)
-
--- instance (KnownNat (ToMatSize n l c1 k1), KnownNat (ToMatSize n l c2 k2), MSL.Numeric a, Multiplicative a, VectorSpace a) => VectorSpace (DECrepresentationMatrix n l c1 k1 c2 k2 a) where
---     type
---         Scalar (DECrepresentationMatrix n l c1 k1 c2 k2 a) =
---             ( Scalar
---                 (SizedMatrix (ToMatSize n l c1 k1) (ToMatSize n l c2 k2) a)
---             )
---     (*.) a (DECrepresentationMatrix x) = DECrepresentationMatrix (a *. x)
-
 instance
     ( KnownNat n
     , SingI l

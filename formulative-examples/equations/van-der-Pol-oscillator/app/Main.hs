@@ -46,7 +46,7 @@ data MyEquationConstants = MyEquationConstants {mu :: Double, x0 :: Double, y0 :
     deriving stock (Show, Generic)
     deriving anyclass (ToDhall, FromDhall, Hashable, HasDefaultValue)
 
-data MySetting = MySetting {optimization :: OptimizationParameters Double, dynamics :: DynamicParameterSetting Double, export :: ExportSetting, equation :: MyEquationConstants}
+data MySetting = MySetting {optimization :: OptimizationSetting Double, dynamics :: DynamicsSetting Double, export :: ExportSetting, equation :: MyEquationConstants}
     deriving stock (Show, Generic)
     deriving anyclass (ToDhall, FromDhall, Hashable, HasDefaultValue)
 

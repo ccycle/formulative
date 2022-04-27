@@ -14,12 +14,12 @@ import Formulative.Calculation.DifferentialEquation.Types
 import Formulative.Postprocess.Export.Class
 import Formulative.Preprocess.ReadSetting
 
-newtype DynamicsC a m b = DynamicsC {runDynamicsC :: ReaderC (DynamicParameterSetting a) m b}
+newtype DynamicsC a m b = DynamicsC {runDynamicsC :: ReaderC (DynamicsSetting a) m b}
     deriving stock (Functor)
     deriving newtype (Applicative, Monad)
 instance (Algebra sig m) => Algebra (Dynamics a :+: sig) (DynamicsC a m) where
     alg hdl sig ctx = case sig of
-        L AskDynamicParameterSetting -> do
+        L AskDynamicsSetting -> do
             env <- DynamicsC ask
             pure ((<$ ctx) env)
         L AskStepSize -> do
@@ -27,7 +27,7 @@ instance (Algebra sig m) => Algebra (Dynamics a :+: sig) (DynamicsC a m) where
             pure ((<$ ctx) (StepSize $ stepSize env))
         R other -> DynamicsC (alg (runDynamicsC . hdl) (R other) ctx)
 
-runDynamics :: forall a m b. DynamicParameterSetting a -> DynamicsC a m b -> m b
+runDynamics :: forall a m b. DynamicsSetting a -> DynamicsC a m b -> m b
 runDynamics x = runReader x . runDynamicsC
 
 runDynamicsIO ::
@@ -44,5 +44,5 @@ runDynamicsIO ::
 runDynamicsIO f = do
     (DhallSettingText txt) <- cmdOptionToDhallSettingText
     putStrLnM "Reading setting file (Dynamics).."
-    r <- sendIO $ readRecordFromDhallFile @(DynamicParameterSetting a) "dynamics" txt
+    r <- sendIO $ readRecordFromDhallFile @(DynamicsSetting a) "dynamics" txt
     runReader r . runDynamicsC $ f

@@ -6,12 +6,12 @@ import Control.Algebra
 import Formulative.Calculation.DifferentialEquation.Types
 
 data Dynamics a m k where
-    AskDynamicParameterSetting :: Dynamics a m (DynamicParameterSetting a)
+    AskDynamicsSetting :: Dynamics a m (DynamicsSetting a)
     AskStepSize :: Dynamics a m (StepSize a)
 
-askDynamicParameterSetting :: forall a sig m. (Has (Dynamics a) sig m) => m (DynamicParameterSetting a)
-askDynamicParameterSetting = send AskDynamicParameterSetting
+askDynamicsSetting :: forall a sig m. (Has (Dynamics a) sig m) => m (DynamicsSetting a)
+askDynamicsSetting = send AskDynamicsSetting
 askLabelOfDynamicParameter :: forall a sig m. (Has (Dynamics a) sig m) => m LabelOfDynamicParameter
-askLabelOfDynamicParameter = label <$> (askDynamicParameterSetting @a)
+askLabelOfDynamicParameter = label <$> (askDynamicsSetting @a)
 askStepSize :: (Has (Dynamics a) sig m) => m (StepSize a)
 askStepSize = send AskStepSize

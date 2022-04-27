@@ -14,7 +14,6 @@ import qualified Data.ByteString.Lazy as BSL
 import Data.Csv hiding (Field)
 import qualified Data.Matrix.Static.Generic as MSG
 import qualified Data.Matrix.Static.Sparse as MSS
-import Data.Proxy
 import Data.Singletons (Sing (..), SingI, SingInstance (SingInstance), SingKind (toSing), SomeSing (SomeSing), singInstance)
 import Data.Singletons.Prelude (SList)
 import qualified Data.Text.IO as T
@@ -39,14 +38,6 @@ import Path.IO
 putStrLnM :: (Algebra sig m, Member (Lift IO) sig) => String -> m ()
 putStrLnM = sendIO . putStrLn
 
--- TODO: (Int,Int,a)の形で出力できるようにする
--- instance (ToField a, Storable a, MSS.Zero a) => ToField (MSL.SparseMatrix m n a) where
---     toField x = toStrict . encode $ (Prelude.map (: []) . MSG.toList $ x)
-
--- TODO: toStrictを使わない形に直す
--- instance (ToField a, VST.Storable a, MSS.Zero a) => ToField (DECrepresentationMatrix n l c1 k1 c2 k2 a) where
---     toField (DECrepresentationMatrix mat) = BSL.toStrict . encode $ Prelude.map (: []) . MSG.toList $ mat
-
 exportSettingFile ::
     forall m sig.
     ( Algebra sig m
@@ -58,10 +49,11 @@ exportSettingFile ::
 exportSettingFile = do
     (OutputDir outputDir) <- askOutputDir
     (DhallSettingText x) <- askSettingFileText
-    putStrLnM "Exporting setting file.."
     sendIO $ ensureDir outputDir
     sName <- sendIO $ parseRelFile "setting.dhall"
-    sendIO $ T.writeFile (toFilePath (outputDir </> sName)) x
+    let filePath = toFilePath (outputDir </> sName)
+    putStrLnM $ concat ["Exporting setting file (", filePath, ") .."]
+    sendIO $ T.writeFile filePath x
 
 exportDependentParameterFile ::
     forall a m sig.
@@ -77,10 +69,11 @@ exportDependentParameterFile = do
     let y = toDhallText x
     when (y /= toDhallText ()) $ do
         (OutputDir outputDir) <- askOutputDir
-        putStrLnM "Exporting dependent parameter file.."
         sendIO $ ensureDir outputDir
         sName <- sendIO $ parseRelFile "dependentParamater.dhall"
-        sendIO $ T.writeFile (toFilePath (outputDir </> sName)) y
+        let filePath = toFilePath (outputDir </> sName)
+        putStrLnM $ concat ["Exporting dependent parameter file (", filePath, ") .."]
+        sendIO $ T.writeFile filePath y
 
 -- 1ファイルに追記
 exportDependentVariableGlobal ::

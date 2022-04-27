@@ -38,16 +38,15 @@ runEquationConstantsIO f = do
     runReader x f
 
 data FormulativeSetting a = FormulativeSetting
-    { optimization :: OptimizationParameters a
+    { optimization :: OptimizationSetting a
     , export :: ExportSetting
     , geometry :: GeometrySetting
-    , dynamics :: DynamicParameterSetting a
-    , constrainedSystem :: ConstrainedSystemParameter a
+    , dynamics :: DynamicsSetting a
+    , constrainedSystem :: ConstrainedSystemSetting a
     }
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, Hashable, HasDefaultValue)
 
--- FilePath -> (\a -> setting) -> [a] -> m ()
 writeSettingFilesFromList path f list = forM_ list $ \a -> do
     let s = f a
     p <- parseRelDir path

@@ -16,7 +16,7 @@ import Formulative.Preprocess.ReadSetting
 import Formulative.Preprocess.SettingFile.Effect
 
 -- Carrier 1: Reader
-newtype OptimizationC a m b = OptimizationC {runOptimizationC :: ReaderC (OptimizationParameters a) m b}
+newtype OptimizationC a m b = OptimizationC {runOptimizationC :: ReaderC (OptimizationSetting a) m b}
     deriving stock (Functor)
     deriving newtype (Applicative, Monad)
 instance (Algebra sig m) => Algebra (Optimization a :+: sig) (OptimizationC a m) where
@@ -26,7 +26,7 @@ instance (Algebra sig m) => Algebra (Optimization a :+: sig) (OptimizationC a m)
             pure (env <$ ctx)
         R other -> OptimizationC (alg (runOptimizationC . hdl) (R other) ctx)
 
-runOptimization :: forall a m b. OptimizationParameters a -> OptimizationC a m b -> m b
+runOptimization :: forall a m b. OptimizationSetting a -> OptimizationC a m b -> m b
 runOptimization r = runReader r . runOptimizationC
 
 -- Carrier 2: IO
@@ -45,5 +45,5 @@ runOptimizationIO ::
     m b
 runOptimizationIO f = do
     (DhallSettingText txt) <- cmdOptionToDhallSettingText
-    r <- sendIO $ fillInSetting @(OptimizationParameters a) "optimization" txt
+    r <- sendIO $ fillInSetting @(OptimizationSetting a) "optimization" txt
     runOptimization r f

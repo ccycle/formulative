@@ -4,8 +4,8 @@
     , convergenceTestType = < AbsoluteError | RelativeError >.RelativeError
     , normType = < Lp : Double | LInfinity >.LInfinity
     }
-  , lbfgsParameters = { historySize = 10, maximumIterationNumber = 10000 }
-  , lineSearchParameters =
+  , lbfgs = { historySize = 10, maximumIterationNumber = 10000 }
+  , lineSearch =
       < FixedStepSize : { stepSize : Double }
       | Backtracking :
           { inequality :

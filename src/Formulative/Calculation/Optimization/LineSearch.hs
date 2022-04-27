@@ -83,9 +83,7 @@ instance (Fractional a) => HasDefaultValue (BacktrackingFactor a) where
 newtype IterationNumberForLineSearch = IterationNumberForLineSearch Natural
   deriving stock (Show, Eq, Ord, Generic)
   deriving newtype (Enum, Num)
-  deriving anyclass (FromDhall, ToDhall, Hashable)
-instance HasDefaultValue IterationNumberForLineSearch where
-  defaultValue = 0
+  deriving anyclass (FromDhall, ToDhall, Hashable, HasDefaultValue)
 
 data BacktrackingParameter a = BacktrackingParameter
   { factor :: BacktrackingFactor a
@@ -94,14 +92,6 @@ data BacktrackingParameter a = BacktrackingParameter
   deriving stock (Show, Eq, Ord, Generic)
   deriving anyclass (FromDhall, ToDhall, Hashable, HasDefaultValue)
 
--- line search parameter
--- data LineSearchParameters a = LineSearchParameters
---   { inequality :: InequalityConditionForLineSearch a
---   , maximumStepSize :: StepSizeForLineSearch a
---   , backtracking :: BacktrackingParameter a
---   }
---   deriving stock (Generic, Show, Eq)
---   deriving anyclass (FromDhall, ToDhall, Hashable, HasDefaultValue)
 data LineSearchParameters a
   = FixedStepSize {stepSize :: StepSizeForLineSearch a}
   | Backtracking
@@ -155,5 +145,5 @@ backtrackingLineSearch ineqConds (StepSizeForLineSearch alpha) (BacktrackingFact
     then StepSizeForLineSearch alpha
     else backtrackingLineSearch ineqConds (StepSizeForLineSearch (tau .*. alpha)) (BacktrackingFactor tau) (pred i) x p f gradf
 
-lineSearch (FixedStepSize a) _ _ _ _ = a
-lineSearch Backtracking{..} x p f gradf = backtrackingLineSearch inequality initialStepSize factor maximumIterationNumber x p f gradf
+getStepSizeFromLineSearch (FixedStepSize a) _ _ _ _ = a
+getStepSizeFromLineSearch Backtracking{..} x p f gradf = backtrackingLineSearch inequality initialStepSize factor maximumIterationNumber x p f gradf

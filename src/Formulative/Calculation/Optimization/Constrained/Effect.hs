@@ -9,11 +9,11 @@ import Formulative.Calculation.VectorSpace.Class
 
 -- Effect
 data ConstrainedSystem a (m :: Type -> Type) k where
-    AskConstrainedSystemParameter :: ConstrainedSystem a m (ConstrainedSystemParameter (Scalar a))
+    AskConstrainedSystemParameter :: ConstrainedSystem a m (ConstrainedSystemSetting (Scalar a))
     GetLagrangianMultiplier :: ConstrainedSystem a m (LagrangianMultiplier a)
     PutLagrangianMultiplier :: LagrangianMultiplier a -> ConstrainedSystem a m ()
 
-askConstrainedSystemParameter :: forall a sig m. (Has (ConstrainedSystem a) sig m) => m (ConstrainedSystemParameter (Scalar a))
+askConstrainedSystemParameter :: forall a sig m. (Has (ConstrainedSystem a) sig m) => m (ConstrainedSystemSetting (Scalar a))
 askConstrainedSystemParameter = send (AskConstrainedSystemParameter @a)
 
 askAugmentedLagrangianParameter :: forall a sig m. (Has (ConstrainedSystem a) sig m) => m (AugmentedLagrangianMethodParameters (Scalar a))
