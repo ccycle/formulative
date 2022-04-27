@@ -35,7 +35,7 @@ library
       Formulative.Calculation.Algebra.Arithmetic.Multiplicative
       Formulative.Calculation.Algebra.Arithmetic.RealRing
       Formulative.Calculation.Algebra.Arithmetic.Ring
-      Formulative.Calculation.Algebra.Arithmetic.Rng
+      Formulative.Calculation.Algebra.Arithmetic.Semiring
       Formulative.Calculation.Algebra.Arithmetic.Transcendental
       Formulative.Calculation.Algebra.ComplexNumber
       Formulative.Calculation.Algebra.DiscreteVariation
@@ -85,14 +85,14 @@ library
       Formulative.Calculation.Matrix.Class
       Formulative.Calculation.Matrix.Solve
       Formulative.Calculation.Matrix.Types
-      Formulative.Calculation.Optimization.AugmentedLagrangian
       Formulative.Calculation.Optimization.Carrier
+      Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian
       Formulative.Calculation.Optimization.Constrained.Carrier
       Formulative.Calculation.Optimization.Constrained.Effect
       Formulative.Calculation.Optimization.Effect
       Formulative.Calculation.Optimization.LBFGS
       Formulative.Calculation.Optimization.LineSearch
-      Formulative.Calculation.Optimization.Parameter
+      Formulative.Calculation.Optimization.Setting
       Formulative.Calculation.Optimization.Update
       Formulative.Calculation.Physics.Units.Planck
       Formulative.Calculation.Physics.Units.SI
