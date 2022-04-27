@@ -30,7 +30,7 @@ import Path
 import Path.IO
 import Prelude hiding (fromInteger)
 
-exportParameter ::
+exportDynamicParameter ::
     forall b sig m.
     ( Algebra sig m
     , ToField b
@@ -40,9 +40,9 @@ exportParameter ::
     , Member (Dynamics b) sig
     ) =>
     IndexOfStep ->
-    Parameter b ->
+    DynamicParameter b ->
     m ()
-exportParameter (IndexOfStep i) (Parameter t) = do
+exportDynamicParameter (IndexOfStep i) (DynamicParameter t) = do
     ensureDirOutputM
     (OutputDir parentDir) <- askOutputDir
     (LabelOfDynamicParameter paramName) <- askLabelOfDynamicParameter @b
@@ -88,37 +88,76 @@ exportVariableDynamic (IndexOfStep i) x = do
             let filePath = parentDir </> fileName
             sendIO $ BSL.appendFile (toFilePath filePath) (encode [str])
 
+exportDependentVariableLocalDynamic ::
+    ( HasLocalDependentVariableM m a
+    , Algebra sig m
+    , Member (Throw SomeException) sig
+    , Member (Lift IO) sig
+    , Member Export sig
+    , ToRecords (LocalDependentVariable a)
+    , DefaultOrdered (LocalDependentVariable a)
+    ) =>
+    IndexOfStep ->
+    a ->
+    m ()
 exportDependentVariableLocalDynamic i x = do
     x' <- dependentVariableLocalM x
     exportVariableDynamic i x'
+
+exportDynamicsM ::
+    ( Algebra sig m
+    , ToRecords a
+    , Member Export sig
+    , Member (Lift IO) sig
+    , Member (Dynamics b) sig
+    , Member (Throw SomeException) sig
+    , HasLocalDependentVariableM m a
+    , HasGlobalDependentVariableM m a
+    , DefaultOrdered a
+    , ToRecords (LocalDependentVariable a)
+    , DefaultOrdered (LocalDependentVariable a)
+    , DefaultOrdered (GlobalDependentVariable a)
+    , ToNamedRecord (GlobalDependentVariable a)
+    , ToRecord (GlobalDependentVariable a)
+    , ToField b
+    ) =>
+    IndexOfStep ->
+    DynamicParameter b ->
+    a ->
+    m ()
+exportDynamicsM (IndexOfStep i) (DynamicParameter t) xi = do
+    exportDynamicParameter (IndexOfStep i) (DynamicParameter t)
+    exportVariableDynamic (IndexOfStep i) xi
+    exportDependentVariableGlobal xi
+    exportDependentVariableLocalDynamic (IndexOfStep i) xi
 
 mainCalculationDynamic ::
     forall a b sig m.
     ( Algebra sig m
     , Additive b
+    , DefaultOrdered (GlobalDependentVariable a)
+    , DefaultOrdered (LocalDependentVariable a)
+    , DefaultOrdered a
+    , HasDependentParameterM m a
+    , HasGlobalDependentVariableM m a
+    , HasLocalDependentVariableM m a
     , HasInitialConditionM m a
-    , HasDependentVariableGlobalM m a
-    , HasDependentVariableLocalM m a
     , HasUpdateM m a
     , Member (Dynamics b) sig
-    , Member (Variable a) sig
     , Member (Lift IO) sig
     , Member (Throw SomeException) sig
+    , Member (Variable a) sig
     , Member Export sig
     , Member SettingFile sig
     , Ord b
+    , Semiring b
     , Show b
-    , ToField b
-    , Rng b
-    , ToRecords a
-    , ToRecord (DependentVariableGlobalType a)
-    , ToNamedRecord (DependentVariableGlobalType a)
-    , DefaultOrdered a
-    , DefaultOrdered (DependentVariableGlobalType a)
-    , HasDependentParameterM m a
     , ToDhall (DependentParameterType a)
-    , ToRecords (DependentVariableLocalType a)
-    , DefaultOrdered (DependentVariableLocalType a)
+    , ToField b
+    , ToNamedRecord (GlobalDependentVariable a)
+    , ToRecord (GlobalDependentVariable a)
+    , ToRecords (LocalDependentVariable a)
+    , ToRecords a
     ) =>
     m ()
 mainCalculationDynamic = do
@@ -134,11 +173,7 @@ mainCalculationDynamic = do
         putStrLnM $ "parameter: " ++ show t
         when (i `mod` nInterval == 0) $ do
             putStrLnM "Exporting data.."
-            putVariableOld xiMinus1
-            exportParameter (IndexOfStep i) (Parameter t)
-            exportVariableDynamic (IndexOfStep i) xi
-            exportDependentVariableLocalDynamic (IndexOfStep i) xi
-            exportDependentVariableGlobal xi
+            exportDynamicsM (IndexOfStep i) (DynamicParameter t) xi
         if iMax <= i || 2 .*. finalVal <= (2 .*. t .+. dt) -- End condition
             then do
                 msgEnd

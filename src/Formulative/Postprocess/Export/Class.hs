@@ -82,10 +82,10 @@ exportDependentVariableGlobal ::
     , Member (Lift IO) sig
     , Member (Throw SomeException) sig
     , Member Export sig
-    , HasDependentVariableGlobalM m a
-    , DefaultOrdered (DependentVariableGlobalType a)
-    , ToNamedRecord (DependentVariableGlobalType a)
-    , ToRecord (DependentVariableGlobalType a)
+    , HasGlobalDependentVariableM m a
+    , DefaultOrdered (GlobalDependentVariable a)
+    , ToNamedRecord (GlobalDependentVariable a)
+    , ToRecord (GlobalDependentVariable a)
     ) =>
     a ->
     m ()

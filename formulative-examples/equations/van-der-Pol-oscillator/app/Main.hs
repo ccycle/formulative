@@ -21,7 +21,7 @@ import Formulative.Calculation.Internal.Setting
 import Formulative.Calculation.Internal.Variable.Carrier
 import Formulative.Calculation.Internal.Variable.Effect
 import Formulative.Calculation.Optimization.Carrier
-import Formulative.Calculation.Optimization.Parameter
+import Formulative.Calculation.Optimization.Setting
 import Formulative.Calculation.Optimization.Update
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Postprocess.Export.Carrier
@@ -55,32 +55,32 @@ data MySetting = MySetting {optimization :: OptimizationSetting Double, dynamics
 ----------------------------------------------------------------
 instance (Monad m) => HasDependentParameterM m MyVariable
 
-data MyDependentVariableGlobal = MyDependentVariableGlobal {kineticEnergy :: Double, springEnergy :: Double}
+data MyGlobalDependentVariable = MyGlobalDependentVariable {kineticEnergy :: Double, springEnergy :: Double}
     deriving stock (Show, Generic)
     deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace, DefaultOrdered, ToRecord, ToNamedRecord)
 
-instance (Has (Reader MyEquationConstants) sig m) => HasDependentVariableGlobalM m MyVariable where
-    type DependentVariableGlobalType MyVariable = MyDependentVariableGlobal
+instance (Has (Reader MyEquationConstants) sig m) => HasGlobalDependentVariableM m MyVariable where
+    type GlobalDependentVariable MyVariable = MyGlobalDependentVariable
     dependentVariableGlobalM (MyVariable x y) = do
         MyEquationConstants{..} <- ask
         let xdot = mu *. (x .-. (x .^ 3) ./ 3 .-. y)
         let eK = xdot <.> xdot ./ 2
         let eS = x <.> x ./ 2
         return $
-            MyDependentVariableGlobal
+            MyGlobalDependentVariable
                 { kineticEnergy = eK
                 , springEnergy = eS
                 }
 
-newtype MyDependentVariableLocal = MyDependentVariableLocal {xdot :: Double}
+newtype MyLocalDependentVariable = MyLocalDependentVariable {xdot :: Double}
     deriving stock (Show, Generic)
     deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace, DefaultOrdered, ToRecords, ToNamedRecord)
-instance (Algebra sig m, Member (Reader MyEquationConstants) sig) => HasDependentVariableLocalM m MyVariable where
-    type DependentVariableLocalType MyVariable = MyDependentVariableLocal
+instance (Algebra sig m, Member (Reader MyEquationConstants) sig) => HasLocalDependentVariableM m MyVariable where
+    type LocalDependentVariable MyVariable = MyLocalDependentVariable
     dependentVariableLocalM (MyVariable x y) = do
         MyEquationConstants{..} <- ask
         let x' = mu *. (x .-. (x .^ 3) ./ 3 .-. y)
-        return $ MyDependentVariableLocal x'
+        return $ MyLocalDependentVariable x'
 
 ----------------------------------------------------------------
 -- define system equation

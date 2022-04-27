@@ -21,7 +21,7 @@ import Formulative.Calculation.Internal.Setting
 import Formulative.Calculation.Internal.Variable.Carrier
 import Formulative.Calculation.Internal.Variable.Effect
 import Formulative.Calculation.Optimization.Carrier
-import Formulative.Calculation.Optimization.Parameter
+import Formulative.Calculation.Optimization.Setting
 import Formulative.Calculation.Optimization.Update
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Postprocess.Export.Carrier
@@ -83,7 +83,7 @@ instance (Has (Reader MyEquationConstants) sig m) => HasDependentParameterM m My
 ----------------------------------------------------------------
 -- export quantities
 ----------------------------------------------------------------
-data MyDependentVariableGlobal = MyDependentVariableGlobal
+data MyGlobalDependentVariable = MyGlobalDependentVariable
   { kineticEnergy :: Double
   , potentialEnergy :: Double
   , lagrangian :: Double
@@ -100,9 +100,9 @@ instance
   , Member (Variable MyVariable) sig
   , Member (Dynamics Double) sig
   ) =>
-  HasDependentVariableGlobalM m MyVariable
+  HasGlobalDependentVariableM m MyVariable
   where
-  type DependentVariableGlobalType MyVariable = MyDependentVariableGlobal
+  type GlobalDependentVariable MyVariable = MyGlobalDependentVariable
   dependentVariableGlobalM (MyVariable x p) = do
     (MyVariable xOld pOld) <- getVariableOld
     MyEquationConstants{..} <- ask
@@ -113,7 +113,7 @@ instance
     let dH = h x p .-. h xOld pOld
     let dW = (x .-. xOld) <.> (gamma ./. m) *. ((p .+. pOld) ./ 2)
     return $
-      MyDependentVariableGlobal
+      MyGlobalDependentVariable
         { kineticEnergy = eK
         , potentialEnergy = eP
         , lagrangian = eK .-. eP
@@ -124,7 +124,7 @@ instance
         }
 
 -- no data (default)
-instance (Monad m) => HasDependentVariableLocalM m MyVariable
+instance (Monad m) => HasLocalDependentVariableM m MyVariable
 
 ----------------------------------------------------------------
 -- define system equation

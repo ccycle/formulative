@@ -45,17 +45,17 @@ mainCalculationStatic ::
     , Member Export sig
     , Member SettingFile sig
     , HasUpdateM m a
-    , HasDependentVariableGlobalM m a
-    , HasDependentVariableLocalM m a
+    , HasGlobalDependentVariableM m a
+    , HasLocalDependentVariableM m a
     , ToNamedRecord a
-    , ToNamedRecord (DependentVariableGlobalType a)
-    , ToNamedRecord (DependentVariableLocalType a)
+    , ToNamedRecord (GlobalDependentVariable a)
+    , ToNamedRecord (LocalDependentVariable a)
     , ToRecords a
-    , ToRecord (DependentVariableGlobalType a)
-    , ToRecords (DependentVariableLocalType a)
+    , ToRecord (GlobalDependentVariable a)
+    , ToRecords (LocalDependentVariable a)
     , DefaultOrdered a
-    , DefaultOrdered (DependentVariableGlobalType a)
-    , DefaultOrdered (DependentVariableLocalType a)
+    , DefaultOrdered (GlobalDependentVariable a)
+    , DefaultOrdered (LocalDependentVariable a)
     , ToDhall (DependentParameterType a)
     , HasDependentParameterM m a
     ) =>

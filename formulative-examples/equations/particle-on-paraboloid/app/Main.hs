@@ -22,12 +22,12 @@ import Formulative.Calculation.Internal.Class
 import Formulative.Calculation.Internal.Setting
 import Formulative.Calculation.Internal.Variable.Carrier
 import Formulative.Calculation.Internal.Variable.Effect
-import Formulative.Calculation.Optimization.AugmentedLagrangian
+import Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian
 import Formulative.Calculation.Optimization.Carrier
 import Formulative.Calculation.Optimization.Constrained.Carrier (runConstrainedSystem, runConstrainedSystemIO)
 import Formulative.Calculation.Optimization.Constrained.Effect
 import Formulative.Calculation.Optimization.LineSearch
-import Formulative.Calculation.Optimization.Parameter
+import Formulative.Calculation.Optimization.Setting
 import Formulative.Calculation.Optimization.Update
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Postprocess.Export.Carrier
@@ -62,11 +62,11 @@ data MySetting = MySetting {optimization :: OptimizationSetting Double, constrai
 -- export quantities
 ----------------------------------------------------------------
 instance (Monad m) => HasDependentParameterM m MyVariable
-data MyDependentVariableGlobal = MyDependentVariableGlobal {kineticEnergy :: Double, potentialEnergy :: Double, lagrangian :: Double, hamiltonian :: Double}
+data MyGlobalDependentVariable = MyGlobalDependentVariable {kineticEnergy :: Double, potentialEnergy :: Double, lagrangian :: Double, hamiltonian :: Double}
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace, DefaultOrdered, ToRecord, ToNamedRecord)
-instance (Algebra sig m, Member (Reader MyEquationConstants) sig, Member (ConstrainedSystem MyConstraintCondition) sig) => HasDependentVariableGlobalM m MyVariable where
-  type DependentVariableGlobalType MyVariable = MyDependentVariableGlobal
+instance (Algebra sig m, Member (Reader MyEquationConstants) sig, Member (ConstrainedSystem MyConstraintCondition) sig) => HasGlobalDependentVariableM m MyVariable where
+  type GlobalDependentVariable MyVariable = MyGlobalDependentVariable
   dependentVariableGlobalM MyVariable{..} = do
     MyEquationConstants{..} <- ask
     let eK = p <.> p ./ (2 *. m)
@@ -74,23 +74,23 @@ instance (Algebra sig m, Member (Reader MyEquationConstants) sig, Member (Constr
     let e = eK .+. eP
     let l = eK .-. eP
     return $
-      MyDependentVariableGlobal
+      MyGlobalDependentVariable
         { kineticEnergy = eK
         , potentialEnergy = eP
         , lagrangian = l
         , hamiltonian = e
         }
 
-data MyDependentVariableLocal = MyDependentVariableLocal {constraintCondition :: Double, lagrangeMultiplierPosition :: Double}
+data MyLocalDependentVariable = MyLocalDependentVariable {constraintCondition :: Double, lagrangeMultiplierPosition :: Double}
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace, DefaultOrdered, ToRecord, ToNamedRecord, ToRecords)
-instance (Algebra sig m, Member (ConstrainedSystem MyConstraintCondition) sig, Member (Reader MyEquationConstants) sig) => HasDependentVariableLocalM m MyVariable where
-  type DependentVariableLocalType MyVariable = MyDependentVariableLocal
+instance (Algebra sig m, Member (ConstrainedSystem MyConstraintCondition) sig, Member (Reader MyEquationConstants) sig) => HasLocalDependentVariableM m MyVariable where
+  type LocalDependentVariable MyVariable = MyLocalDependentVariable
   dependentVariableLocalM MyVariable{..} = do
     MyEquationConstants{..} <- ask
     (MyConstraintCondition l1) <- getLagrangianMultiplier
     g1 <- constraintCondition1 x
-    return $ MyDependentVariableLocal g1 l1
+    return $ MyLocalDependentVariable g1 l1
 
 constraintCondition1 x = do
   MyEquationConstants{..} <- ask

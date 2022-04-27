@@ -47,17 +47,17 @@ class HasExportStaticsM m a where
 --         exportDependentVariableLocalDynamic (IndexOfStep i) xi
 --         exportDependentVariableGlobal xi
 
-class HasDependentVariableGlobalM m a where
-    type DependentVariableGlobalType a :: *
-    type DependentVariableGlobalType a = () -- default
-    dependentVariableGlobalM :: a -> m (DependentVariableGlobalType a)
-    default dependentVariableGlobalM :: (Monad m, DependentVariableGlobalType a ~ ()) => a -> m (DependentVariableGlobalType a)
+class HasGlobalDependentVariableM m a where
+    type GlobalDependentVariable a :: *
+    type GlobalDependentVariable a = () -- default
+    dependentVariableGlobalM :: a -> m (GlobalDependentVariable a)
+    default dependentVariableGlobalM :: (Monad m, GlobalDependentVariable a ~ ()) => a -> m (GlobalDependentVariable a)
     dependentVariableGlobalM x = return ()
-class HasDependentVariableLocalM m a where
-    type DependentVariableLocalType a :: *
-    type DependentVariableLocalType a = () -- default
-    dependentVariableLocalM :: a -> m (DependentVariableLocalType a)
-    default dependentVariableLocalM :: (Monad m, DependentVariableLocalType a ~ ()) => a -> m (DependentVariableLocalType a)
+class HasLocalDependentVariableM m a where
+    type LocalDependentVariable a :: *
+    type LocalDependentVariable a = () -- default
+    dependentVariableLocalM :: a -> m (LocalDependentVariable a)
+    default dependentVariableLocalM :: (Monad m, LocalDependentVariable a ~ ()) => a -> m (LocalDependentVariable a)
     dependentVariableLocalM x = return ()
 
 class HasDependentParameterM m a where
