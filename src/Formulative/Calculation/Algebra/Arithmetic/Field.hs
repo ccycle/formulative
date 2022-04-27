@@ -12,7 +12,7 @@ import Formulative.Calculation.Algebra.Arithmetic.Additive
 import Formulative.Calculation.Algebra.Arithmetic.AdditiveGroup
 import Formulative.Calculation.Algebra.Arithmetic.Multiplicative
 import Formulative.Calculation.Algebra.Arithmetic.Ring
-import Formulative.Calculation.Algebra.Arithmetic.Rng
+import Formulative.Calculation.Algebra.Arithmetic.Semiring
 import Formulative.Calculation.Internal.Types
 import GHC.Generics
 import GHC.TypeNats
@@ -81,7 +81,7 @@ instance (Field a) => GField (K1 i a) where
 deriving via (MyNum a) instance (Fractional a) => Additive (MyFractional a)
 deriving via (MyNum a) instance (Fractional a) => AdditiveGroup (MyFractional a)
 deriving via (MyNum a) instance (Fractional a) => Multiplicative (MyFractional a)
-deriving via (MyNum a) instance (Fractional a) => Rng (MyFractional a)
+deriving via (MyNum a) instance (Fractional a) => Semiring (MyFractional a)
 deriving via (MyNum a) instance (Fractional a) => Ring (MyFractional a)
 instance (Eq a, Fractional a) => Field (MyFractional a) where
     reciprocal (MyFractional a) = MyFractional (recip a)

@@ -26,7 +26,7 @@ instance (Additive a, Multiplicative a) => Multiplicative (DualNumber a) where
     DualNumber a a' .*. DualNumber b b' = DualNumber (a .*. b) (a' .*. b .+. a .*. b')
     one = DualNumber one zero
 
-instance Rng a => Rng (DualNumber a)
+instance Semiring a => Semiring (DualNumber a)
 instance Ring a => Ring (DualNumber a)
 
 -- nonzeroの条件が通常と異なる (実数部がnonzero)

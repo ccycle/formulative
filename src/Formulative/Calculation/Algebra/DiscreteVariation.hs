@@ -19,7 +19,7 @@ import Prelude hiding (fromInteger)
 
 data DiscreteVariable a = DiscreteVariable {getOldVar :: a, getNewVar :: a}
     deriving stock (Show, Eq, Generic, Functor, Foldable, Traversable)
-    deriving anyclass (Additive, AdditiveGroup, Multiplicative, Rng, Ring, Field)
+    deriving anyclass (Additive, AdditiveGroup, Multiplicative, Semiring, Ring, Field)
 
 instance Applicative DiscreteVariable where
     pure x = DiscreteVariable x x

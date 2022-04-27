@@ -10,7 +10,7 @@ import Formulative.Calculation.Algebra.Arithmetic.AdditiveGroup
 import Formulative.Calculation.Algebra.Arithmetic.Field
 import Formulative.Calculation.Algebra.Arithmetic.Multiplicative
 import Formulative.Calculation.Algebra.Arithmetic.Ring
-import Formulative.Calculation.Algebra.Arithmetic.Rng
+import Formulative.Calculation.Algebra.Arithmetic.Semiring
 import Formulative.Calculation.Internal.Types
 import GHC.TypeNats
 import Prelude hiding (fromInteger)
@@ -66,7 +66,7 @@ class (Field a) => Transcendental a where
 deriving via (MyNum a) instance (Floating a) => Additive (MyTranscendental a)
 deriving via (MyNum a) instance (Floating a) => AdditiveGroup (MyTranscendental a)
 deriving via (MyNum a) instance (Floating a) => Multiplicative (MyTranscendental a)
-deriving via (MyNum a) instance (Floating a) => Rng (MyTranscendental a)
+deriving via (MyNum a) instance (Floating a) => Semiring (MyTranscendental a)
 deriving via (MyNum a) instance (Floating a) => Ring (MyTranscendental a)
 deriving via (MyFractional a) instance (Eq a, Floating a) => Field (MyTranscendental a)
 

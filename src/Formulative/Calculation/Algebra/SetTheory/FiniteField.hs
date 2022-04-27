@@ -36,7 +36,7 @@ instance (KnownNat p) => Multiplicative (PrimeField p) where
     (.*.) a b = undefined
     one = undefined
 
-instance (KnownNat p) => Rng (PrimeField p) where
+instance (KnownNat p) => Semiring (PrimeField p) where
     fromInteger = undefined
 
 instance (KnownNat p) => Ring (PrimeField p)

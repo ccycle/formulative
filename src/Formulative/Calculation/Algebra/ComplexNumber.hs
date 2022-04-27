@@ -14,7 +14,7 @@ instance (AdditiveGroup a, Multiplicative a) => Multiplicative (ComplexNumber a)
     ComplexNumber a1 a2 .*. ComplexNumber b1 b2 = ComplexNumber (a1 .*. b1 .-. a2 .*. b2) (a2 .*. b1 .+. a1 .*. b2)
     one = ComplexNumber one zero
 
-instance (Rng a, AdditiveGroup a) => Rng (ComplexNumber a) where
+instance (Semiring a, AdditiveGroup a) => Semiring (ComplexNumber a) where
     fromInteger x = ComplexNumber (fromInteger x) (fromInteger x)
 
 instance (Ring a) => Ring (ComplexNumber a)

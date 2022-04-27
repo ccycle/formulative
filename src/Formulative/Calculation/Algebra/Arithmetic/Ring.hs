@@ -8,7 +8,7 @@ import Debug.SimpleReflect.Expr
 import Formulative.Calculation.Algebra.Arithmetic.Additive
 import Formulative.Calculation.Algebra.Arithmetic.AdditiveGroup
 import Formulative.Calculation.Algebra.Arithmetic.Multiplicative
-import Formulative.Calculation.Algebra.Arithmetic.Rng (Rng)
+import Formulative.Calculation.Algebra.Arithmetic.Semiring (Semiring)
 import Formulative.Calculation.Internal.Types
 import GHC.Generics
 import GHC.TypeNats
@@ -16,7 +16,7 @@ import Prelude hiding (fromInteger)
 import qualified Prelude
 
 -- class (AdditiveGroup a, Multiplicative a) => Ring a
-class (AdditiveGroup a, Rng a) => Ring a
+class (AdditiveGroup a, Semiring a) => Ring a
 
 -- fromInteger :: Integer -> a
 -- default fromInteger :: (Generic a, GRing (Rep a)) => Integer -> a

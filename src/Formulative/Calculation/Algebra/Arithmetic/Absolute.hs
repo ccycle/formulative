@@ -2,7 +2,7 @@ module Formulative.Calculation.Algebra.Arithmetic.Absolute where
 
 import qualified Data.Vector.Sized as VS
 import Formulative.Calculation.Algebra.Arithmetic.Ring
-import Formulative.Calculation.Algebra.Arithmetic.Rng
+import Formulative.Calculation.Algebra.Arithmetic.Semiring
 import Formulative.Calculation.Internal.Types
 import GHC.TypeNats
 
