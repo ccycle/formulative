@@ -5,12 +5,12 @@
 module Formulative.Calculation.Internal.Class where
 
 import Control.Algebra
-import Control.Carrier.State.Strict
 import Data.Csv (DefaultOrdered, ToNamedRecord, ToRecord)
 import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.Internal.Variable.Effect
-import Formulative.Calculation.Optimization.AugmentedLagrangian
+import Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian
 import Formulative.Calculation.VectorSpace.Class
+import Formulative.Postprocess.Export.Types
 
 class (VectorSpace a) => HasObjectiveFunctionM m a where
     getObjectiveFunctionM :: m (a -> Scalar a)
@@ -34,6 +34,18 @@ class HasGradPenaltyM m a where
 
 class (HasInitialConditionM m a) => HasUpdateM m a where
     updateM :: a -> m a
+
+class HasExportStaticsM m a where
+    exportStaticsM :: a -> m ()
+
+-- class HasExportDynamicsM m a where
+--     exportDynamicsM :: IndexOfStep -> DynamicParameter b -> a -> m ()
+--     default exportDynamicsM :: IndexOfStep -> DynamicParameter b -> a -> m ()
+--     exportDynamicsM (IndexOfStep i) (DynamicParameter t) xi = do
+--         exportDynamicParameter (IndexOfStep i) (DynamicParameter t)
+--         exportVariableDynamic (IndexOfStep i) xi
+--         exportDependentVariableLocalDynamic (IndexOfStep i) xi
+--         exportDependentVariableGlobal xi
 
 class HasDependentVariableGlobalM m a where
     type DependentVariableGlobalType a :: *

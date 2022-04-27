@@ -12,9 +12,9 @@ import qualified Data.ByteString.Lazy as BSL
 import qualified Data.Csv as Csv
 import qualified Data.HashMap.Strict as HM
 import Data.Maybe
+import Formulative.Calculation.Algebra.Arithmetic.Class
 import GHC.Generics
 import GHC.Natural
-import Formulative.Calculation.Algebra.Arithmetic.Class
 
 -- import Formulative.Calculation.DiscreteExteriorCalculus.Algebra
 -- import Formulative.Calculation.DiscreteExteriorCalculus.Class
@@ -63,7 +63,7 @@ prop_associativity_IntegerMul = associativity @Integer (.*.)
 
 data HeteroRecFieldTest = HeteroRecFieldTest {pressure :: Double, density :: Float}
     deriving stock (Generic, Show, Eq)
-    deriving anyclass (Additive, AdditiveGroup, Multiplicative, Rng, Ring, Field)
+    deriving anyclass (Additive, AdditiveGroup, Multiplicative, Semiring, Ring, Field)
 
 data DiffFormRecFieldTest = DiffFormRecFieldTest {pressure :: DifferentialForm 2 '[2, 5, 4] Dual 0 Double, density :: DifferentialForm 2 '[2, 5, 4] Dual 0 Double, hodge :: HodgeStar 2 '[2, 5, 4] Dual 0 Double}
     deriving stock (Show, Generic)

@@ -11,8 +11,6 @@ import Formulative.Preprocess.ReadSetting
 data SettingFile m k where
     AskSettingHash :: SettingFile m SettingHash -- "./setting.dhall"
     AskSettingFileText :: SettingFile m DhallSettingText -- text in "./setting.dhall"
-    -- askSettingFilePath :: (Has SettingFile sig m) => m FilePath
-    -- askSettingFilePath = send AskSettingFilePath
 
 askSettingFileText :: (Has SettingFile sig m) => m DhallSettingText
 askSettingFileText = send AskSettingFileText

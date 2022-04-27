@@ -1,7 +1,6 @@
 module Formulative.Postprocess.Export.Effect where
 
 import Control.Algebra
-import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Types
 import Formulative.Postprocess.Export.Types
 
 data Export m k where

@@ -21,7 +21,6 @@ import Formulative.Postprocess.Export.Path (hashHexadecimalString)
 import Formulative.Preprocess.CommandLineOptions
 import Formulative.Preprocess.DefaultValue
 import Path
-import Path.IO
 
 toDhallText x = pack $ show doc
  where
@@ -64,8 +63,3 @@ fillInMissingValuesWithDefaultValues txt = input auto $ T.concat [toDhallText (d
 -- fillInSetting "export" txt :: IO (ExportSetting)
 fillInSetting :: forall a. (ToDhall a, FromDhall a, HasDefaultValue a) => Text -> Text -> IO a
 fillInSetting name txt = input auto $ T.concat ["(", "{", name, " = ", toDhallText (defaultValue @a), "}", " // ", txt, ")", ".", name]
-
--- 設定を読み込む
--- hash値をparentdirに置き換え
--- class
--- runSetting = runExport () ...

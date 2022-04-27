@@ -8,7 +8,6 @@ import Data.String.Conversions (ConvertibleStrings (convertString))
 import qualified Data.Text as T
 import Dhall
 import Formulative.Preprocess.DefaultValue
-import GHC.Generics
 import Path
 
 -- TODO: add VTU
@@ -47,12 +46,8 @@ data ExportSetting = ExportSetting {format :: ExportQuantityFormat, outputDirect
 newtype IndexOfStep = IndexOfStep Natural
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, Hashable)
-newtype Parameter a = Parameter a
+newtype DynamicParameter a = DynamicParameter a
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, Hashable)
-
--- configで設定できるようにする
--- 相対パスの指定かautoか
--- 過去の計算結果をもとに再計算させるなどの使い方を想定
 newtype OutputDir = OutputDir (Path Rel Dir)
     deriving stock (Generic, Show, Eq)
