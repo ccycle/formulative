@@ -12,7 +12,7 @@ import Control.Exception.Safe
 import Data.String.Conversions
 import Dhall
 import Formulative.Calculation.Algebra.Arithmetic.Additive
-import Formulative.Calculation.Optimization.AugmentedLagrangian
+import Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian
 import Formulative.Calculation.Optimization.Constrained.Effect
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Preprocess.ReadSetting

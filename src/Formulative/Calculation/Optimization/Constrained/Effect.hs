@@ -4,7 +4,7 @@ module Formulative.Calculation.Optimization.Constrained.Effect where
 
 import Control.Algebra
 import Data.Kind
-import Formulative.Calculation.Optimization.AugmentedLagrangian
+import Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian
 import Formulative.Calculation.VectorSpace.Class
 
 -- Effect

@@ -28,7 +28,7 @@ newtype NumericalError a = NumericalError a
     deriving newtype (Enum, Num, Fractional)
     deriving anyclass (FromDhall, ToDhall, Hashable)
 instance (Fractional a) => HasDefaultValue (NumericalError a) where
-    defaultValue = NumericalError 1e-8
+    defaultValue = 1e-8
 data ConvergenceTestType = AbsoluteError | RelativeError
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, Hashable)

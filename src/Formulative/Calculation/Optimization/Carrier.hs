@@ -11,7 +11,7 @@ import Control.Exception.Safe
 import Data.String.Conversions
 import Dhall
 import Formulative.Calculation.Optimization.Effect
-import Formulative.Calculation.Optimization.Parameter
+import Formulative.Calculation.Optimization.Setting
 import Formulative.Preprocess.ReadSetting
 import Formulative.Preprocess.SettingFile.Effect
 

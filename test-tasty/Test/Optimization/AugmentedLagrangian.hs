@@ -8,7 +8,7 @@ import Control.Exception.Safe
 import Data.Csv
 import Dhall
 import Formulative.Calculation.Algebra.Arithmetic.Class
-import Formulative.Calculation.Optimization.AugmentedLagrangian
+import Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian
 import Formulative.Calculation.Optimization.LBFGS
 import Formulative.Calculation.Optimization.LineSearch
 import Formulative.Calculation.VectorSpace.Class

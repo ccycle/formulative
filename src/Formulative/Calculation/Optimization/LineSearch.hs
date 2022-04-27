@@ -3,7 +3,6 @@
 
 module Formulative.Calculation.Optimization.LineSearch where
 
-import Control.Exception.Safe
 import Data.Coerce
 import Data.Hashable
 import qualified Data.Vector as V
@@ -16,20 +15,13 @@ newtype Residuals a = Residuals (V.Vector a)
   deriving stock (Show, Eq, Ord, Generic)
   deriving anyclass (FromDhall, ToDhall)
 
--- line search consitions
--- data LineSearchConditionType = Armijo | Wolfe | StrongWolfe
---   deriving stock (Generic, Show, Eq)
---   deriving anyclass (FromDhall, ToDhall, Hashable)
--- instance HasDefaultValue LineSearchConditionType where
---   defaultValue = Armijo
-
 -- https://en.wikipedia.org/wiki/Wolfeconditions#Armijorule_and_curvature
 newtype ArmijoConditionParameter a = ArmijoConditionParameter a
   deriving stock (Show, Eq, Ord, Generic)
-  deriving newtype (Num, Enum)
+  deriving newtype (Num, Enum, Fractional)
   deriving anyclass (FromDhall, ToDhall, Hashable)
 instance (Fractional a) => HasDefaultValue (ArmijoConditionParameter a) where
-  defaultValue = ArmijoConditionParameter 1e-4
+  defaultValue = 1e-4
 
 -- https://en.wikipedia.org/wiki/Wolfeconditions#Armijorule_and_curvature
 newtype WolfeConditionParameter a = WolfeConditionParameter a
@@ -38,14 +30,6 @@ newtype WolfeConditionParameter a = WolfeConditionParameter a
 instance (Fractional a) => HasDefaultValue (WolfeConditionParameter a) where
   defaultValue = WolfeConditionParameter 0.9
 
--- TODO: condition typeを修正
--- data InequalityConditionForLineSearch a = InequalityConditionForLineSearch
---   { conditionType :: LineSearchConditionType
---   , armijoConditionParameter :: ArmijoConditionParameter a
---   , wolfeConditionParameter :: WolfeConditionParameter a
---   }
---   deriving stock (Generic, Show, Eq)
---   deriving anyclass (FromDhall, ToDhall, Hashable, HasDefaultValue)
 data InequalityConditionForLineSearch a
   = Armijo
       {c1 :: ArmijoConditionParameter a}
@@ -65,20 +49,20 @@ instance (Fractional a) => HasDefaultValue (InequalityConditionForLineSearch a) 
 -- step size for ine search
 newtype StepSizeForLineSearch a = StepSizeForLineSearch a
   deriving stock (Show, Eq, Ord, Generic)
-  deriving newtype (Num)
+  deriving newtype (Num, Fractional)
   deriving anyclass (FromDhall, ToDhall, Hashable)
 unStepSizeForLineSearch :: StepSizeForLineSearch a -> a
 unStepSizeForLineSearch = coerce
 instance (Fractional a) => HasDefaultValue (StepSizeForLineSearch a) where
-  defaultValue = StepSizeForLineSearch 1.0
+  defaultValue = 1.0
 
 -- backtracking method
 newtype BacktrackingFactor a = BacktrackingFactor a
   deriving stock (Show, Eq, Ord, Generic)
-  deriving newtype (Num)
+  deriving newtype (Num, Fractional)
   deriving anyclass (FromDhall, ToDhall, Hashable)
 instance (Fractional a) => HasDefaultValue (BacktrackingFactor a) where
-  defaultValue = BacktrackingFactor 1.0
+  defaultValue = 1.0
 
 newtype IterationNumberForLineSearch = IterationNumberForLineSearch Natural
   deriving stock (Show, Eq, Ord, Generic)

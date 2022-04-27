@@ -6,7 +6,7 @@ import Control.Effect.Throw
 import Control.Exception.Safe
 import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.Internal.Class
-import Formulative.Calculation.Optimization.AugmentedLagrangian
+import Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian
 import Formulative.Calculation.Optimization.Constrained.Effect
 import Formulative.Calculation.Optimization.Effect
 import Formulative.Calculation.Optimization.LBFGS

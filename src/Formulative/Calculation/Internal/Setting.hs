@@ -12,8 +12,8 @@ import Control.Monad
 import Data.Hashable
 import Dhall
 import Formulative.Calculation.DifferentialEquation.Types
-import Formulative.Calculation.Optimization.AugmentedLagrangian
-import Formulative.Calculation.Optimization.Parameter
+import Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian
+import Formulative.Calculation.Optimization.Setting
 import Formulative.Postprocess.Export.Class (msgExportFileIO)
 import Formulative.Postprocess.Export.Path
 import Formulative.Postprocess.Export.Types

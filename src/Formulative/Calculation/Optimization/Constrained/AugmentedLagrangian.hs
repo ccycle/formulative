@@ -3,7 +3,7 @@
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE UndecidableInstances #-}
 
-module Formulative.Calculation.Optimization.AugmentedLagrangian where
+module Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian where
 
 import Control.Exception.Safe
 import Data.Coerce
