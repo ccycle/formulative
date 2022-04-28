@@ -312,7 +312,6 @@ test-suite formulative-tasty
       Test.Adjacency
       Test.DefineNewEffect
       Test.Dhall
-      Test.EigenSparseMatrixTest
       Test.Factorial
       Test.FusedEffect
       Test.GenericsTest
@@ -379,7 +378,7 @@ test-suite formulative-tasty
       TypeOperators
       TypeSynonymInstances
       ViewPatterns
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -O0
   build-depends:
       ad
     , aeson
