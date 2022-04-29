@@ -107,16 +107,16 @@ instance
     (MyVariable xOld pOld) <- getVariableOld
     MyEquationConstants{..} <- ask
     (StepSize dt) <- askStepSize
-    let eK = p .^ 2 / (2 *. m)
-    let eP = 1 ./. 2 * k .*. x .^ 2
-    let h x' p' = (p' .^ 2) ./. (2 .*. m) .+. (1 ./. 2 .*. k .*. (x' .^ 2))
+    let eK p = p .^ 2 / (2 *. m)
+    let eP x = 1 ./. 2 * k .*. x .^ 2
+    let h x p = eK p .+. eP x 
     let dH = h x p .-. h xOld pOld
     let dW = (x .-. xOld) <.> (gamma ./. m) *. ((p .+. pOld) ./ 2)
     return $
       MyGlobalDependentVariable
-        { kineticEnergy = eK
-        , potentialEnergy = eP
-        , lagrangian = eK .-. eP
+        { kineticEnergy = eK p
+        , potentialEnergy = eP x
+        , lagrangian = eK p .-. eP x
         , hamiltonian = h x p
         , dHdt = dH ./. dt
         , power = dW ./. dt
@@ -189,4 +189,4 @@ main =
     . runEquationConstantsIO @MyEquationConstants
     . runDynamicsIO @Double
     . runInitialConditionM @MyVariable
-    $ mainCalculationDynamic @MyVariable @Double
+    $ mainCalcDynamics @MyVariable @Double

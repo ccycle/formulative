@@ -131,7 +131,7 @@ exportDynamicsM (IndexOfStep i) (DynamicParameter t) xi = do
     exportDependentVariableGlobal xi
     exportDependentVariableLocalDynamic (IndexOfStep i) xi
 
-mainCalculationDynamic ::
+mainCalcDynamics ::
     forall a b sig m.
     ( Algebra sig m
     , Additive b
@@ -160,7 +160,7 @@ mainCalculationDynamic ::
     , ToRecords a
     ) =>
     m ()
-mainCalculationDynamic = do
+mainCalcDynamics = do
     preprocessM @m @a
     x <- getInitialConditionM @m @a
     DynamicsSetting{..} <- askDynamicsSetting @b

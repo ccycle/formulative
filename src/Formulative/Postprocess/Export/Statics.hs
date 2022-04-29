@@ -37,7 +37,7 @@ exportDependentVariableLocalStatic x = do
     x' <- dependentVariableLocalM x
     exportVariableStatic x'
 
-mainCalculationStatic ::
+mainCalcStatics ::
     forall a sig m.
     ( Algebra sig m
     , Member (Lift IO) sig
@@ -60,7 +60,7 @@ mainCalculationStatic ::
     , HasDependentParameterM m a
     ) =>
     m ()
-mainCalculationStatic = do
+mainCalcStatics = do
     preprocessM @m @a
     x <- getInitialConditionM @m @a
     ensureDirOutputM

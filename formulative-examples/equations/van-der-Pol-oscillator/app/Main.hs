@@ -133,4 +133,4 @@ main =
         . runEquationConstantsIO @MyEquationConstants
         . runDynamicsIO @Double
         . runInitialConditionM @MyVariable
-        $ mainCalculationDynamic @MyVariable @Double
+        $ mainCalcDynamics @MyVariable @Double
