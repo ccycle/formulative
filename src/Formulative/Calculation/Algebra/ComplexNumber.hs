@@ -8,7 +8,8 @@ import GHC.Generics
 import Prelude hiding (fromInteger)
 import qualified Prelude
 
-data ComplexNumber a = ComplexNumber a a deriving (Show, Eq, Generic, Additive, AdditiveGroup)
+data ComplexNumber a = ComplexNumber a a
+    deriving (Show, Eq, Generic, Additive, AdditiveGroup)
 
 instance (AdditiveGroup a, Multiplicative a) => Multiplicative (ComplexNumber a) where
     ComplexNumber a1 a2 .*. ComplexNumber b1 b2 = ComplexNumber (a1 .*. b1 .-. a2 .*. b2) (a2 .*. b1 .+. a1 .*. b2)

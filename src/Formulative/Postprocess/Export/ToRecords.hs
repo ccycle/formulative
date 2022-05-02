@@ -3,12 +3,21 @@
 
 module Formulative.Postprocess.Export.ToRecords where
 
+import Conduit
+import Control.Monad.ST.Strict (runST)
 import qualified Data.ByteString as B
+import Data.Conduit
 import Data.Csv
+import qualified Data.Matrix.Static.LinearAlgebra as MSL
+import Data.Matrix.Static.Sparse (toTriplet)
 import qualified Data.Vector as V
 import qualified Data.Vector.Sized as VS
+import qualified Data.Vector.Storable as VST
+import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
 import Formulative.Calculation.Internal.Types
 import GHC.Generics
+import GHC.Natural
+import GHC.TypeNats
 
 type Records = V.Vector Record
 
@@ -41,3 +50,29 @@ instance (ToField a) => ToRecord (MyNum a) where
 deriving via (MyNum Double) instance ToRecord Double
 deriving via (MyNum Float) instance ToRecord Float
 deriving via (MyNum Int) instance ToRecord Int
+deriving via (MyNum Integer) instance ToRecord Integer
+deriving via (MyNum Natural) instance ToRecord Natural
+
+-- TODO: Complex Numberの場合の導出を検討
+
+instance
+    ( ToField a
+    , VST.Storable a
+    , KnownNat k1
+    , KnownNat k2
+    ) =>
+    ToRecord (MSL.SparseMatrix k1 k2 a)
+    where
+    toRecord x = runST $ runConduit $ toTriplet x .| mapC toRecord .| foldlC (<>) V.empty
+
+-- TODO: proofを追加 型制約を(KnownNat k1, KnownNat k2)にする
+
+instance
+    ( ToField a
+    , VST.Storable a
+    , KnownNat (ToMatSize n l c1 k1)
+    , KnownNat (ToMatSize n l c2 k2)
+    ) =>
+    ToRecord (DECrepresentationMatrix n l c1 k1 c2 k2 a)
+    where
+    toRecord (DECrepresentationMatrix x) = toRecord x

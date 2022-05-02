@@ -1,112 +1,23 @@
-{-# LANGUAGE AllowAmbiguousTypes #-}
-{-# LANGUAGE DuplicateRecordFields #-}
-{-# LANGUAGE UndecidableInstances #-}
-
-module Formulative.Postprocess.Export.Class where
+module Formulative.Postprocess.Export.IO where
 
 import Control.Algebra
-import Control.Carrier.Error.Either
+import Control.Carrier.Error.Church
 import Control.Effect.Lift
 import Control.Effect.Sum
 import Control.Exception.Safe
 import Control.Monad
-import qualified Data.ByteString.Lazy as BSL
-import Data.Csv hiding (Field)
-import qualified Data.Matrix.Static.Generic as MSG
-import qualified Data.Matrix.Static.Sparse as MSS
-import Data.Singletons (Sing (..), SingI, SingInstance (SingInstance), SingKind (toSing), SomeSing (SomeSing), singInstance)
-import Data.Singletons.Prelude (SList)
-import qualified Data.Text.IO as T
 import Data.Time
-import qualified Data.Vector.Storable as VST
 import Dhall
-import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
-import Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Types
-import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Types
 import Formulative.Calculation.Internal.Class
-import Formulative.Calculation.Internal.Singletons (SomeSingI (SomeSingI), someSingVal, withSomeSingI)
-import Formulative.Calculation.VectorSpace.VectorSpace (Scalar)
 import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.Types
 import Formulative.Preprocess.CommandLineOptions
-import Formulative.Preprocess.ReadSetting
-import Formulative.Preprocess.SettingFile.Effect (SettingFile, askSettingFileText)
-import GHC.TypeNats
+import Formulative.Preprocess.SettingFile.Effect
 import Path
 import Path.IO
 
 putStrLnM :: (Algebra sig m, Member (Lift IO) sig) => String -> m ()
 putStrLnM = sendIO . putStrLn
-
-exportSettingFile ::
-    forall m sig.
-    ( Algebra sig m
-    , Member Export sig
-    , Member SettingFile sig
-    , Member (Lift IO) sig
-    ) =>
-    m ()
-exportSettingFile = do
-    (OutputDir outputDir) <- askOutputDir
-    (DhallSettingText x) <- askSettingFileText
-    sendIO $ ensureDir outputDir
-    sName <- sendIO $ parseRelFile "setting.dhall"
-    let filePath = toFilePath (outputDir </> sName)
-    putStrLnM $ concat ["Exporting setting file (", filePath, ") .."]
-    sendIO $ T.writeFile filePath x
-
-exportDependentParameterFile ::
-    forall a m sig.
-    ( Algebra sig m
-    , Member Export sig
-    , Member (Lift IO) sig
-    , HasDependentParameterM m a
-    , ToDhall (DependentParameterType a)
-    ) =>
-    m ()
-exportDependentParameterFile = do
-    x <- dependentParameterM @m @a
-    let y = toDhallText x
-    when (y /= toDhallText ()) $ do
-        (OutputDir outputDir) <- askOutputDir
-        sendIO $ ensureDir outputDir
-        sName <- sendIO $ parseRelFile "dependentParamater.dhall"
-        let filePath = toFilePath (outputDir </> sName)
-        putStrLnM $ concat ["Exporting dependent parameter file (", filePath, ") .."]
-        sendIO $ T.writeFile filePath y
-
--- 1ファイルに追記
-exportDependentVariableGlobal ::
-    forall a sig m.
-    ( Algebra sig m
-    , Member (Lift IO) sig
-    , Member (Throw SomeException) sig
-    , Member Export sig
-    , HasGlobalDependentVariableM m a
-    , DefaultOrdered (GlobalDependentVariable a)
-    , ToNamedRecord (GlobalDependentVariable a)
-    , ToRecord (GlobalDependentVariable a)
-    ) =>
-    a ->
-    m ()
-exportDependentVariableGlobal x = do
-    x' <- dependentVariableGlobalM x
-    (OutputDir parentDir) <- askOutputDir
-    ensureDirOutputM
-    parseKey <- liftEither $ parseRelFile "dependentVariableGlobal"
-    -- TODO: CSV以外にもに対応させる
-    fileName <- liftEither $ replaceExtension ".csv" parseKey
-    let filePath = parentDir </> fileName
-    flag <- sendIO $ doesFileExist filePath
-    if flag
-        then do
-            -- fileがすでに存在したときは末尾に付け足す
-            let str = encode [x']
-            sendIO $ BSL.appendFile (toFilePath filePath) str
-        else do
-            -- 存在しないときは新規に作成
-            let str = encodeDefaultOrderedByName [x']
-            sendIO $ BSL.writeFile (toFilePath filePath) str
 
 ensureDirOutputM :: (Algebra sig m, Member Export sig, Member (Lift IO) sig) => m ()
 ensureDirOutputM = do
@@ -125,7 +36,7 @@ removeDirRecurOutputM (OutputDir relDir) =
 msgDirAlreadyExists :: (Monad m, Member (Lift IO) sig, Member (Lift IO) sig, Algebra sig m, Member Export sig) => m ()
 msgDirAlreadyExists = do
     dir <- askOutputDirAbsPath
-    putStrLnM $ "[WARNING] The output directory (" <> toFilePath dir <> ") already exists: The calculation may have already been executed."
+    putStrLnM $ "[WARNING] The output directory (" <> toFilePath dir <> ") already exists; the calculation may have already been executed."
 
 -- TODO: logger作成
 warningForOverwrite :: (Has (Lift IO) sig m, Member (Throw SomeException) sig, Member Export sig) => m RecalculationOption
@@ -236,19 +147,19 @@ askOutputDirAbsPath = do
 --             (SomeNat (pnEuc :: Proxy nEuc'), SomeNat (pn :: Proxy n'), SomeSingI (sl :: Sing l')) ->
 --                 mainCalcPDEproxy pnEuc pn sl
 
-preprocessM ::
-    forall m a sig.
-    ( Algebra sig m
-    , Member (Throw SomeException) sig
-    , Member (Lift IO) sig
-    , Member Export sig
-    , Member SettingFile sig
-    , HasDependentParameterM m a
-    , ToDhall (DependentParameterType a)
-    ) =>
-    m ()
-preprocessM = do
-    removeDirRecurWithWarningM
-    ensureDirOutputM
-    exportSettingFile
-    exportDependentParameterFile @a @m
+-- preprocessM ::
+--     forall m a sig.
+--     ( Algebra sig m
+--     , Member (Throw SomeException) sig
+--     , Member (Lift IO) sig
+--     , Member Export sig
+--     , Member SettingFile sig
+--     , HasDependentParameterM m a
+--     , ToDhall (DependentParameterType a)
+--     ) =>
+--     m ()
+-- preprocessM = do
+--     removeDirRecurWithWarningM
+--     ensureDirOutputM
+--     exportSettingFile
+--     exportDependentParameterFile @a @m

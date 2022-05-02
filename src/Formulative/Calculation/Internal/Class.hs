@@ -38,15 +38,6 @@ class (HasInitialConditionM m a) => HasUpdateM m a where
 class HasExportStaticsM m a where
     exportStaticsM :: a -> m ()
 
--- class HasExportDynamicsM m a where
---     exportDynamicsM :: IndexOfStep -> DynamicParameter b -> a -> m ()
---     default exportDynamicsM :: IndexOfStep -> DynamicParameter b -> a -> m ()
---     exportDynamicsM (IndexOfStep i) (DynamicParameter t) xi = do
---         exportDynamicParameter (IndexOfStep i) (DynamicParameter t)
---         exportVariableDynamic (IndexOfStep i) xi
---         exportDependentVariableLocalDynamic (IndexOfStep i) xi
---         exportDependentVariableGlobal xi
-
 class HasGlobalDependentVariableM m a where
     type GlobalDependentVariable a :: *
     type GlobalDependentVariable a = () -- default

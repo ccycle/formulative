@@ -10,11 +10,9 @@ import Control.Effect.Error
 import Control.Effect.Lift
 import Control.Effect.Sum
 import Control.Exception.Safe
-import Data.Hashable
-import Dhall
 import Formulative.Internal.ReExport.Effect (askSettingHash)
-import Formulative.Postprocess.Export.Class
 import Formulative.Postprocess.Export.Effect
+import Formulative.Postprocess.Export.IO
 import Formulative.Postprocess.Export.Path
 import Formulative.Postprocess.Export.Types
 import Formulative.Preprocess.DefaultValue (HasDefaultValue)
@@ -39,9 +37,6 @@ instance (Algebra sig m) => Algebra (Export :+: sig) (ExportC m) where
             run (x, env, f output) (pure y)
           where
             run r = runReader r . runExportC
-        L AskEquationType -> do
-            (x, _, _) <- ExportC (ask @(EquationType, ExportQuantityFormat, OutputDir))
-            pure (x <$ ctx)
         R other -> ExportC (alg (runExportC . hdl) (R other) ctx)
 
 -- runExport ODE @MySetting ...

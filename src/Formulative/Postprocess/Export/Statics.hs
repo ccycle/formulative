@@ -14,17 +14,18 @@ import qualified Data.Vector as V
 import Dhall
 import Formulative.Calculation.Internal.Class
 import Formulative.Calculation.Internal.List
-import Formulative.Postprocess.Export.Class
 import Formulative.Postprocess.Export.Effect
+import Formulative.Postprocess.Export.IO
 import Formulative.Postprocess.Export.ToRecords
 import Formulative.Postprocess.Export.Types
+import Formulative.Postprocess.Export.Variable.Global
+import Formulative.Preprocess.IO
 import Formulative.Preprocess.SettingFile.Effect
 import Path
 
 exportVariableStatic x = do
     OutputDir parentDir <- askOutputDir
     ensureDirOutputM
-    -- let x' = toList (toNamedRecord x)
     let x' = V.zip (headerOrder x) (toRecords x)
     forM_ x' $ \(key, str) -> do
         parseKey <- liftEither $ parseRelFile (convertString key)
@@ -47,9 +48,6 @@ mainCalcStatics ::
     , HasUpdateM m a
     , HasGlobalDependentVariableM m a
     , HasLocalDependentVariableM m a
-    , ToNamedRecord a
-    , ToNamedRecord (GlobalDependentVariable a)
-    , ToNamedRecord (LocalDependentVariable a)
     , ToRecords a
     , ToRecord (GlobalDependentVariable a)
     , ToRecords (LocalDependentVariable a)
@@ -63,13 +61,11 @@ mainCalcStatics ::
 mainCalcStatics = do
     preprocessM @m @a
     x <- getInitialConditionM @m @a
-    ensureDirOutputM
+    msgStart
     putStrLnM "solve equation"
     x' <- updateM x
-    putStrLnM "done"
-    putStrLnM "export data"
+    putStrLnM "Exporting data .."
     exportVariableStatic x'
-    exportDependentVariableGlobal x'
+    exportDependentVariablesGlobal x'
     exportDependentVariableLocalStatic x'
-    putStrLnM "done"
-    putStrLnM "end"
+    msgEnd

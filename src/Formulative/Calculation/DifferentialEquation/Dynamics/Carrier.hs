@@ -11,7 +11,7 @@ import Control.Exception.Safe
 import Dhall
 import Formulative.Calculation.DifferentialEquation.Dynamics.Effect
 import Formulative.Calculation.DifferentialEquation.Types
-import Formulative.Postprocess.Export.Class
+import Formulative.Postprocess.Export.IO
 import Formulative.Preprocess.ReadSetting
 
 newtype DynamicsC a m b = DynamicsC {runDynamicsC :: ReaderC (DynamicsSetting a) m b}
