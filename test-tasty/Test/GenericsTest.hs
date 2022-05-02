@@ -13,17 +13,12 @@ import qualified Data.Csv as Csv
 import qualified Data.HashMap.Strict as HM
 import Data.Maybe
 import Formulative.Calculation.Algebra.Arithmetic.Class
-import GHC.Generics
-import GHC.Natural
-
--- import Formulative.Calculation.DiscreteExteriorCalculus.Algebra
--- import Formulative.Calculation.DiscreteExteriorCalculus.Class
-
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
 import Formulative.Calculation.Internal.Types
 import Formulative.Calculation.VectorSpace.Class
-import Formulative.Postprocess.Export.Class
+import GHC.Generics
+import GHC.Natural
 
 -- https://hackage.haskell.org/package/generic-monoid-0.1.0.1/src/src/Data/Monoid/Generic.hs
 
