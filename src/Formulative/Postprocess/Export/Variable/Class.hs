@@ -6,6 +6,7 @@ module Formulative.Postprocess.Export.Variable.Class where
 
 import qualified Data.Matrix.Static.LinearAlgebra.Types as MSL
 import qualified Data.Vector as V
+import qualified Data.Vector.Sized as VS
 import Dhall
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types (DECrepresentationMatrix)
 import Formulative.Calculation.Internal.Types
@@ -23,6 +24,9 @@ class ToVariableTypes a where
     default toVariableTypes :: (Generic a, GToVariableTypes (Rep a) VariableType) => a -> VariableTypes
     toVariableTypes x = gtoVariableTypes (from x)
 
+instance ToVariableTypes () where
+    toVariableTypes _ = V.empty
+
 class GToVariableTypes a f where
     gtoVariableTypes :: a p -> V.Vector f
 
@@ -37,11 +41,18 @@ instance (GToVariableTypes a f, GToVariableTypes b f) => GToVariableTypes (a :*:
 
 instance (Num a) => ToVariableType (MyNum a) where
     toVariableType (MyNum x) = ParticleType
+instance ToVariableType () where
+    toVariableType _ = ParticleType
 deriving via (MyNum Double) instance ToVariableType Double
 deriving via (MyNum Float) instance ToVariableType Float
 deriving via (MyNum Int) instance ToVariableType Int
 deriving via (MyNum Integer) instance ToVariableType Integer
 deriving via (MyNum Natural) instance ToVariableType Natural
+
+instance (Num a) => ToVariableType (MyApplicative f a) where
+    toVariableType _ = ParticleType
+deriving via (MyApplicative Vector a) instance (Num a) => ToVariableType (Vector a)
+deriving via (MyApplicative (VS.Vector n) a) instance (Num a) => ToVariableType (VS.Vector n a)
 
 -- MyMatrix
 instance ToVariableType (MyMatrix a) where
