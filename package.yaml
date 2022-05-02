@@ -27,6 +27,7 @@ dependencies:
   - cassava
   - constraints
   - containers
+  - conduit
   - cryptonite
   - dhall
   - exact-combinatorics

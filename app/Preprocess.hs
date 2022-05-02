@@ -4,7 +4,7 @@ import Control.Carrier.Lift
 import Control.Exception.Safe
 import Dhall
 import Formulative.Calculation.Internal.Setting
-import Formulative.Postprocess.Export.Class
+import Formulative.Postprocess.Export.IO
 import Formulative.Preprocess.DefaultValue
 import Formulative.Preprocess.Exception
 import Formulative.Preprocess.ReadSetting (writeDhallFile)

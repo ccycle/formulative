@@ -105,14 +105,18 @@ library
       Formulative.Internal.ReExport.Carrier
       Formulative.Internal.ReExport.Effect
       Formulative.Postprocess.Export.Carrier
-      Formulative.Postprocess.Export.Class
       Formulative.Postprocess.Export.CSV
       Formulative.Postprocess.Export.Dynamics
       Formulative.Postprocess.Export.Effect
+      Formulative.Postprocess.Export.IO
       Formulative.Postprocess.Export.Path
+      Formulative.Postprocess.Export.SettingFile
       Formulative.Postprocess.Export.Statics
       Formulative.Postprocess.Export.ToRecords
       Formulative.Postprocess.Export.Types
+      Formulative.Postprocess.Export.Variable.Class
+      Formulative.Postprocess.Export.Variable.Global
+      Formulative.Postprocess.Export.Variable.Local
       Formulative.Postprocess.Export.VTU
       Formulative.Postprocess.Organization
       Formulative.Preprocess.CommandLineOptions
@@ -120,6 +124,7 @@ library
       Formulative.Preprocess.DiscreteExteriorCalculus.CheckMesh
       Formulative.Preprocess.DiscreteExteriorCalculus.Read
       Formulative.Preprocess.Exception
+      Formulative.Preprocess.IO
       Formulative.Preprocess.MakeDirectory
       Formulative.Preprocess.ReadFile
       Formulative.Preprocess.ReadSetting
@@ -177,6 +182,7 @@ library
     , base >=4.7 && <5
     , bytestring
     , cassava
+    , conduit
     , constraints
     , containers
     , cryptonite
@@ -267,6 +273,7 @@ executable preprocess
     , base >=4.7 && <5
     , bytestring
     , cassava
+    , conduit
     , constraints
     , containers
     , cryptonite
@@ -385,6 +392,7 @@ test-suite formulative-tasty
     , base >=4.7 && <5
     , bytestring
     , cassava
+    , conduit
     , constraints
     , containers
     , cryptonite
@@ -479,6 +487,7 @@ test-suite formulative-test
     , base >=4.7 && <5
     , bytestring
     , cassava
+    , conduit
     , constraints
     , containers
     , cryptonite
@@ -573,6 +582,7 @@ benchmark Factorial
     , base >=4.7 && <5
     , bytestring
     , cassava
+    , conduit
     , constraints
     , containers
     , criterion
@@ -668,6 +678,7 @@ benchmark MatrixMul
     , base >=4.7 && <5
     , bytestring
     , cassava
+    , conduit
     , constraints
     , containers
     , criterion
@@ -763,6 +774,7 @@ benchmark MatrixToVector
     , base >=4.7 && <5
     , bytestring
     , cassava
+    , conduit
     , constraints
     , containers
     , criterion
@@ -858,6 +870,7 @@ benchmark StackingEffects
     , base >=4.7 && <5
     , bytestring
     , cassava
+    , conduit
     , constraints
     , containers
     , criterion
@@ -953,6 +966,7 @@ benchmark UnsafeIndex
     , base >=4.7 && <5
     , bytestring
     , cassava
+    , conduit
     , constraints
     , containers
     , criterion
