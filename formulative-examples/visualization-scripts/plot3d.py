@@ -8,15 +8,25 @@ import argparse
 import glob
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
+import dhall
 
 matplotlib.use("Agg")
 
+def dhallPathToDict(path):
+    with open(path) as f:
+        s = f.read()
+    dhallToDict = dhall.loads(s)
+    return dhallToDict
 
-def paraboloid_plot():
+def paraboloid_plot(relPath):
+    path = os.path.join(relPath,"setting.dhall")
+    dhallToDict = dhallPathToDict(path)
+    a = dhallToDict["equation"]["a"]
+    b = dhallToDict["equation"]["b"]
     x = np.arange(-2, 2, 0.1)
     y = np.arange(-2, 2, 0.1)
     X, Y = np.meshgrid(x, y)
-    Z = X**2 + Y**2
+    Z = (X/a)**2 + (Y/b)**2
     return (X, Y, Z)
 
     # fig = plt.figure(figsize=(6,6))
@@ -47,7 +57,7 @@ def plot2d(outputDirList, xPathArgv):
         ax.plot3D(xline, yline, zline, "gray")
 
         # plot surface
-        (X, Y, Z) = paraboloid_plot()
+        (X, Y, Z) = paraboloid_plot(outputDirRegExp)
         ax.plot_surface(X, Y, Z, alpha=0.2)
         # plt.figure()
         # df.plot(x=xName, y=yName)

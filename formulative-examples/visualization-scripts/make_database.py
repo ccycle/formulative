@@ -36,7 +36,10 @@ def dhallPathToDataFrame(path):
         dhallToDict1 = dhall.loads(s1)
         dhallToDict2 = {"equation":dhallToDict1}
         d1 = merge(dhallToDict,dhallToDict2)
-    return pd.json_normalize(d1,sep="_")
+        return pd.json_normalize(d1,sep="_")
+    else:
+        return pd.json_normalize(dhallToDict,sep="_")
+
 
 def dhallPathListToDataFrame(all_paths):
     df = pd.concat((dhallPathToDataFrame(f) for f in all_paths))
