@@ -28,6 +28,7 @@ import Formulative.Postprocess.Export.Carrier
 import Formulative.Postprocess.Export.Dynamics
 import Formulative.Postprocess.Export.ToRecords
 import Formulative.Postprocess.Export.Types
+import Formulative.Postprocess.Export.Variable.Class
 import Formulative.Preprocess.DefaultValue
 import Formulative.Preprocess.Exception
 import Formulative.Preprocess.SettingFile.Carrier
@@ -37,7 +38,8 @@ import Formulative.Preprocess.SettingFile.Carrier
 ----------------------------------------------------------------
 data MyVariable = MyVariable {x :: Double, y :: Double}
     deriving stock (Show, Generic)
-    deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace, DefaultOrdered, ToNamedRecord, ToRecords)
+    deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
+    deriving anyclass (DefaultOrdered, ToRecords, ToVariableTypes)
 
 ----------------------------------------------------------------
 -- User-defined data for setting
@@ -53,34 +55,6 @@ data MySetting = MySetting {optimization :: OptimizationSetting Double, dynamics
 ----------------------------------------------------------------
 -- export data
 ----------------------------------------------------------------
-instance (Monad m) => HasDependentParameterM m MyVariable
-
-data MyGlobalDependentVariable = MyGlobalDependentVariable {kineticEnergy :: Double, springEnergy :: Double}
-    deriving stock (Show, Generic)
-    deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace, DefaultOrdered, ToRecord, ToNamedRecord)
-
-instance (Has (Reader MyEquationConstants) sig m) => HasGlobalDependentVariableM m MyVariable where
-    type GlobalDependentVariable MyVariable = MyGlobalDependentVariable
-    dependentVariableGlobalM (MyVariable x y) = do
-        MyEquationConstants{..} <- ask
-        let xdot = mu *. (x .-. (x .^ 3) ./ 3 .-. y)
-        let eK = xdot <.> xdot ./ 2
-        let eS = x <.> x ./ 2
-        return $
-            MyGlobalDependentVariable
-                { kineticEnergy = eK
-                , springEnergy = eS
-                }
-
-newtype MyLocalDependentVariable = MyLocalDependentVariable {xdot :: Double}
-    deriving stock (Show, Generic)
-    deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace, DefaultOrdered, ToRecords, ToNamedRecord)
-instance (Algebra sig m, Member (Reader MyEquationConstants) sig) => HasLocalDependentVariableM m MyVariable where
-    type LocalDependentVariable MyVariable = MyLocalDependentVariable
-    dependentVariableLocalM (MyVariable x y) = do
-        MyEquationConstants{..} <- ask
-        let x' = mu *. (x .-. (x .^ 3) ./ 3 .-. y)
-        return $ MyLocalDependentVariable x'
 
 ----------------------------------------------------------------
 -- define system equation
@@ -120,6 +94,60 @@ instance (Has (Reader MyEquationConstants) sig m) => HasInitialConditionM m MyVa
 
 instance (HasUpdateWithOptimization sig m MyVariable, Member (Reader MyEquationConstants) sig) => HasUpdateM m MyVariable where
     updateM = updateWithOptimization
+
+----------------------------------------------------------------
+-- export quantities
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+---- dependent parameter
+----------------------------------------------------------------
+-- no output
+instance (Monad m) => HasDependentParameterM m MyVariable
+
+----------------------------------------------------------------
+---- global dependent variable
+----------------------------------------------------------------
+data MyGlobalDependentVariable = MyGlobalDependentVariable
+    { kineticEnergy :: Double
+    , springEnergy :: Double
+    }
+    deriving stock (Show, Generic)
+    deriving anyclass (DefaultOrdered, ToRecord, ToNamedRecord)
+instance
+    ( Has (Reader MyEquationConstants) sig m
+    ) =>
+    HasGlobalDependentVariableM m MyVariable
+    where
+    type GlobalDependentVariable MyVariable = MyGlobalDependentVariable
+    dependentVariableGlobalM (MyVariable x y) = do
+        MyEquationConstants{..} <- ask
+        let xdot = mu *. (x .-. (x .^ 3) ./ 3 .-. y)
+        let eK = xdot <.> xdot ./ 2
+        let eS = x <.> x ./ 2
+        return $
+            MyGlobalDependentVariable
+                { kineticEnergy = eK
+                , springEnergy = eS
+                }
+
+----------------------------------------------------------------
+---- local dependent variable
+----------------------------------------------------------------
+newtype MyLocalDependentVariable = MyLocalDependentVariable {xdot :: Double}
+    deriving stock (Show, Generic)
+    deriving anyclass (DefaultOrdered, ToRecords, ToVariableTypes)
+instance
+    ( Algebra sig m
+    , Member (Reader MyEquationConstants) sig
+    ) =>
+    HasLocalDependentVariableM m MyVariable
+    where
+    type LocalDependentVariable MyVariable = MyLocalDependentVariable
+    dependentVariableLocalM (MyVariable x y) = do
+        MyEquationConstants{..} <- ask
+        let x' = mu *. (x .-. (x .^ 3) ./ 3 .-. y)
+        return $ MyLocalDependentVariable x'
 
 ----------------------------------------------------------------
 -- main

@@ -98,17 +98,17 @@ cabal exec -- harmonic-oscillator -s setting.dhall
 plot phase space:
 
 ```sh
-python ../../visualization-scripts/plot2d.py --outputDirRegExp "output/*" --x position.csv --y momentum.csv
+python ../../visualization-scripts/plot3d.py --x position.csv --y momentum.csv
 ```
 
 plot all global quantities:
 
 ```sh
-python ../../visualization-scripts/plot_global_quantity.py --outputDirRegExp "output/*" --parameter time.csv --data dependentVariableGlobal.csv
+python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariableGlobal.csv
 ```
 
 plot global quantities for selected labels:
 
 ```sh
-python ../../visualization-scripts/plot_global_quantity.py --outputDirRegExp "output/*" --parameter time.csv --data dependentVariableGlobal.csv --labels hamiltonian dHdt power
+python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariableGlobal.csv --labels hamiltonian dHdt power
 ```

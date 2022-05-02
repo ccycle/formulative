@@ -7,6 +7,7 @@ module Main (main) where
 import Control.Algebra
 import Control.Carrier.Lift
 import Control.Carrier.Reader
+import Formulative.Postprocess.Export.Variable.Class
 import Control.Effect.Sum
 import Data.Csv (DefaultOrdered, ToField, ToNamedRecord, ToRecord)
 import Data.Hashable
@@ -38,7 +39,7 @@ import Formulative.Preprocess.SettingFile.Carrier
 data MyVariable = MyVariable {position :: Double, momentum :: Double}
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
-  deriving anyclass (DefaultOrdered, ToRecords)
+  deriving anyclass (DefaultOrdered, ToRecords, ToVariableTypes)
 
 ----------------------------------------------------------------
 -- User-defined data for setting
@@ -62,6 +63,14 @@ data MySetting = MySetting
   deriving stock (Show, Generic)
   deriving anyclass (ToDhall, FromDhall, HasDefaultValue, Hashable)
 
+----------------------------------------------------------------
+-- export quantities
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+---- dependent parameter
+----------------------------------------------------------------
+-- https://en.wikipedia.org/wiki/Harmonic_oscillator#Damped_harmonic_oscillator
 data MyDependentParameter = MyDependentParameter
   { dampingRatio :: Double
   , omega0 :: Double
@@ -69,19 +78,18 @@ data MyDependentParameter = MyDependentParameter
   deriving stock (Show, Generic)
   deriving anyclass (ToDhall, FromDhall, Hashable)
 
--- https://en.wikipedia.org/wiki/Harmonic_oscillator#Damped_harmonic_oscillator
 instance (Has (Reader MyEquationConstants) sig m) => HasDependentParameterM m MyVariable where
   type DependentParameterType MyVariable = MyDependentParameter
   dependentParameterM = do
     MyEquationConstants{..} <- ask
     return
       MyDependentParameter
-        { dampingRatio = gamma / (2 * sqrt (m * k))
-        , omega0 = sqrt (k / m)
+        { dampingRatio = gamma ./. (2 .*. sqrt (m .*. k))
+        , omega0 = sqrt (k ./. m)
         }
 
 ----------------------------------------------------------------
--- export quantities
+---- global dependent variable
 ----------------------------------------------------------------
 data MyGlobalDependentVariable = MyGlobalDependentVariable
   { kineticEnergy :: Double
@@ -107,9 +115,9 @@ instance
     (MyVariable xOld pOld) <- getVariableOld
     MyEquationConstants{..} <- ask
     (StepSize dt) <- askStepSize
-    let eK p = p .^ 2 / (2 *. m)
-    let eP x = 1 ./. 2 * k .*. x .^ 2
-    let h x p = eK p .+. eP x 
+    let eK p = p <.> p ./. (2 .*. m)
+    let eP x = (k ./. 2) .*. x .^ 2
+    let h x p = eK p .+. eP x
     let dH = h x p .-. h xOld pOld
     let dW = (x .-. xOld) <.> (gamma ./. m) *. ((p .+. pOld) ./ 2)
     return $
@@ -123,6 +131,9 @@ instance
         , totalChange = dH ./. dt .+. dW ./. dt
         }
 
+----------------------------------------------------------------
+---- local dependent variable
+----------------------------------------------------------------
 -- no data (default)
 instance (Monad m) => HasLocalDependentVariableM m MyVariable
 
