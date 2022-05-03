@@ -10,6 +10,7 @@ import qualified Data.Matrix.Static.LinearAlgebra as MSL
 import Data.Matrix.Static.Sparse (toTriplet)
 import Data.String.Conversions
 import qualified Data.Vector as V
+import qualified Data.Vector.Sized as VS
 import qualified Data.Vector.Storable as VST
 import Formulative.Calculation.Internal.Types
 import Formulative.Postprocess.Export.Effect
@@ -47,6 +48,11 @@ deriving via (MyNum Int) instance ExportFieldToFile Int
 deriving via (MyNum Integer) instance ExportFieldToFile Integer
 deriving via (MyNum Natural) instance ExportFieldToFile Natural
 
+instance (ToField a) => ExportFieldToFile (V.Vector a) where
+    exportFieldToFile path x = BSL.appendFile (toFilePath path) (encode [x])
+instance (ToField a) => ExportFieldToFile (VS.Vector n a) where
+    exportFieldToFile path x = exportFieldToFile path (VS.fromSized x)
+
 nameToFilePathM name = do
     parseKey <- liftEither $ parseRelFile (convertString @Name name)
     -- TODO: VTUに対応
@@ -70,6 +76,10 @@ class GAppendRecordToFiles f where
     gexportRecordToFilesStatics :: RelFilePaths -> f a -> IO ()
     gexportRecordToFilesDynamics :: IndexOfStep -> RelFilePaths -> f a -> IO ()
 
+instance GAppendRecordToFiles U1 where
+    gexportRecordToFilesStatics h _ = return ()
+    gexportRecordToFilesDynamics i h _ = return ()
+
 instance (ExportFieldToFile a, ToVariableType a) => GAppendRecordToFiles (K1 i a) where
     gexportRecordToFilesStatics h (K1 a) = exportFieldToFile (V.head h) a
     gexportRecordToFilesDynamics i h (K1 a) = exportFieldToFileDynamics i (V.head h) a
@@ -81,6 +91,8 @@ instance GAppendRecordToFiles f => GAppendRecordToFiles (M1 i c f) where
 instance (GAppendRecordToFiles a, GAppendRecordToFiles b) => GAppendRecordToFiles (a :*: b) where
     gexportRecordToFilesStatics h (a :*: b) = gexportRecordToFilesStatics (V.init h) a >> gexportRecordToFilesStatics (V.tail h) b
     gexportRecordToFilesDynamics i h (a :*: b) = gexportRecordToFilesDynamics i (V.init h) a >> gexportRecordToFilesDynamics i (V.tail h) b
+
+instance ExportRecordToFiles ()
 
 namesToFilePaths names = sequenceA $ V.map nameToFilePathM names
 

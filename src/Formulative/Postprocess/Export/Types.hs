@@ -19,10 +19,6 @@ instance HasDefaultValue ExportFormat where
 instance Hashable ExportFormat where
     hashWithSalt s a = hashWithSalt s (1 :: Int)
 
--- Ordinary Differential Equation | Partial Differential Equation
-data EquationType = ODE | PDE
-    deriving stock (Generic, Show, Eq)
-
 -- dhallから読み取った生のfilepath
 newtype OutputDirSetting = OutputDirSetting FilePath
     deriving stock (Generic, Show, Eq)

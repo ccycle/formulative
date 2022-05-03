@@ -62,7 +62,6 @@ exportLocalDependentVariableDynamics ::
     , Member (Lift IO) sig
     , Member Export sig
     , DefaultOrdered (LocalDependentVariable a)
-    , ToVariableTypes (LocalDependentVariable a)
     , ExportRecordToFiles (LocalDependentVariable a)
     ) =>
     IndexOfStep ->
@@ -85,8 +84,6 @@ exportDynamicsM ::
     , DefaultOrdered (GlobalDependentVariable a)
     , ToRecord (GlobalDependentVariable a)
     , ToField b
-    , ToVariableTypes a
-    , ToVariableTypes (LocalDependentVariable a)
     , ExportRecordToFiles a
     , ExportRecordToFiles (LocalDependentVariable a)
     ) =>
@@ -124,8 +121,6 @@ mainCalcDynamics ::
     , ToDhall (DependentParameterType a)
     , ToField b
     , ToRecord (GlobalDependentVariable a)
-    , ToVariableTypes (LocalDependentVariable a)
-    , ToVariableTypes a
     , ExportRecordToFiles (LocalDependentVariable a)
     , ExportRecordToFiles a
     ) =>

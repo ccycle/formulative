@@ -17,27 +17,27 @@ data VariableType = ParticleType | FieldType
 class ToVariableType a where
     toVariableType :: a -> VariableType
 
-type VariableTypes = V.Vector VariableType
+-- type VariableTypes = V.Vector VariableType
 
-class ToVariableTypes a where
-    toVariableTypes :: a -> VariableTypes
-    default toVariableTypes :: (Generic a, GToVariableTypes (Rep a) VariableType) => a -> VariableTypes
-    toVariableTypes x = gtoVariableTypes (from x)
+-- class ToVariableTypes a where
+--     toVariableTypes :: a -> VariableTypes
+--     default toVariableTypes :: (Generic a, GToVariableTypes (Rep a) VariableType) => a -> VariableTypes
+--     toVariableTypes x = gtoVariableTypes (from x)
 
-instance ToVariableTypes () where
-    toVariableTypes _ = V.empty
+-- instance ToVariableTypes () where
+--     toVariableTypes _ = V.empty
 
-class GToVariableTypes a f where
-    gtoVariableTypes :: a p -> V.Vector f
+-- class GToVariableTypes a f where
+--     gtoVariableTypes :: a p -> V.Vector f
 
-instance ToVariableType a => GToVariableTypes (K1 i a) VariableType where
-    gtoVariableTypes (K1 a) = V.fromList [toVariableType a]
+-- instance ToVariableType a => GToVariableTypes (K1 i a) VariableType where
+--     gtoVariableTypes (K1 a) = V.fromList [toVariableType a]
 
-instance GToVariableTypes a f => GToVariableTypes (M1 i c a) f where
-    gtoVariableTypes (M1 a) = gtoVariableTypes a
+-- instance GToVariableTypes a f => GToVariableTypes (M1 i c a) f where
+--     gtoVariableTypes (M1 a) = gtoVariableTypes a
 
-instance (GToVariableTypes a f, GToVariableTypes b f) => GToVariableTypes (a :*: b) f where
-    gtoVariableTypes (a :*: b) = gtoVariableTypes a <> gtoVariableTypes b
+-- instance (GToVariableTypes a f, GToVariableTypes b f) => GToVariableTypes (a :*: b) f where
+--     gtoVariableTypes (a :*: b) = gtoVariableTypes a <> gtoVariableTypes b
 
 instance (Num a) => ToVariableType (MyNum a) where
     toVariableType _ = ParticleType

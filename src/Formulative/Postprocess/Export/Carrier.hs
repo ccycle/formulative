@@ -20,21 +20,21 @@ import Formulative.Preprocess.ReadSetting
 import Formulative.Preprocess.SettingFile.Effect
 import Path
 
-newtype ExportC m a = ExportC {runExportC :: ReaderC (EquationType, ExportQuantityFormat, OutputDir) m a}
+newtype ExportC m a = ExportC {runExportC :: ReaderC (ExportQuantityFormat, OutputDir) m a}
     deriving stock (Functor)
     deriving newtype (Applicative, Monad)
 instance (Algebra sig m) => Algebra (Export :+: sig) (ExportC m) where
     alg hdl sig ctx = case sig of
         L AskExportQuantityFormat -> do
-            (_, env, _) <- ExportC (ask @(EquationType, ExportQuantityFormat, OutputDir))
+            (env, _) <- ExportC (ask @(ExportQuantityFormat, OutputDir))
             pure (env <$ ctx)
         L AskOutputDir -> do
-            (_, _, output) <- ExportC (ask @(EquationType, ExportQuantityFormat, OutputDir))
+            (_, output) <- ExportC (ask @(ExportQuantityFormat, OutputDir))
             pure (output <$ ctx)
         L (LocalOutputDir f m) -> do
-            (x, env, output) <- ExportC ask
+            (env, output) <- ExportC ask
             y <- hdl (m <$ ctx)
-            run (x, env, f output) (pure y)
+            run (env, f output) (pure y)
           where
             run r = runReader r . runExportC
         R other -> ExportC (alg (runExportC . hdl) (R other) ctx)
@@ -47,16 +47,15 @@ runExport ::
     , Member (Lift IO) sig
     , Member SettingFile sig
     ) =>
-    EquationType ->
     ExportSetting ->
     ExportC m b ->
     m b
-runExport e x f = do
+runExport x f = do
     SettingHash hashStr <- askSettingHash
     let (ExportSetting r (OutputDirSetting str)) = x
     let z = parseAndReplace outputDirHashCmdStr hashStr str
     outputDir <- liftEither $ parseRelDir z
-    runReader (e, r, OutputDir outputDir) . runExportC $ f
+    runReader (r, OutputDir outputDir) . runExportC $ f
 
 runExportIO ::
     forall a m b sig.
@@ -65,11 +64,10 @@ runExportIO ::
     , Member (Throw SomeException) sig
     , Member SettingFile sig
     ) =>
-    EquationType ->
     ExportC m b ->
     m b
-runExportIO e f = do
+runExportIO f = do
     (DhallSettingText txt) <- cmdOptionToDhallSettingText
     putStrLnM "Reading setting file (Export).."
     x <- sendIO $ fillInSetting @ExportSetting "export" txt
-    runExport e x f
+    runExport x f
