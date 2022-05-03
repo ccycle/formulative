@@ -45,6 +45,7 @@ data ExportSetting = ExportSetting {format :: ExportQuantityFormat, outputDirect
 
 newtype IndexOfStep = IndexOfStep Natural
     deriving stock (Generic, Show, Eq)
+    deriving newtype (Enum, Num)
     deriving anyclass (FromDhall, ToDhall, Hashable)
 newtype DynamicParameter a = DynamicParameter a
     deriving stock (Generic, Show, Eq)
