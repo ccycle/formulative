@@ -31,12 +31,12 @@ import Formulative.Calculation.Optimization.Update
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Postprocess.Export.Carrier
 import Formulative.Postprocess.Export.Dynamics
-import Formulative.Postprocess.Export.ToRecords
 import Formulative.Postprocess.Export.Types
 import Formulative.Postprocess.Export.Variable.Class
 import Formulative.Preprocess.DefaultValue
 import Formulative.Preprocess.Exception
 import Formulative.Preprocess.SettingFile.Carrier
+import Formulative.Postprocess.Export.Variable.Local
 
 ----------------------------------------------------------------
 -- User-defined variable
@@ -47,7 +47,7 @@ data MyVariable = MyVariable
   }
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
-  deriving anyclass (DefaultOrdered, ToRecords, ToVariableTypes)
+  deriving anyclass (DefaultOrdered, ExportRecordToFiles)
 
 ----------------------------------------------------------------
 -- User-defined data for setting
@@ -227,7 +227,7 @@ instance
   HasGlobalDependentVariableM m MyVariable
   where
   type GlobalDependentVariable MyVariable = MyGlobalDependentVariable
-  dependentVariableGlobalM MyVariable{..} = do
+  globalDependentVariableM MyVariable{..} = do
     MyEquationConstants{..} <- ask
     let p = momentum
     let z = position `index` 2
@@ -250,7 +250,7 @@ data MyLocalDependentVariable = MyLocalDependentVariable
   }
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
-  deriving anyclass (DefaultOrdered, ToRecords, ToVariableTypes)
+  deriving anyclass (DefaultOrdered, ExportRecordToFiles)
 instance
   ( Algebra sig m
   , Member (ConstrainedSystem MyConstraintCondition) sig
@@ -259,7 +259,7 @@ instance
   HasLocalDependentVariableM m MyVariable
   where
   type LocalDependentVariable MyVariable = MyLocalDependentVariable
-  dependentVariableLocalM MyVariable{..} = do
+  localDependentVariableM MyVariable{..} = do
     MyEquationConstants{..} <- ask
     (MyConstraintCondition l1) <- getLagrangianMultiplier
     let f x = ((x `index` 0) ./. a) .^ 2 .+. ((x `index` 1) ./. b) .^ 2 .-. (x `index` 2)
@@ -273,7 +273,7 @@ main :: IO ()
 main =
   runM . runSomeException printSomeException
     . runSettingFileIO @MySetting
-    . runExportIO ODE
+    . runExportIO
     . runOptimizationIO @Double
     . runConstrainedSystemIO @MyConstraintCondition
     . runEquationConstantsIO @MyEquationConstants

@@ -26,12 +26,12 @@ import Formulative.Calculation.Optimization.Update
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Postprocess.Export.Carrier
 import Formulative.Postprocess.Export.Dynamics
-import Formulative.Postprocess.Export.ToRecords
 import Formulative.Postprocess.Export.Types
 import Formulative.Postprocess.Export.Variable.Class
 import Formulative.Preprocess.DefaultValue
 import Formulative.Preprocess.Exception
 import Formulative.Preprocess.SettingFile.Carrier
+import Formulative.Postprocess.Export.Variable.Local
 
 ----------------------------------------------------------------
 -- User-defined variable
@@ -39,7 +39,7 @@ import Formulative.Preprocess.SettingFile.Carrier
 data MyVariable = MyVariable {x :: Double, y :: Double}
     deriving stock (Show, Generic)
     deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
-    deriving anyclass (DefaultOrdered, ToRecords, ToVariableTypes)
+    deriving anyclass (DefaultOrdered, ExportRecordToFiles)
 
 ----------------------------------------------------------------
 -- User-defined data for setting
@@ -120,7 +120,7 @@ instance
     HasGlobalDependentVariableM m MyVariable
     where
     type GlobalDependentVariable MyVariable = MyGlobalDependentVariable
-    dependentVariableGlobalM (MyVariable x y) = do
+    globalDependentVariableM (MyVariable x y) = do
         MyEquationConstants{..} <- ask
         let xdot = mu *. (x .-. (x .^ 3) ./ 3 .-. y)
         let eK = xdot <.> xdot ./ 2
@@ -136,7 +136,7 @@ instance
 ----------------------------------------------------------------
 newtype MyLocalDependentVariable = MyLocalDependentVariable {xdot :: Double}
     deriving stock (Show, Generic)
-    deriving anyclass (DefaultOrdered, ToRecords, ToVariableTypes)
+    deriving anyclass (DefaultOrdered, ExportRecordToFiles)
 instance
     ( Algebra sig m
     , Member (Reader MyEquationConstants) sig
@@ -144,7 +144,7 @@ instance
     HasLocalDependentVariableM m MyVariable
     where
     type LocalDependentVariable MyVariable = MyLocalDependentVariable
-    dependentVariableLocalM (MyVariable x y) = do
+    localDependentVariableM (MyVariable x y) = do
         MyEquationConstants{..} <- ask
         let x' = mu *. (x .-. (x .^ 3) ./ 3 .-. y)
         return $ MyLocalDependentVariable x'
@@ -156,7 +156,7 @@ main :: IO ()
 main =
     runM . runSomeException printSomeException
         . runSettingFileIO @MySetting
-        . runExportIO ODE
+        . runExportIO
         . runOptimizationIO @Double
         . runEquationConstantsIO @MyEquationConstants
         . runDynamicsIO @Double

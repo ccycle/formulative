@@ -27,11 +27,11 @@ import Formulative.Calculation.Optimization.Update
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Postprocess.Export.Carrier
 import Formulative.Postprocess.Export.Dynamics
-import Formulative.Postprocess.Export.ToRecords
 import Formulative.Postprocess.Export.Types
 import Formulative.Preprocess.DefaultValue
 import Formulative.Preprocess.Exception
 import Formulative.Preprocess.SettingFile.Carrier
+import Formulative.Postprocess.Export.Variable.Local
 
 ----------------------------------------------------------------
 -- User-defined variable
@@ -39,7 +39,7 @@ import Formulative.Preprocess.SettingFile.Carrier
 data MyVariable = MyVariable {position :: Double, momentum :: Double}
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
-  deriving anyclass (DefaultOrdered, ToRecords, ToVariableTypes)
+  deriving anyclass (DefaultOrdered, ExportRecordToFiles)
 
 ----------------------------------------------------------------
 -- User-defined data for setting
@@ -111,7 +111,7 @@ instance
   HasGlobalDependentVariableM m MyVariable
   where
   type GlobalDependentVariable MyVariable = MyGlobalDependentVariable
-  dependentVariableGlobalM (MyVariable x p) = do
+  globalDependentVariableM (MyVariable x p) = do
     (MyVariable xOld pOld) <- getVariableOld
     MyEquationConstants{..} <- ask
     (StepSize dt) <- askStepSize
@@ -195,7 +195,7 @@ main :: IO ()
 main =
   runM . runSomeException printSomeException
     . runSettingFileIO @MySetting
-    . runExportIO ODE
+    . runExportIO
     . runOptimizationIO @Double
     . runEquationConstantsIO @MyEquationConstants
     . runDynamicsIO @Double
