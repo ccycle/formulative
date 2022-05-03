@@ -14,7 +14,7 @@ import Formulative.Postprocess.Export.Types
 import Path
 import Path.IO
 
-exportDependentVariablesGlobal ::
+exportGlobalDependentVariable ::
     forall a sig m.
     ( Algebra sig m
     , Member (Lift IO) sig
@@ -26,8 +26,8 @@ exportDependentVariablesGlobal ::
     ) =>
     a ->
     m ()
-exportDependentVariablesGlobal x = do
-    x' <- dependentVariableGlobalM x
+exportGlobalDependentVariable x = do
+    x' <- globalDependentVariableM x
     (OutputDir parentDir) <- askOutputDir
     ensureDirOutputM
     parseKey <- liftEither $ parseRelFile "dependentVariableGlobal"

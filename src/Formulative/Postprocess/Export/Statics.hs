@@ -16,27 +16,15 @@ import Formulative.Calculation.Internal.Class
 import Formulative.Calculation.Internal.List
 import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.IO
-import Formulative.Postprocess.Export.ToRecords
 import Formulative.Postprocess.Export.Types
 import Formulative.Postprocess.Export.Variable.Global
+import Formulative.Postprocess.Export.Variable.Local
 import Formulative.Preprocess.IO
 import Formulative.Preprocess.SettingFile.Effect
-import Path
-
-exportVariableStatic x = do
-    OutputDir parentDir <- askOutputDir
-    ensureDirOutputM
-    let x' = V.zip (headerOrder x) (toRecords x)
-    forM_ x' $ \(key, str) -> do
-        parseKey <- liftEither $ parseRelFile (convertString key)
-        -- TODO: VTUに対応
-        fileName <- liftEither $ replaceExtension ".csv" parseKey
-        let filePath = parentDir </> fileName
-        sendIO $ BSL.writeFile (toFilePath filePath) (encode [str])
 
 exportDependentVariableLocalStatic x = do
-    x' <- dependentVariableLocalM x
-    exportVariableStatic x'
+    x' <- localDependentVariableM x
+    exportRecordToFilesStaticsM x'
 
 mainCalcStatics ::
     forall a sig m.
@@ -46,16 +34,16 @@ mainCalcStatics ::
     , Member Export sig
     , Member SettingFile sig
     , HasUpdateM m a
+    , HasDependentParameterM m a
     , HasGlobalDependentVariableM m a
     , HasLocalDependentVariableM m a
-    , ToRecords a
     , ToRecord (GlobalDependentVariable a)
-    , ToRecords (LocalDependentVariable a)
     , DefaultOrdered a
     , DefaultOrdered (GlobalDependentVariable a)
     , DefaultOrdered (LocalDependentVariable a)
     , ToDhall (DependentParameterType a)
-    , HasDependentParameterM m a
+    , ExportRecordToFiles a
+    , ExportRecordToFiles (LocalDependentVariable a)
     ) =>
     m ()
 mainCalcStatics = do
@@ -63,9 +51,13 @@ mainCalcStatics = do
     x <- getInitialConditionM @m @a
     msgStart
     putStrLnM "solve equation"
+    -- TODO: updateMを使わない形にする
+    -- updateMは本来Dynamicsに使う関数
+    -- (SolveM classを作成する?)
+    -- solveM :: m a
     x' <- updateM x
     putStrLnM "Exporting data .."
-    exportVariableStatic x'
-    exportDependentVariablesGlobal x'
+    exportRecordToFilesStaticsM x'
+    exportGlobalDependentVariable x'
     exportDependentVariableLocalStatic x'
     msgEnd

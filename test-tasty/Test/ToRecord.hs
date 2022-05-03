@@ -13,7 +13,6 @@ import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
 import Formulative.Calculation.VectorSpace.Class
-import Formulative.Postprocess.Export.ToRecords
 import Path
 
 data RecTest1 a b = RecTest1 a b
@@ -57,8 +56,9 @@ parentDirTest = parseRelDir "writeFileTestDir"
 -- import qualified Data.Vector as V
 data ToRecordListTest = ToRecordListTest {v1 :: V.Vector Double, v2 :: V.Vector Double}
     deriving stock (Generic, Show)
-    deriving anyclass (ToRecords, DefaultOrdered)
+    deriving anyclass (DefaultOrdered)
 a = V.fromList [0, 1, 2] :: V.Vector Double
 v = ToRecordListTest a a
-toRecordsTest = toRecords v
-toRecordsTest1 = V.head toRecordsTest
+
+-- toRecordsTest = toRecords v
+-- toRecordsTest1 = V.head toRecordsTest

@@ -40,7 +40,7 @@ instance (GToVariableTypes a f, GToVariableTypes b f) => GToVariableTypes (a :*:
     gtoVariableTypes (a :*: b) = gtoVariableTypes a <> gtoVariableTypes b
 
 instance (Num a) => ToVariableType (MyNum a) where
-    toVariableType (MyNum x) = ParticleType
+    toVariableType _ = ParticleType
 instance ToVariableType () where
     toVariableType _ = ParticleType
 deriving via (MyNum Double) instance ToVariableType Double
@@ -54,8 +54,8 @@ instance (Num a) => ToVariableType (MyApplicative f a) where
 deriving via (MyApplicative Vector a) instance (Num a) => ToVariableType (Vector a)
 deriving via (MyApplicative (VS.Vector n) a) instance (Num a) => ToVariableType (VS.Vector n a)
 
--- MyMatrix
 instance ToVariableType (MyMatrix a) where
     toVariableType _ = FieldType
 deriving via (MyMatrix (DECrepresentationMatrix n l c1 k1 c2 k2 a)) instance ToVariableType (DECrepresentationMatrix n l c1 k1 c2 k2 a)
 deriving via (MyMatrix (MSL.SparseMatrix p1 p2 a)) instance ToVariableType (MSL.SparseMatrix p1 p2 a)
+deriving via (MyMatrix (MSL.Matrix p1 p2 a)) instance ToVariableType (MSL.Matrix p1 p2 a)

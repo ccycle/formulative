@@ -41,15 +41,15 @@ class HasExportStaticsM m a where
 class HasGlobalDependentVariableM m a where
     type GlobalDependentVariable a :: *
     type GlobalDependentVariable a = () -- default
-    dependentVariableGlobalM :: a -> m (GlobalDependentVariable a)
-    default dependentVariableGlobalM :: (Monad m, GlobalDependentVariable a ~ ()) => a -> m (GlobalDependentVariable a)
-    dependentVariableGlobalM x = return ()
+    globalDependentVariableM :: a -> m (GlobalDependentVariable a)
+    default globalDependentVariableM :: (Monad m, GlobalDependentVariable a ~ ()) => a -> m (GlobalDependentVariable a)
+    globalDependentVariableM x = return ()
 class HasLocalDependentVariableM m a where
     type LocalDependentVariable a :: *
     type LocalDependentVariable a = () -- default
-    dependentVariableLocalM :: a -> m (LocalDependentVariable a)
-    default dependentVariableLocalM :: (Monad m, LocalDependentVariable a ~ ()) => a -> m (LocalDependentVariable a)
-    dependentVariableLocalM x = return ()
+    localDependentVariableM :: a -> m (LocalDependentVariable a)
+    default localDependentVariableM :: (Monad m, LocalDependentVariable a ~ ()) => a -> m (LocalDependentVariable a)
+    localDependentVariableM x = return ()
 
 class HasDependentParameterM m a where
     type DependentParameterType a :: *
