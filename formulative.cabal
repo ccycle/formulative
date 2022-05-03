@@ -118,6 +118,7 @@ library
       Formulative.Postprocess.Export.Variable.Global
       Formulative.Postprocess.Export.Variable.Local
       Formulative.Postprocess.Export.VTU
+      Formulative.Postprocess.Export.WriteFile
       Formulative.Postprocess.Organization
       Formulative.Preprocess.CommandLineOptions
       Formulative.Preprocess.DefaultValue
