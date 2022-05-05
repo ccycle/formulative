@@ -22,19 +22,19 @@ def dhallPathToDict(path):
     return dhallToDict
 
 
-def paraboloid_meshgrid(relPath, xmin, xmax, ymin, ymax):
+def paraboloid_meshgrid(relPath, xmin, xmax, ymin, ymax, zmax):
     path = os.path.join(relPath, "setting.dhall")
     dhallToDict = dhallPathToDict(path)
     a = dhallToDict["equation"]["a"]
     b = dhallToDict["equation"]["b"]
-    x = np.arange(xmin, xmax, 0.1)
-    y = np.arange(ymin, ymax, 0.1)
+    x = np.arange(xmin, xmax, 0.01)
+    y = np.arange(ymin, ymax, 0.01)
     X, Y = np.meshgrid(x, y)
     Z = (X / a) ** 2 + (Y / b) ** 2
     return (X, Y, Z)
 
 
-def plot2d(outputDirList, xPathArgv, interval_, frameRate_):
+def plot3d(outputDirList, xPathArgv, interval_, frameRate_, fileName):
     for outputDirRegExp in outputDirList:
 
         xPath = os.path.join(outputDirRegExp, xPathArgv)
@@ -131,21 +131,26 @@ def plot2d(outputDirList, xPathArgv, interval_, frameRate_):
                     max_axis_val,
                     -max_axis_val,
                     max_axis_val,
+                    zmax,
                 )
                 ax.plot_surface(X, Y, Z, alpha=0.2, color="gray")
 
+                fileName_base = os.path.splitext(os.path.basename(fileName))[0]
                 imgOutputPath = os.path.join(
                     outputDirRegExp,
                     "img",
-                    "position_{}.png".format(str(j).zfill(colsDigits)),
+                    "{}_{}.png".format(fileName_base, str(j).zfill(colsDigits)),
                 )
                 plt.savefig(imgOutputPath)
                 print(imgOutputPath)
                 plt.close("all")
                 j += 1
 
-        imgRegExp = os.path.join(imgDir, ("position_%0" + str(colsDigits) + "d.png"))
-        movRegExp = os.path.join(outputDirRegExp, ("position_movie.mp4"))
+        fileName_base = os.path.splitext(os.path.basename(fileName))[0]
+        imgRegExp = os.path.join(
+            imgDir, ("{}_%0".format(fileName_base) + str(colsDigits) + "d.png")
+        )
+        movRegExp = os.path.join(outputDirRegExp, ("{}").format(fileName))
         cmd = (
             "ffmpeg -y -r "
             + str(frameRate_)
@@ -183,11 +188,16 @@ def plot2d(outputDirList, xPathArgv, interval_, frameRate_):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="an example program")
+    # parser.add_argument(
+    #     "-O",
+    #     "--outputDirRegExp",
+    #     help="parent directory of data. example: --outputDirRegExp=output/*/",
+    #     default="output/*/",
+    # )
     parser.add_argument(
-        "-O",
-        "--outputDirRegExp",
-        help="parent directory of data. example: --outputDirRegExp=output/*/",
-        default="output/*/",
+        "--queryResult",
+        help="path for database. example: --outputDirRegExp=output/*/",
+        default="query_result.csv",
     )
 
     parser.add_argument(
@@ -207,12 +217,21 @@ if __name__ == "__main__":
         default=10,
         type=int,
     )
+    parser.add_argument(
+        "-o",
+        "--output",
+        help="file name of output movie (without extension). example: -o position.mp4",
+        required=True,
+    )
 
     args = parser.parse_args()
-    outputDirRegExp_ = args.outputDirRegExp
-    outputDirList = glob.glob(outputDirRegExp_)
+    queryResultArgv = args.queryResult
+    # outputDirList = glob.glob(queryResultArgv)
+    queryResultDF = pd.read_csv(queryResultArgv)
+    outputDirList = queryResultDF["export_outputDirectory"]
     xPathArgv = args.data
     intervalArgv = args.interval
     frameRateArgv = args.framerate
+    fileNameArgv = args.output
 
-    plot2d(outputDirList, xPathArgv, intervalArgv, frameRateArgv)
+    plot3d(outputDirList, xPathArgv, intervalArgv, frameRateArgv, fileNameArgv)

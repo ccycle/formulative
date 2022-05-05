@@ -18,7 +18,7 @@ def dhallPathToDict(path):
     return dhallToDict
 
 
-def paraboloid_meshgrid(relPath, xmin, xmax, ymin, ymax):
+def paraboloid_meshgrid(relPath, xmin, xmax, ymin, ymax, zmax):
     path = os.path.join(relPath, "setting.dhall")
     dhallToDict = dhallPathToDict(path)
     a = dhallToDict["equation"]["a"]
@@ -26,11 +26,15 @@ def paraboloid_meshgrid(relPath, xmin, xmax, ymin, ymax):
     x = np.arange(xmin, xmax, 0.1)
     y = np.arange(ymin, ymax, 0.1)
     X, Y = np.meshgrid(x, y)
+    # X1, Y1 = np.meshgrid(x, y)
+    # X, Y = np.where((X1 / a) ** 2 + (Y1 / b) ** 2 <= zmax, X1, 0), np.where(
+    #     (X1 / a) ** 2 + (Y1 / b) ** 2 <= zmax, Y1, 0
+    # )
     Z = (X / a) ** 2 + (Y / b) ** 2
     return (X, Y, Z)
 
 
-def plot2d(outputDirList, xPathArgv):
+def plot3d(outputDirList, xPathArgv, fileName):
     for outputDirRegExp in outputDirList:
         xPath = os.path.join(outputDirRegExp, xPathArgv)
 
@@ -61,7 +65,12 @@ def plot2d(outputDirList, xPathArgv):
 
         # plot surface
         (X, Y, Z) = paraboloid_meshgrid(
-            outputDirRegExp, -max_axis_val, max_axis_val, -max_axis_val, max_axis_val
+            outputDirRegExp,
+            -max_axis_val,
+            max_axis_val,
+            -max_axis_val,
+            max_axis_val,
+            zmax,
         )
         ax.plot_surface(X, Y, Z, alpha=0.2)
 
@@ -91,8 +100,8 @@ def plot2d(outputDirList, xPathArgv):
             alpha=0.5,
         )
 
-        imgOutputPath = os.path.join(outputDirRegExp, "position.png")
-        print(imgOutputPath)
+        imgOutputPath = os.path.join(outputDirRegExp, fileName)
+        print("Exporting " + imgOutputPath + " ..")
         plt.savefig(imgOutputPath)
         plt.close("all")
 
@@ -100,11 +109,17 @@ def plot2d(outputDirList, xPathArgv):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="an example program")
+    # parser.add_argument(
+    #     "-O",
+    #     "--outputDirRegExp",
+    #     help="parent directory of data. example: --outputDirRegExp=output/*/",
+    #     default="output/*/",
+    # )
+
     parser.add_argument(
-        "-O",
-        "--outputDirRegExp",
-        help="parent directory of data. example: --outputDirRegExp=output/*/",
-        default="output/*/",
+        "--queryResult",
+        help="path for database. example: --queryResult=query_result.csv",
+        default="query_result.csv",
     )
 
     parser.add_argument(
@@ -117,15 +132,24 @@ if __name__ == "__main__":
         help="show interactive view",
         action="store_true",
     )
+    parser.add_argument(
+        "-o",
+        "--output",
+        help="file name of output image. example: -o t-x.png",
+        required=True,
+    )
 
     args = parser.parse_args()
-    outputDirRegExp_ = args.outputDirRegExp
-    outputDirList = glob.glob(outputDirRegExp_)
+    queryResultArgv = args.queryResult
+    # outputDirList = glob.glob(queryResultArgv)
+    queryResultDF = pd.read_csv(queryResultArgv)
+    outputDirList = queryResultDF["export_outputDirectory"]
     xPathArgv = args.data
+    fileNameArgv = args.output
 
     if args.interactive:
-        plot2d(outputDirList, xPathArgv)
+        plot3d(outputDirList, xPathArgv, fileNameArgv)
         plt.show()
     else:
         matplotlib.use("Agg")
-        plot2d(outputDirList, xPathArgv)
+        plot3d(outputDirList, xPathArgv, fileNameArgv)

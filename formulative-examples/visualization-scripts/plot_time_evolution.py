@@ -7,8 +7,6 @@ import matplotlib
 import argparse
 import glob
 
-# example:
-# python ../scripts/plot2d.py --outputDirRegExp output/7ced1919b958b83d/ --t t.csv --t t.csv
 matplotlib.use("Agg")
 
 # TODO: ラベルからパスを取得してプロットできるようにする
@@ -36,7 +34,7 @@ def plot2d(outputDirList, xPathArgv, yPathArgv, fileNameArgv):
         # ax.plot(t,t)
         # plt.ioff()
         imgOutputPath = os.path.join(outputDirRegExp, fileNameArgv)
-        print("Exporting "+imgOutputPath+" ..")
+        print("Exporting " + imgOutputPath + " ..")
         plt.savefig(imgOutputPath)
         plt.close("all")
 
@@ -47,14 +45,15 @@ if __name__ == "__main__":
     parser.add_argument(
         "--outputDirRegExp",
         help="parent directory of data. example: --outputDirRegExp=output/*/",
-        default="output/*/"
+        default="output/*/",
     )
 
-    parser.add_argument("--t", help="t data. example: --t time.csv", required=True)
-    parser.add_argument("--x", help="x data. example: --x position.csv", required=True)
+    parser.add_argument("-t", help="t data. example: --t time.csv", required=True)
+    parser.add_argument("-x", help="x data. example: --x position.csv", required=True)
     parser.add_argument(
-        "--fileName",
-        help="file name of output image. example: --fileName t-x.png",
+        "-o",
+        "--output",
+        help="file name of output image. example: -o t-x.png",
         required=True,
     )
     # parser.add_argument('--labels', nargs="*", type=str, help='a list of label for plotting data',default=[])
@@ -64,7 +63,7 @@ if __name__ == "__main__":
     outputDirList = glob.glob(outputDirRegExp_)
     xPathArgv = args.t
     yPathArgv = args.x
-    fileNameArgv = args.fileName
+    fileNameArgv = args.output
     # labelListArgv = args.labels
 
     plot2d(outputDirList, xPathArgv, yPathArgv, fileNameArgv)

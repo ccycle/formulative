@@ -29,7 +29,7 @@ def str_to_df_query(df, x):
     if x == "":
         return df
     else:
-        return df.query(x)
+        return df.query(x, engine="python")
 
 
 def splitHeader(flag, s):
@@ -50,7 +50,9 @@ if __name__ == "__main__":
         default="output/_database.csv",
     )
     parser.add_argument("-q", "--queryExpr", help="expression of query", default="")
-    parser.add_argument("-f", "--fileName", help="target file", default="")
+    parser.add_argument(
+        "-f", "--appendFileName", help="append file name to outputDirectory", default=""
+    )
     parser.add_argument(
         "-o",
         "--output",
@@ -61,7 +63,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-S",
         "--headerToSort",
-        help="header to sort",
+        help="Header to sort",
         metavar="HEADER",
         type=str,
         nargs="*",
@@ -86,14 +88,17 @@ if __name__ == "__main__":
         action="store_false",
     )
     parser.add_argument(
-        "-D", "--delete", help="delete directory or file", action="store_true"
+        "-D",
+        "--delete",
+        help="Delete directories of query results",
+        action="store_true",
     )
     args = parser.parse_args()
     dbPath = args.databaseDir
     queryStr = args.queryExpr
-    df = pd.read_csv(dbPath)
+    df = pd.read_csv(dbPath).astype({"export_outputDirectory": str})
     df1 = str_to_df_query(df, queryStr)
-    fileName1 = args.fileName
+    fileName1 = args.appendFileName
     df2 = df1.copy()
     df2["export_outputDirectory"] = df2["export_outputDirectory"].map(
         lambda x: (x + "/" + fileName1)
@@ -123,10 +128,10 @@ if __name__ == "__main__":
         val = input(
             'The flag "--delete" is enabled: Delete all selected directories? ([y]/n)?\n'
         )
-        if val == "y":
+        if val == "y" or val == "":
             delete_dirs(df1["export_outputDirectory"])
             print(
-                'Old data may still be in the database; To keep the database up to date, run "make_database.py".'
+                'Old data may remain in the database; to keep the database up to date, run "make_database.py".'
             )
         elif val == "n":
             print("Exit")
