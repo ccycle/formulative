@@ -16,10 +16,11 @@ newtype HMatrixSized (n :: Nat) (m :: Nat) a = HMatrixSized (Matrix a)
 
 type HMatrixElement a = (Container Matrix a, Container Vector a, Numeric a, H.Field a, Num (Vector a))
 
+-- TODO: write test
 hConcat :: (Element a) => HMatrixSized n m a -> HMatrixSized n l a -> HMatrixSized n (m + l) a
 hConcat (HMatrixSized x) (HMatrixSized y) = HMatrixSized $ x H.||| y
 
-vConcat :: (Element a) => HMatrixSized n m a -> HMatrixSized l m a -> HMatrixSized (n + l) (m) a
+vConcat :: (Element a) => HMatrixSized n m a -> HMatrixSized l m a -> HMatrixSized (n + l) m a
 vConcat (HMatrixSized x) (HMatrixSized y) = HMatrixSized $ x H.=== y
 
 dropLastRow :: Element a => HMatrixSized n m a -> HMatrixSized (n -1) m a
@@ -48,7 +49,7 @@ instance (Numeric a) => Mul (HMatrixSized n m a) (HMatrixSized m l a) (HMatrixSi
 
 instance (Numeric a, KnownNat n, KnownNat m, Num (Vector a)) => VectorSpace (HMatrixSized n m a) where
     type Scalar (HMatrixSized n m a) = a
-    (*.) (x) (HMatrixSized y) = HMatrixSized (H.cmap (x *) y)
+    (*.) x (HMatrixSized y) = HMatrixSized (H.cmap (x *) y)
 
 instance (Numeric a, KnownNat n, KnownNat m, Num (Vector a)) => InnerProductSpace (HMatrixSized n m a) where
     (<.>) (HMatrixSized x) (HMatrixSized y) = undefined -- (x .@. y)

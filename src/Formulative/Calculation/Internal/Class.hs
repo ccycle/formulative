@@ -10,7 +10,6 @@ import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.Internal.Variable.Effect
 import Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian
 import Formulative.Calculation.VectorSpace.Class
-import Formulative.Postprocess.Export.Types
 
 class (VectorSpace a) => HasObjectiveFunctionM m a where
     getObjectiveFunctionM :: m (a -> Scalar a)
