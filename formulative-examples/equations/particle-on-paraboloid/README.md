@@ -87,10 +87,31 @@ $$
 
 ## scripts
 
+###
+
+write multiple setting files
+
+```sh
+cabal repl particle-on-paraboloid
+```
+
+in REPL:
+
+```haskell
+:source ./equations/particle-on-paraboloid/writeSettingFilesFromList.ghci
+:q -- quit
+```
+
 ### execute
 
 ```sh
-cabal exec -- harmonic-oscillator -s setting.dhall
+cabal exec -- particle-on-paraboloid -s setting.dhall
+```
+
+execute multiple setting files:
+
+```sh
+find ./settingFiles -name "*.dhall" -exec cabal exec -- particle-on-paraboloid --ignore-warning -s {} \;
 ```
 
 ### visualize

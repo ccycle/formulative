@@ -10,28 +10,28 @@
 
 ## Build and Execute
 
-- get a list of the available binaries:
+- Get a list of the available binaries:
 
   ```
-  cabal list-bin .
+  cabal list-bin all:exes
   ```
 
-- build single binary:
+- Build single binary:
 
   ```
   cabal build <exec_name>
   ```
 
-  - if you want to reduce the binary size, use cabal options `--enable-executable-dynamic`.
+  - To reduce the binary size, use cabal options `--enable-executable-dynamic` :
 
     ```
     cabal build <exec_name> --enable-executable-dynamic
     ```
 
-- build all binary:
+- Build all binary:
 
   ```
-  cabal build --enable-executable-dynamic
+  cabal build all:exes --enable-executable-dynamic
   ```
 
 - execute:
@@ -42,6 +42,14 @@
 
 ## Data organization
 
-```sh
-python ../../visualization-scripts/query.py -q "equation_dampingRatio >= 0.5" -H equation_dampingRatio --fileName "position.svg" -S equation_dampingRatio
-```
+- Make database:
+
+  ```sh
+  python ../../visualization-scripts/make_database.py
+  ```
+
+- View database using query:
+
+  ```sh
+  python ../../visualization-scripts/make_database.py -q "equation_dampingRatio >= 0.5" -H equation_dampingRatio -S equation_dampingRatio --appendFileName "position.svg"
+  ```
