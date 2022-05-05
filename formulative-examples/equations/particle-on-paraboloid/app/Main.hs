@@ -8,9 +8,8 @@ import Control.Algebra
 import Control.Carrier.Lift
 import Control.Carrier.Reader
 import Control.Effect.Sum
-import Data.Csv hiding (index)
 import Data.Hashable
-import Data.Vector.Sized (Vector, index, (//))
+import Data.Vector.Sized (Vector, generate, index)
 import Dhall hiding (Vector)
 import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.Algebra.DiscreteVariation (symmetrizePoly)
@@ -33,10 +32,10 @@ import Formulative.Postprocess.Export.Carrier
 import Formulative.Postprocess.Export.Dynamics
 import Formulative.Postprocess.Export.Types
 import Formulative.Postprocess.Export.Variable.Class
+import Formulative.Postprocess.Export.Variable.Local
 import Formulative.Preprocess.DefaultValue
 import Formulative.Preprocess.Exception
 import Formulative.Preprocess.SettingFile.Carrier
-import Formulative.Postprocess.Export.Variable.Local
 
 ----------------------------------------------------------------
 -- User-defined variable
@@ -85,12 +84,18 @@ data MySetting = MySetting
 instance (Has (Reader MyEquationConstants) sig m) => HasInitialConditionM m MyVariable where
   getInitialConditionM = do
     MyEquationConstants{..} <- ask
-    let x0' = zero
-    let x3init = xInit .^ 2 ./. (a .^ 2) .+. yInit .^ 2 ./. (b .^ 2)
-    let x0 = x0' // [(0, xInit), (1, yInit), (2, x3init)]
-    let p0' = zero
+    let zInit = xInit .^ 2 ./. (a .^ 2) .+. yInit .^ 2 ./. (b .^ 2)
+    let x0 = generate f1
+        f1 0 = xInit
+        f1 1 = yInit
+        f1 2 = zInit
+        f1 _ = 0
     let pzInit = 2 .*. pxInit .*. xInit ./. (a .^ 2) .+. 2 .*. pyInit .*. yInit ./. (b .^ 2)
-    let p0 = p0' // [(0, pxInit), (1, pyInit), (2, pzInit)]
+    let p0 = generate f2
+        f2 0 = pxInit
+        f2 1 = pyInit
+        f2 2 = pzInit
+        f2 _ = 0
     return $ MyVariable x0 p0
 
 ----------------------------------------------------------------
@@ -106,7 +111,10 @@ gradDeltaL
     dxdt = dx ./ dt
     dp = pNew .-. p
     dpdt = dp ./ dt
-    dHdx = zero // [(2, g)] -- H = p^2/(2m) + gz
+    -- H = p^2/(2m) + gz
+    dHdx = generate f
+    f 2 = g
+    f _ = 0
     p' = symmetrizePoly 1 pNew p
     dHdp = p' ./ m
     dLdx = dxdt .-. dHdp
@@ -158,7 +166,11 @@ gradConstraint
    where
     x = symmetrizePoly 1 xNew xOld `index` 0
     y = symmetrizePoly 1 xNew xOld `index` 1
-    dg1 = zero // [(0, 2 .*. x ./. (a .^ 2)), (1, 2 .*. y ./. (b .^ 2)), (2, -1)]
+    dg1 = generate f
+    f 0 = 2 .*. x ./. (a .^ 2)
+    f 1 = 2 .*. y ./. (b .^ 2)
+    f 2 = -1
+    f _ = 0
 
 instance
   ( Algebra sig m

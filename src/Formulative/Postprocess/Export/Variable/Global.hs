@@ -6,7 +6,7 @@ import Control.Effect.Error
 import Control.Effect.Sum
 import Control.Exception.Safe
 import qualified Data.ByteString.Lazy as BSL
-import Data.Csv
+import Data.Csv (DefaultOrdered (..), ToRecord, encode)
 import Formulative.Calculation.Internal.Class
 import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.IO

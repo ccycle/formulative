@@ -7,7 +7,6 @@ import Control.Effect.Sum
 import Control.Exception.Safe
 import Control.Monad
 import Data.Time
-import Dhall
 import Formulative.Calculation.Internal.Class
 import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.Types
@@ -114,52 +113,3 @@ askOutputDirAbsPath :: (Member Export sig, Algebra sig m, Member (Lift IO) sig) 
 askOutputDirAbsPath = do
     (OutputDir outputPath) <- askOutputDir
     sendIO $ makeAbsolute outputPath
-
--- class MainCalcPDEManifold m (s :: Nat -> [Nat] -> *) where
---     mainCalcPDEManifold :: (KnownNat n, SingI l) => s n l -> m ()
---     initialStatePDEManifold :: (KnownNat n, SingI l) => m (s n l)
-
--- class MainCalcPDESubmanifold m (s :: EucDim -> Dim -> [Nat] -> *) where
---     mainCalcPDESubmanifold :: (KnownNat nEuc, KnownNat n, SingI l) => s nEuc n l -> m ()
---     initialStatePDESubmanifold :: (KnownNat nEuc, KnownNat n, SingI (l :: [Nat])) => m (s nEuc n l)
-
--- mainCalcPDEproxy ::
---     forall s nEuc n (l :: [Nat]) sig m.
---     ( MainCalcPDESubmanifold m s
---     , KnownNat nEuc
---     , KnownNat n
---     , SingI l
---     , Monad m
---     ) =>
---     Proxy nEuc ->
---     Proxy n ->
---     SList l ->
---     m ()
--- mainCalcPDEproxy _ _ _ = do
---     x <- (initialStatePDESubmanifold @m @s @nEuc @n @l)
---     mainCalcPDESubmanifold @m @s @nEuc @n @l x
-
--- runMainCalcPDE
---     (DimensionOfEuclideanSpace nEuc)
---     (DimensionOfManifold n)
---     (l :: [Natural]) =
---         case (someNatVal nEuc, someNatVal n, someSingVal l) of
---             (SomeNat (pnEuc :: Proxy nEuc'), SomeNat (pn :: Proxy n'), SomeSingI (sl :: Sing l')) ->
---                 mainCalcPDEproxy pnEuc pn sl
-
--- preprocessM ::
---     forall m a sig.
---     ( Algebra sig m
---     , Member (Throw SomeException) sig
---     , Member (Lift IO) sig
---     , Member Export sig
---     , Member SettingFile sig
---     , HasDependentParameterM m a
---     , ToDhall (DependentParameterType a)
---     ) =>
---     m ()
--- preprocessM = do
---     removeDirRecurWithWarningM
---     ensureDirOutputM
---     exportSettingFile
---     exportDependentParameterFile @a @m

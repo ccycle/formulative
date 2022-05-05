@@ -1,7 +1,10 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE RebindableSyntax #-}
 
-module Formulative.Postprocess.Export.Dynamics where
+module Formulative.Postprocess.Export.Dynamics (
+    module Formulative.Postprocess.Export.Dynamics,
+    module Data.Csv,
+) where
 
 import Control.Carrier.Lift
 import Control.Effect.Error
@@ -9,7 +12,7 @@ import Control.Effect.Sum
 import Control.Exception.Safe
 import Control.Monad
 import qualified Data.ByteString.Lazy as BSL
-import Data.Csv hiding (Field)
+import Data.Csv (DefaultOrdered, ToField, ToRecord, encode)
 import Data.String
 import Dhall
 import Formulative.Calculation.Algebra.Arithmetic.Class
@@ -21,7 +24,6 @@ import Formulative.Calculation.Internal.Variable.Effect
 import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.IO
 import Formulative.Postprocess.Export.Types
-import Formulative.Postprocess.Export.Variable.Class
 import Formulative.Postprocess.Export.Variable.Global
 import Formulative.Postprocess.Export.Variable.Local
 import Formulative.Preprocess.IO
