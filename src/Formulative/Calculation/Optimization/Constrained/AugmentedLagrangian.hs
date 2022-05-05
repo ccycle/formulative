@@ -34,7 +34,7 @@ newtype GrowthRateForPenaltyCoefficient a = GrowthRateForPenaltyCoefficient a --
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, Hashable)
 instance (Fractional a) => HasDefaultValue (GrowthRateForPenaltyCoefficient a) where
-    defaultValue = GrowthRateForPenaltyCoefficient 2.0
+    defaultValue = GrowthRateForPenaltyCoefficient 1.5
 newtype TorelanceALM a = TorelanceALM a -- must be 0 /= a
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, Hashable)

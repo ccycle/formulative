@@ -22,7 +22,7 @@
   }
 , export =
   { format = { variable = {=}, local = {=}, global = {=} }
-  , output = "./output/[[hash]]"
+  , outputDirectory = "./output/[[hash]]"
   }
 , geometry =
   { meshPath =
@@ -45,7 +45,7 @@
 , constrainedSystem.augmentedLagrangianMethodParameters
   =
   { penaltyCoefficient = 1.0e-12
-  , growthRate = 2.0
+  , growthRate = 1.5
   , torelance = 1.0e-8
   , maximumIterationNumber = 1000
   }
