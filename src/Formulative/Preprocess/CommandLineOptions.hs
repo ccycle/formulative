@@ -41,11 +41,11 @@ cmdOption =
         <*> option
             auto
             ( long
-                "recalculation-rule"
+                "recalculation"
                 <> short 'R'
                 <> help ""
                 <> showDefault
-                <> value Overwrite
+                <> value NoOperation
                 <> metavar ""
             )
         <*> switch (long "ignore-warning" <> short 'I' <> help "Whether to be quiet")
@@ -57,5 +57,5 @@ cmdOptionIO = execParser opts
             (cmdOption <**> helper)
             ( fullDesc
                 <> progDesc "Execute numerical calculation."
-                <> header "Formulative - a tool of Optimization-based Differential Equation Calculator."
+                <> header "Formulative - an open source tool for numerical simulation based on polymorphism in Haskell."
             )

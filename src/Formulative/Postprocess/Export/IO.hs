@@ -37,21 +37,35 @@ msgDirAlreadyExists = do
     dir <- askOutputDirAbsPath
     putStrLnM $ "[WARNING] The output directory (" <> toFilePath dir <> ") already exists; the calculation may have already been executed."
 
+data NoOperationException = NoOperationException
+    deriving stock (Show, Typeable)
+
+instance Exception NoOperationException where
+    displayException _ =
+        concat
+            [ "Option \"No-Operation\" was selected: End process."
+            , "\n"
+            , "If you want to overwrite, use option \"--recalculation=Overwrite\"."
+            ]
+
 -- TODO: logger作成
 warningForOverwrite :: (Has (Lift IO) sig m, Member (Throw SomeException) sig, Member Export sig) => m RecalculationOption
 warningForOverwrite = do
     msgDirAlreadyExists
     putStrLnM ""
     CmdOptions{..} <- sendIO cmdOptionIO
-    if warningFlag
-        then return Overwrite
-        else do
-            putStrLnM "Overwrite ([y]/n)?"
-            f 5
+    case recalculationOption of
+        NoOperation -> return NoOperation
+        Overwrite ->
+            if warningFlag
+                then return Overwrite
+                else do
+                    putStrLnM "Overwrite ([y]/n)?"
+                    f 5
   where
     f i =
         if i == 0
-            then liftEither $ throwString "Invalid input: stop process."
+            then liftEither $ throwM NoOperationException
             else do
                 str <- sendIO getLine
                 case str of
@@ -74,7 +88,7 @@ removeDirRecurWithWarningM = do
         r <- warningForOverwrite
         case r of
             Overwrite -> removeDirRecurOutputM (OutputDir x)
-            NoOperation -> liftEither $ throwString "Exit."
+            NoOperation -> liftEither $ throw NoOperationException
 
 parentDirM :: (Algebra sig m, Member (Lift IO) sig, Member (Throw SomeException) sig) => m (Path Rel Dir)
 parentDirM = do

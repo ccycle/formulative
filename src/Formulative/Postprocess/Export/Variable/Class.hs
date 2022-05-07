@@ -4,19 +4,20 @@
 
 module Formulative.Postprocess.Export.Variable.Class where
 
-import qualified Numeric.LinearAlgebra.Data as H
 import qualified Data.Matrix.Static.LinearAlgebra.Types as MSL
+import Data.Proxy
 import qualified Data.Vector as V
 import qualified Data.Vector.Sized as VS
 import Dhall
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types (DECrepresentationMatrix)
 import Formulative.Calculation.Internal.Types
 import GHC.Generics
+import qualified Numeric.LinearAlgebra.Data as H
 
 data VariableType = ParticleType | FieldType
 
 class ToVariableType a where
-    toVariableType :: a -> VariableType
+    toVariableType :: Proxy a -> VariableType
 
 instance (Num a) => ToVariableType (MyNum a) where
     toVariableType _ = ParticleType

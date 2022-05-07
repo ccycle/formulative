@@ -15,6 +15,7 @@ import Data.Hashable (Hashable (hashWithSalt))
 import Data.Typeable
 import Dhall
 import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Postprocess.Export.Types
 import Formulative.Preprocess.DefaultValue
 import GHC.Exts (IsString)
 import Refined
@@ -27,8 +28,8 @@ data DynamicsSetting a = DynamicsSetting
     , initialValue :: a
     , finalValue :: a
     , stepSize :: a
-    , interval :: Natural
-    , maximumIterationNumber :: Natural
+    , interval :: StepIndex
+    , maximumIterationNumber :: MaxStepIndex
     }
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall)
