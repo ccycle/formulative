@@ -125,6 +125,7 @@ library
       Formulative.Preprocess.Exception
       Formulative.Preprocess.IO
       Formulative.Preprocess.MakeDirectory
+      Formulative.Preprocess.Path
       Formulative.Preprocess.ReadFile
       Formulative.Preprocess.ReadSetting
       Formulative.Preprocess.SettingFile.Carrier
@@ -330,6 +331,7 @@ test-suite formulative-tasty
       Test.Optimization.AugmentedLagrangian
       Test.Optimization.LBFGS
       Test.Physics
+      Test.ReadFile
       Test.RebindableSyntax
       Test.RefineException
       Test.Refl
