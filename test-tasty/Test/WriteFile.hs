@@ -26,7 +26,7 @@ main :: IO ()
 main =
     runM . runSomeException printSomeException
         . runSettingFile (defaultValue :: FormulativeSetting Double)
-        . runExport ODE defaultValue
+        . runExport defaultValue
         $ ensureDirOutputM >> exportRecordToFilesStaticsM (RecTest 0.1 0.1 matTest)
             >> exportRecordToFilesStaticsM (RecTest 0.1 0.2 matTest)
             >> exportRecordToFilesDynamicsM 0 (RecTest 3 4 matTest)
