@@ -1,7 +1,11 @@
+{-# LANGUAGE TemplateHaskell #-}
+
 module Formulative.Postprocess.Export.Path where
 
 import Control.Algebra
+import Control.Effect.Lift
 import Control.Effect.Sum
+import Control.Monad (when)
 import Crypto.Hash hiding (hash)
 import Data.ByteString (ByteString)
 import Data.Csv (ToField (toField))
@@ -9,8 +13,11 @@ import Data.Hashable
 import Data.Void
 import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.Types
+import Formulative.Preprocess.CommandLineOptions (CmdOptions (CmdOptions, recalculationOption), RecalculationOption (Continue), cmdOptionIO)
+import Language.Haskell.TH (Extension (TemplateHaskell))
 import Numeric (showHex)
 import Path
+import Path.IO (doesDirExist, removeDirRecur)
 import Replace.Megaparsec
 import Text.Megaparsec
 import Text.Megaparsec.Char
@@ -47,3 +54,19 @@ replaceHash a (OutputDirSetting x) =
    in OutputDirSetting $ parseAndReplace outputDirHashCmdStr hashVal x
 
 newtype SettingHash = SettingHash String
+
+addPostfixToDirForDependentVariable (OutputDir path) = do
+  let p = $(mkRelDir "dependentVariable")
+   in OutputDir (path </> p)
+
+removeDependentVariableDirM :: (Algebra sig m, Member Export sig, Member (Lift IO) sig) => m ()
+removeDependentVariableDirM = do
+  CmdOptions{..} <- sendIO cmdOptionIO
+  case recalculationOption of
+    Continue -> do
+      localOutputDir addPostfixToDirForDependentVariable $ do
+        OutputDir path <- askOutputDir
+        flag <- sendIO $ doesDirExist path
+        when flag $
+          sendIO $ removeDirRecur path
+    _ -> return ()

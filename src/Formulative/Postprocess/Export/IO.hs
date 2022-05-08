@@ -43,24 +43,25 @@ data NoOperationException = NoOperationException
 instance Exception NoOperationException where
     displayException _ =
         concat
-            [ "Option \"No-Operation\" was selected: End process."
+            [ "The current option for recalculation is \"No-Operation\"."
             , "\n"
-            , "If you want to overwrite, use option \"--recalculation=Overwrite\"."
+            , "To allow overwriting, use option \"--recalculation=Overwrite\"."
             ]
 
 -- TODO: logger作成
 warningForOverwrite :: (Has (Lift IO) sig m, Member (Throw SomeException) sig, Member Export sig) => m RecalculationOption
 warningForOverwrite = do
     msgDirAlreadyExists
-    putStrLnM ""
     CmdOptions{..} <- sendIO cmdOptionIO
     case recalculationOption of
         NoOperation -> return NoOperation
+        Continue -> return Continue
         Overwrite ->
             if warningFlag
                 then return Overwrite
                 else do
-                    putStrLnM "Overwrite ([y]/n)?"
+                    msgNewLine
+                    putStrLnM $ "Overwrite ([y]/n)?" <> "\n"
                     f 5
   where
     f i =
@@ -82,13 +83,14 @@ warningForOverwrite = do
 
 removeDirRecurWithWarningM :: (Algebra sig m, Member (Lift IO) sig, Member Export sig, Member (Throw SomeException) sig) => m ()
 removeDirRecurWithWarningM = do
-    (OutputDir x) <- askOutputDir
+    OutputDir x <- askOutputDir
     d <- sendIO $ doesDirExist x
     when d $ do
         r <- warningForOverwrite
         case r of
             Overwrite -> removeDirRecurOutputM (OutputDir x)
             NoOperation -> liftEither $ throw NoOperationException
+            _ -> return ()
 
 parentDirM :: (Algebra sig m, Member (Lift IO) sig, Member (Throw SomeException) sig) => m (Path Rel Dir)
 parentDirM = do
@@ -102,13 +104,13 @@ msgNewLine :: (Has (Lift IO) sig m) => m ()
 msgNewLine = putStrLnM ""
 
 msgStart :: (Has (Lift IO) sig m) => m ()
-msgStart = msgNewLine >> putStrLnM "--- Start ---"
+msgStart = putStrLnM "--- Start ---"
 
 msgDone :: (Has (Lift IO) sig m) => m ()
-msgDone = putStrLnM "Done." >> msgNewLine
+msgDone = putStrLnM "Done."
 
 msgEnd :: (Has (Lift IO) sig m) => m ()
-msgEnd = msgNewLine >> putStrLnM "--- End ---" >> msgNewLine
+msgEnd = putStrLnM "--- End ---"
 
 msgExportFileIO :: Path b File -> IO ()
 msgExportFileIO path = putStrLn $ concat ["Exporting ", toFilePath path, " .."]
@@ -120,8 +122,7 @@ msgOutputDir :: (Member Export sig, Member (Lift IO) sig, Algebra sig m) => m ()
 msgOutputDir = do
     (OutputDir outputPath) <- askOutputDir
     absOutputDir <- sendIO $ makeAbsolute outputPath
-    putStrLnM $ "output directory: " <> toFilePath absOutputDir
-    msgNewLine
+    putStrLnM $ "Output directory: " <> toFilePath absOutputDir
 
 askOutputDirAbsPath :: (Member Export sig, Algebra sig m, Member (Lift IO) sig) => m (Path Abs Dir)
 askOutputDirAbsPath = do

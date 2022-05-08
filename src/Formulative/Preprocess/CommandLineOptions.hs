@@ -14,8 +14,8 @@ import Formulative.Preprocess.Exception
 import GHC.Generics
 import Options.Applicative
 
--- data RecalculationOption = FromContinued | Overwrite | NoOperation
-data RecalculationOption = Overwrite | NoOperation
+-- data RecalculationOption = Overwrite | NoOperation
+data RecalculationOption = Continue | Overwrite | NoOperation
     deriving stock (Generic, Show, Eq, Read, Typeable)
     deriving anyclass (FromDhall, ToDhall, Hashable)
 
@@ -43,12 +43,29 @@ cmdOption =
             ( long
                 "recalculation"
                 <> short 'R'
-                <> help ""
+                <> help
+                    ( concat
+                        [ "Option for recalculation."
+                        , "\n"
+                        , "Available options are \'Overwrite\', \'Continue\', \'NoOperation\'."
+                        , "\n"
+                        , "\'Overwrite\': remove output directory and recalculate."
+                        , "\n"
+                        , "\'Continue\': recalculate all dependent variables and continue from last step."
+                        , "          Useful when you have changed dependent variables or want to calculate from the previous result."
+                        , "\n"
+                        , "\'NoOperation\': do nothing."
+                        ]
+                    )
                 <> showDefault
                 <> value NoOperation
-                <> metavar ""
+                <> metavar "OPTION"
             )
-        <*> switch (long "ignore-warning" <> short 'I' <> help "Whether to be quiet")
+        <*> switch
+            ( long "ignore-warning"
+                <> short 'I'
+                <> help "Ignore warning. Useful for warning of overwriting."
+            )
 
 cmdOptionIO = execParser opts
   where

@@ -14,10 +14,10 @@ import Dhall hiding (auto)
 -- おそらくソースコードに関してはコンパイルして同じ挙動になることを保証できない(コメントだけ足した場合など)
 -- ここはファイル変更検知でいいはず
 
--- data RecalculationRule = FromContinued | Overwrite | NoOperation
+-- data RecalculationRule = Continue | Overwrite | NoOperation
 --     deriving stock (Generic, Show, Read)
 --     deriving anyclass (FromDhall, ToDhall, Hashable)
 
 -- -- path for setting file,
 -- cmdOption :: Parser RecalculationRule
--- cmdOption = option auto (long "RecalculationRule" <> short 'R' <> help "" <> showDefault <> value FromContinued <> metavar "")
+-- cmdOption = option auto (long "RecalculationRule" <> short 'R' <> help "" <> showDefault <> value Continue <> metavar "")

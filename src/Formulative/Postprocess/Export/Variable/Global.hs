@@ -6,10 +6,12 @@ import Control.Effect.Error
 import Control.Effect.Sum
 import Control.Exception.Safe
 import qualified Data.ByteString.Lazy as BSL
-import Data.Csv (DefaultOrdered (..), ToRecord, encode)
+import Data.Csv (DefaultOrdered (..), ToRecord)
 import Formulative.Calculation.Internal.Class
+import Formulative.Postprocess.Export.CSV (encodeLF)
 import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.IO
+import Formulative.Postprocess.Export.Path
 import Formulative.Postprocess.Export.Types
 import Path
 import Path.IO
@@ -29,20 +31,21 @@ exportGlobalDependentVariable ::
 exportGlobalDependentVariable x = do
     x' <- globalDependentVariableM x
     (OutputDir parentDir) <- askOutputDir
-    ensureDirOutputM
-    parseKey <- liftEither $ parseRelFile "dependentVariableGlobal"
+    let (OutputDir dir) = addPostfixToDirForDependentVariable (OutputDir parentDir)
+    sendIO $ ensureDir dir
+    parseKey <- liftEither $ parseRelFile "_global"
     -- TODO: CSV以外にもに対応させる
     fileName <- liftEither $ replaceExtension ".csv" parseKey
-    let filePath = parentDir </> fileName
+    let filePath = dir </> fileName
     flag <- sendIO $ doesFileExist filePath
     if flag
         then do
             -- fileがすでに存在したときは末尾に付け足す
-            let str = encode [x']
+            let str = encodeLF [x']
             sendIO $ BSL.appendFile (toFilePath filePath) str
         else do
             -- 存在しないときは新規に作成
-            let str = encode [headerOrder x']
+            let str = encodeLF [headerOrder x']
             sendIO $ BSL.writeFile (toFilePath filePath) str
-            let str1 = encode [x']
+            let str1 = encodeLF [x']
             sendIO $ BSL.appendFile (toFilePath filePath) str1

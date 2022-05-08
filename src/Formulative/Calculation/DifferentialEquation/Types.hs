@@ -25,10 +25,10 @@ newtype IsAdaptiveStepSize = IsAdaptiveStepSize Bool
     deriving anyclass (FromDhall, ToDhall, Hashable)
 data DynamicsSetting a = DynamicsSetting
     { label :: LabelOfDynamicParameter
-    , initialValue :: a
-    , finalValue :: a
-    , stepSize :: a
-    , interval :: StepIndex
+    , initialValue :: DynamicParameter a
+    , finalValue :: DynamicParameter a
+    , stepSize :: StepSize a
+    , interval :: IntervalStepIndex
     , maximumIterationNumber :: MaxStepIndex
     }
     deriving stock (Generic, Show, Eq)
@@ -54,9 +54,11 @@ newtype LabelOfDynamicParameter = LabelOfDynamicParameter String
     deriving newtype (IsString)
     deriving anyclass (FromDhall, ToDhall, Hashable)
 
+unLabelOfDynamicParameter :: LabelOfDynamicParameter -> String
+unLabelOfDynamicParameter = coerce
 newtype StepSize a = StepSize a
-    deriving stock (Generic, Show, Eq)
-    deriving newtype (Num, Enum, Fractional)
+    deriving stock (Generic, Eq)
+    deriving newtype (Show, Num, Enum, Fractional)
     deriving anyclass (FromDhall, ToDhall, Hashable)
 
 unStepSize :: StepSize a -> a

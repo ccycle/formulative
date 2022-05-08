@@ -2,6 +2,8 @@
 {-# LANGUAGE UndecidableInstances #-}
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 
+{-# HLINT ignore "Redundant bracket" #-}
+
 module Formulative.Postprocess.Export.Carrier where
 
 import Control.Algebra
@@ -31,10 +33,10 @@ instance (Algebra sig m) => Algebra (Export :+: sig) (ExportC m) where
         L AskOutputDir -> do
             (_, output) <- ExportC (ask @(ExportQuantityFormat, OutputDir))
             pure (output <$ ctx)
-        L (LocalOutputDir f m) -> do
-            (env, output) <- ExportC ask
-            y <- hdl (m <$ ctx)
-            run (env, f output) (pure y)
+        -- TODO: 実装の見直し
+        L (LocalOutputDir f m) ->
+            (ExportC . ReaderC)
+                (\(env, output) -> (run (env, f output) (hdl (m <$ ctx))))
           where
             run r = runReader r . runExportC
         R other -> ExportC (alg (runExportC . hdl) (R other) ctx)

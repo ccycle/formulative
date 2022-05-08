@@ -11,6 +11,7 @@ import Dhall
 import Formulative.Calculation.Internal.Class
 import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.IO
+import Formulative.Postprocess.Export.Path (removeDependentVariableDirM)
 import Formulative.Postprocess.Export.SettingFile
 import Formulative.Preprocess.SettingFile.Effect
 
@@ -27,6 +28,7 @@ preprocessM ::
     m ()
 preprocessM = do
     removeDirRecurWithWarningM
+    removeDependentVariableDirM
     ensureDirOutputM
     exportSettingFile
     exportDependentParameterFile @a @m
