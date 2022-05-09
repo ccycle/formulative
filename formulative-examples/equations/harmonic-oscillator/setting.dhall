@@ -5,6 +5,6 @@
   , finalValue = 20.0
   , stepSize = 1.0e-2
   , interval = 10
-  , maximumIterationNumber = 1000000
+  , maximumIterationNumber = 100
   }
 }

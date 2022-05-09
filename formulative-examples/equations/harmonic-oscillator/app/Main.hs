@@ -7,7 +7,6 @@ module Main (main) where
 import Control.Algebra
 import Control.Carrier.Lift
 import Control.Carrier.Reader
-import Formulative.Postprocess.Export.Variable.Class
 import Control.Effect.Sum
 import Data.Csv (DefaultOrdered, ToField, ToNamedRecord, ToRecord)
 import Data.Hashable
@@ -28,10 +27,12 @@ import Formulative.Calculation.VectorSpace.Class
 import Formulative.Postprocess.Export.Carrier
 import Formulative.Postprocess.Export.Dynamics
 import Formulative.Postprocess.Export.Types
+import Formulative.Postprocess.Export.Variable.Class
+import Formulative.Postprocess.Export.Variable.Local
 import Formulative.Preprocess.DefaultValue
 import Formulative.Preprocess.Exception
+import Formulative.Preprocess.ReadFile
 import Formulative.Preprocess.SettingFile.Carrier
-import Formulative.Postprocess.Export.Variable.Local
 
 ----------------------------------------------------------------
 -- User-defined variable
@@ -39,7 +40,7 @@ import Formulative.Postprocess.Export.Variable.Local
 data MyVariable = MyVariable {position :: Double, momentum :: Double}
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
-  deriving anyclass (DefaultOrdered, ExportRecordToFiles)
+  deriving anyclass (DefaultOrdered, ExportRecordToFiles, FromLazyFields)
 
 ----------------------------------------------------------------
 -- User-defined data for setting
@@ -105,30 +106,30 @@ data MyGlobalDependentVariable = MyGlobalDependentVariable
 
 instance
   ( Has (Reader MyEquationConstants) sig m
-  , Member (Variable MyVariable) sig
-  , Member (Dynamics Double) sig
   ) =>
   HasGlobalDependentVariableM m MyVariable
   where
   type GlobalDependentVariable MyVariable = MyGlobalDependentVariable
   globalDependentVariableM (MyVariable x p) = do
-    (MyVariable xOld pOld) <- getVariableOld
     MyEquationConstants{..} <- ask
-    (StepSize dt) <- askStepSize
     let eK p = p <.> p ./. (2 .*. m)
-    let eP x = (k ./. 2) .*. x .^ 2
-    let h x p = eK p .+. eP x
-    let dH = h x p .-. h xOld pOld
-    let dW = (x .-. xOld) <.> (gamma ./. m) *. ((p .+. pOld) ./ 2)
+        eP x = (k ./. 2) .*. x .^ 2
+        h x p = eK p .+. eP x
+        xDot = p ./ m
+        pDot = - k *. x .-. gamma *. p
+        dHdx = - k *. x
+        dHdp = p ./ m
+        hDot = pDot <.> dHdp .+. xDot <.> dHdx
+        w = xDot <.> (gamma *. p)
     return $
       MyGlobalDependentVariable
         { kineticEnergy = eK p
         , potentialEnergy = eP x
         , lagrangian = eK p .-. eP x
         , hamiltonian = h x p
-        , dHdt = dH ./. dt
-        , power = dW ./. dt
-        , totalChange = dH ./. dt .+. dW ./. dt
+        , dHdt = hDot
+        , power = w
+        , totalChange = hDot .+. w
         }
 
 ----------------------------------------------------------------

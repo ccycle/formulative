@@ -54,7 +54,7 @@ python ../../visualization-scripts/plot_time_evolution.py --outputDirRegExp "out
 Phase space:
 
 ```sh
-python ../../visualization-scripts/plot2d.py --outputDirRegExp "output/*" --x position.csv --y momentum.csv
+python ../../visualization-scripts/plot2d.py --x position.csv --y momentum.csv
 ```
 
 Global quantities:

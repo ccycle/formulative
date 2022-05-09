@@ -196,8 +196,8 @@ if __name__ == "__main__":
     # )
     parser.add_argument(
         "--queryResult",
-        help="path for database. example: --outputDirRegExp=output/*/",
-        default="query_result.csv",
+        help="path for database.",
+        default="output/_query_result.csv",
     )
 
     parser.add_argument(

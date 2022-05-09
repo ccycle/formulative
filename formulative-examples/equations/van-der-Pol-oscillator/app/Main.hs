@@ -28,10 +28,11 @@ import Formulative.Postprocess.Export.Carrier
 import Formulative.Postprocess.Export.Dynamics
 import Formulative.Postprocess.Export.Types
 import Formulative.Postprocess.Export.Variable.Class
+import Formulative.Postprocess.Export.Variable.Local
 import Formulative.Preprocess.DefaultValue
 import Formulative.Preprocess.Exception
+import Formulative.Preprocess.ReadFile
 import Formulative.Preprocess.SettingFile.Carrier
-import Formulative.Postprocess.Export.Variable.Local
 
 ----------------------------------------------------------------
 -- User-defined variable
@@ -39,7 +40,7 @@ import Formulative.Postprocess.Export.Variable.Local
 data MyVariable = MyVariable {x :: Double, y :: Double}
     deriving stock (Show, Generic)
     deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
-    deriving anyclass (DefaultOrdered, ExportRecordToFiles)
+    deriving anyclass (DefaultOrdered, ExportRecordToFiles, FromLazyFields)
 
 ----------------------------------------------------------------
 -- User-defined data for setting

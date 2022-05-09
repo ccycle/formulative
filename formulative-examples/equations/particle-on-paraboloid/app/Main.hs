@@ -35,6 +35,7 @@ import Formulative.Postprocess.Export.Variable.Class
 import Formulative.Postprocess.Export.Variable.Local
 import Formulative.Preprocess.DefaultValue
 import Formulative.Preprocess.Exception
+import Formulative.Preprocess.ReadFile
 import Formulative.Preprocess.SettingFile.Carrier
 
 ----------------------------------------------------------------
@@ -46,7 +47,7 @@ data MyVariable = MyVariable
   }
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
-  deriving anyclass (DefaultOrdered, ExportRecordToFiles)
+  deriving anyclass (DefaultOrdered, ExportRecordToFiles, FromLazyFields)
 
 ----------------------------------------------------------------
 -- User-defined data for setting
@@ -215,8 +216,45 @@ instance
 ----------------------------------------------------------------
 ---- dependent parameter
 ----------------------------------------------------------------
--- no output
-instance (Monad m) => HasDependentParameterM m MyVariable
+kFunc MyEquationConstants{..} MyVariable{..} =
+  let x = position `index` 0
+      y = position `index` 1
+      px = momentum `index` 0
+      py = momentum `index` 1
+   in ((a .*. b) .^ 2 ./. 8)
+        .*. (1 .+. (2 .*. x ./. a .^ 2) .^ 2 .+. (2 .*. y ./. b .^ 2) .^ 2)
+        .*. (g .-. (2 .*. px ./. (m .*. a)) .^ 2 .+. (2 .*. py ./. (m .*. b)) .^ 2)
+
+data MyDependentParameter = MyDependentParameter
+  { h0 :: Double
+  , k0 :: Double
+  , aSquared :: Double
+  , bSquared :: Double
+  , alpha :: Double
+  , beta :: Double
+  , alphaPlusBeta :: Double
+  , alphaBeta :: Double
+  }
+  deriving stock (Show, Generic)
+  deriving anyclass (ToDhall, FromDhall, Hashable, HasDefaultValue)
+instance (Algebra sig m, Member (Reader MyEquationConstants) sig) => HasDependentParameterM m MyVariable where
+  type DependentParameterType MyVariable = MyDependentParameter
+  dependentParameterM = do
+    x <- getInitialConditionM
+    c@MyEquationConstants{..} <- ask
+    let h0 = hFunc c x
+        k0 = kFunc c x
+        alphaPlusBeta = ((a .^ 2 .+. b .^ 2) ./. 2 .+. (2 .*. h0) ./. g) ./. 2
+        alphaBeta = 2 .*. k0 ./. g
+        alpha = alphaPlusBeta .+. sqrt (alphaPlusBeta .^ 2 .-. alphaBeta)
+        beta = alphaPlusBeta .-. sqrt (alphaPlusBeta .^ 2 .-. alphaBeta)
+    return $ MyDependentParameter h0 k0 (a .^ 2) (b .^ 2) alpha beta alphaPlusBeta alphaBeta
+   where
+    hFunc MyEquationConstants{..} (MyVariable x p) =
+      let z = x `index` 2
+          eK = p <.> p ./. (2 .*. m)
+          eP = g .*. z
+       in eK .+. eP
 
 ----------------------------------------------------------------
 ---- global dependent variable
@@ -224,12 +262,15 @@ instance (Monad m) => HasDependentParameterM m MyVariable
 data MyGlobalDependentVariable = MyGlobalDependentVariable
   { kineticEnergy :: Double
   , potentialEnergy :: Double
-  , lagrangian :: Double
-  , hamiltonian :: Double
+  , h :: Double
+  , k :: Double
   }
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
   deriving anyclass (DefaultOrdered, ToRecord)
+
+-- Reference:
+-- A. Gray, A. Jones, and R. Rimmer, “Motion under gravity on a paraboloid,” Journal of Differential Equations, vol. 45, no. 2, pp. 168–181, Aug. 1982.
 
 instance
   ( Algebra sig m
@@ -249,8 +290,8 @@ instance
       MyGlobalDependentVariable
         { kineticEnergy = eK
         , potentialEnergy = eP
-        , lagrangian = eK .-. eP
-        , hamiltonian = eK .+. eP
+        , h = eK .+. eP
+        , k = undefined
         }
 
 ----------------------------------------------------------------

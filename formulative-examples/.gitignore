@@ -7,7 +7,7 @@ output/
 
 settingFiles/
 
-query_result.csv
+_query_result.csv
 
 # profiling
 *.ps

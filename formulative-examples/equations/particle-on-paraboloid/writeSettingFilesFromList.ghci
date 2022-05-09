@@ -7,15 +7,15 @@ writeSettingFilesFromList
             DynamicsSetting
               { label = "time"
               , initialValue = 0.0
-              , finalValue = 30.0
-              , stepSize = 1.0e-3
-              , interval = 100
+              , finalValue = 50.0
+              , stepSize = 1.0e-2
+              , interval = 10
               , maximumIterationNumber = 1000000
               }
         , equation =
             MyEquationConstants
               { m = 1.0
-              , g = 1.0
+              , g = g'
               , a = a'
               , b = 1.0
               , xInit = xInit'
@@ -27,9 +27,9 @@ writeSettingFilesFromList
   )
   [ (a', xInit', pxInit', pyInit')
   | a' <- [1, 2]
-  , xInit' <- [1, sqrt (a' ^ 2 - 1), a']
-  , 0 < xInit'
-  , pxInit' <- [-1.0, 0.0, 1.0]
-  , pyInit' <- [1.0]
+  , g' <- [1]
+  , xInit' <- [1, 2]
+  , pxInit' <- [0]
+  , pyInit' <- [0,1, (xInit' / a') * sqrt (2 * g'), ]
   ]
 :}

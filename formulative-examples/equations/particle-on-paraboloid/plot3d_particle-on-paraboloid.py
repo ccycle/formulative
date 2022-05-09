@@ -118,8 +118,8 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--queryResult",
-        help="path for database. example: --queryResult=query_result.csv",
-        default="query_result.csv",
+        help="path for database.",
+        default="output/_query_result.csv",
     )
 
     parser.add_argument(
@@ -141,7 +141,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     queryResultArgv = args.queryResult
-    # outputDirList = glob.glob(queryResultArgv)
     queryResultDF = pd.read_csv(queryResultArgv)
     outputDirList = queryResultDF["export_outputDirectory"]
     xPathArgv = args.data

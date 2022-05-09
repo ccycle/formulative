@@ -58,7 +58,7 @@ if __name__ == "__main__":
         "--output",
         help="Whether to export the results of the query execution",
         metavar="PATH",
-        default="query_result.csv",
+        default="output/_query_result.csv",
     )
     parser.add_argument(
         "-S",
