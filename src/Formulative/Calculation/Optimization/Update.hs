@@ -63,21 +63,23 @@ updateWithConstrainedOptimization variable = do
     gradPenalty <- getGradPenaltyM
     lbfgsParam <- askLBFGSParameters @(Scalar b)
     lineSearchParam <- askLineSearchParameters @(Scalar b)
+    torelanceM <- askTorelance @(EqualityConstraintType b)
     aParam <- askAugmentedLagrangianParameter @(EqualityConstraintType b)
     convergenceParam <- askConvergenceTestParameters @(Scalar b)
-    lagrangianMultiplier <- getLagrangianMultiplier
+    lagrangeMultiplier <- getLagrangeMultiplier
     (x, l) <-
         liftEither $
             augmentedLagrangianMethod
                 lineSearchParam
                 convergenceParam
                 lbfgsParam
+                torelanceM
                 aParam
                 (ObjectiveFunction objFunc)
                 (GradObjectiveFunction gradObjFunc)
                 (EqualityConstraint eqConst)
-                (LagrangianMultiplier lagrangianMultiplier)
+                (LagrangeMultiplier lagrangeMultiplier)
                 (GradPenalty gradPenalty)
                 variable
-    putLagrangianMultiplier l
+    putLagrangeMultiplier l
     return x

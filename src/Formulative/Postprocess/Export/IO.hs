@@ -34,8 +34,8 @@ removeDirRecurOutputM (OutputDir relDir) =
 
 msgDirAlreadyExists :: (Monad m, Member (Lift IO) sig, Member (Lift IO) sig, Algebra sig m, Member Export sig) => m ()
 msgDirAlreadyExists = do
-    dir <- askOutputDirAbsPath
-    putStrLnM $ "[WARNING] The output directory (" <> toFilePath dir <> ") already exists; the calculation may have already been executed."
+    (OutputDir dir) <- askOutputDir
+    putStrLnM $ "[WARNING] The output directory (" <> toFilePath dir <> ") already exists; the calculation may have been executed."
 
 data NoOperationException = NoOperationException
     deriving stock (Show, Typeable)
@@ -43,9 +43,13 @@ data NoOperationException = NoOperationException
 instance Exception NoOperationException where
     displayException _ =
         concat
-            [ "The current option for recalculation is \"No-Operation\"."
+            [ "*** NoOperationException: Exit process."
             , "\n"
-            , "To allow overwriting, use option \"--recalculation=Overwrite\"."
+            , "The current option for recalculation is \'NoOperation\'. To recalculate, use option \'--recalculation\'."
+            , "\n"
+            , "\n"
+            , "Available options for \'--recalculation\': \'NoOperation\',\'Overwrite\',\'Continue\'"
+            , "\n"
             ]
 
 -- TODO: logger作成
@@ -121,10 +125,9 @@ msgExportFileM path = sendIO $ msgExportFileIO path
 msgOutputDir :: (Member Export sig, Member (Lift IO) sig, Algebra sig m) => m ()
 msgOutputDir = do
     (OutputDir outputPath) <- askOutputDir
-    absOutputDir <- sendIO $ makeAbsolute outputPath
-    putStrLnM $ "Output directory: " <> toFilePath absOutputDir
+    putStrLnM $ "Output directory: " <> toFilePath outputPath
 
-askOutputDirAbsPath :: (Member Export sig, Algebra sig m, Member (Lift IO) sig) => m (Path Abs Dir)
-askOutputDirAbsPath = do
-    (OutputDir outputPath) <- askOutputDir
-    sendIO $ makeAbsolute outputPath
+-- askOutputDirAbsPath :: (Member Export sig, Algebra sig m, Member (Lift IO) sig) => m (Path Abs Dir)
+-- askOutputDirAbsPath = do
+--     (OutputDir outputPath) <- askOutputDir
+--     sendIO $ makeAbsolute outputPath

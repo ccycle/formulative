@@ -147,9 +147,7 @@ mainCalcDynamics = do
             msgNewLine
             putStrLnM "-- Continue calculation from last step --"
             go i' interval maximumIterationNumber t' finalValue stepSize x' x'
-        NoOperation ->
-            return ()
-        Overwrite ->
+        _ ->
             go (StepIndex 0) interval maximumIterationNumber initialValue finalValue stepSize x x
   where
     go i (IntervalStepIndex nInterval) (MaxStepIndex iMax) (DynamicParameter t) (DynamicParameter finalVal) (StepSize dt) xiMinus1 xi = do

@@ -10,16 +10,19 @@ import Formulative.Calculation.VectorSpace.Class
 -- Effect
 data ConstrainedSystem a (m :: Type -> Type) k where
     AskConstrainedSystemParameter :: ConstrainedSystem a m (ConstrainedSystemSetting (Scalar a))
-    GetLagrangianMultiplier :: ConstrainedSystem a m (LagrangianMultiplier a)
-    PutLagrangianMultiplier :: LagrangianMultiplier a -> ConstrainedSystem a m ()
+    GetLagrangeMultiplier :: ConstrainedSystem a m (LagrangeMultiplier a)
+    PutLagrangeMultiplier :: LagrangeMultiplier a -> ConstrainedSystem a m ()
 
 askConstrainedSystemParameter :: forall a sig m. (Has (ConstrainedSystem a) sig m) => m (ConstrainedSystemSetting (Scalar a))
 askConstrainedSystemParameter = send (AskConstrainedSystemParameter @a)
 
 askAugmentedLagrangianParameter :: forall a sig m. (Has (ConstrainedSystem a) sig m) => m (AugmentedLagrangianMethodParameters (Scalar a))
-askAugmentedLagrangianParameter = augmentedLagrangianMethodParameters <$> (askConstrainedSystemParameter @a)
+askAugmentedLagrangianParameter = augmentedLagrangian <$> (askConstrainedSystemParameter @a)
 
-getLagrangianMultiplier :: (Has (ConstrainedSystem a) sig m) => m a
-getLagrangianMultiplier = unLagrangianMultiplier <$> send GetLagrangianMultiplier
-putLagrangianMultiplier :: forall a sig m. (Has (ConstrainedSystem a) sig m) => LagrangianMultiplier a -> m ()
-putLagrangianMultiplier x = send (PutLagrangianMultiplier x)
+askTorelance :: forall a sig m. (Has (ConstrainedSystem a) sig m) => m (TorelanceForConstrainedCondition (Scalar a))
+askTorelance = torelance <$> (askConstrainedSystemParameter @a)
+
+getLagrangeMultiplier :: (Has (ConstrainedSystem a) sig m) => m a
+getLagrangeMultiplier = unLagrangeMultiplier <$> send GetLagrangeMultiplier
+putLagrangeMultiplier :: forall a sig m. (Has (ConstrainedSystem a) sig m) => LagrangeMultiplier a -> m ()
+putLagrangeMultiplier x = send (PutLagrangeMultiplier x)

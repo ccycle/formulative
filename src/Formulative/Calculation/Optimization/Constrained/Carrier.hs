@@ -19,7 +19,7 @@ import Formulative.Preprocess.ReadSetting
 import Formulative.Preprocess.SettingFile.Effect
 
 -- Carrier
-newtype ConstrainedSystemC a m b = ConstrainedSystemC {runConstrainedSystemC :: StateC (LagrangianMultiplier a) (ReaderC (ConstrainedSystemSetting (Scalar a)) m) b}
+newtype ConstrainedSystemC a m b = ConstrainedSystemC {runConstrainedSystemC :: StateC (LagrangeMultiplier a) (ReaderC (ConstrainedSystemSetting (Scalar a)) m) b}
     deriving stock (Functor)
     deriving newtype (Applicative, Monad)
 instance (Algebra sig m) => Algebra (ConstrainedSystem a :+: sig) (ConstrainedSystemC a m) where
@@ -27,16 +27,16 @@ instance (Algebra sig m) => Algebra (ConstrainedSystem a :+: sig) (ConstrainedSy
         L AskConstrainedSystemParameter -> do
             env <- ConstrainedSystemC ask
             pure (env <$ ctx)
-        L GetLagrangianMultiplier -> do
+        L GetLagrangeMultiplier -> do
             env <- ConstrainedSystemC get
             pure (env <$ ctx)
-        L (PutLagrangianMultiplier x) -> do
+        L (PutLagrangeMultiplier x) -> do
             env <- ConstrainedSystemC (put x)
             pure (env <$ ctx)
         R other -> ConstrainedSystemC (alg (runConstrainedSystemC . hdl) (R (R other)) ctx)
 
 runConstrainedSystem r =
-    runReader r . evalState (LagrangianMultiplier zero) . runConstrainedSystemC
+    runReader r . evalState (LagrangeMultiplier zero) . runConstrainedSystemC
 
 -- Carrier 2: IO
 -- ./setting.dhallから読み込む

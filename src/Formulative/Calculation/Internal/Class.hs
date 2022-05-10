@@ -29,7 +29,7 @@ class HasEqualityConstraintM m a where
     type EqualityConstraintType a :: *
     getEqualityConstraintM :: m (a -> EqualityConstraintType a)
 class HasGradPenaltyM m a where
-    getGradPenaltyM :: m (LagrangianMultiplier (EqualityConstraintType a) -> a -> a)
+    getGradPenaltyM :: m (LagrangeMultiplier (EqualityConstraintType a) -> a -> a)
 
 class (HasInitialConditionM m a) => HasUpdateM m a where
     updateM :: a -> m a

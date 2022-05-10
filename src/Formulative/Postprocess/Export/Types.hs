@@ -63,7 +63,7 @@ newtype IntervalStepIndex = IntervalStepIndex StepIndex
 
 newtype DynamicParameter a = DynamicParameter a
     deriving stock (Generic, Eq)
-    deriving newtype (Show, Num, Enum, Ord, FromField, Additive, Multiplicative, Semiring)
+    deriving newtype (Show, Num, Enum, Ord, FromField, Fractional, Additive, Multiplicative, Semiring)
     deriving anyclass (FromDhall, ToDhall, Hashable)
 newtype OutputDir = OutputDir (Path Rel Dir)
     deriving stock (Generic, Show, Eq)
