@@ -25,12 +25,12 @@ gradf (TestData x y) = TestData 1 1
 g (TestData x y) = x ^ 2 + y ^ 2 - 1
 gradG (TestData x y) = TestData (2 * x) (2 * y)
 mu = 1.0
-gradPenalty (LagrangianMultiplier lambda) x = lambda *. gradG x
+gradPenalty (LagrangeMultiplier lambda) x = lambda *. gradG x
 lambda = 0.0
 initialData = TestData (-1) (-1)
 augmentedLagrangianParametersTest = defaultValue{penaltyCoefficient = PenaltyCoefficient mu, growthRate = GrowthRateForPenaltyCoefficient 1.1, maximumIterationNumber = IterationNumberForALM 1000}
 
-augmentedLagrangianMethodTest :: (MonadThrow m) => TestData -> m (TestData, LagrangianMultiplier Double)
+augmentedLagrangianMethodTest :: (MonadThrow m) => TestData -> m (TestData, LagrangeMultiplier Double)
 augmentedLagrangianMethodTest =
     augmentedLagrangianMethod
         defaultValue
@@ -40,5 +40,5 @@ augmentedLagrangianMethodTest =
         (ObjectiveFunction f)
         (GradObjectiveFunction gradf)
         (EqualityConstraint g)
-        (LagrangianMultiplier lambda)
+        (LagrangeMultiplier lambda)
         (GradPenalty gradPenalty)
