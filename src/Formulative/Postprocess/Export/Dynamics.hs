@@ -14,6 +14,7 @@ import Control.Monad
 import qualified Data.ByteString.Lazy as BSL
 import Data.Csv (DefaultOrdered, FromField, ToField, ToRecord)
 import qualified Data.Csv.Streaming as Streaming
+import Data.Proxy
 import Data.String
 import Dhall
 import Formulative.Calculation.Algebra.Arithmetic.Class
@@ -28,6 +29,7 @@ import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.IO
 import Formulative.Postprocess.Export.Path
 import Formulative.Postprocess.Export.Types
+import Formulative.Postprocess.Export.Variable.Class
 import Formulative.Postprocess.Export.Variable.Global
 import Formulative.Postprocess.Export.Variable.Local
 import Formulative.Preprocess.CommandLineOptions
@@ -64,27 +66,55 @@ exportDynamicParameter (StepIndex i) (DynamicParameter t) = do
     sendIO $ BSL.appendFile (toFilePath filePath) x'
 
 exportLocalDependentVariableDynamics ::
+    forall sig m a.
     ( HasLocalDependentVariableM m a
     , Algebra sig m
     , Member (Throw SomeException) sig
     , Member (Lift IO) sig
     , Member Export sig
     , DefaultOrdered (LocalDependentVariable a)
-    , ExportRecordToFiles (LocalDependentVariable a)
+    , ToLazyFields (LocalDependentVariable a)
+    , ToVariableTypes (LocalDependentVariable a)
     ) =>
     StepIndex ->
     a ->
     m ()
 exportLocalDependentVariableDynamics i x = do
     x' <- localDependentVariableM x
-    localOutputDir addPostfixToDirForDependentVariable $ exportRecordToFilesDynamicsM i x'
+    localOutputDir addPostfixToDirForDependentVariable $ do
+        msgExportFile (Proxy @(LocalDependentVariable a))
+        exportRecordToFilesDynamicsM i x'
 
 exportDependentVariableDynamicsM i xi = do
     exportGlobalDependentVariable xi
     exportLocalDependentVariableDynamics i xi
 
+exportDynamicsM ::
+    forall sig m a b.
+    ( Algebra sig m
+    , ToField b
+    , Member (Dynamics b) sig
+    , Member (Lift IO) sig
+    , Member (Throw SomeException) sig
+    , Member Export sig
+    , HasLocalDependentVariableM m a
+    , ToRecord (GlobalDependentVariable a)
+    , HasGlobalDependentVariableM m a
+    , DefaultOrdered a
+    , DefaultOrdered (GlobalDependentVariable a)
+    , DefaultOrdered (LocalDependentVariable a)
+    , ToLazyFields a
+    , ToLazyFields (LocalDependentVariable a)
+    , ToVariableTypes a
+    , ToVariableTypes (LocalDependentVariable a)
+    ) =>
+    StepIndex ->
+    DynamicParameter b ->
+    a ->
+    m ()
 exportDynamicsM i t xi = do
     exportDynamicParameter i t
+    msgExportFile (Proxy @a)
     exportRecordToFilesDynamicsM i xi
     exportDependentVariableDynamicsM i xi
 
@@ -113,10 +143,12 @@ mainCalcDynamics ::
     , ToDhall (DependentParameterType a)
     , ToField b
     , ToRecord (GlobalDependentVariable a)
-    , ExportRecordToFiles (LocalDependentVariable a)
-    , ExportRecordToFiles a
+    , ToLazyFields (LocalDependentVariable a)
+    , ToLazyFields a
     , FromLazyFields a
     , Show a
+    , ToVariableTypes a
+    , ToVariableTypes (LocalDependentVariable a)
     ) =>
     m ()
 mainCalcDynamics = do
@@ -139,7 +171,7 @@ mainCalcDynamics = do
             let MaxStepIndex iMax = maximumIterationNumber
             msgNewLine
             (i', t', x') <- goContinue iMax (StepIndex 0, initialValue) x ts xs
-            putStrLnM "End loading cached files. "
+            putStrLnM "End loading cached files."
             putStrLnM $ "Last step number: " <> show i'
             putStrLnM "Deleting temp files .."
             deleteTempDynamicParametersM @b
@@ -155,7 +187,6 @@ mainCalcDynamics = do
         putStrLnM $ "step " ++ show i
         putStrLnM $ "parameter: " ++ show t
         when (i `mod` nInterval == StepIndex 0) $ do
-            putStrLnM "Exporting data.."
             exportDynamicsM i (DynamicParameter t) xi
         if iMax <= i || 2 .*. finalVal <= (2 .*. t .+. dt) -- End condition
             then do
@@ -180,8 +211,8 @@ mainCalcDynamics = do
                 putStrLnM "(Recalculation)"
                 putStrLnM $ "step " ++ show i''
                 putStrLnM $ "parameter: " ++ show t''
-                putStrLnM "Exporting data from cached files.."
-                unless (null xs || nullRecords ts) $
+                unless (null xs || nullRecords ts) $ do
+                    putStrLnM "Exporting data from cached files .."
                     exportDynamicsM i'' t'' x''
                 msgNewLine
                 goContinue iMax (i'', t'') x'' ts xs

@@ -17,6 +17,7 @@ import Formulative.Calculation.Internal.List
 import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.IO
 import Formulative.Postprocess.Export.Types
+import Formulative.Postprocess.Export.Variable.Class
 import Formulative.Postprocess.Export.Variable.Global
 import Formulative.Postprocess.Export.Variable.Local
 import Formulative.Preprocess.IO
@@ -42,8 +43,10 @@ mainCalcStatics ::
     , DefaultOrdered (GlobalDependentVariable a)
     , DefaultOrdered (LocalDependentVariable a)
     , ToDhall (DependentParameterType a)
-    , ExportRecordToFiles a
-    , ExportRecordToFiles (LocalDependentVariable a)
+    , ToLazyFields a
+    , ToLazyFields (LocalDependentVariable a)
+    , ToVariableTypes (LocalDependentVariable a)
+    , ToVariableTypes a
     ) =>
     m ()
 mainCalcStatics = do

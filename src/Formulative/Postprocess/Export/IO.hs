@@ -1,3 +1,5 @@
+{-# LANGUAGE TemplateHaskell #-}
+
 module Formulative.Postprocess.Export.IO where
 
 import Control.Algebra
@@ -15,8 +17,13 @@ import Formulative.Preprocess.SettingFile.Effect
 import Path
 import Path.IO
 
-putStrLnM :: (Algebra sig m, Member (Lift IO) sig) => String -> m ()
-putStrLnM = sendIO . putStrLn
+putStrLnM :: (Algebra sig m, Member (Lift IO) sig, Member Export sig) => String -> m ()
+putStrLnM msg = do
+    sendIO $ putStrLn msg
+    OutputDir dir <- askOutputDir
+    let logFile = $(mkRelFile "result.log")
+    let file = dir </> logFile
+    sendIO $ appendFile (toFilePath file) (msg <> "\n")
 
 ensureDirOutputM :: (Algebra sig m, Member Export sig, Member (Lift IO) sig) => m ()
 ensureDirOutputM = do
@@ -65,7 +72,7 @@ warningForOverwrite = do
                 then return Overwrite
                 else do
                     msgNewLine
-                    putStrLnM $ "Overwrite ([y]/n)?" <> "\n"
+                    putStrLnM $ "Overwrite ([y]/n)?"
                     f 5
   where
     f i =
@@ -78,7 +85,6 @@ warningForOverwrite = do
                     "y" -> return Overwrite
                     "n" -> return NoOperation
                     _ -> do
-                        putStrLnM ""
                         putStrLnM $ "Invalid input: " <> str
                         putStrLnM "RETURN -> Exec and Overwrite"
                         putStrLnM "\'y\', RETURN -> Exec and Overwrite"
@@ -104,16 +110,16 @@ parentDirM = do
 
 -- TODO: adaptive step sizeの実装
 
-msgNewLine :: (Has (Lift IO) sig m) => m ()
+msgNewLine :: (Has (Lift IO) sig m, Member Export sig) => m ()
 msgNewLine = putStrLnM ""
 
-msgStart :: (Has (Lift IO) sig m) => m ()
+msgStart :: (Has (Lift IO) sig m, Member Export sig) => m ()
 msgStart = putStrLnM "--- Start ---"
 
-msgDone :: (Has (Lift IO) sig m) => m ()
+msgDone :: (Has (Lift IO) sig m, Member Export sig) => m ()
 msgDone = putStrLnM "Done."
 
-msgEnd :: (Has (Lift IO) sig m) => m ()
+msgEnd :: (Has (Lift IO) sig m, Member Export sig) => m ()
 msgEnd = putStrLnM "--- End ---"
 
 msgExportFileIO :: Path b File -> IO ()

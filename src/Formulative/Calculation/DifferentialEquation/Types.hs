@@ -73,3 +73,6 @@ instance (Additive a, Eq a) => Predicate StepSizeException (StepSize a) where
 
 checkStepSize :: (Additive a, Eq a, MonadThrow m) => StepSize a -> m (Refined StepSizeException (StepSize a))
 checkStepSize = refineThrow @StepSizeException
+
+-- maxStepSizeはDynamicsSettingsからとってくる
+data AdaptiveStepSizeSetting a = AdaptiveStepSizeSetting {minStepSize :: StepSize a, b :: a}

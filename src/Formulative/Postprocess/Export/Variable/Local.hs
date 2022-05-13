@@ -1,4 +1,5 @@
 {-# HLINT ignore "Redundant irrefutable pattern" #-}
+{-# HLINT ignore "Eta reduce" #-}
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 
 module Formulative.Postprocess.Export.Variable.Local where
@@ -8,9 +9,12 @@ import Control.Carrier.Error.Either
 import Control.Effect.Lift
 import Control.Effect.Sum
 import Control.Exception.Safe
+import Control.Monad
 import Control.Monad.ST.Strict (runST)
+import qualified Data.ByteString.Char8 as BS8
 import qualified Data.ByteString.Lazy as BSL
-import Data.Csv (DefaultOrdered (headerOrder), FromField (..), FromRecord (..), Name, ToField, ToRecord (toRecord))
+import qualified Data.ByteString.Lazy as BSL8
+import Data.Csv
 import qualified Data.Matrix.Static.LinearAlgebra as MSL
 import Data.Matrix.Static.Sparse (toTriplet)
 import Data.Maybe (fromJust)
@@ -19,10 +23,11 @@ import Data.String.Conversions
 import qualified Data.Vector as V
 import qualified Data.Vector.Sized as VS
 import qualified Data.Vector.Storable as VST
+import Formulative.Calculation.Internal.List
 import Formulative.Calculation.Internal.Types
 import Formulative.Postprocess.Export.CSV (encodeLF)
 import Formulative.Postprocess.Export.Effect
-import Formulative.Postprocess.Export.IO (ensureDirOutputM)
+import Formulative.Postprocess.Export.IO (ensureDirOutputM, putStrLnM)
 import Formulative.Postprocess.Export.Types
 import Formulative.Postprocess.Export.Variable.Class
 import GHC.Generics
@@ -31,11 +36,15 @@ import GHC.TypeNats
 import Path
 import Path.IO
 
-type RelFilePath = Path Rel File
-type RelFilePaths = V.Vector (Path Rel File)
+type PathRelFile = Path Rel File
+type PathRelFiles = [Path Rel File]
 
-class ExportFieldToFile a where
-    exportFieldToFile :: RelFilePath -> a -> IO ()
+type LazyField = BSL.ByteString
+
+class ToLazyField a where
+    toLazyField :: a -> LazyField
+    default toLazyField :: (ToRecord a) => a -> LazyField
+    toLazyField x = encodeLF [x]
 
 instance
     ( ToField a
@@ -43,23 +52,22 @@ instance
     , KnownNat k1
     , KnownNat k2
     ) =>
-    ExportFieldToFile (MSL.SparseMatrix k1 k2 a)
+    ToLazyField (MSL.SparseMatrix k1 k2 a)
     where
-    exportFieldToFile path x = runConduit $ toTriplet x .| mapC (\x -> encodeLF [x]) .| mapM_C (BSL.appendFile (toFilePath path))
+    toLazyField x = runConduitPure $ toTriplet x .| mapC (\x -> encodeLF [x]) .| foldlC (<>) ""
 
-instance (ToField a) => ExportFieldToFile (MyNum a) where
-    exportFieldToFile path (MyNum x) = BSL.appendFile (toFilePath path) (encodeLF [[x]])
+instance (ToField a) => ToLazyField (MyNum a) where
+    toLazyField (MyNum x) = encodeLF [[x]]
 
-deriving via (MyNum Double) instance ExportFieldToFile Double
-deriving via (MyNum Float) instance ExportFieldToFile Float
-deriving via (MyNum Int) instance ExportFieldToFile Int
-deriving via (MyNum Integer) instance ExportFieldToFile Integer
-deriving via (MyNum Natural) instance ExportFieldToFile Natural
+deriving via (MyNum Double) instance ToLazyField Double
+deriving via (MyNum Float) instance ToLazyField Float
+deriving via (MyNum Int) instance ToLazyField Int
+deriving via (MyNum Integer) instance ToLazyField Integer
+deriving via (MyNum Natural) instance ToLazyField Natural
 
-instance (ToField a) => ExportFieldToFile (V.Vector a) where
-    exportFieldToFile path x = BSL.appendFile (toFilePath path) (encodeLF [x])
-instance (ToField a) => ExportFieldToFile (VS.Vector n a) where
-    exportFieldToFile path x = exportFieldToFile path (VS.fromSized x)
+instance (ToField a) => ToLazyField (V.Vector a)
+instance (ToField a) => ToLazyField (VS.Vector n a) where
+    toLazyField x = toLazyField (VS.fromSized x)
 
 nameToFilePathM name = do
     parseKey <- liftEither $ parseRelFile (convertString @Name name)
@@ -71,38 +79,32 @@ nameToFilePathM name = do
 
 -------------------------
 
-class ExportRecordToFiles a where
-    exportRecordToFilesStatics :: RelFilePaths -> a -> IO ()
-    default exportRecordToFilesStatics :: (Generic a, GAppendRecordToFiles (Rep a)) => RelFilePaths -> a -> IO ()
-    exportRecordToFilesStatics h x = gexportRecordToFilesStatics h (from x)
+type LazyFields = [BSL.ByteString]
 
-    exportRecordToFilesDynamics :: StepIndex -> RelFilePaths -> a -> IO ()
-    default exportRecordToFilesDynamics :: (Generic a, GAppendRecordToFiles (Rep a)) => StepIndex -> RelFilePaths -> a -> IO ()
-    exportRecordToFilesDynamics i h x = gexportRecordToFilesDynamics i h (from x)
+class ToLazyFields a where
+    toLazyFields :: a -> LazyFields
+    default toLazyFields :: (Generic a, GToLazyFields (Rep a)) => a -> LazyFields
+    toLazyFields x = gtoLazyFields (from x)
 
-class GAppendRecordToFiles f where
-    gexportRecordToFilesStatics :: RelFilePaths -> f a -> IO ()
-    gexportRecordToFilesDynamics :: StepIndex -> RelFilePaths -> f a -> IO ()
+class GToLazyFields f where
+    gtoLazyFields :: f a -> LazyFields
 
-instance GAppendRecordToFiles U1 where
-    gexportRecordToFilesStatics h _ = return ()
-    gexportRecordToFilesDynamics i h _ = return ()
+instance GToLazyFields U1 where
+    gtoLazyFields _ = emptyV
 
-instance (ExportFieldToFile a, ToVariableType a) => GAppendRecordToFiles (K1 i a) where
-    gexportRecordToFilesStatics h (K1 a) = exportFieldToFile (V.head h) a
-    gexportRecordToFilesDynamics i h (K1 a) = exportFieldToFileDynamics i (V.head h) a
+instance (ToLazyField a) => GToLazyFields (K1 i a) where
+    gtoLazyFields (K1 a) = singleton (toLazyField a)
 
-instance GAppendRecordToFiles f => GAppendRecordToFiles (M1 i c f) where
-    gexportRecordToFilesStatics h (M1 a) = gexportRecordToFilesStatics h a
-    gexportRecordToFilesDynamics i h (M1 a) = gexportRecordToFilesDynamics i h a
+instance (GToLazyFields f) => GToLazyFields (M1 i c f) where
+    gtoLazyFields (M1 a) = gtoLazyFields a
 
-instance (GAppendRecordToFiles a, GAppendRecordToFiles b) => GAppendRecordToFiles (a :*: b) where
-    gexportRecordToFilesStatics h (a :*: b) = gexportRecordToFilesStatics (V.init h) a >> gexportRecordToFilesStatics (V.tail h) b
-    gexportRecordToFilesDynamics i h (a :*: b) = gexportRecordToFilesDynamics i (V.init h) a >> gexportRecordToFilesDynamics i (V.tail h) b
+instance (GToLazyFields a, GToLazyFields b) => GToLazyFields (a :*: b) where
+    gtoLazyFields (a :*: b) = gtoLazyFields a <> gtoLazyFields b
 
-instance ExportRecordToFiles ()
+instance ToLazyFields () where
+    toLazyFields _ = emptyV
 
-namesToFilePaths names = sequenceA $ V.map nameToFilePathM names
+namesToFilePaths name = traverse nameToFilePathM name
 
 getFilePathsM ::
     forall a sig m.
@@ -111,16 +113,11 @@ getFilePathsM ::
     , Member (Throw SomeException) sig
     , Member Export sig
     ) =>
-    a ->
-    m (V.Vector (Path Rel File))
-getFilePathsM ~_ =
-    let names = headerOrder (undefined :: a)
-     in namesToFilePaths names
-
-exportRecordToFilesStaticsM x = do
-    paths <- getFilePathsM x
-    ensureDirOutputM
-    sendIO $ exportRecordToFilesStatics paths x
+    Proxy a ->
+    m PathRelFiles
+getFilePathsM _ =
+    let names = V.toList $ headerOrder (undefined :: a)
+     in traverse nameToFilePathM names
 
 concatPathDynamics (StepIndex i) path = do
     parentDirStep <- parseRelDir $ "series/step" <> show i
@@ -128,20 +125,60 @@ concatPathDynamics (StepIndex i) path = do
         fileName = filename path
     return $ parentDir </> parentDirStep </> fileName
 
-exportFieldToFileDynamics ::
-    forall a.
-    (ToVariableType a, ExportFieldToFile a) =>
-    StepIndex ->
-    RelFilePath ->
-    a ->
-    IO ()
-exportFieldToFileDynamics i path x = case toVariableType (Proxy @a) of
-    ParticleType -> exportFieldToFile path x
+exportFieldToFileDynamics i vType path str = case vType of
+    ParticleType ->
+        BSL.appendFile (toFilePath path) str
     FieldType -> do
         p <- concatPathDynamics i path
         ensureDir (parent p)
-        exportFieldToFile p x
+        BSL.writeFile (toFilePath path) str
 
+exportRecordToFilesStatics :: forall a. (ToVariableTypes a, ToLazyFields a) => PathRelFiles -> a -> IO ()
+exportRecordToFilesStatics paths x = do
+    let strs = toLazyFields x
+    forM_ (zip paths strs) $ \(path, str) ->
+        BSL.writeFile (toFilePath path) str
+
+exportRecordToFilesDynamics :: forall a. (ToVariableTypes a, ToLazyFields a) => StepIndex -> PathRelFiles -> a -> IO ()
+exportRecordToFilesDynamics i paths x = do
+    let vTypes = toVariableTypes (Proxy @a)
+        strs = toLazyFields x
+    forM_ (zip3 vTypes paths strs) $ \(vType, path, str) ->
+        exportFieldToFileDynamics i vType path str
+
+exportRecordToFilesStaticsM ::
+    forall sig m a.
+    ( Algebra sig m
+    , DefaultOrdered a
+    , Member (Lift IO) sig
+    , Member (Throw SomeException) sig
+    , Member Export sig
+    , ToLazyFields a
+    , ToVariableTypes a
+    ) =>
+    a ->
+    m ()
+exportRecordToFilesStaticsM x = do
+    paths <- getFilePathsM (Proxy @a)
+    sendIO $ exportRecordToFilesStatics paths x
+
+exportRecordToFilesDynamicsM ::
+    forall sig m a.
+    ( Algebra sig m
+    , DefaultOrdered a
+    , Member (Lift IO) sig
+    , Member (Throw SomeException) sig
+    , Member Export sig
+    , ToLazyFields a
+    , ToVariableTypes a
+    ) =>
+    StepIndex ->
+    a ->
+    m ()
 exportRecordToFilesDynamicsM i x = do
-    paths <- getFilePathsM x
+    paths <- getFilePathsM (Proxy @a)
     sendIO $ exportRecordToFilesDynamics i paths x
+
+msgExportFile x = do
+    paths <- getFilePathsM x
+    forM_ (map toFilePath paths) (\s -> putStrLnM $ concat ["Exporting ", s, " .."])

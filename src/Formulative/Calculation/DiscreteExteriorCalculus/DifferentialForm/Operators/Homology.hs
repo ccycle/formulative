@@ -200,7 +200,7 @@ inclusionMap :: forall n l c a k sig m. (HasInclusionMap n l c a sig m) => m (Di
 --   return $ \x -> i .@. x
 inclusionMap = inclusionMapMat @n @l @c @a >>= \i -> return (i .@.)
 
--- TODO: wedge productの作成
+-- TODO: undefinedの消去
 wedge :: m (DifferentialForm n l c k1 a -> DifferentialForm n l c k2 a -> DifferentialForm n l c (k1 + k2) a)
 wedge = undefined
 

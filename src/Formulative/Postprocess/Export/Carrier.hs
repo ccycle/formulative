@@ -70,6 +70,5 @@ runExportIO ::
     m b
 runExportIO f = do
     (DhallSettingText txt) <- cmdOptionToDhallSettingText
-    putStrLnM "Reading setting file (Export).."
     x <- sendIO $ fillInSetting @ExportSetting "export" txt
     runExport x f

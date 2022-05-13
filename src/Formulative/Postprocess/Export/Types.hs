@@ -50,8 +50,6 @@ newtype StepIndex = StepIndex Natural
     deriving newtype (Show, Enum, Num, Real, Integral)
     deriving anyclass (FromDhall, ToDhall, Hashable)
 
--- instance Show StepIndex where
---     show (StepIndex i)= show i
 newtype MaxStepIndex = MaxStepIndex StepIndex
     deriving stock (Generic, Eq, Ord)
     deriving newtype (Show, Enum, Num, Real, Integral)

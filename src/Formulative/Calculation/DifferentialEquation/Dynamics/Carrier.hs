@@ -11,6 +11,7 @@ import Control.Exception.Safe
 import Dhall
 import Formulative.Calculation.DifferentialEquation.Dynamics.Effect
 import Formulative.Calculation.DifferentialEquation.Types
+import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.IO
 import Formulative.Preprocess.ReadSetting
 
@@ -38,6 +39,7 @@ runDynamicsIO ::
     , FromDhall a
     , Fractional a
     , Member (Lift IO) sig
+    , Member Export sig
     ) =>
     DynamicsC a m b ->
     m b
