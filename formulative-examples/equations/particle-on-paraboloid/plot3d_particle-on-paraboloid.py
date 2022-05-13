@@ -30,7 +30,7 @@ def paraboloid_meshgrid(relPath, xmin, xmax, ymin, ymax, zmax):
     # X, Y = np.where((X1 / a) ** 2 + (Y1 / b) ** 2 <= zmax, X1, 0), np.where(
     #     (X1 / a) ** 2 + (Y1 / b) ** 2 <= zmax, Y1, 0
     # )
-    Z = (X / a) ** 2 + (Y / b) ** 2
+    Z = ((X / a) ** 2 + (Y / b) ** 2) / 2
     return (X, Y, Z)
 
 

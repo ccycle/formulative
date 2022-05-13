@@ -46,6 +46,7 @@ extra-deps:
   - fused-effects-1.1.1.1@sha256:c029c5fb0b2154281221a71ff25709d2a11347fe061fa8c2398e7fe52a16008d,4932
   - matrix-sized-0.1.1@sha256:fefae4c7215e8fc00ed9ea4b34592958efc93113dbf7a600a0c91a01188a05d2,18351
   - physics-0.1.2.1@sha256:5555fb0a679d00964f1fbd8bf1a9b233c91b363b371f092077183fe51bcffba6,1467
+  - ieee-0.7@sha256:4f444419a7861f04fb64502d14688c80e8293a86a608f6d14c3010c9bd96b6d1,1327
 # Override default flag values for local packages and extra-deps
 # flags: {}
 

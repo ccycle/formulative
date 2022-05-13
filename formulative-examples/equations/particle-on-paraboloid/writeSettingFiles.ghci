@@ -1,35 +1,33 @@
 :{
 writeSettingFilesFromList
   "./equations/particle-on-paraboloid/settingFiles"
-  ( \(a', xInit', pxInit', pyInit') ->
+  ( \(a', xInit', vxInit', vyInit') ->
       defaultValue
         { dynamics =
             DynamicsSetting
               { label = "time"
               , initialValue = 0.0
-              , finalValue = 50.0
+              , finalValue = 20.0
               , stepSize = 1.0e-2
               , interval = 10
               , maximumIterationNumber = 1000000
               }
         , equation =
             MyEquationConstants
-              { m = 1.0
-              , g = g'
+              { g = 1
               , a = a'
-              , b = 1.0
+              , b = a'
               , xInit = xInit'
               , yInit = 0.0
-              , pxInit = pxInit'
-              , pyInit = pyInit'
+              , vxInit = vxInit'
+              , vyInit = vyInit'
               }
         }
   )
-  [ (a', xInit', pxInit', pyInit')
+  [ (a',xInit', vxInit', vyInit')
   | a' <- [1, 2]
-  , g' <- [1]
-  , xInit' <- [1, 2]
-  , pxInit' <- [0]
-  , pyInit' <- [0,1, (xInit' / a') * sqrt (2 * g'), ]
+  , xInit' <- [1]
+  , vxInit' <- [0]
+  , vyInit' <- [0,1, (xInit' / a') * sqrt (2 * 1)]
   ]
 :}

@@ -12,21 +12,23 @@ import dhall
 
 matplotlib.use("Agg")
 
+
 def dhallPathToDict(path):
     with open(path) as f:
         s = f.read()
     dhallToDict = dhall.loads(s)
     return dhallToDict
 
+
 def paraboloid_plot(relPath):
-    path = os.path.join(relPath,"setting.dhall")
+    path = os.path.join(relPath, "setting.dhall")
     dhallToDict = dhallPathToDict(path)
     a = dhallToDict["equation"]["a"]
     b = dhallToDict["equation"]["b"]
     x = np.arange(-2, 2, 0.1)
     y = np.arange(-2, 2, 0.1)
     X, Y = np.meshgrid(x, y)
-    Z = (X/a)**2 + (Y/b)**2
+    Z = (X / a) ** 2 + (Y / b) ** 2
     return (X, Y, Z)
 
     # fig = plt.figure(figsize=(6,6))
@@ -74,20 +76,19 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="an example program")
     parser.add_argument(
-        "--outputDirRegExp",
-        help="parent directory of data. example: --outputDirRegExp=output/*/",
-        default="output/*/",
+        "--queryResult",
+        help="paths of database for plotting.",
+        default="output/_query_result.csv",
     )
 
     parser.add_argument(
         "--data", help="3d data. example: --data position.csv", required=True
     )
-    # parser.add_argument("--y", help="y data. example: --y momentum.csv", required=True)
-    # parser.add_argument('--labels', nargs="*", type=str, help='a list of label for plotting data',default=[])
 
     args = parser.parse_args()
-    outputDirRegExp_ = args.outputDirRegExp
-    outputDirList = glob.glob(outputDirRegExp_)
+    queryResultArgv = args.queryResult
+    queryResultDF = pd.read_csv(queryResultArgv)
+    outputDirList = queryResultDF["export_outputDirectory"]
     xPathArgv = args.data
     # yPathArgv = args.y
     # labelListArgv = args.labels

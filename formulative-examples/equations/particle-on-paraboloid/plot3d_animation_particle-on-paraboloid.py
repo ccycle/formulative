@@ -22,7 +22,7 @@ def dhallPathToDict(path):
     return dhallToDict
 
 
-def paraboloid_meshgrid(relPath, xmin, xmax, ymin, ymax, zmax):
+def paraboloid_meshgrid(relPath, xmin, xmax, ymin, ymax):
     path = os.path.join(relPath, "setting.dhall")
     dhallToDict = dhallPathToDict(path)
     a = dhallToDict["equation"]["a"]
@@ -30,7 +30,7 @@ def paraboloid_meshgrid(relPath, xmin, xmax, ymin, ymax, zmax):
     x = np.arange(xmin, xmax, 0.01)
     y = np.arange(ymin, ymax, 0.01)
     X, Y = np.meshgrid(x, y)
-    Z = (X / a) ** 2 + (Y / b) ** 2
+    Z = ((X / a) ** 2 + (Y / b) ** 2) / 2
     return (X, Y, Z)
 
 
@@ -47,82 +47,25 @@ def plot3d(outputDirList, xPathArgv, interval_, frameRate_, fileName):
             shutil.rmtree(imgDir)
         os.makedirs(imgDir, exist_ok=True)
 
+        # ax = plt.axes(projection="3d")
+        max_axis_val = ((np.abs(df[["x", "y"]])).max()).max()
         j = 0
-        for i in range(cols):
+
+        ax = plt.axes(projection="3d")
+
+        # read data
+        xLabel = "x"
+        yLabel = "y"
+        zLabel = "z"
+        xline = df[xLabel]
+        yline = df[yLabel]
+        zline = df[zLabel]
+
+        for i in range(0, cols):
             if i % interval_ == 0:
 
-                ax = plt.axes(projection="3d")
-                # ax.use_sticky_edges = False
-
-                xLabel = "x"
-                yLabel = "y"
-                zLabel = "z"
-                xline = df["x"]
-                yline = df["y"]
-                zline = df["z"]
-                ax.plot3D(xline[:i], yline[:i], zline[:i])
-                ax.plot3D(xline, yline, zline, lw=0)
-                ax.plot(df[:i][xLabel], df[:i][yLabel], lw=0)
-                ax.scatter(
-                    df[i : i + 1][xLabel],
-                    df[i : i + 1][yLabel],
-                    df[i : i + 1][zLabel],
-                    s=20,
-                    c="black",
-                )
-
-                # fix x and y axis
-                max_axis_val = ((np.abs(df[["x", "y"]])).max()).max()
-                ax.scatter(-max_axis_val, -max_axis_val, 0, s=0)
-                ax.scatter(max_axis_val, max_axis_val, 0, s=0)
-
-                xmin, xmax = ax.get_xlim()
-                ymin, ymax = ax.get_ylim()
-                zmin, zmax = ax.get_zlim()
-
-                # projection
-                ax.plot(
-                    xs=xline[:i], ys=yline[:i], zs=zmin, zdir="z", c="gray", alpha=0.5
-                )
-                ax.plot(
-                    xs=yline[:i], ys=zline[:i], zs=xmin, zdir="x", c="gray", alpha=0.5
-                )
-                ax.plot(
-                    xs=xline[:i], ys=zline[:i], zs=ymax, zdir="y", c="gray", alpha=0.5
-                )
-
-                ax.scatter(
-                    df[i : i + 1][xLabel],
-                    df[i : i + 1][yLabel],
-                    zmin,
-                    c="black",
-                    s=5,
-                    alpha=0.5,
-                )
-                ax.scatter(
-                    df[i : i + 1][xLabel],
-                    ymax,
-                    df[i : i + 1][zLabel],
-                    c="black",
-                    s=5,
-                    alpha=0.5,
-                )
-                ax.scatter(
-                    xmin,
-                    df[i : i + 1][yLabel],
-                    df[i : i + 1][zLabel],
-                    c="black",
-                    s=5,
-                    alpha=0.5,
-                )
-
-                xmin, xmax = ax.get_xlim()
-                ymin, ymax = ax.get_ylim()
-                zmin, zmax = ax.get_zlim()
-
-                ax.set_xlim(xmin, xmax)
-                ax.set_ylim(ymin, ymax)
-                # ax.set_zlim(zmin, zmax)
+                fig = plt.figure()
+                ax = fig.add_subplot(111, projection="3d")
 
                 # plot surface
                 (X, Y, Z) = paraboloid_meshgrid(
@@ -131,10 +74,81 @@ def plot3d(outputDirList, xPathArgv, interval_, frameRate_, fileName):
                     max_axis_val,
                     -max_axis_val,
                     max_axis_val,
-                    zmax,
                 )
                 ax.plot_surface(X, Y, Z, alpha=0.2, color="gray")
 
+                # plot lines
+                ax.plot3D(xline[: (i + 1)], yline[: (i + 1)], zline[: (i + 1)])
+                ax.plot3D(xline, yline, zline, c="b", alpha=0.2)
+
+                ax.scatter(
+                    xline[i],
+                    yline[i],
+                    zline[i],
+                    s=20,
+                    c="black",
+                )
+
+                # fix x and y axis
+                # ax.scatter(-max_axis_val, -max_axis_val, 0, s=0)
+                # ax.scatter(max_axis_val, max_axis_val, 0, s=0)
+
+                # projection
+                xmin, xmax = ax.get_xlim()
+                ymin, ymax = ax.get_ylim()
+                zmin, zmax = ax.get_zlim()
+
+                ax.plot3D(
+                    xs=xline[: (i + 1)],
+                    ys=yline[: (i + 1)],
+                    zs=zmin,
+                    zdir="z",
+                    c="gray",
+                    alpha=0.5,
+                )
+                ax.plot3D(
+                    xs=yline[: (i + 1)],
+                    ys=zline[: (i + 1)],
+                    zs=xmin,
+                    zdir="x",
+                    c="gray",
+                    alpha=0.5,
+                )
+                ax.plot3D(
+                    xs=xline[: (i + 1)],
+                    ys=zline[: (i + 1)],
+                    zs=ymax,
+                    zdir="y",
+                    c="gray",
+                    alpha=0.5,
+                )
+
+                ax.scatter(
+                    xline[i],
+                    yline[i],
+                    zmin,
+                    c="black",
+                    s=5,
+                    alpha=0.5,
+                )
+                ax.scatter(
+                    xline[i],
+                    ymax,
+                    zline[i],
+                    c="black",
+                    s=5,
+                    alpha=0.5,
+                )
+                ax.scatter(
+                    xmin,
+                    yline[i],
+                    zline[i],
+                    c="black",
+                    s=5,
+                    alpha=0.5,
+                )
+
+                # save figure
                 fileName_base = os.path.splitext(os.path.basename(fileName))[0]
                 imgOutputPath = os.path.join(
                     outputDirRegExp,
@@ -163,26 +177,6 @@ def plot3d(outputDirList, xPathArgv, interval_, frameRate_, fileName):
         )
         subprocess.run(cmd, shell=True)
         print(movRegExp)
-        # ax = plt.axes(projection="3d")
-
-        # Data for a three-dimensional line
-        # xline = df["x"]
-        # yline = df["y"]
-        # zline = df["z"]
-        # ax.plot3D(xline, yline, zline, "gray")
-
-        # plot surface
-        # (X, Y, Z) = paraboloid_meshgrid()
-        # ax.plot_surface(X, Y, Z, alpha=0.2)
-        # plt.figure()
-        # df.plot(x=xName, y=yName)
-        # fig, ax = plt.subplots( nrows=1, ncols=1 )
-        # plt.ion()
-        # ax.plot(position,momentum)
-        # plt.ioff()
-        # imgOutputPath = os.path.join(outputDirRegExp, "position.png")
-        # plt.savefig(imgOutputPath)
-        # plt.close("all")
 
 
 if __name__ == "__main__":
@@ -196,7 +190,7 @@ if __name__ == "__main__":
     # )
     parser.add_argument(
         "--queryResult",
-        help="path for database.",
+        help="paths of database for plotting.",
         default="output/_query_result.csv",
     )
 

@@ -40,7 +40,7 @@ import Formulative.Preprocess.SettingFile.Carrier
 data MyVariable = MyVariable {x :: Double, y :: Double}
     deriving stock (Show, Generic)
     deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
-    deriving anyclass (DefaultOrdered, ExportRecordToFiles, FromLazyFields)
+    deriving anyclass (DefaultOrdered, ToLazyFields, FromLazyFields)
 
 ----------------------------------------------------------------
 -- User-defined data for setting
@@ -137,7 +137,7 @@ instance
 ----------------------------------------------------------------
 newtype MyLocalDependentVariable = MyLocalDependentVariable {xdot :: Double}
     deriving stock (Show, Generic)
-    deriving anyclass (DefaultOrdered, ExportRecordToFiles)
+    deriving anyclass (DefaultOrdered, ToLazyFields)
 instance
     ( Algebra sig m
     , Member (Reader MyEquationConstants) sig

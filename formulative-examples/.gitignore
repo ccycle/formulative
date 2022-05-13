@@ -7,11 +7,12 @@ output/
 
 settingFiles/
 
-_query_result.csv
-
 # profiling
 *.ps
 *.hp
 *.aux
 *.prof
 *.svg
+
+# debug
+setting_debug.dhall

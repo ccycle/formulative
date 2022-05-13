@@ -40,7 +40,7 @@ import Formulative.Preprocess.SettingFile.Carrier
 data MyVariable = MyVariable {position :: Double, momentum :: Double}
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
-  deriving anyclass (DefaultOrdered, ExportRecordToFiles, FromLazyFields)
+  deriving anyclass (DefaultOrdered, ToVariableTypes, ToLazyFields, FromLazyFields)
 
 ----------------------------------------------------------------
 -- User-defined data for setting
@@ -78,7 +78,6 @@ data MyDependentParameter = MyDependentParameter
   }
   deriving stock (Show, Generic)
   deriving anyclass (ToDhall, FromDhall, Hashable)
-
 instance (Has (Reader MyEquationConstants) sig m) => HasDependentParameterM m MyVariable where
   type DependentParameterType MyVariable = MyDependentParameter
   dependentParameterM = do
@@ -102,7 +101,7 @@ data MyGlobalDependentVariable = MyGlobalDependentVariable
   , totalChange :: Double
   }
   deriving stock (Show, Generic)
-  deriving anyclass (DefaultOrdered, ToRecord, ToNamedRecord)
+  deriving anyclass (DefaultOrdered, ToRecord)
 
 instance
   ( Has (Reader MyEquationConstants) sig m
@@ -116,11 +115,11 @@ instance
         eP x = (k ./. 2) .*. x .^ 2
         h x p = eK p .+. eP x
         xDot = p ./ m
-        pDot = - k *. x .-. gamma *. p
-        dHdx = - k *. x
+        pDot = - k *. x .-. (gamma ./. m) *. p
+        dHdx = k *. x
         dHdp = p ./ m
         hDot = pDot <.> dHdp .+. xDot <.> dHdx
-        w = xDot <.> (gamma *. p)
+        w = xDot <.> ((gamma ./. m) *. p)
     return $
       MyGlobalDependentVariable
         { kineticEnergy = eK p
@@ -135,8 +134,42 @@ instance
 ----------------------------------------------------------------
 ---- local dependent variable
 ----------------------------------------------------------------
--- no data (default)
-instance (Monad m) => HasLocalDependentVariableM m MyVariable
+data MyLocalDependentVariable = MyLocalDependentVariable
+  { velocity :: Double
+  , xBar :: Double
+  , xBarMinusPBar :: Double
+  , pBar :: Double
+  , xBarPlusPBar :: Double
+  , xBarMulPBar :: Double
+  }
+  deriving stock (Show, Generic)
+  deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
+  deriving anyclass (DefaultOrdered, ToVariableTypes, ToLazyFields)
+instance
+  ( Algebra sig m
+  , Member (Reader MyEquationConstants) sig
+  ) =>
+  HasLocalDependentVariableM m MyVariable
+  where
+  type LocalDependentVariable MyVariable = MyLocalDependentVariable
+  localDependentVariableM MyVariable{..} = do
+    MyEquationConstants{..} <- ask
+    let pBar = momentum ./. sqrt m
+        xBar = position .*. sqrt k
+        var1 = xBar .+. pBar
+        var2 = xBar .-. pBar
+        var3 = xBar .*. pBar
+    return $
+      MyLocalDependentVariable
+        { velocity = momentum ./. m
+        , xBar = xBar
+        , pBar = pBar
+        , xBarMinusPBar = var1
+        , xBarPlusPBar = var2
+        , xBarMulPBar = var3
+        }
+
+-- return $ MyLocalDependentVariable (momentum ./. m) var3
 
 ----------------------------------------------------------------
 -- define system equation

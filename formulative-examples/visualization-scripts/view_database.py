@@ -79,7 +79,7 @@ if __name__ == "__main__":
         nargs="*",
         metavar="HEADER",
         type=str,
-        default="export_outputDirectory",
+        default=[],
     )
     parser.add_argument(
         "-P",
@@ -100,9 +100,10 @@ if __name__ == "__main__":
     df1 = str_to_df_query(df, queryStr)
     fileName1 = args.appendFileName
     df2 = df1.copy()
-    df2["export_outputDirectory"] = df2["export_outputDirectory"].map(
-        lambda x: (x + "/" + fileName1)
-    )
+    if fileName1 != "":
+        df2["export_outputDirectory"] = df2["export_outputDirectory"].map(
+            lambda x: (x + "/" + fileName1)
+        )
     headerArg = args.header
     headerToSortArg = args.headerToSort
     isAscendingArg = args.isAscending
@@ -114,8 +115,10 @@ if __name__ == "__main__":
     # print
     flag = args.showPrefix
     if flag:
-        print('Flag "--showPrefix" is disabled; header prefixes are removed.')
-    print("result:")
+        print(
+            'Header prefixes are removed for displaying on terminal by default. To show prefixes, use "--showPrefix".'
+        )
+    print("Result:")
     print(df3.rename(columns=lambda s: splitHeader(flag, s)).to_string(index=False))
 
     # export

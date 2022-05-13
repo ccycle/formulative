@@ -26,6 +26,7 @@ def plot_global_quantity(outputDirList, paramPathArgv, dataPathArgv, labelList):
         else:
             df.plot(x=labelName, y=labelList)
         imgOutputPath = os.path.splitext(dataPath)[0] + ".png"
+        print("Exporting " + imgOutputPath + " ..")
         plt.savefig(imgOutputPath)
         plt.close("all")
 
@@ -34,9 +35,9 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="an example program")
     parser.add_argument(
-        "--outputDirRegExp",
-        help='parent directory of data. example: --outputDirRegExp="output/*/"',
-        default="output/*/"
+        "--queryResult",
+        help="paths of database for plotting.",
+        default="output/_query_result.csv",
     )
     parser.add_argument(
         "--parameter",
@@ -45,22 +46,26 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--data",
-        help="global quantity data. example: --dependentVariableGlobalData=dependentVariableGlobal.csv",
-        default="dependentVariableGlobal.csv",
+        help="global quantity data. example: --data=dependentVariable/_global.csv",
+        default="dependentVariable/_global.csv",
     )
     parser.add_argument(
-        "--labels",
+        "-H",
+        "--header",
         nargs="*",
         type=str,
-        help="a list of label for plotting data",
+        help="a list of header for plotting data",
         default=[],
     )
 
     args = parser.parse_args()
-    outputDirRegExp_ = args.outputDirRegExp
-    outputDirList = glob.glob(outputDirRegExp_)
+    # outputDirRegExp_ = args.outputDirRegExp
+    # outputDirList = glob.glob(outputDirRegExp_)
+    queryResultArgv = args.queryResult
+    queryResultDF = pd.read_csv(queryResultArgv)
+    outputDirList = queryResultDF["export_outputDirectory"]
     paramPathArgv = args.parameter
     dataPathArgv = args.data
-    labelListArgv = args.labels
+    labelListArgv = args.header
 
     plot_global_quantity(outputDirList, paramPathArgv, dataPathArgv, labelListArgv)

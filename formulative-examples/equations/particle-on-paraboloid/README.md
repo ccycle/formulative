@@ -1,135 +1,126 @@
 # Particle on Paraboloid
 
-equation:
+Equation:
 
 $$
-\global\long\def\d{\mathrm{d}}%
-
-\global\long\def\v#1{\mathbf{#1}}%
-
-\global\long\def\cd{\cdot}%
-
-\global\long\def\D#1#2{\frac{\d#1}{\d#2}}%
-\global\long\def\vari{\v x}%
-\global\long\def\varii{\mathbf{p}}%
-
-\global\long\def\xVec{\mathbf{e}_{x}}%
-
-\global\long\def\yVec{\mathbf{e}_{y}}%
-
-\global\long\def\zVec{\mathbf{e}_{z}}%
-
-\global\long\def\xComponentI{x}%
-
-\global\long\def\xComponentII{y}%
-
-\global\long\def\xComponentIII{z}%
-
-\global\long\def\LagrangianMultiplier{\lambda}%
-
-\global\long\def\constantI{a}%
-
-\global\long\def\constantII{b}%
-
-\global\long\def\equalityConstraint{f}%
-\global\long\def\parami{t}%
-\global\long\def\mass{m}%
-\global\long\def\gravitationalConstant{g}%
-\global\long\def\indexI{i}%
 \begin{align*}
-\D{\vari}{\parami} & =\frac{\varii}{\mass}\\
-\D{\varii}{\parami} & =-\gravitationalConstant\xComponentIII\zVec\\
-\equalityConstraint\left(\vari\right) & =\frac{\xComponentI^{2}}{\constantI^{2}}+\frac{\xComponentII^{2}}{\constantII^{2}}-\xComponentIII
+\frac{\mathrm{d}\mathbf{x}}{dt} & =\mathbf{v}\\
+\frac{\mathrm{d}\mathbf{\mathbf{v}}}{dt} & =-gz\mathbf{e}_{z}\\
+f\left(\mathbf{x}\right) & =\frac{x^{2}}{a^{2}}+\frac{y^{2}}{b^{2}}-2z=0
 \end{align*}
 $$
 
-scheme:
+where $\mathbf{x}=\left(x,y,z\right)$.
+
+Scheme:
 
 $$
-\global\long\def\d{\mathrm{d}}%
-
-\global\long\def\v#1{\mathbf{#1}}%
-
-\global\long\def\cd{\cdot}%
-
-\global\long\def\D#1#2{\frac{\d#1}{\d#2}}%
-\global\long\def\vari{\v x}%
-\global\long\def\varii{\mathbf{p}}%
-
-\global\long\def\xVec{\mathbf{e}_{x}}%
-
-\global\long\def\yVec{\mathbf{e}_{y}}%
-
-\global\long\def\zVec{\mathbf{e}_{z}}%
-
-\global\long\def\xComponentI{x}%
-
-\global\long\def\xComponentII{y}%
-
-\global\long\def\xComponentIII{z}%
-
-\global\long\def\LagrangianMultiplier{\lambda}%
-
-\global\long\def\constantI{a}%
-
-\global\long\def\constantII{b}%
-
-\global\long\def\equalityConstraint{f}%
-\global\long\def\parami{t}%
-\global\long\def\mass{m}%
-\global\long\def\gravitationalConstant{g}%
-\global\long\def\indexI{i}%
 \begin{align*}
-\frac{\vari_{\indexI+1}-\vari_{\indexI}}{\Delta t} & -\frac{\varii_{\indexI+1}+\varii_{\indexI}}{m}=\v 0\\
-\frac{\varii_{\indexI+1}-\varii_{\indexI}}{\Delta t} & +\gravitationalConstant\frac{\xComponentIII_{\indexI+1}+\xComponentIII_{\indexI}}{2}\zVec+\LagrangianMultiplier\left(\frac{2\xComponentI}{\constantI^{2}}\xVec+\frac{2\xComponentII}{\constantII^{2}}\yVec-\zVec\right)=\v 0
+\frac{\mathbf{x}^{(i+1)}-x^{(i)}}{\Delta t} & -\frac{\mathbf{v}^{(i+1)}+\mathbf{v}^{(i)}}{2}=\mathbf{0}\\
+\frac{\mathbf{v}^{(i+1)}+\mathbf{v}^{(i)}}{\Delta t} & +g\frac{z^{(i+1)}+z^{(i)}}{2}\mathbf{e}_{z}+\lambda\left(\frac{2x}{a^{2}}\mathbf{e}_{x}+\frac{2y}{b^{2}}\mathbf{e}_{y}-2\mathbf{e}_{z}\right)=\mathbf{0}
 \end{align*}
 $$
 
-## scripts
+where $\lambda$ is Lagrangian multiplier.
 
-###
+## Execution
 
-write multiple setting files
-
-```sh
-cabal repl particle-on-paraboloid
-```
-
-in REPL:
-
-```haskell
-:source ./equations/particle-on-paraboloid/writeSettingFilesFromList.ghci
-:q -- quit
-```
-
-### execute
+Build:
 
 ```sh
-cabal exec -- particle-on-paraboloid -s setting.dhall
+cabal build particle-on-paraboloid
 ```
 
-execute multiple setting files:
+Execute:
+
+1. single setting file
+
+   ```sh
+   cabal exec -- particle-on-paraboloid -s setting.dhall
+   ```
+
+1. multiple setting files
+
+   generate multiple setting files:
+
+   ```sh
+   cabal repl particle-on-paraboloid
+   ```
+
+   in REPL:
+
+   ```sh
+   :source equations/particle-on-paraboloid/writeSettingFiles.ghci
+   ```
+
+   quit REPL:
+
+   ```sh
+   :q
+   ```
+
+   _NOTE_: `:source` is a command defined in `formulative-examples/.ghci` . To use this command outside of `formulative-examples`, add `:def source readFile` in your `.ghci` file.
+
+   execute for multiple setting files:
+
+   ```sh
+   find ./settingFiles -name "*.dhall" | xargs -I -P 4 cabal exec -- particle-on-paraboloid -s {}
+   ```
+
+   Recalculate dependent variables from exported independent variable data:
+
+   ```sh
+   find ./settingFiles -name "*.dhall" | xargs -I {} cabal exec -- particle-on-paraboloid --recalculation Continue -s {}
+   ```
+
+   Multiprocessing (3 process):
+
+   ```sh
+   find ./settingFiles -name "*.dhall" | xargs -P 3 -I {} cabal exec -- particle-on-paraboloid --recalculation Continue -s {}
+   ```
+
+## Visualization
+
+Make database:
 
 ```sh
-find ./settingFiles -name "*.dhall" -exec cabal exec -- particle-on-paraboloid --ignore-warning -s {} \;
+python ../../visualization-scripts/make_database.py
 ```
 
-### visualize
+View and query database (the result is exported in `output/_query_result.csv`):
+
+- example 1: "equation_dampingRatio <= 1"
+
+  ```sh
+  python ../../visualization-scripts/view_database.py -H equation_a equation_b equation_xInit equation_pxInit equation_pyInit -q "equation_a==1 & equation_b == 1"
+  ```
+
+- example 2: extract specific directory
+
+  ```sh
+  python ../../visualization-scripts/view_database.py -q "export_outputDirectory == \"output/eeca6053077485a19e88dbeb2424390f1c6b37b7\""
+  ```
+
+Visualization command is executed on all directories contained in `_query_result.csv` .
 
 plot phase space:
 
 ```sh
-python ../../visualization-scripts/plot3d.py --x position.csv --y momentum.csv
+python plot3d_particle-on-paraboloid.py --data position.csv
 ```
 
-plot all global quantities:
+All global quantities:
 
 ```sh
-python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariableGlobal.csv
+python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariable/_global.csv
 ```
 
-plot global quantities for selected labels:
+Global quantities for selected labels (in this case `hamiltonian`):
 
 ```sh
-python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariableGlobal.csv --labels hamiltonian dHdt power
+python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariable/_global.csv --header hamiltonian
 ```
+
+## Reference
+
+- A. Gray, A. Jones, and R. Rimmer, “Motion under gravity on a paraboloid,” Journal of Differential Equations, vol. 45, no. 2, pp. 168–181, Aug. 1982, doi: 10.1016/0022-0396(82)90063-8.

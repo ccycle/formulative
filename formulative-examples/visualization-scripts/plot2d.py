@@ -7,8 +7,6 @@ import matplotlib
 import argparse
 import glob
 
-# example:
-# python ../scripts/plot2d.py --outputDirRegExp output/7ced1919b958b83d/ --x df_x.csv --y df_y.csv
 matplotlib.use("Agg")
 
 # TODO: ラベルからパスを取得してプロットできるようにする
@@ -43,24 +41,24 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="an example program")
     parser.add_argument(
-        "--outputDirRegExp",
-        help="parent directory of data. example: --outputDirRegExp=output/*/",
-        default="output/*/",
+        "--queryResult",
+        help="paths of database for plotting.",
+        default="output/_query_result.csv",
     )
 
     parser.add_argument(
-        "--x", help="1D data for x axis. example: --x x.csv", required=True
+        "-x", help="1D data for x axis. example: -x x.csv", required=True
     )
     parser.add_argument(
-        "--y", help="1D data for y axis. example: --y y.csv", required=True
+        "-y", help="1D data for y axis. example: -y y.csv", required=True
     )
     # parser.add_argument('--labels', nargs="*", type=str, help='a list of label for plotting data',default=[])
 
     args = parser.parse_args()
-    outputDirRegExp_ = args.outputDirRegExp
-    outputDirList = glob.glob(outputDirRegExp_)
+    queryResultArgv = args.queryResult
+    queryResultDF = pd.read_csv(queryResultArgv)
+    outputDirList = queryResultDF["export_outputDirectory"]
     xPathArgv = args.x
     yPathArgv = args.y
-    # labelListArgv = args.labels
 
     plot2d(outputDirList, xPathArgv, yPathArgv)

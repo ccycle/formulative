@@ -29,26 +29,90 @@ $$
 \end{align*}
 $$
 
-## scripts
+## Execution
 
-execute:
-
-```sh
-cabal exec -- harmonic-oscillator -s setting.dhall
-```
-
-execute multiple setting files:
+Build:
 
 ```sh
-find ./settingFiles -name "*.dhall" -exec cabal exec -- harmonic-oscillator -s {} \;
+cabal build harmonic-oscillator
 ```
 
-### visualize
+Execute:
+
+1. single setting file
+
+   ```sh
+   cabal exec -- harmonic-oscillator -s setting.dhall
+   ```
+
+1. multiple setting files
+
+   generate multiple setting files:
+
+   ```sh
+   cabal repl harmonic-oscillator
+   ```
+
+   in REPL:
+
+   ```sh
+   :source equations/harmonic-oscillator/writeSettingFiles.ghci
+   ```
+
+   quit REPL:
+
+   ```sh
+   :q
+   ```
+
+   _NOTE_: `:source` is a command defined in `formulative-examples/.ghci` . To use this command outside of `formulative-examples`, add `:def source readFile` in your `.ghci` file.
+
+   execute for multiple setting files:
+
+   ```sh
+   find ./settingFiles -name "*.dhall" | xargs -I -P 4 cabal exec -- harmonic-oscillator -s {}
+   ```
+
+   Recalculate dependent variables from exported independent variable data:
+
+   ```sh
+   find ./settingFiles -name "*.dhall" | xargs -I {} cabal exec -- harmonic-oscillator --recalculation Continue -s {}
+   ```
+
+   Multiprocessing (3 process):
+
+   ```sh
+   find ./settingFiles -name "*.dhall" | xargs -P 3 -I {} cabal exec -- harmonic-oscillator --recalculation Continue -s {}
+   ```
+
+## Visualization
+
+Make database:
+
+```sh
+python ../../visualization-scripts/make_database.py
+```
+
+View and query database (the result is exported in `output/_query_result.csv`):
+
+- example 1: "equation_dampingRatio <= 1"
+
+  ```sh
+  python ../../visualization-scripts/view_database.py -H equation_a equation_b equation_xInit equation_pxInit equation_pyInit -q "equation_dampingRatio <= 1"
+  ```
+
+- example 2: extract specific directory
+
+  ```sh
+  python ../../visualization-scripts/view_database.py -q "export_outputDirectory == \"output/eeca6053077485a19e88dbeb2424390f1c6b37b7\""
+  ```
+
+Visualization command is executed on all directories contained in `_query_result.csv` .
 
 Time evolution:
 
 ```sh
-python ../../visualization-scripts/plot_time_evolution.py --outputDirRegExp "output/*" --x position.csv --y momentum.csv
+python ../../visualization-scripts/plot_time_evolution.py -t time.csv -x position.csv
 ```
 
 Phase space:
@@ -57,14 +121,14 @@ Phase space:
 python ../../visualization-scripts/plot2d.py --x position.csv --y momentum.csv
 ```
 
-Global quantities:
+All global quantities:
 
 ```sh
-python ../../visualization-scripts/plot_global_quantity.py --outputDirRegExp "output/*" --parameter time.csv --data dependentVariableGlobal.csv
+python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariable/_global.csv
 ```
 
-Global quantities for selected labels (`hamiltonian`, `dHdt`, `power`):
+Global quantities for selected labels (in this case `hamiltonian`, `dHdt`, `power`):
 
 ```sh
-python ../../visualization-scripts/plot_global_quantity.py --outputDirRegExp "output/*" --parameter time.csv --data dependentVariableGlobal.csv --labels hamiltonian dHdt power
+python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariable/_global.csv --header hamiltonian dHdt power
 ```

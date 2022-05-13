@@ -43,24 +43,23 @@ import Formulative.Preprocess.SettingFile.Carrier
 ----------------------------------------------------------------
 data MyVariable = MyVariable
   { position :: Vector 3 Double
-  , momentum :: Vector 3 Double
+  , velocity :: Vector 3 Double
   }
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
-  deriving anyclass (DefaultOrdered, ExportRecordToFiles, FromLazyFields)
+  deriving anyclass (DefaultOrdered, ToLazyFields, FromLazyFields)
 
 ----------------------------------------------------------------
 -- User-defined data for setting
 ----------------------------------------------------------------
 data MyEquationConstants = MyEquationConstants
-  { m :: Double
-  , g :: Double
+  { g :: Double
   , a :: Double
   , b :: Double
   , xInit :: Double
   , yInit :: Double
-  , pxInit :: Double
-  , pyInit :: Double
+  , vxInit :: Double
+  , vyInit :: Double
   }
   deriving stock (Show, Generic)
   deriving anyclass (ToDhall, FromDhall, Hashable, HasDefaultValue)
@@ -85,19 +84,19 @@ data MySetting = MySetting
 instance (Has (Reader MyEquationConstants) sig m) => HasInitialConditionM m MyVariable where
   getInitialConditionM = do
     MyEquationConstants{..} <- ask
-    let zInit = xInit .^ 2 ./. (a .^ 2) .+. yInit .^ 2 ./. (b .^ 2)
+    let zInit = (xInit .^ 2 ./. (a .^ 2) .+. yInit .^ 2 ./. (b .^ 2)) ./. 2
     let x0 = generate f1
         f1 0 = xInit
         f1 1 = yInit
         f1 2 = zInit
         f1 _ = 0
-    let pzInit = 2 .*. pxInit .*. xInit ./. (a .^ 2) .+. 2 .*. pyInit .*. yInit ./. (b .^ 2)
-    let p0 = generate f2
-        f2 0 = pxInit
-        f2 1 = pyInit
-        f2 2 = pzInit
+    let vzInit = vxInit .*. xInit ./. (a .^ 2) .+. vyInit .*. yInit ./. (b .^ 2)
+    let v0 = generate f2
+        f2 0 = vxInit
+        f2 1 = vyInit
+        f2 2 = vzInit
         f2 _ = 0
-    return $ MyVariable x0 p0
+    return $ MyVariable x0 v0
 
 ----------------------------------------------------------------
 ---- equation
@@ -105,19 +104,19 @@ instance (Has (Reader MyEquationConstants) sig m) => HasInitialConditionM m MyVa
 gradDeltaL
   (StepSize dt)
   MyEquationConstants{..}
-  (MyVariable x p)
-  (MyVariable xNew pNew) = MyVariable dLdx dLdp
+  (MyVariable x v)
+  (MyVariable xNew vNew) = MyVariable dLdx dLdp
    where
     dx = xNew .-. x
     dxdt = dx ./ dt
-    dp = pNew .-. p
+    dp = vNew .-. v
     dpdt = dp ./ dt
-    -- H = p^2/(2m) + gz
+    -- H = v^2/(2m) + gz
     dHdx = generate f
     f 2 = g
     f _ = 0
-    p' = symmetrizePoly 1 pNew p
-    dHdp = p' ./ m
+    v' = symmetrizePoly 1 vNew v
+    dHdp = v'
     dLdx = dxdt .-. dHdp
     dLdp = dpdt .+. dHdx
 instance
@@ -150,10 +149,10 @@ newtype MyConstraintCondition = MyConstraintCondition {l1 :: Double}
 
 equalityConstraint
   MyEquationConstants{..}
-  (MyVariable xOld pOld)
-  (MyVariable xNew pNew) = MyConstraintCondition g1
+  (MyVariable xOld vOld)
+  (MyVariable xNew vNew) = MyConstraintCondition g1
    where
-    f1 x = ((x `index` 0) ./ a) .^ 2 .+. ((x `index` 1) ./ b) .^ 2 - (x `index` 2)
+    f1 x = ((x `index` 0) ./ a) .^ 2 .+. ((x `index` 1) ./ b) .^ 2 - 2 .*. (x `index` 2)
     g1 = f1 xNew .-. f1 xOld
 
 ----------------------------------------------------------------
@@ -162,15 +161,15 @@ equalityConstraint
 gradConstraint
   MyEquationConstants{..}
   (MyConstraintCondition l1)
-  (MyVariable xOld pOld)
-  (MyVariable xNew pNew) = MyVariable zero (l1 *. dg1)
+  (MyVariable xOld vOld)
+  (MyVariable xNew vNew) = MyVariable zero (l1 *. dg1)
    where
     x = symmetrizePoly 1 xNew xOld `index` 0
     y = symmetrizePoly 1 xNew xOld `index` 1
     dg1 = generate f
     f 0 = 2 .*. x ./. (a .^ 2)
     f 1 = 2 .*. y ./. (b .^ 2)
-    f 2 = -1
+    f 2 = -2
     f _ = 0
 
 instance
@@ -183,7 +182,7 @@ instance
   getGradPenaltyM = do
     c <- ask
     varOld <- getVariableOld
-    return $ \(LagrangianMultiplier l) var -> gradConstraint c l varOld var
+    return $ \(LagrangeMultiplier l) var -> gradConstraint c l varOld var
 
 instance
   ( Algebra sig m
@@ -219,11 +218,11 @@ instance
 kFunc MyEquationConstants{..} MyVariable{..} =
   let x = position `index` 0
       y = position `index` 1
-      px = momentum `index` 0
-      py = momentum `index` 1
-   in ((a .*. b) .^ 2 ./. 8)
-        .*. (1 .+. (2 .*. x ./. a .^ 2) .^ 2 .+. (2 .*. y ./. b .^ 2) .^ 2)
-        .*. (g .-. (2 .*. px ./. (m .*. a)) .^ 2 .+. (2 .*. py ./. (m .*. b)) .^ 2)
+      vx = velocity `index` 0
+      vy = velocity `index` 1
+   in (((a .*. b) .^ 2) ./. 2)
+        .*. (1 .+. (x ./. a .^ 2) .^ 2 .+. (y ./. b .^ 2) .^ 2)
+        .*. (g .-. ((vx ./. a) .^ 2 .+. (vy ./. b) .^ 2))
 
 data MyDependentParameter = MyDependentParameter
   { h0 :: Double
@@ -244,15 +243,15 @@ instance (Algebra sig m, Member (Reader MyEquationConstants) sig) => HasDependen
     c@MyEquationConstants{..} <- ask
     let h0 = hFunc c x
         k0 = kFunc c x
-        alphaPlusBeta = ((a .^ 2 .+. b .^ 2) ./. 2 .+. (2 .*. h0) ./. g) ./. 2
+        alphaPlusBeta = (a .^ 2 .+. b .^ 2) .+. (2 .*. h0) ./. g
         alphaBeta = 2 .*. k0 ./. g
-        alpha = alphaPlusBeta .+. sqrt (alphaPlusBeta .^ 2 .-. alphaBeta)
-        beta = alphaPlusBeta .-. sqrt (alphaPlusBeta .^ 2 .-. alphaBeta)
+        alpha = (alphaPlusBeta ./. 2) .-. sqrt ((alphaPlusBeta ./. 2) .^ 2 .-. alphaBeta)
+        beta = (alphaPlusBeta ./. 2) .+. sqrt ((alphaPlusBeta ./. 2) .^ 2 .-. alphaBeta)
     return $ MyDependentParameter h0 k0 (a .^ 2) (b .^ 2) alpha beta alphaPlusBeta alphaBeta
    where
-    hFunc MyEquationConstants{..} (MyVariable x p) =
+    hFunc MyEquationConstants{..} (MyVariable x v) =
       let z = x `index` 2
-          eK = p <.> p ./. (2 .*. m)
+          eK = v <.> v ./. 2
           eP = g .*. z
        in eK .+. eP
 
@@ -262,7 +261,7 @@ instance (Algebra sig m, Member (Reader MyEquationConstants) sig) => HasDependen
 data MyGlobalDependentVariable = MyGlobalDependentVariable
   { kineticEnergy :: Double
   , potentialEnergy :: Double
-  , h :: Double
+  , hamiltonian :: Double
   , k :: Double
   }
   deriving stock (Show, Generic)
@@ -270,7 +269,7 @@ data MyGlobalDependentVariable = MyGlobalDependentVariable
   deriving anyclass (DefaultOrdered, ToRecord)
 
 -- Reference:
--- A. Gray, A. Jones, and R. Rimmer, “Motion under gravity on a paraboloid,” Journal of Differential Equations, vol. 45, no. 2, pp. 168–181, Aug. 1982.
+-- A. Gray, A. Jones, and R. Rimmer, “Motion under gravity on a paraboloid,” Journal of Differential Equations, vol. 45, no. 2, pp. 168–181, Aug. 1982, doi: 10.1016/0022-0396(82)90063-8.
 
 instance
   ( Algebra sig m
@@ -280,18 +279,18 @@ instance
   HasGlobalDependentVariableM m MyVariable
   where
   type GlobalDependentVariable MyVariable = MyGlobalDependentVariable
-  globalDependentVariableM MyVariable{..} = do
-    MyEquationConstants{..} <- ask
-    let p = momentum
+  globalDependentVariableM var@MyVariable{..} = do
+    c@MyEquationConstants{..} <- ask
+    let v = velocity
     let z = position `index` 2
-    let eK = p <.> p ./. (2 .*. m)
+    let eK = v <.> v ./. 2
     let eP = g .*. z
     return $
       MyGlobalDependentVariable
         { kineticEnergy = eK
         , potentialEnergy = eP
-        , h = eK .+. eP
-        , k = undefined
+        , hamiltonian = eK .+. eP
+        , k = kFunc c var
         }
 
 ----------------------------------------------------------------
@@ -299,11 +298,11 @@ instance
 ----------------------------------------------------------------
 data MyLocalDependentVariable = MyLocalDependentVariable
   { constraintCondition :: Double
-  , lagrangianMultiplier :: Double
+  , lagrangeMultiplier :: Double
   }
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
-  deriving anyclass (DefaultOrdered, ExportRecordToFiles)
+  deriving anyclass (DefaultOrdered, ToLazyFields)
 instance
   ( Algebra sig m
   , Member (ConstrainedSystem MyConstraintCondition) sig
@@ -314,8 +313,8 @@ instance
   type LocalDependentVariable MyVariable = MyLocalDependentVariable
   localDependentVariableM MyVariable{..} = do
     MyEquationConstants{..} <- ask
-    (MyConstraintCondition l1) <- getLagrangianMultiplier
-    let f x = ((x `index` 0) ./. a) .^ 2 .+. ((x `index` 1) ./. b) .^ 2 .-. (x `index` 2)
+    (MyConstraintCondition l1) <- getLagrangeMultiplier
+    let f x = ((x `index` 0) ./. a) .^ 2 .+. ((x `index` 1) ./. b) .^ 2 .-. 2 .*. (x `index` 2)
     let g1 = f position
     return $ MyLocalDependentVariable g1 l1
 
