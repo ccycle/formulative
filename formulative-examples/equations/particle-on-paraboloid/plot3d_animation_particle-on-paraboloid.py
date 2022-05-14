@@ -190,7 +190,7 @@ if __name__ == "__main__":
     # )
     parser.add_argument(
         "--queryResult",
-        help="paths of database for plotting.",
+        help="paths of database for plotting. default:%(default)s",
         default="output/_query_result.csv",
     )
 
@@ -200,21 +200,21 @@ if __name__ == "__main__":
     parser.add_argument(
         "-i",
         "--interval",
-        help="intervals for exporting images. example: --interval 10",
+        help="intervals for exporting images. " + "default:%(default)s",
         default=10,
         type=int,
     )
     parser.add_argument(
         "-f",
         "--framerate",
-        help="frame rates for exporting images. example: --framerate 10",
+        help="frame rates for exporting images. " + "default:%(default)s",
         default=10,
         type=int,
     )
     parser.add_argument(
         "-o",
         "--output",
-        help="file name of output movie (without extension). example: -o position.mp4",
+        help="file name of output movie. example: -o position.mp4",
         required=True,
     )
 

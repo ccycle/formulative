@@ -25,9 +25,10 @@ writeSettingFilesFromList
         }
   )
   [ (a',xInit', vxInit', vyInit')
-  | a' <- [1, 2]
+  | a' <- [1]
+  , g' <- [1]
   , xInit' <- [1]
   , vxInit' <- [0]
-  , vyInit' <- [0,1, (xInit' / a') * sqrt (2 * 1)]
+  , vyInit' <- [0,0.5,1,1.5, (xInit' / a') * sqrt (g')]
   ]
 :}

@@ -33,51 +33,53 @@ cabal build particle-on-paraboloid
 
 Execute:
 
-1. single setting file
+- (case 1) Single setting file
 
-   ```sh
-   cabal exec -- particle-on-paraboloid -s setting.dhall
-   ```
+  ```sh
+  cabal exec -- particle-on-paraboloid -s setting.dhall
+  ```
 
-1. multiple setting files
+- (case 2) Multiple setting files
 
-   generate multiple setting files:
+  Generate multiple setting files:
 
-   ```sh
-   cabal repl particle-on-paraboloid
-   ```
+  ```sh
+  cabal repl particle-on-paraboloid
+  ```
 
-   in REPL:
+  in REPL:
 
-   ```sh
-   :source equations/particle-on-paraboloid/writeSettingFiles.ghci
-   ```
+  ```sh
+  :source equations/particle-on-paraboloid/writeSettingFiles.ghci
+  ```
 
-   quit REPL:
+  quit REPL:
 
-   ```sh
-   :q
-   ```
+  ```sh
+  :q
+  ```
 
-   _NOTE_: `:source` is a command defined in `formulative-examples/.ghci` . To use this command outside of `formulative-examples`, add `:def source readFile` in your `.ghci` file.
+  _NOTE_: `:source` is a command defined in `formulative-examples/.ghci` . To use this command outside of `formulative-examples`, add `:def source readFile` in your `.ghci` file.
 
-   execute for multiple setting files:
+  Execute for multiple setting files:
 
-   ```sh
-   find ./settingFiles -name "*.dhall" | xargs -I {} cabal exec -- particle-on-paraboloid -s {}
-   ```
+  - Single process:
 
-   Recalculate dependent variables from exported independent variable data:
+    ```sh
+    find ./settingFiles -name "*.dhall" | xargs -I {} cabal exec -- particle-on-paraboloid -s {}
+    ```
 
-   ```sh
-   find ./settingFiles -name "*.dhall" | xargs -I {} cabal exec -- particle-on-paraboloid --recalculation Continue -s {}
-   ```
+    Using option `--recalculation` (Recalculate dependent variables from exported variable data if the directory exists):
 
-   Multiprocessing (3 process):
+    ```sh
+    find ./settingFiles -name "*.dhall" | xargs -I {} cabal exec -- particle-on-paraboloid --recalculation Continue -s {}
+    ```
 
-   ```sh
-   find ./settingFiles -name "*.dhall" | xargs -P 3 -I {} cabal exec -- particle-on-paraboloid --recalculation Continue -s {}
-   ```
+  - Multi process (Run 3 processes):
+
+    ```sh
+    find ./settingFiles -name "*.dhall" | xargs -P 3 -I {} cabal exec -- particle-on-paraboloid --recalculation Continue -s {}
+    ```
 
 ## Visualization
 
@@ -92,7 +94,7 @@ View and query database (the result is exported in `output/_query_result.csv`):
 - example 1: "equation_dampingRatio <= 1"
 
   ```sh
-  python ../../visualization-scripts/view_database.py -H equation_a equation_b equation_xInit equation_pxInit equation_pyInit -q "equation_a==1 & equation_b == 1"
+  python ../../visualization-scripts/view_database.py -H equation_a equation_b equation_xInit equation_vxInit equation_vyInit -q "equation_a==1 & equation_b == 1"
   ```
 
 - example 2: extract specific directory
@@ -103,22 +105,28 @@ View and query database (the result is exported in `output/_query_result.csv`):
 
 Visualization command is executed on all directories contained in `_query_result.csv` .
 
-plot phase space:
+Plot orbit:
 
 ```sh
-python plot3d_particle-on-paraboloid.py --data position.csv
+python plot3d_particle-on-paraboloid.py --data position.csv -o position.png
 ```
 
-All global quantities:
+Plot animation (interval:5):
+
+```sh
+python plot3d_animation_particle-on-paraboloid.py --data position.csv -o position.mp4 -i 5
+```
+
+Plot all global quantities:
 
 ```sh
 python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariable/_global.csv
 ```
 
-Global quantities for selected labels (in this case `hamiltonian`):
+Global quantities for selected labels (in this case `kineticEnergy`,`potentialEnergy`,`hamiltonian`):
 
 ```sh
-python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariable/_global.csv --header hamiltonian
+python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariable/_global.csv -H kineticEnergy  potentialEnergy hamiltonian
 ```
 
 ## Reference
