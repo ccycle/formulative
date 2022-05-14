@@ -19,18 +19,9 @@ import Path.IO
 putStrLnM :: (Algebra sig m, Member (Lift IO) sig, Member Export sig) => String -> m ()
 putStrLnM msg = do
     sendIO $ putStrLn msg
-    OutputDir dir <- askOutputDir
-    let logFile = $(mkRelFile "result.log")
-    let file = dir </> logFile
-    sendIO $ appendFile (toFilePath file) (msg <> "\n")
-
-putStrLnWithLogPathM :: (Algebra sig m, Member (Lift IO) sig, Member Export sig) => Path b Dir -> String -> m ()
-putStrLnWithLogPathM dir msg = do
-    sendIO $ putStrLn msg
-    -- OutputDir dir <- askOutputDir
-    let logFile = $(mkRelFile "result.log")
-    let file = dir </> logFile
-    sendIO $ appendFile (toFilePath file) (msg <> "\n")
+    LogFilePath dir <- askLogFilePath
+    sendIO . ensureDir $ parent dir
+    sendIO $ appendFile (toFilePath dir) (msg <> "\n")
 
 ensureDirOutputM :: (Algebra sig m, Member Export sig, Member (Lift IO) sig) => m ()
 ensureDirOutputM = do
@@ -101,7 +92,8 @@ warningForOverwrite = do
 removeDirRecurWithWarningM :: (Algebra sig m, Member (Lift IO) sig, Member Export sig, Member (Throw SomeException) sig) => m ()
 removeDirRecurWithWarningM = do
     OutputDir x <- askOutputDir
-    d <- sendIO $ doesDirExist x
+    sName <- sendIO $ parseRelFile "setting.dhall"
+    d <- sendIO $ doesFileExist (x </> sName)
     when d $ do
         r <- warningForOverwrite
         case r of

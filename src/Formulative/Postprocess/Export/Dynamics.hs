@@ -236,7 +236,6 @@ mainCalcDynamics = do
             go (StepIndex 0) interval maximumIterationNumber initialValue finalValue stepSize x x
   where
     go i (IntervalStepIndex nInterval) (MaxStepIndex iMax) (DynamicParameter t) (DynamicParameter finalVal) (StepSize dt) xiMinus1 xi = do
-        msgNewLine
         putStrLnM $ "step " ++ show i
         putStrLnM $ "parameter: " ++ show t
         when (i `mod` nInterval == StepIndex 0) $
@@ -253,6 +252,7 @@ mainCalcDynamics = do
                 putVariableOld xi
                 xiPlus1 <- updateM xi
                 putVariable xiPlus1
+                msgNewLine
                 go (succ i) (IntervalStepIndex nInterval) (MaxStepIndex iMax) (DynamicParameter (t .+. dt)) (DynamicParameter finalVal) (StepSize dt) xi xiPlus1
     goContinue iMax (i', t') x' (Streaming.Nil _ _) _ =
         return (i', t', x')

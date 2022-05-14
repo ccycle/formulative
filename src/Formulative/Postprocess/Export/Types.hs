@@ -16,12 +16,12 @@ import GHC.Exts (IsString)
 import Path
 
 -- TODO: add VTU
-data ExportFormat = CSV
+newtype LogFileDirSetting = LogFileDirSetting String
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall)
-instance HasDefaultValue ExportFormat where
-    defaultValue = CSV
-instance Hashable ExportFormat where
+instance HasDefaultValue LogFileDirSetting where
+    defaultValue = LogFileDirSetting ("./output/" <> convertString outputDirHashCmdStr <> "/result.log")
+instance Hashable LogFileDirSetting where
     hashWithSalt s a = hashWithSalt s (1 :: Int)
 
 -- dhallから読み取った生のfilepath
@@ -35,13 +35,9 @@ instance Hashable OutputDirSetting where
 outputDirHashCmdStr :: FilePath
 outputDirHashCmdStr = "[[hash]]"
 instance HasDefaultValue OutputDirSetting where
-    defaultValue = OutputDirSetting ("./output/" ++ convertString outputDirHashCmdStr)
+    defaultValue = OutputDirSetting ("./output/" <> convertString outputDirHashCmdStr)
 
-data ExportQuantityFormat = ExportQuantityFormat {variable :: ExportFormat, local :: ExportFormat, global :: ExportFormat}
-    deriving stock (Generic, Show, Eq)
-    deriving anyclass (FromDhall, ToDhall, HasDefaultValue, Hashable)
-
-data ExportSetting = ExportSetting {format :: ExportQuantityFormat, outputDirectory :: OutputDirSetting}
+data ExportSetting = ExportSetting {logFile :: LogFileDirSetting, outputDirectory :: OutputDirSetting}
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, Hashable, HasDefaultValue)
 
@@ -64,4 +60,7 @@ newtype DynamicParameter a = DynamicParameter a
     deriving newtype (Show, Num, Enum, Ord, FromField, Fractional, Additive, Multiplicative, Semiring)
     deriving anyclass (FromDhall, ToDhall, Hashable)
 newtype OutputDir = OutputDir (Path Rel Dir)
+    deriving stock (Generic, Show, Eq)
+
+newtype LogFilePath = LogFilePath (Path Rel File)
     deriving stock (Generic, Show, Eq)

@@ -4,12 +4,12 @@ import Control.Algebra
 import Formulative.Postprocess.Export.Types
 
 data Export m k where
-    AskExportQuantityFormat :: Export m ExportQuantityFormat
+    AskLogFilePath :: Export m LogFilePath
     AskOutputDir :: Export m OutputDir
     LocalOutputDir :: (OutputDir -> OutputDir) -> m a -> Export m a
 
-askExportQuantityFormat :: (Has Export sig m) => m ExportQuantityFormat
-askExportQuantityFormat = send AskExportQuantityFormat
+askLogFilePath :: (Has Export sig m) => m LogFilePath
+askLogFilePath = send AskLogFilePath
 askOutputDir :: (Has Export sig m) => m OutputDir
 askOutputDir = send AskOutputDir
 localOutputDir :: (Has Export sig m) => (OutputDir -> OutputDir) -> m a -> m a

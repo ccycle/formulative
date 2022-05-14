@@ -1,4 +1,5 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 
@@ -22,16 +23,16 @@ import Formulative.Preprocess.ReadSetting
 import Formulative.Preprocess.SettingFile.Effect
 import Path
 
-newtype ExportC m a = ExportC {runExportC :: ReaderC (ExportQuantityFormat, OutputDir) m a}
+newtype ExportC m a = ExportC {runExportC :: ReaderC (LogFilePath, OutputDir) m a}
     deriving stock (Functor)
     deriving newtype (Applicative, Monad)
 instance (Algebra sig m) => Algebra (Export :+: sig) (ExportC m) where
     alg hdl sig ctx = case sig of
-        L AskExportQuantityFormat -> do
-            (env, _) <- ExportC (ask @(ExportQuantityFormat, OutputDir))
+        L AskLogFilePath -> do
+            (env, _) <- ExportC (ask @(LogFilePath, OutputDir))
             pure (env <$ ctx)
         L AskOutputDir -> do
-            (_, output) <- ExportC (ask @(ExportQuantityFormat, OutputDir))
+            (_, output) <- ExportC (ask @(LogFilePath, OutputDir))
             pure (output <$ ctx)
         -- TODO: 実装の見直し
         L (LocalOutputDir f m) ->
@@ -57,7 +58,8 @@ runExport x f = do
     let (ExportSetting r (OutputDirSetting str)) = x
     let z = parseAndReplace outputDirHashCmdStr hashStr str
     outputDir <- liftEither $ parseRelDir z
-    runReader (r, OutputDir outputDir) . runExportC $ f
+    let logFileDir = outputDir </> $(mkRelFile "result.log")
+    runReader (LogFilePath logFileDir, OutputDir outputDir) . runExportC $ f
 
 runExportIO ::
     forall a m b sig.
