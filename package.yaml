@@ -37,6 +37,7 @@ dependencies:
   - ghc-typelits-natnormalise
   - hashable
   - hmatrix
+  - ieee
   - matrix-sized
   - megaparsec
   - numeric-limits

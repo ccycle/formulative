@@ -42,12 +42,20 @@ library
       Formulative.Calculation.Algebra.DualNumber
       Formulative.Calculation.Algebra.HyperComplex
       Formulative.Calculation.Algebra.MaxPlus
+      Formulative.Calculation.Algebra.Polynomial
       Formulative.Calculation.Algebra.SetTheory.FiniteField
       Formulative.Calculation.Algebra.SetTheory.Group
       Formulative.Calculation.Algebra.SetTheory.Set
       Formulative.Calculation.Calculus.Series
       Formulative.Calculation.Calculus.Variation
+      Formulative.Calculation.Coordinates.Dim3.ConfocalParaboloidal
+      Formulative.Calculation.Coordinates.Dim3.Euclidean
+      Formulative.Calculation.Coordinates.Dim3.Paraboloidal
+      Formulative.Calculation.Coordinates.Dim3.Spherical
+      Formulative.Calculation.DifferentialEquation.Dynamics.AdaptiveStepSize.Carrier
+      Formulative.Calculation.DifferentialEquation.Dynamics.AdaptiveStepSize.Effect
       Formulative.Calculation.DifferentialEquation.Dynamics.Carrier
+      Formulative.Calculation.DifferentialEquation.Dynamics.Class
       Formulative.Calculation.DifferentialEquation.Dynamics.Effect
       Formulative.Calculation.DifferentialEquation.TimeEvolution
       Formulative.Calculation.DifferentialEquation.Types
@@ -59,6 +67,7 @@ library
       Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Carrier
       Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Effect
       Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Operators
+      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Submanifold.Curvature
       Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Submanifold.Operators
       Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Submanifold.Types
       Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Types
@@ -71,6 +80,7 @@ library
       Formulative.Calculation.Internal.DerivingPrelude.Floating
       Formulative.Calculation.Internal.DerivingPrelude.Fractional
       Formulative.Calculation.Internal.DerivingPrelude.Num
+      Formulative.Calculation.Internal.Generics
       Formulative.Calculation.Internal.IfThenElse
       Formulative.Calculation.Internal.Infix
       Formulative.Calculation.Internal.List
@@ -86,13 +96,16 @@ library
       Formulative.Calculation.Matrix.Solve
       Formulative.Calculation.Matrix.Types
       Formulative.Calculation.Optimization.Carrier
+      Formulative.Calculation.Optimization.Class
       Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian
       Formulative.Calculation.Optimization.Constrained.Carrier
+      Formulative.Calculation.Optimization.Constrained.Class
       Formulative.Calculation.Optimization.Constrained.Effect
+      Formulative.Calculation.Optimization.Constrained.Types
       Formulative.Calculation.Optimization.Effect
       Formulative.Calculation.Optimization.LBFGS
       Formulative.Calculation.Optimization.LineSearch
-      Formulative.Calculation.Optimization.Setting
+      Formulative.Calculation.Optimization.Types
       Formulative.Calculation.Optimization.Update
       Formulative.Calculation.Physics.Units.Planck
       Formulative.Calculation.Physics.Units.SI
@@ -194,6 +207,7 @@ library
     , ghc-typelits-natnormalise
     , hashable
     , hmatrix
+    , ieee
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -286,6 +300,7 @@ executable preprocess
     , ghc-typelits-natnormalise
     , hashable
     , hmatrix
+    , ieee
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -407,6 +422,7 @@ test-suite formulative-tasty
     , ghc-typelits-natnormalise
     , hashable
     , hmatrix
+    , ieee
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -502,6 +518,7 @@ test-suite formulative-test
     , ghc-typelits-natnormalise
     , hashable
     , hmatrix
+    , ieee
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -598,6 +615,7 @@ benchmark Factorial
     , ghc-typelits-natnormalise
     , hashable
     , hmatrix
+    , ieee
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -694,6 +712,7 @@ benchmark MatrixMul
     , ghc-typelits-natnormalise
     , hashable
     , hmatrix
+    , ieee
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -790,6 +809,7 @@ benchmark MatrixToVector
     , ghc-typelits-natnormalise
     , hashable
     , hmatrix
+    , ieee
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -886,6 +906,7 @@ benchmark StackingEffects
     , ghc-typelits-natnormalise
     , hashable
     , hmatrix
+    , ieee
     , matrix-sized
     , megaparsec
     , numeric-limits
@@ -982,6 +1003,7 @@ benchmark UnsafeIndex
     , ghc-typelits-natnormalise
     , hashable
     , hmatrix
+    , ieee
     , matrix-sized
     , megaparsec
     , numeric-limits
