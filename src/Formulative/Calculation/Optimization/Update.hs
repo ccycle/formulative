@@ -5,34 +5,36 @@ import Control.Effect.Sum
 import Control.Effect.Throw
 import Control.Exception.Safe
 import Formulative.Calculation.Algebra.Arithmetic.Class
-import Formulative.Calculation.Internal.Class
+import Formulative.Calculation.Optimization.Class
 import Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian
+import Formulative.Calculation.Optimization.Constrained.Class
 import Formulative.Calculation.Optimization.Constrained.Effect
+import Formulative.Calculation.Optimization.Constrained.Types
 import Formulative.Calculation.Optimization.Effect
 import Formulative.Calculation.Optimization.LBFGS
 import Formulative.Calculation.Optimization.LineSearch
 import Formulative.Calculation.VectorSpace.Class
 
-type HasUpdateWithOptimization sig m b =
+type HasUpdateWithOptimization sig m a =
     ( Algebra sig m
-    , NormSpace b
-    , InnerProductSpace b
-    , Absolute (Scalar b)
-    , Field (Scalar b)
-    , Show (RealField b)
-    , Typeable (RealField b)
-    , Ord (RealField b)
-    , RealField b ~ Scalar b
+    , NormSpace a
+    , InnerProductSpace a
+    , Absolute (Scalar a)
+    , Field (Scalar a)
+    , Show (RealField a)
+    , Typeable (RealField a)
+    , Ord (RealField a)
+    , RealField a ~ Scalar a
     , Member (Throw SomeException) sig
-    , Member (Optimization (RealField b)) sig
-    , HasGradObjectiveFunctionM m b
-    , HasObjectiveFunctionM m b
+    , Member (Optimization (RealField a)) sig
+    , HasGradObjectiveFunctionM m a
+    , HasObjectiveFunctionM m a
     )
-updateWithOptimization :: forall sig m b. HasUpdateWithOptimization sig m b => b -> m b
+updateWithOptimization :: forall sig m a. HasUpdateWithOptimization sig m a => a -> m a
 updateWithOptimization variable = do
     objFunc <- getObjectiveFunctionM
     gradObjFunc <- getGradientOfObjectiveFunctionM
-    lbfgsParam <- askLBFGSParameters @(RealField b)
+    lbfgsParam <- askLBFGSParameters @(RealField a)
     lineSearchParam <- askLineSearchParameters
     convergenceParam <- askConvergenceTestParameters
     liftEither $
@@ -44,16 +46,16 @@ updateWithOptimization variable = do
             (GradObjectiveFunction gradObjFunc)
             variable
 
-type HasUpdateWithConstrainedOptimization sig m b =
-    ( HasUpdateWithOptimization sig m b
-    , HasEqualityConstraintM m b
-    , HasGradPenaltyM m b
-    , InnerProductSpace (EqualityConstraintType b)
-    , Scalar b ~ Scalar (EqualityConstraintType b)
-    , Scalar (EqualityConstraintType b) ~ RealField b
-    , RealField (EqualityConstraintType b) ~ RealField b
-    , NormSpace (EqualityConstraintType b)
-    , Member (ConstrainedSystem (EqualityConstraintType b)) sig
+type HasUpdateWithConstrainedOptimization sig m a =
+    ( HasUpdateWithOptimization sig m a
+    , HasEqualityConstraintM m a
+    , HasGradPenaltyM m a
+    , InnerProductSpace (EqualityConstraintType a)
+    , Scalar a ~ Scalar (EqualityConstraintType a)
+    , Scalar (EqualityConstraintType a) ~ RealField a
+    , RealField (EqualityConstraintType a) ~ RealField a
+    , NormSpace (EqualityConstraintType a)
+    , Member (ConstrainedSystem (EqualityConstraintType a)) sig
     )
 updateWithConstrainedOptimization :: forall b sig m. HasUpdateWithConstrainedOptimization sig m b => b -> m b
 updateWithConstrainedOptimization variable = do
@@ -67,7 +69,7 @@ updateWithConstrainedOptimization variable = do
     aParam <- askAugmentedLagrangianParameter @(EqualityConstraintType b)
     convergenceParam <- askConvergenceTestParameters @(Scalar b)
     lagrangeMultiplier <- getLagrangeMultiplier
-    (x, l) <-
+    (VariablesConstrainedSystem x (l)) <-
         liftEither $
             augmentedLagrangianMethod
                 lineSearchParam

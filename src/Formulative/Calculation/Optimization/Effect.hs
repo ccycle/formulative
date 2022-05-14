@@ -6,7 +6,7 @@ import Control.Algebra
 import Data.Kind
 import Formulative.Calculation.Optimization.LBFGS
 import Formulative.Calculation.Optimization.LineSearch
-import Formulative.Calculation.Optimization.Setting
+import Formulative.Calculation.Optimization.Types
 
 data Optimization a (m :: Type -> Type) k where
     AskOptimizationParameters :: Optimization a m (OptimizationSetting a)

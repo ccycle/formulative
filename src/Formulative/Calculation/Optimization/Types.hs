@@ -2,7 +2,7 @@
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE UndecidableInstances #-}
 
-module Formulative.Calculation.Optimization.Setting where
+module Formulative.Calculation.Optimization.Types where
 
 import Data.Hashable
 import qualified Data.Text as T

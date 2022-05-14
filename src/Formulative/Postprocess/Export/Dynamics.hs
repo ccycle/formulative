@@ -24,6 +24,9 @@ import Formulative.Calculation.Internal.Class
 import Formulative.Calculation.Internal.IfThenElse
 import Formulative.Calculation.Internal.List
 import Formulative.Calculation.Internal.Variable.Effect
+import Formulative.Calculation.Optimization.Constrained.Class
+import Formulative.Calculation.Optimization.Constrained.Effect (ConstrainedSystem, getLagrangeMultiplier)
+import Formulative.Calculation.Optimization.Constrained.Types (EqualityConstraint (EqualityConstraint))
 import Formulative.Postprocess.Export.CSV (encodeLF)
 import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.IO
@@ -39,6 +42,9 @@ import Formulative.Preprocess.SettingFile.Effect
 import Path
 import Path.IO
 import Prelude hiding (fromInteger)
+
+class HasExportDynamicsM m a b where
+    exportDynamicsM :: StepIndex -> DynamicParameter b -> a -> m ()
 
 exportDynamicParameter ::
     forall b sig m.
@@ -65,6 +71,23 @@ exportDynamicParameter (StepIndex i) (DynamicParameter t) = do
         sendIO $ BSL.writeFile (toFilePath filePath) (encodeLF [("step number" :: String, paramName)])
     sendIO $ BSL.appendFile (toFilePath filePath) x'
 
+exportVariableDynamics ::
+    forall sig m a.
+    ( Algebra sig m
+    , Member (Throw SomeException) sig
+    , Member (Lift IO) sig
+    , Member Export sig
+    , DefaultOrdered a
+    , ToLazyFields a
+    , ToVariableTypes a
+    ) =>
+    StepIndex ->
+    a ->
+    m ()
+exportVariableDynamics i xi = do
+    msgExportFile (Proxy @a)
+    exportRecordToFilesDynamicsM i xi
+
 exportLocalDependentVariableDynamics ::
     forall sig m a.
     ( HasLocalDependentVariableM m a
@@ -81,16 +104,17 @@ exportLocalDependentVariableDynamics ::
     m ()
 exportLocalDependentVariableDynamics i x = do
     x' <- localDependentVariableM x
+    -- OutputDir dir <- askOutputDir
+    -- putStrLnWithLogPathM
     localOutputDir addPostfixToDirForDependentVariable $ do
-        msgExportFile (Proxy @(LocalDependentVariable a))
-        exportRecordToFilesDynamicsM i x'
+        -- putStrLnWithLogPathM dir String
+        exportVariableDynamics i x'
 
 exportDependentVariableDynamicsM i xi = do
     exportGlobalDependentVariable xi
     exportLocalDependentVariableDynamics i xi
 
-exportDynamicsM ::
-    forall sig m a b.
+type HasExportDynamicsUnconstrained sig m a b =
     ( Algebra sig m
     , ToField b
     , Member (Dynamics b) sig
@@ -107,27 +131,61 @@ exportDynamicsM ::
     , ToLazyFields (LocalDependentVariable a)
     , ToVariableTypes a
     , ToVariableTypes (LocalDependentVariable a)
-    ) =>
+    )
+exportDynamicsUnconstrained ::
+    forall sig m a b.
+    HasExportDynamicsUnconstrained sig m a b =>
     StepIndex ->
     DynamicParameter b ->
     a ->
     m ()
-exportDynamicsM i t xi = do
+exportDynamicsUnconstrained i t xi = do
     exportDynamicParameter i t
-    msgExportFile (Proxy @a)
-    exportRecordToFilesDynamicsM i xi
+    exportVariableDynamics i xi
+    exportDependentVariableDynamicsM i xi
+
+type HasExportDynamicsConstrained sig m a b =
+    ( Algebra sig m
+    , ToField b
+    , Member (Dynamics b) sig
+    , Member (Lift IO) sig
+    , Member (Throw SomeException) sig
+    , Member Export sig
+    , HasLocalDependentVariableM m a
+    , ToRecord (GlobalDependentVariable a)
+    , HasGlobalDependentVariableM m a
+    , DefaultOrdered a
+    , DefaultOrdered (GlobalDependentVariable a)
+    , DefaultOrdered (LocalDependentVariable a)
+    , ToLazyFields a
+    , ToLazyFields (LocalDependentVariable a)
+    , ToVariableTypes a
+    , ToVariableTypes (LocalDependentVariable a)
+    , Member (ConstrainedSystem (EqualityConstraintType a)) sig
+    , ToVariableTypes (EqualityConstraintType a)
+    , ToLazyFields (EqualityConstraintType a)
+    , DefaultOrdered (EqualityConstraintType a)
+    )
+exportDynamicsConstrained ::
+    forall sig m a b.
+    HasExportDynamicsConstrained sig m a b =>
+    StepIndex ->
+    DynamicParameter b ->
+    a ->
+    m ()
+exportDynamicsConstrained i t xi = do
+    exportDynamicParameter i t
+    exportVariableDynamics i xi
+    l <- getLagrangeMultiplier @(EqualityConstraintType a)
+    exportVariableDynamics i l
     exportDependentVariableDynamicsM i xi
 
 mainCalcDynamics ::
     forall a b sig m.
     ( Algebra sig m
     , Additive b
-    , DefaultOrdered (GlobalDependentVariable a)
-    , DefaultOrdered (LocalDependentVariable a)
     , DefaultOrdered a
     , HasDependentParameterM m a
-    , HasGlobalDependentVariableM m a
-    , HasLocalDependentVariableM m a
     , HasInitialConditionM m a
     , HasUpdateM m a
     , Member (Dynamics b) sig
@@ -142,13 +200,8 @@ mainCalcDynamics ::
     , Show b
     , ToDhall (DependentParameterType a)
     , ToField b
-    , ToRecord (GlobalDependentVariable a)
-    , ToLazyFields (LocalDependentVariable a)
-    , ToLazyFields a
     , FromLazyFields a
-    , Show a
-    , ToVariableTypes a
-    , ToVariableTypes (LocalDependentVariable a)
+    , HasExportDynamicsM m a b
     ) =>
     m ()
 mainCalcDynamics = do
@@ -186,7 +239,7 @@ mainCalcDynamics = do
         msgNewLine
         putStrLnM $ "step " ++ show i
         putStrLnM $ "parameter: " ++ show t
-        when (i `mod` nInterval == StepIndex 0) $ do
+        when (i `mod` nInterval == StepIndex 0) $
             exportDynamicsM i (DynamicParameter t) xi
         if iMax <= i || 2 .*. finalVal <= (2 .*. t .+. dt) -- End condition
             then do

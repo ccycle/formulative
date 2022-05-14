@@ -9,7 +9,6 @@ import Control.Effect.Sum
 import Control.Exception.Safe
 import Control.Monad
 import Data.Time
-import Formulative.Calculation.Internal.Class
 import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.Types
 import Formulative.Preprocess.CommandLineOptions
@@ -21,6 +20,14 @@ putStrLnM :: (Algebra sig m, Member (Lift IO) sig, Member Export sig) => String 
 putStrLnM msg = do
     sendIO $ putStrLn msg
     OutputDir dir <- askOutputDir
+    let logFile = $(mkRelFile "result.log")
+    let file = dir </> logFile
+    sendIO $ appendFile (toFilePath file) (msg <> "\n")
+
+putStrLnWithLogPathM :: (Algebra sig m, Member (Lift IO) sig, Member Export sig) => Path b Dir -> String -> m ()
+putStrLnWithLogPathM dir msg = do
+    sendIO $ putStrLn msg
+    -- OutputDir dir <- askOutputDir
     let logFile = $(mkRelFile "result.log")
     let file = dir </> logFile
     sendIO $ appendFile (toFilePath file) (msg <> "\n")

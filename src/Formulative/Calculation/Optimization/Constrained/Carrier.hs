@@ -12,11 +12,13 @@ import Control.Exception.Safe
 import Data.String.Conversions
 import Dhall
 import Formulative.Calculation.Algebra.Arithmetic.Additive
-import Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian
 import Formulative.Calculation.Optimization.Constrained.Effect
+import Formulative.Calculation.Optimization.Constrained.Types
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Preprocess.ReadSetting
 import Formulative.Preprocess.SettingFile.Effect
+import Formulative.Calculation.Internal.Class
+import Formulative.Calculation.Internal.Variable.Carrier
 
 -- Carrier
 newtype ConstrainedSystemC a m b = ConstrainedSystemC {runConstrainedSystemC :: StateC (LagrangeMultiplier a) (ReaderC (ConstrainedSystemSetting (Scalar a)) m) b}
@@ -57,3 +59,11 @@ runConstrainedSystemIO f = do
     (DhallSettingText txt) <- cmdOptionToDhallSettingText
     r <- sendIO $ fillInSetting @(ConstrainedSystemSetting (Scalar a)) "constrainedSystem" (convertString txt)
     runConstrainedSystem r f
+
+runVariableConstrainedSystem r f = do
+    VariablesConstrainedSystem x l <- getInitialConditionM
+    runVariable x . runReader r . evalState (LagrangeMultiplier l) . runConstrainedSystemC $ f
+
+-- runInitialConditionConstrainedSystemIO :: forall sig m a b. () => 
+-- runInitialConditionConstrainedSystemIO =
+--     runInitialConditionM . runConstrainedSystemIO
