@@ -21,7 +21,8 @@ import Formulative.Calculation.Internal.Setting
 import Formulative.Calculation.Internal.Variable.Carrier
 import Formulative.Calculation.Internal.Variable.Effect
 import Formulative.Calculation.Optimization.Carrier
-import Formulative.Calculation.Optimization.Setting
+import Formulative.Calculation.Optimization.Class
+import Formulative.Calculation.Optimization.Types
 import Formulative.Calculation.Optimization.Update
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Postprocess.Export.Carrier
@@ -40,7 +41,7 @@ import Formulative.Preprocess.SettingFile.Carrier
 data MyVariable = MyVariable {x :: Double, y :: Double}
     deriving stock (Show, Generic)
     deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
-    deriving anyclass (DefaultOrdered, ToLazyFields, FromLazyFields)
+    deriving anyclass (DefaultOrdered, ToVariableTypes, ToLazyFields, FromLazyFields)
 
 ----------------------------------------------------------------
 -- User-defined data for setting
@@ -137,7 +138,7 @@ instance
 ----------------------------------------------------------------
 newtype MyLocalDependentVariable = MyLocalDependentVariable {xdot :: Double}
     deriving stock (Show, Generic)
-    deriving anyclass (DefaultOrdered, ToLazyFields)
+    deriving anyclass (DefaultOrdered, ToVariableTypes, ToLazyFields)
 instance
     ( Algebra sig m
     , Member (Reader MyEquationConstants) sig
@@ -149,6 +150,9 @@ instance
         MyEquationConstants{..} <- ask
         let x' = mu *. (x .-. (x .^ 3) ./ 3 .-. y)
         return $ MyLocalDependentVariable x'
+
+instance (HasExportDynamicsUnconstrained sig m MyVariable Double) => HasExportDynamicsM m MyVariable Double where
+    exportDynamicsM = exportDynamicsUnconstrained
 
 ----------------------------------------------------------------
 -- main

@@ -21,7 +21,8 @@ import Formulative.Calculation.Internal.Setting
 import Formulative.Calculation.Internal.Variable.Carrier
 import Formulative.Calculation.Internal.Variable.Effect
 import Formulative.Calculation.Optimization.Carrier
-import Formulative.Calculation.Optimization.Setting
+import Formulative.Calculation.Optimization.Class
+import Formulative.Calculation.Optimization.Types
 import Formulative.Calculation.Optimization.Update
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Postprocess.Export.Carrier
@@ -169,7 +170,8 @@ instance
         , xBarMulPBar = var3
         }
 
--- return $ MyLocalDependentVariable (momentum ./. m) var3
+instance (HasExportDynamicsUnconstrained sig m MyVariable Double) => HasExportDynamicsM m MyVariable Double where
+  exportDynamicsM = exportDynamicsUnconstrained
 
 ----------------------------------------------------------------
 -- define system equation

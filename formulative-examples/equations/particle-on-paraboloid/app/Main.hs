@@ -21,11 +21,14 @@ import Formulative.Calculation.Internal.Setting
 import Formulative.Calculation.Internal.Variable.Carrier
 import Formulative.Calculation.Internal.Variable.Effect
 import Formulative.Calculation.Optimization.Carrier
+import Formulative.Calculation.Optimization.Class
 import Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian
 import Formulative.Calculation.Optimization.Constrained.Carrier (runConstrainedSystem, runConstrainedSystemIO)
+import Formulative.Calculation.Optimization.Constrained.Class
 import Formulative.Calculation.Optimization.Constrained.Effect
+import Formulative.Calculation.Optimization.Constrained.Types
 import Formulative.Calculation.Optimization.LineSearch
-import Formulative.Calculation.Optimization.Setting
+import Formulative.Calculation.Optimization.Types
 import Formulative.Calculation.Optimization.Update
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Postprocess.Export.Carrier
@@ -47,7 +50,7 @@ data MyVariable = MyVariable
   }
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
-  deriving anyclass (DefaultOrdered, ToLazyFields, FromLazyFields)
+  deriving anyclass (DefaultOrdered, ToVariableTypes, ToLazyFields, FromLazyFields)
 
 ----------------------------------------------------------------
 -- User-defined data for setting
@@ -143,9 +146,10 @@ instance
 ----------------------------------------------------------------
 ---- constraint conditions
 ----------------------------------------------------------------
-newtype MyConstraintCondition = MyConstraintCondition {l1 :: Double}
+newtype MyConstraintCondition = MyConstraintCondition {lagrangeMultiplier :: Double}
   deriving stock (Generic, Show)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, InnerProductSpace, NormSpace)
+  deriving anyclass (DefaultOrdered, ToVariableTypes, ToLazyFields, FromLazyFields)
 
 equalityConstraint
   MyEquationConstants{..}
@@ -204,7 +208,7 @@ instance
   ( HasUpdateWithConstrainedOptimization sig m MyVariable
   , Member (Reader MyEquationConstants) sig
   ) =>
-  HasUpdateM m MyVariable
+  HasUpdateM m (MyVariable)
   where
   updateM = updateWithConstrainedOptimization
 
@@ -279,7 +283,7 @@ instance
   HasGlobalDependentVariableM m MyVariable
   where
   type GlobalDependentVariable MyVariable = MyGlobalDependentVariable
-  globalDependentVariableM var@MyVariable{..} = do
+  globalDependentVariableM (var@MyVariable{..}) = do
     c@MyEquationConstants{..} <- ask
     let v = velocity
     let z = position `index` 2
@@ -298,25 +302,25 @@ instance
 ----------------------------------------------------------------
 data MyLocalDependentVariable = MyLocalDependentVariable
   { constraintCondition :: Double
-  , lagrangeMultiplier :: Double
   }
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
-  deriving anyclass (DefaultOrdered, ToLazyFields)
+  deriving anyclass (DefaultOrdered, ToVariableTypes, ToLazyFields, FromLazyFields)
 instance
   ( Algebra sig m
-  , Member (ConstrainedSystem MyConstraintCondition) sig
   , Member (Reader MyEquationConstants) sig
   ) =>
   HasLocalDependentVariableM m MyVariable
   where
   type LocalDependentVariable MyVariable = MyLocalDependentVariable
-  localDependentVariableM MyVariable{..} = do
+  localDependentVariableM (MyVariable{..}) = do
     MyEquationConstants{..} <- ask
-    (MyConstraintCondition l1) <- getLagrangeMultiplier
     let f x = ((x `index` 0) ./. a) .^ 2 .+. ((x `index` 1) ./. b) .^ 2 .-. 2 .*. (x `index` 2)
     let g1 = f position
-    return $ MyLocalDependentVariable g1 l1
+    return $ MyLocalDependentVariable g1
+
+instance (HasExportDynamicsConstrained sig m MyVariable Double) => HasExportDynamicsM m MyVariable Double where
+  exportDynamicsM = exportDynamicsConstrained
 
 ----------------------------------------------------------------
 -- main
@@ -330,5 +334,5 @@ main =
     . runConstrainedSystemIO @MyConstraintCondition
     . runEquationConstantsIO @MyEquationConstants
     . runDynamicsIO @Double
-    . runInitialConditionM @MyVariable
-    $ mainCalcDynamics @MyVariable @Double
+    . runInitialConditionM @(MyVariable)
+    $ mainCalcDynamics @(MyVariable) @Double

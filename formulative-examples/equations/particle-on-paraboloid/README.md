@@ -64,7 +64,7 @@ Execute:
    execute for multiple setting files:
 
    ```sh
-   find ./settingFiles -name "*.dhall" | xargs -I -P 4 cabal exec -- particle-on-paraboloid -s {}
+   find ./settingFiles -name "*.dhall" | xargs -I {} cabal exec -- particle-on-paraboloid -s {}
    ```
 
    Recalculate dependent variables from exported independent variable data:
