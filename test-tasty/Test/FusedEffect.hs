@@ -25,6 +25,7 @@ import GHC.TypeNats
 
 -- import Formulative.Preprocess.Label
 
+import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.IO
 import Refined
 import Test.Tasty
@@ -252,7 +253,7 @@ instance (Algebra sig m) => Algebra (LabelsEff :+: sig) (LabelsEnvC a m) where
             pure ((<$ ctx) l)
         R other -> LabelsEnvC (alg (runLabelsEnv . hdl) (R other) ctx)
 
-printLabelsTest :: (Has LabelsEff sig m, Member (Lift IO) sig) => m ()
+printLabelsTest :: (Has LabelsEff sig m, Member (Lift IO) sig, Member Export sig) => m ()
 printLabelsTest = do
     l <- getLabels
     forM_ l putStrLnM

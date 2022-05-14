@@ -29,8 +29,8 @@ vecTest1 = V.fromList ["0.1", "1.0"]
 vecTest2 :: V.Vector BSL.ByteString
 vecTest2 = V.fromList ["0.1", "1 0"]
 
-parseTest1 = parseLazyFields @TestData vecTest1
-parseTest2 = parseLazyFields @TestData vecTest2
+-- parseTest1 = parseLazyFields @TestData vecTest1
+-- parseTest2 = parseLazyFields @TestData vecTest2
 
 getLazyRecordsTest :: (Algebra sig m, Member (Throw SomeException) sig, Member (Lift IO) sig, Member Export sig) => m [Either ReadRecordException TestData]
 getLazyRecordsTest = getLazyRecordsDynamicsM 1 2

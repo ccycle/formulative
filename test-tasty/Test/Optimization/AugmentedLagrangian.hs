@@ -9,6 +9,7 @@ import Data.Csv
 import Dhall
 import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian
+import Formulative.Calculation.Optimization.Constrained.Types
 import Formulative.Calculation.Optimization.LBFGS
 import Formulative.Calculation.Optimization.LineSearch
 import Formulative.Calculation.VectorSpace.Class
