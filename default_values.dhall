@@ -21,7 +21,7 @@
         { stepSize = 1.0 }
   }
 , export =
-  { format = { variable = {=}, local = {=}, global = {=} }
+  { logFile = "./output/[[hash]]/result.log"
   , outputDirectory = "./output/[[hash]]"
   }
 , geometry =
@@ -42,11 +42,12 @@
   , interval = 10
   , maximumIterationNumber = 1000
   }
-, constrainedSystem.augmentedLagrangianMethodParameters
-  =
-  { penaltyCoefficient = 1.0e-12
-  , growthRate = 1.5
-  , torelance = 1.0e-8
-  , maximumIterationNumber = 1000
+, constrainedSystem =
+  { torelance = 1.0e-8
+  , augmentedLagrangian =
+    { penaltyCoefficient = 1.0e-12
+    , growthRate = 1.5
+    , maximumIterationNumber = 1000
+    }
   }
 }
