@@ -126,7 +126,7 @@ python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv 
 Global quantities for selected labels (in this case `kineticEnergy`,`potentialEnergy`,`hamiltonian`):
 
 ```sh
-python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariable/_global.csv -H kineticEnergy  potentialEnergy hamiltonian
+python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariable/_global.csv -H kineticEnergy potentialEnergy hamiltonian
 ```
 
 ## Reference

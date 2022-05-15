@@ -48,6 +48,9 @@ library
       Formulative.Calculation.Algebra.SetTheory.Set
       Formulative.Calculation.Calculus.Series
       Formulative.Calculation.Calculus.Variation
+      Formulative.Calculation.Coordinates.Dim2.Euclidean
+      Formulative.Calculation.Coordinates.Dim2.Parabolic
+      Formulative.Calculation.Coordinates.Dim2.Polar
       Formulative.Calculation.Coordinates.Dim3.ConfocalParaboloidal
       Formulative.Calculation.Coordinates.Dim3.Euclidean
       Formulative.Calculation.Coordinates.Dim3.Paraboloidal
