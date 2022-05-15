@@ -27,43 +27,54 @@ data NormType a = Lp a | LInfinity
 instance HasDefaultValue (NormType a) where
     defaultValue = LInfinity
 
--- absPow x = |x|^p
+-- absPowSum x = |x1|^p + |x2|^p + ...
 class (VectorSpace v) => NormSpace v where
     type RealField v
-    absPow :: (RealField v) -> v -> RealField v
-    default absPow :: (Generic v, GNormSpace (Rep v), GRealField (Rep v) ~ RealField v) => (RealField v) -> v -> RealField v
     type RealField v = GRealField (Rep v)
-    absPow p v = gAbsPow p (from v)
+
+    absPowSum :: RealField v -> v -> RealField v
+    default absPowSum :: (Generic v, GNormSpace (Rep v), GRealField (Rep v) ~ RealField v) => RealField v -> v -> RealField v
+    absPowSum p v = gAbsPowSum p (from v)
+
+    absMaxAll :: v -> RealField v
+    default absMaxAll :: (Generic v, GNormSpace (Rep v), GRealField (Rep v) ~ RealField v) => v -> RealField v
+    absMaxAll v = gAbsMaxAll (from v)
+
     norm :: (Transcendental (RealField v)) => NormType (RealField v) -> v -> RealField v
-    norm (Lp p) x = absPow (p) x .** reciprocal p
-    norm LInfinity x = absPow 1 x
+    norm (Lp p) x = absPowSum p x .** reciprocal p
+    norm LInfinity x = absMaxAll x
 
 maxNorm x = norm LInfinity x
-normL1 x = absPow (Lp 1) x
+normL1 x = absPowSum (Lp 1) x
 normL2 x = norm (Lp 2) x
-normSquared x = absPow (Lp 2) x
+normSquared x = absPowSum (Lp 2) x
 
 binaryOpLp LInfinity = max
-binaryOpLp lp = (.+.)
+binaryOpLp (Lp p) = (.+.)
 
 class GNormSpace f where
     type GRealField f
-    gAbsPow :: (GRealField f) -> f v -> GRealField f
+    gAbsPowSum :: GRealField f -> f v -> GRealField f
+    gAbsMaxAll :: f v -> GRealField f
 instance NormSpace s => GNormSpace (K1 i s) where
     type GRealField (K1 i s) = (RealField s)
-    gAbsPow lp (K1 w) = absPow lp w
+    gAbsPowSum p (K1 w) = absPowSum p w
+    gAbsMaxAll (K1 w) = absMaxAll w
 instance (GNormSpace a) => GNormSpace (M1 i c a) where
-    gAbsPow lp (M1 w) = gAbsPow lp w
     type GRealField (M1 i c a) = GRealField a
+    gAbsPowSum lp (M1 w) = gAbsPowSum lp w
+    gAbsMaxAll (M1 w) = gAbsMaxAll w
 instance (GNormSpace f, Ord (GRealField f), GNormSpace g, GRealField g ~ GRealField f, GScalar g ~ GScalar f, Additive (GRealField f)) => GNormSpace (f :*: g) where
     type GRealField (f :*: g) = GRealField f
-    gAbsPow lp (x :*: y) = binaryOpLp (Lp lp) (gAbsPow lp x) (gAbsPow lp y)
+    gAbsPowSum p (x :*: y) = binaryOpLp (Lp p) (gAbsPowSum p x) (gAbsPowSum p y)
+    gAbsMaxAll (x :*: y) = binaryOpLp LInfinity (gAbsMaxAll x) (gAbsMaxAll y)
 
 instance (Num a, Transcendental a) => NormSpace (MyNum a) where
     type RealField (MyNum a) = a
-    absPow p (MyNum a) = abs a .** p
+    absPowSum p (MyNum a) = abs a .** p
+    absMaxAll (MyNum a) = abs a
 
--- absPow LInfinity (MyNum a) = abs a
+-- absPowSum LInfinity (MyNum a) = abs a
 
 -- deriving via (MyNum Int) instance NormSpace Int
 -- deriving via (MyNum Integer) instance NormSpace Integer
@@ -73,17 +84,17 @@ deriving via (MyNum Float) instance NormSpace Float
 
 instance (RealFloat a, Transcendental a) => NormSpace (MyComplex a) where
     type RealField (MyComplex a) = a
-    absPow (p) (MyComplex a) = realPart (abs a) .** p
+    absPowSum p (MyComplex a) = realPart (abs a) .** p
+    absMaxAll (MyComplex a) = realPart $ abs a
 
--- absPow (LInfinity) (MyComplex a) = realPart $ abs a
+-- absPowSum (LInfinity) (MyComplex a) = realPart $ abs a
 
 deriving via (MyComplex Double) instance NormSpace (Complex Double)
 deriving via (MyComplex Float) instance NormSpace (Complex Float)
 
 instance (Foldable m, Applicative m, Transcendental (RealField a), NormSpace a, Ord (RealField a), NormSpace (RealField a)) => NormSpace (MyFoldable m a) where
     type RealField (MyFoldable m a) = RealField a
-    absPow (p) (MyFoldable a) = foldl' (binaryOpLp (Lp p)) zero (fmap (absPow (p)) a)
-    norm (Lp p) (MyFoldable a) = absPow (p) (MyFoldable a) .** (1 ./. p)
-    norm LInfinity (MyFoldable a) = foldl' (binaryOpLp LInfinity) zero (fmap (absPow 1) a)
+    absPowSum p (MyFoldable a) = foldl' (binaryOpLp (Lp p)) zero (fmap (absPowSum p) a)
+    absMaxAll (MyFoldable a) = foldl' (binaryOpLp LInfinity) zero (fmap absMaxAll a)
 
 deriving via (MyFoldable (VS.Vector n) a) instance (KnownNat n, Transcendental (RealField a), Multiplicative a, NormSpace a, Ord (RealField a), NormSpace (RealField a)) => NormSpace (VS.Vector n a)
