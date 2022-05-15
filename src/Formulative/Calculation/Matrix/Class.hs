@@ -1,3 +1,4 @@
+{-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE UndecidableInstances #-}
 
 module Formulative.Calculation.Matrix.Class where
@@ -17,14 +18,9 @@ import Data.Singletons
 import Data.Type.Equality
 import qualified Data.Vector as V
 import qualified Data.Vector.Storable as VST
-
--- import Eigen.Internal (CTriplet (..), Cast (..))
--- import qualified Eigen.Matrix as E
 import qualified Numeric.LinearAlgebra as H
 import qualified Numeric.LinearAlgebra.Data as HD
-
--- import qualified Eigen.Solver.LA as LA (Decomposition (HouseholderQR), solve)
--- import qualified Eigen.SparseMatrix as ES
+import Prelude hiding (fromInteger)
 
 import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.Internal.List
@@ -117,7 +113,7 @@ instance (KnownNat r, KnownNat c, H.Field a) => MatrixGeneral HMatrixSized r c a
 -- cooToCTriplet (i, j, x) = CTriplet (toC i) (toC i) (toC x)
 
 -- instance (E.Elem a, Field a, KnownNat n, KnownNat m) => InnerProductSpace (HMatrixSized n m a) where
---     x <.> y = E.norm (transpose x .@. y)
+--     x <.> y = E.absPow (transpose x .@. y)
 
 --------------------------------------------------------------------
 -- deriving instance :: matrix-sized
@@ -159,8 +155,9 @@ instance
     NormSpace (MSL.SparseMatrix m n a)
     where
     type RealField (MSL.SparseMatrix m n a) = RealField a
-    norm (Lp p) x = flip (.**.) (reciprocal p) $ VST.foldl' (binaryOpLp (Lp p)) zero $ VST.map (norm (Lp p)) $ MSG.flatten x
-    norm LInfinity x = VST.foldl' (binaryOpLp LInfinity) zero $ VST.map (norm LInfinity) $ MSG.flatten x
+    absPow (p) x = flip (.**) (reciprocal p) $ VST.foldl' (binaryOpLp (Lp p)) zero $ VST.map (absPow (p)) $ MSG.flatten x
+    norm LInfinity x = VST.foldl' (binaryOpLp LInfinity) zero $ VST.map (absPow 1) $ MSG.flatten x
+    norm (Lp p) x = VST.foldl' (binaryOpLp LInfinity) zero $ VST.map (absPow p) $ MSG.flatten x
 
 instance
     {-# OVERLAPS #-}
@@ -203,8 +200,9 @@ instance forall n m a. (KnownNat m, KnownNat n, MSL.Numeric a, VectorSpace a, Mu
 
 instance forall n m a. (KnownNat m, KnownNat n, VST.Storable (RealField a), Additive (RealField a), NormSpace a, MSL.Numeric a, Ord (RealField a), VectorSpace a, Multiplicative a, Transcendental (RealField a)) => NormSpace (MSL.Matrix m n a) where
     type RealField (MSL.Matrix m n a) = RealField a
-    norm (Lp p) x = flip (.**.) (reciprocal p) $ VST.foldl' (binaryOpLp (Lp p)) zero $ VST.map (norm (Lp p)) $ MSG.flatten x
-    norm LInfinity x = VST.foldl' (binaryOpLp LInfinity) zero $ VST.map (norm LInfinity) $ MSG.flatten x
+    absPow (p) x = flip (.**) (reciprocal p) $ VST.foldl' (binaryOpLp (Lp p)) zero $ VST.map (absPow (p)) $ MSG.flatten x
+
+-- absPow LInfinity x = VST.foldl' (binaryOpLp LInfinity) zero $ VST.map (absPow LInfinity) $ MSG.flatten x
 
 instance (MSL.Numeric a, NormSpace a, Multiplicative a, KnownNat n, KnownNat m) => InnerProductSpace (MSL.Matrix m n a) where
     x <.> y = VST.sum $ MSG.flatten (MSG.transpose x .@. y)

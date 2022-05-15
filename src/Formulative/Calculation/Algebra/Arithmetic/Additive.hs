@@ -1,3 +1,6 @@
+{-# HLINT ignore "Eta reduce" #-}
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+
 module Formulative.Calculation.Algebra.Arithmetic.Additive where
 
 import Control.Algebra
@@ -35,6 +38,7 @@ stimesBinaryOp op unit y0 x0
         | even y = g (x `op` x) (y `quot` 2) z
         | y == 1 = x `op` z
         | otherwise = g (x `op` x) (y `quot` 2) (x `op` z)
+stimesAdd n = stimesBinaryOp (.+.) zero n
 
 class GAdditive f where
     (..+..) :: f a -> f a -> f a

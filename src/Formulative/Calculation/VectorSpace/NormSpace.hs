@@ -1,5 +1,9 @@
 {-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE UndecidableInstances #-}
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+
+{-# HLINT ignore "Eta reduce" #-}
 
 module Formulative.Calculation.VectorSpace.NormSpace where
 
@@ -23,58 +27,63 @@ data NormType a = Lp a | LInfinity
 instance HasDefaultValue (NormType a) where
     defaultValue = LInfinity
 
+-- absPow x = |x|^p
 class (VectorSpace v) => NormSpace v where
     type RealField v
-    norm :: NormType (RealField v) -> v -> RealField v
-    default norm :: (Generic v, GNormSpace (Rep v), GRealField (Rep v) ~ RealField v) => NormType (RealField v) -> v -> RealField v
+    absPow :: (RealField v) -> v -> RealField v
+    default absPow :: (Generic v, GNormSpace (Rep v), GRealField (Rep v) ~ RealField v) => (RealField v) -> v -> RealField v
     type RealField v = GRealField (Rep v)
-    norm lp v = gNorm lp (from v)
+    absPow p v = gAbsPow p (from v)
+    norm :: (Transcendental (RealField v)) => NormType (RealField v) -> v -> RealField v
+    norm (Lp p) x = absPow (p) x .** reciprocal p
+    norm LInfinity x = absPow 1 x
 
-maxNorm :: (NormSpace v) => v -> RealField v
-maxNorm = norm LInfinity
-normL1 :: (NormSpace v, Ring (RealField v)) => v -> RealField v
-normL1 = norm (Lp (fromInteger 1))
-normL2 :: (NormSpace v, Ring (RealField v)) => v -> RealField v
-normL2 = norm (Lp (fromInteger 2))
-normSquared :: (NormSpace v, Ring (RealField v)) => v -> RealField v
-normSquared = (.^ 2) . norm (Lp (fromInteger 2))
+maxNorm x = norm LInfinity x
+normL1 x = absPow (Lp 1) x
+normL2 x = norm (Lp 2) x
+normSquared x = absPow (Lp 2) x
 
 binaryOpLp LInfinity = max
 binaryOpLp lp = (.+.)
 
 class GNormSpace f where
     type GRealField f
-    gNorm :: NormType (GRealField f) -> f v -> GRealField f
+    gAbsPow :: (GRealField f) -> f v -> GRealField f
 instance NormSpace s => GNormSpace (K1 i s) where
     type GRealField (K1 i s) = (RealField s)
-    gNorm lp (K1 w) = norm lp w
+    gAbsPow lp (K1 w) = absPow lp w
 instance (GNormSpace a) => GNormSpace (M1 i c a) where
-    gNorm lp (M1 w) = gNorm lp w
+    gAbsPow lp (M1 w) = gAbsPow lp w
     type GRealField (M1 i c a) = GRealField a
 instance (GNormSpace f, Ord (GRealField f), GNormSpace g, GRealField g ~ GRealField f, GScalar g ~ GScalar f, Additive (GRealField f)) => GNormSpace (f :*: g) where
     type GRealField (f :*: g) = GRealField f
-    gNorm lp (x :*: y) = binaryOpLp lp (gNorm lp x) (gNorm lp y)
+    gAbsPow lp (x :*: y) = binaryOpLp (Lp lp) (gAbsPow lp x) (gAbsPow lp y)
 
-instance (Num a) => NormSpace (MyNum a) where
+instance (Num a, Transcendental a) => NormSpace (MyNum a) where
     type RealField (MyNum a) = a
-    norm _ (MyNum a) = abs a
+    absPow p (MyNum a) = abs a .** p
 
-deriving via (MyNum Int) instance NormSpace Int
-deriving via (MyNum Integer) instance NormSpace Integer
-deriving via (MyNum Natural) instance NormSpace Natural
+-- absPow LInfinity (MyNum a) = abs a
+
+-- deriving via (MyNum Int) instance NormSpace Int
+-- deriving via (MyNum Integer) instance NormSpace Integer
+-- deriving via (MyNum Natural) instance NormSpace Natural
 deriving via (MyNum Double) instance NormSpace Double
 deriving via (MyNum Float) instance NormSpace Float
 
-instance (RealFloat a) => NormSpace (MyComplex a) where
+instance (RealFloat a, Transcendental a) => NormSpace (MyComplex a) where
     type RealField (MyComplex a) = a
-    norm _ (MyComplex a) = realPart $ abs a
+    absPow (p) (MyComplex a) = realPart (abs a) .** p
+
+-- absPow (LInfinity) (MyComplex a) = realPart $ abs a
 
 deriving via (MyComplex Double) instance NormSpace (Complex Double)
 deriving via (MyComplex Float) instance NormSpace (Complex Float)
 
 instance (Foldable m, Applicative m, Transcendental (RealField a), NormSpace a, Ord (RealField a), NormSpace (RealField a)) => NormSpace (MyFoldable m a) where
     type RealField (MyFoldable m a) = RealField a
-    norm LInfinity (MyFoldable a) = foldl' (binaryOpLp LInfinity) zero (fmap (norm LInfinity) a)
-    norm (Lp p) (MyFoldable a) = (.**. reciprocal p) $ foldl' (binaryOpLp (Lp p)) zero (fmap ((.**. p) . norm (Lp p)) a)
+    absPow (p) (MyFoldable a) = foldl' (binaryOpLp (Lp p)) zero (fmap (absPow (p)) a)
+    norm (Lp p) (MyFoldable a) = absPow (p) (MyFoldable a) .** (1 ./. p)
+    norm LInfinity (MyFoldable a) = foldl' (binaryOpLp LInfinity) zero (fmap (absPow 1) a)
 
 deriving via (MyFoldable (VS.Vector n) a) instance (KnownNat n, Transcendental (RealField a), Multiplicative a, NormSpace a, Ord (RealField a), NormSpace (RealField a)) => NormSpace (VS.Vector n a)

@@ -73,9 +73,9 @@ augmentedLagrangianMethod
                             (GradObjectiveFunction $ \x -> gradF x .+. gradPenalty (LagrangeMultiplier lambda) x .+. gradPenalty (LagrangeMultiplier (mu *. g x)) x)
                             x
                     if i == 0
-                        then throw $ ConvergenceException (norm (normType convergenceTestParam) $ gradF x)
+                        then throw $ ConvergenceException (absPow (normType convergenceTestParam) $ gradF x)
                         else
-                            if norm (normType convergenceTestParam) (g x') <= eps
+                            if absPow (normType convergenceTestParam) (g x') <= eps
                                 then return (VariablesConstrainedSystem x' (LagrangeMultiplier lambda))
                                 else do
                                     augmentedLagrangianMethod'

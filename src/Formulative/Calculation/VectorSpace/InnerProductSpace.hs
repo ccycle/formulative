@@ -44,4 +44,4 @@ instance {-# OVERLAPS #-} (VectorSpace a, Multiplicative a, Applicative m, Folda
 
 deriving via (MyApplicative (VS.Vector n) a) instance (Multiplicative a, VectorSpace a, KnownNat n) => InnerProductSpace (VS.Vector n a)
 
-angleV lp v1 v2 = if norm lp v1 == zero || norm lp v2 == zero then zero else v1 <.> v2 ./. (norm lp v1 .*. norm lp v2)
+angleV lp v1 v2 = if absPow lp v1 == zero || absPow lp v2 == zero then zero else v1 <.> v2 ./. (absPow lp v1 .*. absPow lp v2)

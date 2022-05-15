@@ -32,7 +32,7 @@ class (Field a) => Transcendental a where
     acosh' :: a -> a
     atanh' :: a -> a
 
-    (.**.) :: a -> a -> a
+    (.**) :: a -> a -> a
     logBase' :: a -> a -> a
     sqrt' :: a -> a
     tan' :: a -> a
@@ -43,14 +43,14 @@ class (Field a) => Transcendental a where
     log1pexp' :: a -> a
     log1mexp' :: a -> a
 
-    {-# INLINE (.**.) #-}
+    {-# INLINE (.**) #-}
     {-# INLINE logBase' #-}
     {-# INLINE sqrt' #-}
     {-# INLINE tan' #-}
     {-# INLINE tanh' #-}
-    x .**. y = exp' (log' x .*. y)
+    x .** y = exp' (log' x .*. y)
     logBase' x y = log' y ./. log' x
-    sqrt' x = x .**. (1 ./. 2)
+    sqrt' x = x .** (1 ./. 2)
     tan' x = sin' x ./. cos' x
     tanh' x = sinh' x ./. cosh' x
 

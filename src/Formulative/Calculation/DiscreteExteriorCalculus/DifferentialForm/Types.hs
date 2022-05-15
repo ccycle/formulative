@@ -253,8 +253,8 @@ instance
     NormSpace (DECrepresentationMatrix n l c1 k1 c2 k2 a)
     where
     type RealField (DECrepresentationMatrix n l c1 k1 c2 k2 a) = RealField a
-    norm t (DECrepresentationMatrix x) = case knownMatSizeDoublet @n @l @c1 @c2 @k1 @k2 of
-        (Dict, Dict) -> norm t x
+    absPow t (DECrepresentationMatrix x) = case knownMatSizeDoublet @n @l @c1 @c2 @k1 @k2 of
+        (Dict, Dict) -> absPow t x
 
 instance
     ( MSL.Numeric a
