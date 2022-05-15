@@ -66,54 +66,12 @@ instance (RealFloat a) => MatrixSolveQRUnsafe HMatrixSized a where
 -- deriving instance :: hmatrix
 --------------------------------------------------------------------
 
--- unsafeIndexMatE :: forall r c a. (E.Elem a, KnownNat c, KnownNat r) => HMatrixSized r c a -> (Int, Int) -> a
--- unsafeIndexMatE mat (n, m) = case (someNatVal nInteger, someNatVal mInteger) of
---     (SomeNat (_ :: Proxy n), SomeNat (_ :: Proxy m)) -> case (leqNat (Proxy :: Proxy n) (Proxy :: Proxy r), leqNat @Maybe (Proxy :: Proxy m) (Proxy :: Proxy c)) of
---         (Just Refl, Just Refl) -> (E.!) (E.Row :: E.Row n) (E.Col :: E.Col m) mat
---         _ -> error "unsafeIndexMatE"
---   where
---     nInteger = Prelude.fromIntegral n
---     mInteger = Prelude.fromIntegral m
-
 instance (KnownNat r, KnownNat c, H.Field a) => MatrixGeneral HMatrixSized r c a where
     imap f (HMatrixSized x) = HMatrixSized $ mapMatrixWithIndex f x
     transpose (HMatrixSized x) = HMatrixSized $ HD.tr x
     unsafeIndexMat (HMatrixSized x) idx = H.atIndex x idx
     identity = HMatrixSized $ H.ident (fromIntegral $ natVal (Proxy @r))
     det (HMatrixSized x) = H.det x
-
--- instance (E.Elem a, KnownNat m, KnownNat n) => Additive (HMatrixSized m n a) where
---     (.+.) = E.add
---     zero = E.zero
-
--- instance (E.Elem a, AdditiveGroup a, KnownNat m, KnownNat n) => AdditiveGroup (HMatrixSized m n a) where
---     (.-.) = E.sub
---     negation = E.map negation
-
--- instance (E.Elem a, KnownNat l, KnownNat m, KnownNat n) => Mul (HMatrixSized l m a) (HMatrixSized m n a) (HMatrixSized l n a) where
---     (.@.) = E.mul
-
--- instance (E.Elem a, Field a, KnownNat n, KnownNat m) => Multiplicative (HMatrixSized n m a) where
---     (.*.) x y = mult E.map x y
---     one = E.ones
-
--- TODO: fill in "undefined"
--- instance (E.Elem a, KnownNat r, KnownNat c) => MatrixGeneral HMatrix r c a where
---     imap f = E.imap (curry f)
---     transpose = E.transpose
---     unsafeIndexMat = unsafeIndexMatE
---     identity = E.identity
---     det = E.determinant
-
--- instance (E.Elem a, Field a, KnownNat n, KnownNat m) => VectorSpace (HMatrixSized n m a) where
---     type Scalar (HMatrixSized n m a) = a
---     a *. x = E.map (a .*.) x
-
--- cooToCTriplet :: Cast a => (Int, Int, a) -> CTriplet a
--- cooToCTriplet (i, j, x) = CTriplet (toC i) (toC i) (toC x)
-
--- instance (E.Elem a, Field a, KnownNat n, KnownNat m) => InnerProductSpace (HMatrixSized n m a) where
---     x <.> y = E.absPow (transpose x .@. y)
 
 --------------------------------------------------------------------
 -- deriving instance :: matrix-sized
@@ -155,9 +113,8 @@ instance
     NormSpace (MSL.SparseMatrix m n a)
     where
     type RealField (MSL.SparseMatrix m n a) = RealField a
-    absPow (p) x = flip (.**) (reciprocal p) $ VST.foldl' (binaryOpLp (Lp p)) zero $ VST.map (absPow (p)) $ MSG.flatten x
-    norm LInfinity x = VST.foldl' (binaryOpLp LInfinity) zero $ VST.map (absPow 1) $ MSG.flatten x
-    norm (Lp p) x = VST.foldl' (binaryOpLp LInfinity) zero $ VST.map (absPow p) $ MSG.flatten x
+    absPowSum (p) x = flip (.**) (reciprocal p) $ VST.foldl' (binaryOpLp (Lp p)) zero $ VST.map (absPowSum (p)) $ MSG.flatten x
+    absMaxAll x = VST.foldl' (binaryOpLp LInfinity) zero $ VST.map absMaxAll $ MSG.flatten x
 
 instance
     {-# OVERLAPS #-}
@@ -200,9 +157,10 @@ instance forall n m a. (KnownNat m, KnownNat n, MSL.Numeric a, VectorSpace a, Mu
 
 instance forall n m a. (KnownNat m, KnownNat n, VST.Storable (RealField a), Additive (RealField a), NormSpace a, MSL.Numeric a, Ord (RealField a), VectorSpace a, Multiplicative a, Transcendental (RealField a)) => NormSpace (MSL.Matrix m n a) where
     type RealField (MSL.Matrix m n a) = RealField a
-    absPow (p) x = flip (.**) (reciprocal p) $ VST.foldl' (binaryOpLp (Lp p)) zero $ VST.map (absPow (p)) $ MSG.flatten x
+    absPowSum (p) x = flip (.**) (reciprocal p) $ VST.foldl' (binaryOpLp (Lp p)) zero $ VST.map (absPowSum (p)) $ MSG.flatten x
+    absMaxAll x = VST.foldl' (binaryOpLp (LInfinity)) zero $ VST.map (absMaxAll) $ MSG.flatten x
 
--- absPow LInfinity x = VST.foldl' (binaryOpLp LInfinity) zero $ VST.map (absPow LInfinity) $ MSG.flatten x
+-- absPowSum LInfinity x = VST.foldl' (binaryOpLp LInfinity) zero $ VST.map (absPowSum LInfinity) $ MSG.flatten x
 
 instance (MSL.Numeric a, NormSpace a, Multiplicative a, KnownNat n, KnownNat m) => InnerProductSpace (MSL.Matrix m n a) where
     x <.> y = VST.sum $ MSG.flatten (MSG.transpose x .@. y)

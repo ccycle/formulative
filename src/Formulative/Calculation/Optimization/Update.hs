@@ -23,6 +23,7 @@ type HasUpdateWithOptimization sig m a =
     , Field (Scalar a)
     , Show (RealField a)
     , Typeable (RealField a)
+    , Transcendental (Scalar a)
     , Ord (RealField a)
     , RealField a ~ Scalar a
     , Member (Throw SomeException) sig
@@ -30,7 +31,7 @@ type HasUpdateWithOptimization sig m a =
     , HasGradObjectiveFunctionM m a
     , HasObjectiveFunctionM m a
     )
-updateWithOptimization :: forall sig m a. HasUpdateWithOptimization sig m a => a -> m a
+updateWithOptimization :: forall sig m a. (HasUpdateWithOptimization sig m a) => a -> m a
 updateWithOptimization variable = do
     objFunc <- getObjectiveFunctionM
     gradObjFunc <- getGradientOfObjectiveFunctionM
@@ -57,7 +58,7 @@ type HasUpdateWithConstrainedOptimization sig m a =
     , NormSpace (EqualityConstraintType a)
     , Member (ConstrainedSystem (EqualityConstraintType a)) sig
     )
-updateWithConstrainedOptimization :: forall b sig m. HasUpdateWithConstrainedOptimization sig m b => b -> m b
+updateWithConstrainedOptimization :: forall b sig m. (HasUpdateWithConstrainedOptimization sig m b, Transcendental (Scalar (EqualityConstraintType b))) => b -> m b
 updateWithConstrainedOptimization variable = do
     objFunc <- getObjectiveFunctionM
     gradObjFunc <- getGradientOfObjectiveFunctionM
