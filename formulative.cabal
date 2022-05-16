@@ -222,6 +222,7 @@ library
     , refined
     , replace-megaparsec
     , safe-exceptions
+    , scientific
     , simple-reflect
     , singletons
     , string-conversions
@@ -315,6 +316,7 @@ executable preprocess
     , refined
     , replace-megaparsec
     , safe-exceptions
+    , scientific
     , simple-reflect
     , singletons
     , string-conversions
@@ -437,6 +439,7 @@ test-suite formulative-tasty
     , refined
     , replace-megaparsec
     , safe-exceptions
+    , scientific
     , simple-reflect
     , singletons
     , string-conversions
@@ -533,6 +536,7 @@ test-suite formulative-test
     , refined
     , replace-megaparsec
     , safe-exceptions
+    , scientific
     , simple-reflect
     , singletons
     , string-conversions
@@ -630,6 +634,7 @@ benchmark Factorial
     , refined
     , replace-megaparsec
     , safe-exceptions
+    , scientific
     , simple-reflect
     , singletons
     , string-conversions
@@ -727,6 +732,7 @@ benchmark MatrixMul
     , refined
     , replace-megaparsec
     , safe-exceptions
+    , scientific
     , simple-reflect
     , singletons
     , string-conversions
@@ -824,6 +830,7 @@ benchmark MatrixToVector
     , refined
     , replace-megaparsec
     , safe-exceptions
+    , scientific
     , simple-reflect
     , singletons
     , string-conversions
@@ -921,6 +928,7 @@ benchmark StackingEffects
     , refined
     , replace-megaparsec
     , safe-exceptions
+    , scientific
     , simple-reflect
     , singletons
     , string-conversions
@@ -1018,6 +1026,7 @@ benchmark UnsafeIndex
     , refined
     , replace-megaparsec
     , safe-exceptions
+    , scientific
     , simple-reflect
     , singletons
     , string-conversions

@@ -49,6 +49,7 @@ dependencies:
   - refined
   - replace-megaparsec
   - safe-exceptions
+  - scientific
   - simple-reflect
   - singletons
   - string-conversions
