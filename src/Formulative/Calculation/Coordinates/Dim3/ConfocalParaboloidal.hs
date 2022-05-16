@@ -43,7 +43,7 @@ instance AdditiveGroup a => VectorSpace (ConfocalParaboloidCoord a) where
 
 instance (Multiplicative a, Floating a, Additive a, RealFloat a) => CoordinateTransform3d ConfocalParaboloidCoord a where
     toEuclidean3d (ConfocalParaboloidCoord lambda1 mu1 nu1) = undefined
-    fromEuclidean3d (Euclidean3d x y z) = undefined
+    fromEuclidean3d (EuclideanCoord3d x y z) = undefined
 
 instance (Ord (RealField a), Additive (RealField a), NormSpace a, Multiplicative a, Transcendental a, a ~ RealField a) => NormSpace (ConfocalParaboloidCoord a) where
     absPowSum _ (ConfocalParaboloidCoord lambda1 mu1 nu1) = undefined

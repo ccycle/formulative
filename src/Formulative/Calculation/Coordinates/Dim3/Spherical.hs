@@ -31,8 +31,8 @@ instance (AdditiveGroup a, Multiplicative a, VectorSpace a) => VectorSpace (Sphe
     alpha *. SphericalCoord r1 theta1 phi1 = SphericalCoord (alpha *. r1) theta1 phi1
 
 instance (Additive a, Multiplicative a, Floating a, RealFloat a, Field a) => CoordinateTransform3d SphericalCoord a where
-    toEuclidean3d (SphericalCoord r1 theta1 phi1) = Euclidean3d (r1 .*. cos phi1 .*. sin theta1) (r1 .*. sin phi1 .*. sin theta1) (r1 .*. cos theta1)
-    fromEuclidean3d (Euclidean3d x y z) = SphericalCoord (sqrt (x .^ 2 .+. y .^ 2 .+. z .^ 2)) (acos (z ./. sqrt (x .^ 2 .+. y .^ 2 .+. z .^ 2))) (atan2 y x)
+    toEuclidean3d (SphericalCoord r1 theta1 phi1) = EuclideanCoord3d (r1 .*. cos phi1 .*. sin theta1) (r1 .*. sin phi1 .*. sin theta1) (r1 .*. cos theta1)
+    fromEuclidean3d (EuclideanCoord3d x y z) = SphericalCoord (sqrt (x .^ 2 .+. y .^ 2 .+. z .^ 2)) (acos (z ./. sqrt (x .^ 2 .+. y .^ 2 .+. z .^ 2))) (atan2 y x)
 
 deriving via (MyCoord SphericalCoord a) instance ToVariableType (SphericalCoord a)
 

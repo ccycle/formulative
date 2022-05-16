@@ -28,8 +28,8 @@ instance (AdditiveGroup a, VectorSpace a) => VectorSpace (PolarCoord a) where
     alpha *. PolarCoord r1 theta1 = PolarCoord (alpha *. r1) theta1
 
 instance (Multiplicative a, Floating a, Additive a, RealFloat a) => CoordinateTransform2d PolarCoord a where
-    toEuclidean (PolarCoord r theta) = Euclidean2d (r .*. cos theta) (r .*. sin theta)
-    fromEuclidean (Euclidean2d x y) = PolarCoord (sqrt (x .^ 2 .+. y .^ 2)) (atan2 y x)
+    toEuclidean (PolarCoord r theta) = EuclideanCoord2d (r .*. cos theta) (r .*. sin theta)
+    fromEuclidean (EuclideanCoord2d x y) = PolarCoord (sqrt (x .^ 2 .+. y .^ 2)) (atan2 y x)
 
 instance (Ord (RealField a), Additive (RealField a), NormSpace a, Multiplicative a, Transcendental a, a ~ RealField a) => NormSpace (PolarCoord a) where
     absPowSum p (PolarCoord r theta) = r .** p
