@@ -31,7 +31,7 @@ exportSettingFile = do
     sendIO $ ensureDir outputDir
     sName <- sendIO $ parseRelFile "setting.dhall"
     let filePath = toFilePath (outputDir </> sName)
-    putStrLnM $ concat ["Exporting setting file (", filePath, ") .."]
+    msgLoggerM $ concat ["Exporting setting file (", filePath, ") .."]
     sendIO $ T.writeFile filePath x
 
 exportDependentParameterFile ::
@@ -51,5 +51,5 @@ exportDependentParameterFile = do
         sendIO $ ensureDir outputDir
         sName <- sendIO $ parseRelFile "dependentParamater.dhall"
         let filePath = toFilePath (outputDir </> sName)
-        putStrLnM $ concat ["Exporting dependent parameter file (", filePath, ") .."]
+        msgLoggerM $ concat ["Exporting dependent parameter file (", filePath, ") .."]
         sendIO $ T.writeFile filePath y

@@ -12,6 +12,7 @@ import Control.Effect.Sum (Member)
 import Control.Exception.Safe
 import Data.Coerce (coerce)
 import Data.Hashable (Hashable (hashWithSalt))
+import Data.Scientific
 import Data.Typeable
 import Dhall
 import Formulative.Calculation.Algebra.Arithmetic.Class
@@ -63,6 +64,13 @@ newtype StepSize a = StepSize a
 
 unStepSize :: StepSize a -> a
 unStepSize = coerce
+
+exponentBase10 x = base10Exponent (fromFloatDigits x) + (pred . length . show . coefficient) (fromFloatDigits x)
+
+roundStepSize (StepSize dt) x = fromIntegral (round $ x .*. (t)) ./. (t)
+  where
+    n = if exponentBase10 x < 0 then negate (exponentBase10 x) else 0
+    t = 10 ^ n
 
 data StepSizeException
 instance (Additive a, Eq a) => Predicate StepSizeException (StepSize a) where

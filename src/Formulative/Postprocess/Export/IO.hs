@@ -16,12 +16,15 @@ import Formulative.Preprocess.SettingFile.Effect
 import Path
 import Path.IO
 
-putStrLnM :: (Algebra sig m, Member (Lift IO) sig, Member Export sig) => String -> m ()
-putStrLnM msg = do
+msgLoggerM :: (Algebra sig m, Member (Lift IO) sig, Member Export sig) => String -> m ()
+msgLoggerM msg = do
     sendIO $ putStrLn msg
     LogFilePath dir <- askLogFilePath
     sendIO . ensureDir $ parent dir
     sendIO $ appendFile (toFilePath dir) (msg <> "\n")
+
+msgM :: (Algebra sig m, Member (Lift IO) sig) => String -> m ()
+msgM = sendIO . putStrLn
 
 ensureDirOutputM :: (Algebra sig m, Member Export sig, Member (Lift IO) sig) => m ()
 ensureDirOutputM = do
@@ -40,7 +43,7 @@ removeDirRecurOutputM (OutputDir relDir) =
 msgDirAlreadyExists :: (Monad m, Member (Lift IO) sig, Member (Lift IO) sig, Algebra sig m, Member Export sig) => m ()
 msgDirAlreadyExists = do
     (OutputDir dir) <- askOutputDir
-    putStrLnM $ "[WARNING] The output directory (" <> toFilePath dir <> ") already exists; the calculation may have been executed."
+    msgLoggerM $ "[WARNING] The output directory (" <> toFilePath dir <> ") already exists; the calculation may have been executed."
 
 data NoOperationException = NoOperationException
     deriving stock (Show, Typeable)
@@ -70,7 +73,7 @@ warningForOverwrite = do
                 then return Overwrite
                 else do
                     msgNewLine
-                    putStrLnM $ "Overwrite ([y]/n)?"
+                    msgLoggerM $ "Overwrite ([y]/n)?"
                     f 5
   where
     f i =
@@ -83,10 +86,10 @@ warningForOverwrite = do
                     "y" -> return Overwrite
                     "n" -> return NoOperation
                     _ -> do
-                        putStrLnM $ "Invalid input: " <> str
-                        putStrLnM "RETURN -> Exec and Overwrite"
-                        putStrLnM "\'y\', RETURN -> Exec and Overwrite"
-                        putStrLnM "\'n\', RETURN -> Exit"
+                        msgLoggerM $ "Invalid input: " <> str
+                        msgLoggerM "RETURN -> Exec and Overwrite"
+                        msgLoggerM "\'y\', RETURN -> Exec and Overwrite"
+                        msgLoggerM "\'n\', RETURN -> Exit"
                         f (pred i)
 
 removeDirRecurWithWarningM :: (Algebra sig m, Member (Lift IO) sig, Member Export sig, Member (Throw SomeException) sig) => m ()
@@ -110,16 +113,16 @@ parentDirM = do
 -- TODO: adaptive step sizeの実装
 
 msgNewLine :: (Has (Lift IO) sig m, Member Export sig) => m ()
-msgNewLine = putStrLnM ""
+msgNewLine = msgLoggerM ""
 
 msgStart :: (Has (Lift IO) sig m, Member Export sig) => m ()
-msgStart = putStrLnM "--- Start ---"
+msgStart = msgLoggerM "--- Start ---"
 
 msgDone :: (Has (Lift IO) sig m, Member Export sig) => m ()
-msgDone = putStrLnM "Done."
+msgDone = msgLoggerM "Done."
 
 msgEnd :: (Has (Lift IO) sig m, Member Export sig) => m ()
-msgEnd = putStrLnM "--- End ---"
+msgEnd = msgLoggerM "--- End ---"
 
 msgExportFileIO :: Path b File -> IO ()
 msgExportFileIO path = putStrLn $ concat ["Exporting ", toFilePath path, " .."]
@@ -130,7 +133,7 @@ msgExportFileM path = sendIO $ msgExportFileIO path
 msgOutputDir :: (Member Export sig, Member (Lift IO) sig, Algebra sig m) => m ()
 msgOutputDir = do
     (OutputDir outputPath) <- askOutputDir
-    putStrLnM $ "Output directory: " <> toFilePath outputPath
+    msgLoggerM $ "Output directory: " <> toFilePath outputPath
 
 -- askOutputDirAbsPath :: (Member Export sig, Algebra sig m, Member (Lift IO) sig) => m (Path Abs Dir)
 -- askOutputDirAbsPath = do

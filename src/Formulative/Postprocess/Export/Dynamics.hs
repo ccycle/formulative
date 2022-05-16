@@ -194,14 +194,13 @@ mainCalcDynamics ::
     , Member (Variable a) sig
     , Member Export sig
     , Member SettingFile sig
+    , HasExportDynamicsM m a b
+    , ToDhall (DependentParameterType a)
     , Ord b
     , Semiring b
     , FromField b
     , Show b
-    , ToDhall (DependentParameterType a)
-    , ToField b
     , FromLazyFields a
-    , HasExportDynamicsM m a b
     ) =>
     m ()
 mainCalcDynamics = do
@@ -214,30 +213,31 @@ mainCalcDynamics = do
     x <- getInitialConditionM @m @a
     case recalculationOption of
         Continue -> do
-            putStrLnM "RecalculationOption: Continue"
-            putStrLnM "Read variable from files .."
+            msgLoggerM "RecalculationOption: Continue"
+            msgLoggerM "Read variable from files .."
             xs <- getLazyRecordsDynamicsM @a interval maximumIterationNumber
-            -- putStrLnM $ show xs -- debug
-            putStrLnM "Read dynamic parameter from files .."
+            -- msgLoggerM $ show xs -- debug
+            msgLoggerM "Read dynamic parameter from files .."
             ts <- decodeDynamicParametersM @b
-            -- putStrLnM $ show ts -- debug
+            -- msgLoggerM $ show ts -- debug
             let MaxStepIndex iMax = maximumIterationNumber
             msgNewLine
             (i', t', x') <- goContinue iMax (StepIndex 0, initialValue) x ts xs
-            putStrLnM "End loading cached files."
-            putStrLnM $ "Last step number: " <> show i'
-            putStrLnM "Deleting temp files .."
+            msgLoggerM "End loading cached files."
+            msgLoggerM $ "Last step number: " <> show i'
+            msgLoggerM "Deleting temp files .."
             deleteTempDynamicParametersM @b
             deleteTempVariablesDynamicsM @a interval maximumIterationNumber
             msgNewLine
-            putStrLnM "-- Continue calculation from last step --"
+            msgLoggerM "-- Continue calculation from last step --"
             go interval maximumIterationNumber initialValue finalValue stepSize i' t' x' x'
         _ ->
             go interval maximumIterationNumber initialValue finalValue stepSize (StepIndex 0) initialValue x x
   where
     go (IntervalStepIndex nInterval) (MaxStepIndex iMax) (DynamicParameter initVal) (DynamicParameter finalVal) (StepSize dt) i (DynamicParameter t) xiMinus1 xi = do
-        putStrLnM $ "step " ++ show i
-        putStrLnM $ "parameter: " ++ show t
+        -- let t = roundStepSize (StepSize dt) ti
+        msgLoggerM $ "step " ++ show i
+        msgLoggerM $ "parameter: " ++ show t
         when (i `mod` nInterval == StepIndex 0) $
             exportDynamicsM i (DynamicParameter t) xi
         if iMax <= i || 2 .*. finalVal <= (2 .*. t .+. dt) -- End condition
@@ -248,12 +248,21 @@ mainCalcDynamics = do
                 msgOutputDir
                 msgNewLine
             else do
-                putStrLnM "Updating variable.."
+                msgLoggerM "Updating variable.."
                 putVariableOld xi
                 xiPlus1 <- updateM xi
                 putVariable xiPlus1
                 msgNewLine
-                go (IntervalStepIndex nInterval) (MaxStepIndex iMax) (DynamicParameter initVal) (DynamicParameter finalVal) (StepSize dt) (succ i) (DynamicParameter (initVal .+. stimesAdd i dt)) xi xiPlus1
+                go
+                    (IntervalStepIndex nInterval)
+                    (MaxStepIndex iMax)
+                    (DynamicParameter initVal)
+                    (DynamicParameter finalVal)
+                    (StepSize dt)
+                    (succ i)
+                    (DynamicParameter (t .+. dt))
+                    xi
+                    xiPlus1
     goContinue iMax (i', t') x' (Streaming.Nil _ _) _ =
         return (i', t', x')
     goContinue iMax (i', t') x' _ [] =
@@ -261,17 +270,17 @@ mainCalcDynamics = do
     goContinue iMax (i', t') x' (t `Streaming.Cons` ts) (x : xs) =
         case (t, x) of
             (Right (i'', t''), Right x'') -> do
-                putStrLnM "(Recalculation)"
-                putStrLnM $ "step " ++ show i''
-                putStrLnM $ "parameter: " ++ show t''
+                msgLoggerM "(Recalculation)"
+                msgLoggerM $ "step " ++ show i''
+                msgLoggerM $ "parameter: " ++ show t''
                 unless (null xs || nullRecords ts) $ do
-                    putStrLnM "Exporting data from cached files .."
+                    msgLoggerM "Exporting data from cached files .."
                     exportDynamicsM i'' t'' x''
                 msgNewLine
                 goContinue iMax (i'', t'') x'' ts xs
             (Left str, _) -> do
-                putStrLnM str
+                msgLoggerM str
                 return (i', t', x')
             (_, Left e) -> do
-                putStrLnM $ displayException e
+                msgLoggerM $ displayException e
                 return (i', t', x')

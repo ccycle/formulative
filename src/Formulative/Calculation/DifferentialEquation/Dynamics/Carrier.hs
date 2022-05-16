@@ -39,12 +39,11 @@ runDynamicsIO ::
     , FromDhall a
     , Fractional a
     , Member (Lift IO) sig
-    , Member Export sig
     ) =>
     DynamicsC a m b ->
     m b
 runDynamicsIO f = do
     (DhallSettingText txt) <- cmdOptionToDhallSettingText
-    putStrLnM "Reading setting file (Dynamics).."
+    msgM "Reading setting file (Dynamics).."
     r <- sendIO $ readRecordFromDhallFile @(DynamicsSetting a) "dynamics" txt
     runReader r . runDynamicsC $ f

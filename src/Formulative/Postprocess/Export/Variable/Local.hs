@@ -27,7 +27,7 @@ import Formulative.Calculation.Internal.List
 import Formulative.Calculation.Internal.Types
 import Formulative.Postprocess.Export.CSV (encodeLF)
 import Formulative.Postprocess.Export.Effect
-import Formulative.Postprocess.Export.IO (ensureDirOutputM, putStrLnM)
+import Formulative.Postprocess.Export.IO (ensureDirOutputM, msgLoggerM)
 import Formulative.Postprocess.Export.Types
 import Formulative.Postprocess.Export.Variable.Class
 import GHC.Generics
@@ -181,4 +181,4 @@ exportRecordToFilesDynamicsM i x = do
 
 msgExportFile x = do
     paths <- getFilePathsM x
-    forM_ (map toFilePath paths) (\s -> putStrLnM $ concat ["Exporting ", s, " .."])
+    forM_ (map toFilePath paths) (\s -> msgLoggerM $ concat ["Exporting ", s, " .."])

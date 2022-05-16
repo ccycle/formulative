@@ -21,6 +21,8 @@ import Data.String.Conversions (ConvertibleStrings (convertString))
 import Data.Typeable
 import qualified Data.Vector as V
 import qualified Data.Vector.Sized as VS
+import Formulative.Calculation.Coordinates.Dim2.Euclidean
+import Formulative.Calculation.Coordinates.Dim3.Euclidean
 import Formulative.Calculation.DifferentialEquation.Dynamics.Effect
 import Formulative.Calculation.DifferentialEquation.Types
 import Formulative.Calculation.Internal.Types
@@ -64,6 +66,8 @@ instance (FromRecord (f a), Typeable (f a)) => FromLazyField (MyApplicative f a)
             Left _ -> Left (ParseException x (typeRep y))
             Right v -> Right (MyApplicative v)
 deriving via (MyApplicative V.Vector a) instance (FromField a, Typeable a) => FromLazyField (V.Vector a)
+deriving via (MyApplicative EuclideanCoord2d a) instance (FromField a, Typeable a) => FromLazyField (EuclideanCoord2d a)
+deriving via (MyApplicative EuclideanCoord3d a) instance (FromField a, Typeable a) => FromLazyField (EuclideanCoord3d a)
 
 -- TODO: fromJustを使わない実装に直す
 instance (ToField a, KnownNat n, FromField a) => FromRecord (VS.Vector n a) where
@@ -198,7 +202,7 @@ decodeDynamicParametersM = do
             str <- sendIO $ renameAndReadTempFiles filePath
             return $ Streaming.decode @(StepIndex, DynamicParameter a) HasHeader str
         else do
-            putStrLnM $ concat ["File ", show filePath, " does not exist."]
+            msgLoggerM $ concat ["File ", show filePath, " does not exist."]
             return (Streaming.Nil Nothing "")
 
 nullRecords (Streaming.Nil _ _) = True

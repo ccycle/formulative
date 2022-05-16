@@ -38,7 +38,7 @@ exportGlobalDependentVariable x = do
     fileName <- liftEither $ replaceExtension ".csv" parseKey
     let filePath = dir </> fileName
     flag <- sendIO $ doesFileExist filePath
-    putStrLnM $ concat ["Exporting ", toFilePath filePath, " .."]
+    msgLoggerM $ concat ["Exporting ", toFilePath filePath, " .."]
     if flag
         then do
             -- fileがすでに存在したときは末尾に付け足す

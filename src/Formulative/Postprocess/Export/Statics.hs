@@ -53,13 +53,13 @@ mainCalcStatics = do
     preprocessM @m @a
     x <- getInitialConditionM @m @a
     msgStart
-    putStrLnM "solve equation"
+    msgLoggerM "solve equation"
     -- TODO: updateMを使わない形にする
     -- updateMは本来Dynamicsに使う関数
     -- (SolveM classを作成する?)
     -- solveM :: m a
     x' <- updateM x
-    putStrLnM "Exporting data .."
+    msgLoggerM "Exporting data .."
     exportRecordToFilesStaticsM x'
     exportGlobalDependentVariable x'
     exportDependentVariableLocalStatic x'

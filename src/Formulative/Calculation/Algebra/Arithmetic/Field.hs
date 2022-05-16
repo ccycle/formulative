@@ -101,14 +101,9 @@ instance (Eq a, Field a, Applicative m, Foldable m) => Field (MyApplicative m a)
 
 -- - isDividableが定義できないのでIOの場合はFieldのインスタンスにはなれない
 --   - dividableかどうかが毎回実行時に変わるため
-
 deriving via (MyApplicative Maybe a) instance (Eq a, Field a) => Field (Maybe a)
 deriving via (MyApplicative (Either a) b) instance (Eq b, Field b) => Field ((Either a) b)
 deriving via (MyApplicative (VS.Vector n) a) instance (Eq a, KnownNat n, Field a) => Field (VS.Vector n a)
-
--- 足し引きとelementwise map(fmap)のみが使える型に対して要素間の積を計算
-mult :: (AdditiveGroup (m a), Field a) => ((a -> a) -> m a -> m a) -> m a -> m a -> m a
-mult mapFromLibrary x y = mapFromLibrary ((fromRational' $ 1 / 2) .*.) (mapFromLibrary (.^ 2) (x .+. y) .-. mapFromLibrary (.^ 2) x .-. mapFromLibrary (.^ 2) y)
 
 (<./.>) :: forall sig m a. (Algebra sig m, Field a) => m a -> m a -> m a
 (<./.>) = liftA2 (./.)
