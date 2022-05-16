@@ -13,6 +13,7 @@ import Data.Vector.Sized (Vector, generate, index)
 import Dhall hiding (Vector)
 import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.Algebra.DiscreteVariation (symmetrizePoly)
+import Formulative.Calculation.Coordinates.Dim3.Euclidean
 import Formulative.Calculation.DifferentialEquation.Dynamics.Carrier
 import Formulative.Calculation.DifferentialEquation.Dynamics.Effect
 import Formulative.Calculation.DifferentialEquation.Types
@@ -45,8 +46,8 @@ import Formulative.Preprocess.SettingFile.Carrier
 -- User-defined variable
 ----------------------------------------------------------------
 data MyVariable = MyVariable
-  { position :: Vector 3 Double
-  , velocity :: Vector 3 Double
+  { position :: EuclideanCoord3d Double
+  , velocity :: EuclideanCoord3d Double
   }
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
@@ -88,17 +89,9 @@ instance (Has (Reader MyEquationConstants) sig m) => HasInitialConditionM m MyVa
   getInitialConditionM = do
     MyEquationConstants{..} <- ask
     let zInit = (xInit .^ 2 ./. (a .^ 2) .+. yInit .^ 2 ./. (b .^ 2)) ./. 2
-    let x0 = generate f1
-        f1 0 = xInit
-        f1 1 = yInit
-        f1 2 = zInit
-        f1 _ = 0
-    let vzInit = vxInit .*. xInit ./. (a .^ 2) .+. vyInit .*. yInit ./. (b .^ 2)
-    let v0 = generate f2
-        f2 0 = vxInit
-        f2 1 = vyInit
-        f2 2 = vzInit
-        f2 _ = 0
+        x0 = EuclideanCoord3d xInit yInit zInit
+        vzInit = vxInit .*. xInit ./. (a .^ 2) .+. vyInit .*. yInit ./. (b .^ 2)
+        v0 = EuclideanCoord3d vxInit vyInit vzInit
     return $ MyVariable x0 v0
 
 ----------------------------------------------------------------
@@ -115,7 +108,7 @@ gradDeltaL
     dp = vNew .-. v
     dpdt = dp ./ dt
     -- H = v^2/(2m) + gz
-    dHdx = generate f
+    dHdx = EuclideanCoord3d 0 0 g
     f 2 = g
     f _ = 0
     v' = symmetrizePoly 1 vNew v
@@ -156,7 +149,7 @@ equalityConstraint
   (MyVariable xOld vOld)
   (MyVariable xNew vNew) = MyConstraintCondition g1
    where
-    f1 x = ((x `index` 0) ./ a) .^ 2 .+. ((x `index` 1) ./ b) .^ 2 - 2 .*. (x `index` 2)
+    f1 (EuclideanCoord3d x y z) = ((x) ./ a) .^ 2 .+. ((y) ./ b) .^ 2 - 2 .*. (z)
     g1 = f1 xNew .-. f1 xOld
 
 ----------------------------------------------------------------
@@ -168,13 +161,14 @@ gradConstraint
   (MyVariable xOld vOld)
   (MyVariable xNew vNew) = MyVariable zero (l1 *. dg1)
    where
-    x = symmetrizePoly 1 xNew xOld `index` 0
-    y = symmetrizePoly 1 xNew xOld `index` 1
-    dg1 = generate f
-    f 0 = 2 .*. x ./. (a .^ 2)
-    f 1 = 2 .*. y ./. (b .^ 2)
-    f 2 = -2
-    f _ = 0
+    xVec@(EuclideanCoord3d x y z) = symmetrizePoly 1 xNew xOld
+    -- y = symmetrizePoly 1 xNew xOld `index` 1
+    dg1 = EuclideanCoord3d (2 .*. x ./. (a .^ 2)) (2 .*. y ./. (b .^ 2)) (-2)
+
+-- f 0 = 2 .*. x ./. (a .^ 2)
+-- f 1 = 2 .*. y ./. (b .^ 2)
+-- f 2 = -2
+-- f _ = 0
 
 instance
   ( Algebra sig m
@@ -219,14 +213,10 @@ instance
 ----------------------------------------------------------------
 ---- dependent parameter
 ----------------------------------------------------------------
-kFunc MyEquationConstants{..} MyVariable{..} =
-  let x = position `index` 0
-      y = position `index` 1
-      vx = velocity `index` 0
-      vy = velocity `index` 1
-   in (((a .*. b) .^ 2) ./. 2)
-        .*. (1 .+. (x ./. a .^ 2) .^ 2 .+. (y ./. b .^ 2) .^ 2)
-        .*. (g .-. ((vx ./. a) .^ 2 .+. (vy ./. b) .^ 2))
+kFunc MyEquationConstants{..} (MyVariable EuclideanCoord3d{..} (EuclideanCoord3d vx vy _)) =
+  (((a .*. b) .^ 2) ./. 2)
+    .*. (1 .+. (x ./. a .^ 2) .^ 2 .+. (y ./. b .^ 2) .^ 2)
+    .*. (g .-. ((vx ./. a) .^ 2 .+. (vy ./. b) .^ 2))
 
 data MyDependentParameter = MyDependentParameter
   { h0 :: Double
@@ -253,9 +243,8 @@ instance (Algebra sig m, Member (Reader MyEquationConstants) sig) => HasDependen
         beta = (alphaPlusBeta ./. 2) .+. sqrt ((alphaPlusBeta ./. 2) .^ 2 .-. alphaBeta)
     return $ MyDependentParameter h0 k0 (a .^ 2) (b .^ 2) alpha beta alphaPlusBeta alphaBeta
    where
-    hFunc MyEquationConstants{..} (MyVariable x v) =
-      let z = x `index` 2
-          eK = v <.> v ./. 2
+    hFunc MyEquationConstants{..} (MyVariable xVec@EuclideanCoord3d{..} v) =
+      let eK = v <.> v ./. 2
           eP = g .*. z
        in eK .+. eP
 
@@ -283,10 +272,8 @@ instance
   HasGlobalDependentVariableM m MyVariable
   where
   type GlobalDependentVariable MyVariable = MyGlobalDependentVariable
-  globalDependentVariableM (var@MyVariable{..}) = do
+  globalDependentVariableM (var@(MyVariable EuclideanCoord3d{..} v)) = do
     c@MyEquationConstants{..} <- ask
-    let v = velocity
-    let z = position `index` 2
     let eK = v <.> v ./. 2
     let eP = g .*. z
     return $
@@ -300,7 +287,7 @@ instance
 ----------------------------------------------------------------
 ---- local dependent variable
 ----------------------------------------------------------------
-data MyLocalDependentVariable = MyLocalDependentVariable
+newtype MyLocalDependentVariable = MyLocalDependentVariable
   { constraintCondition :: Double
   }
   deriving stock (Show, Generic)
@@ -315,7 +302,7 @@ instance
   type LocalDependentVariable MyVariable = MyLocalDependentVariable
   localDependentVariableM (MyVariable{..}) = do
     MyEquationConstants{..} <- ask
-    let f x = ((x `index` 0) ./. a) .^ 2 .+. ((x `index` 1) ./. b) .^ 2 .-. 2 .*. (x `index` 2)
+    let f EuclideanCoord3d{..} = ((x) ./. a) .^ 2 .+. ((y) ./. b) .^ 2 .-. 2 .*. (z)
     let g1 = f position
     return $ MyLocalDependentVariable g1
 
