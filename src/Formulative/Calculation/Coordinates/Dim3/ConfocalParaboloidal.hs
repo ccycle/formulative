@@ -27,9 +27,6 @@ toXSquared ParaboloidParam{..} ConfocalParaboloidCoord{..} = (a .^ 2 .-. lambda)
 toYSquared ParaboloidParam{..} ConfocalParaboloidCoord{..} = (b .^ 2 .-. lambda) .*. (b .^ 2 .-. mu) .*. (nu .-. b .^ 2) ./. (b .^ 2 .-. a .^ 2)
 toZ ParaboloidParam{..} ConfocalParaboloidCoord{..} = lambda .+. mu .+. nu .-. a .^ 2 .-. b .^ 2
 
--- f c x = [toXSquared c x, toYSquared c x, toZ c x]
--- c = ParaboloidParam 1.0 2.0
-
 -- TODO: undefinedの除去
 instance Additive a => Additive (ConfocalParaboloidCoord a) where
     zero = undefined

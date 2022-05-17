@@ -125,7 +125,7 @@ dualDegDict :: forall n k. (KnownNat n, KnownNat k) => Proxy n -> Proxy k -> Dic
 dualDegDict proxyn proxyk = let n = natVal proxyn; k = natVal proxyk; val = dualDeg n k in case someNatVal val of SomeNat p -> unsafeCoerce (natDict p)
 
 -- TODO: modを使わない形にする
---  素直にk+1などを使ったほうがコンパイラが式変形しやすい
+-- NOTE: 素直にk+1などを使ったほうがコンパイラのほうで式変形しやすい？
 succDeg :: Natural -> Natural -> Natural
 succDeg n k = mod (k + 1) (n + 2)
 succDegDict :: forall n k. (KnownNat n, KnownNat k) => Dict (KnownNat (SuccDeg n k))

@@ -68,4 +68,4 @@ instance (GToVariableTypes f) => GToVariableTypes (M1 i c f) where
 instance (GToVariableTypes a, GToVariableTypes b) => GToVariableTypes (a :*: b) where
     gtoVariableTypes (Proxy :: Proxy ((a :*: b) a1)) = gtoVariableTypes (Proxy :: Proxy (a a1)) ++ gtoVariableTypes (Proxy :: Proxy (b a1))
 
--- instance ToVariableTypes ()
+instance ToVariableTypes ()

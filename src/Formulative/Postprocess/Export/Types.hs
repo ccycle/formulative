@@ -15,22 +15,17 @@ import Formulative.Preprocess.DefaultValue
 import GHC.Exts (IsString)
 import Path
 
--- TODO: add VTU
 newtype LogFileDirSetting = LogFileDirSetting String
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall)
 instance HasDefaultValue LogFileDirSetting where
     defaultValue = LogFileDirSetting ("./output/" <> convertString outputDirHashCmdStr <> "/result.log")
-instance Hashable LogFileDirSetting where
-    hashWithSalt s a = hashWithSalt s (1 :: Int)
 
 -- dhallから読み取った生のfilepath
 newtype OutputDirSetting = OutputDirSetting FilePath
     deriving stock (Generic, Show, Eq)
     deriving newtype (IsString)
     deriving anyclass (FromDhall, ToDhall)
-instance Hashable OutputDirSetting where
-    hashWithSalt s a = hashWithSalt s (1 :: Int)
 
 outputDirHashCmdStr :: FilePath
 outputDirHashCmdStr = "[[hash]]"
@@ -39,8 +34,9 @@ instance HasDefaultValue OutputDirSetting where
 
 data ExportSetting = ExportSetting {logFile :: LogFileDirSetting, outputDirectory :: OutputDirSetting}
     deriving stock (Generic, Show, Eq)
-    deriving anyclass (FromDhall, ToDhall, Hashable, HasDefaultValue)
-
+    deriving anyclass (FromDhall, ToDhall, HasDefaultValue)
+instance Hashable ExportSetting where
+    hashWithSalt s a = hashWithSalt s (1 :: Int)
 newtype StepIndex = StepIndex Natural
     deriving stock (Generic, Eq, Ord)
     deriving newtype (Show, Enum, Num, Real, Integral)

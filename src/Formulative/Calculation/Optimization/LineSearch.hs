@@ -123,7 +123,7 @@ unDescentDirection = coerce
 
 -- https://en.wikipedia.org/wiki/Backtracking_line_search#Algorithm
 -- tau: BacktrackingFactor
--- TODO: make logger function
+-- TODO: loggerの作成(1回のiterationに対し値がどのように変化しているかを追跡できるように)
 backtrackingLineSearch ineqConds (StepSizeForLineSearch alpha) (BacktrackingFactor tau) i x p f gradf =
   if i == 0 || lineSearchCondition ineqConds (StepSizeForLineSearch alpha) x p f gradf
     then StepSizeForLineSearch alpha

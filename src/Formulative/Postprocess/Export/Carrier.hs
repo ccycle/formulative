@@ -34,7 +34,6 @@ instance (Algebra sig m) => Algebra (Export :+: sig) (ExportC m) where
         L AskOutputDir -> do
             (_, output) <- ExportC (ask @(LogFilePath, OutputDir))
             pure (output <$ ctx)
-        -- TODO: 実装の見直し
         L (LocalOutputDir f m) ->
             (ExportC . ReaderC)
                 (\(env, output) -> (run (env, f output) (hdl (m <$ ctx))))

@@ -43,7 +43,7 @@ removeDirRecurOutputM (OutputDir relDir) =
 msgDirAlreadyExists :: (Monad m, Member (Lift IO) sig, Member (Lift IO) sig, Algebra sig m, Member Export sig) => m ()
 msgDirAlreadyExists = do
     (OutputDir dir) <- askOutputDir
-    msgLoggerM $ "[WARNING] The output directory (" <> toFilePath dir <> ") already exists; the calculation may have been executed."
+    msgLoggerM $ "[WARNING] The output directory (" <> toFilePath dir <> ") already exists; the calculation may have been executed in the past."
 
 data NoOperationException = NoOperationException
     deriving stock (Show, Typeable)
@@ -60,7 +60,6 @@ instance Exception NoOperationException where
             , "\n"
             ]
 
--- TODO: logger作成
 warningForOverwrite :: (Has (Lift IO) sig m, Member (Throw SomeException) sig, Member Export sig) => m RecalculationOption
 warningForOverwrite = do
     msgDirAlreadyExists
@@ -72,8 +71,9 @@ warningForOverwrite = do
             if warningFlag
                 then return Overwrite
                 else do
+                    msgLoggerM "(To disable the warning, use option \'--ignore-warning\' or \'-I'.)"
                     msgNewLine
-                    msgLoggerM $ "Overwrite ([y]/n)?"
+                    msgLoggerM "Overwrite ([y]/n)?"
                     f 5
   where
     f i =

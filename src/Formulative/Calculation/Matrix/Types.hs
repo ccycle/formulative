@@ -16,7 +16,7 @@ newtype HMatrixSized (n :: Nat) (m :: Nat) a = HMatrixSized (Matrix a)
 
 type HMatrixElement a = (Container Matrix a, Container Vector a, Numeric a, H.Field a, Num (Vector a))
 
--- TODO: write test
+-- TODO: testを書く
 hConcat :: (Element a) => HMatrixSized n m a -> HMatrixSized n l a -> HMatrixSized n (m + l) a
 hConcat (HMatrixSized x) (HMatrixSized y) = HMatrixSized $ x H.||| y
 

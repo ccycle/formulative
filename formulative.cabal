@@ -140,7 +140,6 @@ library
       Formulative.Preprocess.DiscreteExteriorCalculus.Read
       Formulative.Preprocess.Exception
       Formulative.Preprocess.IO
-      Formulative.Preprocess.MakeDirectory
       Formulative.Preprocess.Path
       Formulative.Preprocess.ReadFile
       Formulative.Preprocess.ReadSetting

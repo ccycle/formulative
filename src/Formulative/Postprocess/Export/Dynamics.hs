@@ -104,10 +104,8 @@ exportLocalDependentVariableDynamics ::
     m ()
 exportLocalDependentVariableDynamics i x = do
     x' <- localDependentVariableM x
-    -- OutputDir dir <- askOutputDir
-    -- putStrLnWithLogPathM
     localOutputDir addPostfixToDirForDependentVariable $ do
-        -- putStrLnWithLogPathM dir String
+        ensureDirOutputM
         exportVariableDynamics i x'
 
 exportDependentVariableDynamicsM i xi = do

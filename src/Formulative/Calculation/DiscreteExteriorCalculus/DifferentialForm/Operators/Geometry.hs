@@ -14,7 +14,6 @@ import qualified Data.Matrix.Static.LinearAlgebra as MSL
 import Data.Singletons
 import Data.Type.Equality
 import qualified Data.Vector.Unboxed as VU
-import GHC.TypeNats
 import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Operators.Homology
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
@@ -24,9 +23,9 @@ import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Effect
 import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Operators
 import Formulative.Calculation.Internal.Infix
 import Formulative.Calculation.Internal.TypeLevelNatural
+import GHC.TypeNats
 
--- TODO: undefinedを取り除く
--- TODO: 型クラスで抽象化 実装を選択できるようにする
+-- TODO: undefinedの除去
 -- TODO: 計量テンソルの符号を取り入れるか検討
 hodgeStarMat :: m (HodgeStar n l c k a)
 hodgeStarMat = undefined
@@ -66,7 +65,7 @@ hodgeStarInv = case dualMapDict @c of
         n = natVal (Proxy @n)
         k = natVal (Proxy @k)
 
--- TODO: sign
+-- TODO: 符号の確認
 leftContraction :: forall n l c k1 k2 a sig m. (KnownNat k1, KnownNat k2, k2 <= n, k1 <= k2, Algebra sig m, SingI l, SingI c, KnownNat n, MSL.Numeric a, AdditiveGroup a) => m (DifferentialForm n l (DualMap c) k1 a -> DifferentialForm n l c k2 a -> DifferentialForm n l c (k2 - k1) a)
 leftContraction = case dualityLaw @c of
     Refl -> case dualMapDict @c of
@@ -79,7 +78,7 @@ leftContraction = case dualityLaw @c of
     p = natVal (Proxy :: Proxy k1)
     q = natVal (Proxy :: Proxy k2)
 
--- TODO: sign
+-- TODO: 符号の確認
 codifferential :: forall n l c k a sig m. (1 <= k, k <= n, HasExteriorDerivative n l c k a sig m) => m (DifferentialForm n l c k a -> DifferentialForm n l c (PredDeg n k) a)
 codifferential = case dualityLaw @c of
     Refl -> case dualMapDict @c of
@@ -91,7 +90,7 @@ codifferential = case dualityLaw @c of
   where
     k = natVal (Proxy @k)
 
--- TODO: sign
+-- TODO: 符号の確認
 laplacian :: forall n l c k a sig m. (k <= n, HasExteriorDerivative n l c k a sig m) => m (DifferentialForm n l c k a -> DifferentialForm n l c k a)
 laplacian = case (leqNat (Proxy :: Proxy 1) (Proxy :: Proxy k), leqNat (Proxy :: Proxy (k + 1)) (Proxy :: Proxy n)) of
     (Just Refl, Just Refl) -> negation <$> (codifferential |.| exteriorDerivative |.+.| exteriorDerivative |.| codifferential)

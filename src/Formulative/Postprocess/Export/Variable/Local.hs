@@ -71,7 +71,6 @@ instance (ToField a) => ToLazyField (VS.Vector n a) where
 
 nameToFilePathM name = do
     parseKey <- liftEither $ parseRelFile (convertString @Name name)
-    -- TODO: VTUに対応
     fileName <- liftEither $ replaceExtension ".csv" parseKey
     OutputDir parentDir <- askOutputDir
     let filePath = parentDir </> fileName

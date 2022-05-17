@@ -26,7 +26,7 @@ import Formulative.Calculation.VectorSpace.Class
 import GHC.Exts (IsList (Item, fromList, toList))
 import GHC.TypeNats
 
--- TODO: Euclidean dimとBase dimは区別する 型レベル自然数も同様
+-- TODO: Euclidean dimとBase dimを型レベルで区別するように変更
 simplexToPositionMat ::
   forall nEuc p k a.
   ( HMatrixElement a
@@ -191,11 +191,6 @@ circumcenterAMat (PositionMatrix sMat) = sMat'''
 --      ]
 circumcenterbVec :: forall n k a. (Field a, HMatrixElement a, MSS.Zero a, KnownNat n, KnownNat k) => PositionMatrix n k a -> GMatrixContainer (k + 2) 1 a
 circumcenterbVec (PositionMatrix mat) = (mat .^ 2 .@. (one :: GMatrixContainer n 1 a)) `vConcat` one
- where
-  kInt = natToInt (Proxy :: Proxy k)
-  f (i, j) x
-    | i == kInt + 1 = 1
-    | otherwise = x
 
 circumcenterInternal sMat = solveCG a b
  where

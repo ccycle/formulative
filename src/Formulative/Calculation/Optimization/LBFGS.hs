@@ -20,7 +20,7 @@ import Formulative.Preprocess.Exception
 import GHC.Exts (fromList)
 
 -- paremeters
--- TODO: machine epsilon以下に指定しないように警告を出すようにする
+-- TODO: machine epsilon以下に指定したら警告を出すようにする
 -- NOTE: Numeric-Limitsを使う
 -- https://hackage.haskell.org/package/numeric-limits-0.1.0.0/docs/Numeric-Limits.html
 newtype NumericalError a = NumericalError a
