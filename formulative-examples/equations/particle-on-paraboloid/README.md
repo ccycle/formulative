@@ -4,9 +4,9 @@ Equation:
 
 $$
 \begin{align*}
-\frac{\mathrm{d}\mathbf{x}}{dt} & =\mathbf{v}\\
-\frac{\mathrm{d}\mathbf{\mathbf{v}}}{dt} & =-gz\mathbf{e}_{z}\\
-f\left(\mathbf{x}\right) & =\frac{x^{2}}{a^{2}}+\frac{y^{2}}{b^{2}}-2z=0
+ & \frac{\mathrm{d}\mathbf{x}}{\mathrm{d}t}=\mathbf{v}\\
+ & \frac{\mathrm{d}\mathbf{\mathbf{v}}}{\mathrm{d}t}=-gz\mathbf{e}_{z}\\
+ & \frac{x^{2}}{a^{2}}+\frac{y^{2}}{b^{2}}-2z=0
 \end{align*}
 $$
 
@@ -16,8 +16,9 @@ Scheme:
 
 $$
 \begin{align*}
-\frac{\mathbf{x}^{(i+1)}-x^{(i)}}{\Delta t} & -\frac{\mathbf{v}^{(i+1)}+\mathbf{v}^{(i)}}{2}=\mathbf{0}\\
-\frac{\mathbf{v}^{(i+1)}+\mathbf{v}^{(i)}}{\Delta t} & +g\frac{z^{(i+1)}+z^{(i)}}{2}\mathbf{e}_{z}+\lambda\left(\frac{2x}{a^{2}}\mathbf{e}_{x}+\frac{2y}{b^{2}}\mathbf{e}_{y}-2\mathbf{e}_{z}\right)=\mathbf{0}
+ & \frac{\mathbf{x}^{(i+1)}-x^{(i)}}{\Delta t}-\frac{\mathbf{v}^{(i+1)}+\mathbf{v}^{(i)}}{2}=\mathbf{0}\\
+ & \frac{\mathbf{v}^{(i+1)}+\mathbf{v}^{(i)}}{\Delta t}+g\frac{z^{(i+1)}+z^{(i)}}{2}\mathbf{e}_{z}\\
+ & \quad+\lambda\left[\left(\frac{x^{(i+1)}+x^{(i)}}{a^{2}}\right)\mathbf{e}_{x}+\left(\frac{y^{(i+1)}+y^{(i)}}{b^{2}}\right)\mathbf{e}_{y}-\left(z^{(i+1)}+z^{(i)}\right)\mathbf{e}_{z}\right]=\mathbf{0}
 \end{align*}
 $$
 

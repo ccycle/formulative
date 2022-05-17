@@ -1,14 +1,14 @@
-name:                formulative-examples
-version:             0.1.0.0
-github:              "githubuser/formulative-examples"
-license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2022 Author name here"
+name: formulative-examples
+version: 0.1.0.0
+github: "githubuser/formulative-examples"
+license: BSD3
+author: "Author name here"
+maintainer: "example@example.com"
+copyright: "2022 Author name here"
 
 extra-source-files:
-- README.md
-- ChangeLog.md
+  - README.md
+  - ChangeLog.md
 
 # Metadata used when publishing your package
 # synopsis:            Short description of your package
@@ -17,103 +17,112 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/formulative-examples#readme>
+description: Please see the README on GitHub at <https://github.com/githubuser/formulative-examples#readme>
 
 dependencies:
-- formulative
-- base >= 4.7 && < 5
-- cassava
-- dhall
-- fused-effects
-- ghc-prim
-- ghc-typelits-knownnat
-- ghc-typelits-natnormalise
-- hashable
-- matrix-sized
-- megaparsec
-- numeric-limits
-- prettyprinter
-- safe-exceptions
-- tasty
-- tasty-hunit
-- tasty-quickcheck
-- template-haskell
-- vector
-- vector-algorithms
-- vector-sized
+  - formulative
+  - base >= 4.7 && < 5
+  - cassava
+  - dhall
+  - fused-effects
+  - ghc-prim
+  - ghc-typelits-knownnat
+  - ghc-typelits-natnormalise
+  - hashable
+  - matrix-sized
+  - megaparsec
+  - numeric-limits
+  - prettyprinter
+  - safe-exceptions
+  - tasty
+  - tasty-hunit
+  - tasty-quickcheck
+  - template-haskell
+  - vector
+  - vector-algorithms
+  - vector-sized
 
 default-extensions:
-- ApplicativeDo
-- BangPatterns
-- BinaryLiterals
-- ConstraintKinds
-- DataKinds
-- DefaultSignatures
-- DeriveDataTypeable
-- DeriveFoldable
-- DeriveFunctor
-- DeriveGeneric
-- DeriveTraversable
-- DerivingVia
-- DoAndIfThenElse
-- EmptyDataDecls
-- ExistentialQuantification
-- FlexibleContexts
-- FlexibleInstances
-- FunctionalDependencies
-- GADTs
-- GeneralizedNewtypeDeriving
-- InstanceSigs
-- KindSignatures
-- LambdaCase
-- MultiParamTypeClasses
-- MultiWayIf
-- NamedFieldPuns
-- OverloadedStrings
-- PartialTypeSignatures
-- PatternGuards
-- PolyKinds
-- RankNTypes
-- RecordWildCards
-- ScopedTypeVariables
-- StandaloneDeriving
-- StrictData
-- TupleSections
-- TypeApplications
-- TypeFamilies
-- TypeOperators
-- TypeSynonymInstances
-- ViewPatterns
+  - ApplicativeDo
+  - BangPatterns
+  - BinaryLiterals
+  - ConstraintKinds
+  - DataKinds
+  - DefaultSignatures
+  - DeriveDataTypeable
+  - DeriveFoldable
+  - DeriveFunctor
+  - DeriveGeneric
+  - DeriveTraversable
+  - DerivingVia
+  - DoAndIfThenElse
+  - EmptyDataDecls
+  - ExistentialQuantification
+  - FlexibleContexts
+  - FlexibleInstances
+  - FunctionalDependencies
+  - GADTs
+  - GeneralizedNewtypeDeriving
+  - InstanceSigs
+  - KindSignatures
+  - LambdaCase
+  - MultiParamTypeClasses
+  - MultiWayIf
+  - NamedFieldPuns
+  - OverloadedStrings
+  - PartialTypeSignatures
+  - PatternGuards
+  - PolyKinds
+  - RankNTypes
+  - RecordWildCards
+  - ScopedTypeVariables
+  - StandaloneDeriving
+  - StrictData
+  - TupleSections
+  - TypeApplications
+  - TypeFamilies
+  - TypeOperators
+  - TypeSynonymInstances
+  - ViewPatterns
 
 library:
   source-dirs:
-  - src
+    - src
 
 executables:
   particle-on-paraboloid:
-    main:                Main.hs
-    source-dirs:         equations/particle-on-paraboloid/app
+    main: Main.hs
+    source-dirs: equations/particle-on-paraboloid/app
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
     dependencies:
-    - formulative-examples
+      - formulative-examples
   harmonic-oscillator:
-    main:                Main.hs
-    source-dirs:         equations/harmonic-oscillator/app
+    main: Main.hs
+    source-dirs: equations/harmonic-oscillator/app
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
     dependencies:
-    - formulative-examples
+      - formulative-examples
   van-der-Pol-oscillator:
-    main:                Main.hs
-    source-dirs:         equations/van-der-Pol-oscillator/app
+    main: Main.hs
+    source-dirs: equations/van-der-Pol-oscillator/app
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
     dependencies:
-    - formulative-examples
+      - formulative-examples
+  lorenz:
+    main: Main.hs
+    source-dirs: equations/lorenz/app
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - formulative-examples

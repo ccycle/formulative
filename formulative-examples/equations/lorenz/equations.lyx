@@ -252,11 +252,12 @@ End
 \begin_body
 
 \begin_layout Standard
+Equation:
 \begin_inset Formula 
 \begin{align*}
- & \frac{\mathrm{d}\mathbf{x}}{\mathrm{d}t}=\mathbf{v}\\
- & \frac{\mathrm{d}\mathbf{\mathbf{v}}}{\mathrm{d}t}=-gz\mathbf{e}_{z}\\
- & \frac{x^{2}}{a^{2}}+\frac{y^{2}}{b^{2}}-2z=0
+\frac{\mathrm{d}x}{\mathrm{d}t} & =\sigma\left(y-x\right)\\
+\frac{\mathrm{d}y}{\mathrm{d}t} & =x\left(\rho-z\right)-y\\
+\frac{\mathrm{d}z}{\mathrm{d}t} & =xy-\beta z
 \end{align*}
 
 \end_inset
@@ -265,19 +266,12 @@ End
 \end_layout
 
 \begin_layout Standard
-where 
-\begin_inset Formula $\mathbf{x}=\left(x,y,z\right)$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
+Scheme:
 \begin_inset Formula 
 \begin{align*}
- & \frac{\mathbf{x}^{(i+1)}-x^{(i)}}{\Delta t}-\frac{\mathbf{v}^{(i+1)}+\mathbf{v}^{(i)}}{2}=\mathbf{0}\\
- & \frac{\mathbf{v}^{(i+1)}+\mathbf{v}^{(i)}}{\Delta t}+g\frac{z^{(i+1)}+z^{(i)}}{2}\mathbf{e}_{z}\\
- & \quad+\lambda\left[\left(\frac{x^{(i+1)}+x^{(i)}}{a^{2}}\right)\mathbf{e}_{x}+\left(\frac{y^{(i+1)}+y^{(i)}}{b^{2}}\right)\mathbf{e}_{y}-\left(z^{(i+1)}+z^{(i)}\right)\mathbf{e}_{z}\right]=\mathbf{0}
+ & \frac{x^{(i+1)}-x^{(i)}}{\Delta t}-\sigma\left(\frac{y^{(i+1)}+y^{(i)}}{2}-\frac{x^{(i+1)}+x^{(i)}}{2}\right)=0\\
+ & \frac{y^{(i+1)}-y^{(i)}}{\Delta t}-\left(\frac{x^{(i+1)}+x^{(i)}}{2}\right)\left(\rho-\frac{z^{(i+1)}+z^{(i)}}{2}\right)-\frac{y^{(i+1)}+y^{(i)}}{2}=0\\
+ & \frac{z^{(i+1)}-z^{(i)}}{\Delta t}-\sigma\left(\frac{x^{(i+1)}+x^{(i)}}{2}\right)\left(\frac{y^{(i+1)}+y^{(i)}}{2}\right)-\beta\left(\frac{z^{(i+1)}+z^{(i)}}{2}\right)=0
 \end{align*}
 
 \end_inset

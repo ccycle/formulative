@@ -1,0 +1,27 @@
+:{
+writeSettingFilesFromList
+  "./equations/lorenz/settingFiles"
+  ( \rho' ->
+      defaultValue
+        { dynamics =
+            DynamicsSetting
+              { label = "time"
+              , initialValue = 0.0
+              , finalValue = 50.0
+              , stepSize = 1.0e-2
+              , interval = 1
+              , maximumIterationNumber = 1000000
+              }
+        , equation =
+            MyEquationConstants
+              { rho = rho'
+              , beta = 2.6666666666666665
+              , sigma = 10.0
+              , x0 = 1.0
+              , y0 = 0.0
+              , z0 = 0.0
+              }
+        }
+  )
+  [rho' | rho' <- [15, 24, 25, 28]]
+:}

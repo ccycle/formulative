@@ -19,10 +19,10 @@ def getParentDirStr(pathStr):
     return str(p_parent)
 
 
-def relPathToAbsPath(path):
-    p_rel = pathlib.Path(path)
-    p_abs = p_rel.resolve()
-    return str(p_abs)
+# def relPathToAbsPath(path):
+#     p_rel = pathlib.Path(path)
+#     p_abs = p_rel.resolve()
+#     return str(p_abs)
 
 
 def str_to_df_query(df, x):
@@ -123,8 +123,9 @@ if __name__ == "__main__":
 
     # export
     if outputPath != "":
-        df3.to_csv(outputPath, index=False)
-        print("Exporting " + relPathToAbsPath(outputPath) + " ..")
+        df1.to_csv(outputPath, index=False)
+        # print("Exporting " + relPathToAbsPath(outputPath) + " ..")
+        print("Exporting " + outputPath + " ..")
 
     delete_flag = args.delete
     if delete_flag:

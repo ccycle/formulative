@@ -9,9 +9,6 @@ import glob
 
 matplotlib.use("Agg")
 
-# TODO: ラベルからパスを取得してプロットできるようにする
-# TODO: Haskell側でplotのみ行うようにする
-
 
 def plot2d(outputDirList, xPathArgv, yPathArgv, fileNameArgv):
     for outputDirRegExp in outputDirList:

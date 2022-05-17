@@ -12,8 +12,6 @@ import subprocess
 import shutil
 
 matplotlib.use("Agg")
-# TODO: particle-on-paraboloid以外にも対応させる
-# TODO: dhallからa,bの値を取得できるように変更
 
 
 def paraboloid_plot():

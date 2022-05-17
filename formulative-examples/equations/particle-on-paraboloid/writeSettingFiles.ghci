@@ -29,6 +29,6 @@ writeSettingFilesFromList
   , g' <- [1]
   , xInit' <- [1]
   , vxInit' <- [0]
-  , vyInit' <- [0,0.5,1,1.5, (xInit' / a') * sqrt (g')]
+  , vyInit' <- let vyInit0 = [(xInit' / a') * sqrt (g')] in map (vyInit0*) [0,0.5,1,1.5]
   ]
 :}

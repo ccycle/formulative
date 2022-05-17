@@ -1,7 +1,7 @@
 :{
 writeSettingFilesFromList
   "./equations/harmonic-oscillator/settingFiles"
-  ( \(a, b, c) ->
+  ( \(gamma', x0', p0') ->
       defaultValue
         { dynamics =
             DynamicsSetting
@@ -16,11 +16,11 @@ writeSettingFilesFromList
             MyEquationConstants
               { m = 1.0
               , k = 1.0
-              , gamma = a
-              , x0 = b
-              , p0 = c
+              , gamma = gamma'
+              , x0 = x0'
+              , p0 = p0'
               }
         }
   )
-  [(a, b, c) | a <- [0.0, 0.5 .. 2.5], b <- [0, 1], c <- [0, 1], b /= c]
+  [(gamma', x0', p0') | gamma' <- [0.0, 1.0 ,2.0, 3.0], x0' <- [0, 1], p0' <- [0, 1], (x0',p0') /= (0,0) ]
 :}

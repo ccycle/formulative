@@ -9,14 +9,7 @@ import glob
 import shutil
 import subprocess
 
-# example:
-# python ../scripts/plot2d.py --outputDirRegExp output/7ced1919b958b83d/ --x df_x.csv --y df_y.csv
 matplotlib.use("Agg")
-# matplotlib.rcParams["axes.xmargin"] = 0.05
-# matplotlib.rcParams["axes.ymargin"] = 0.05
-
-# TODO: ラベルからパスを取得してプロットできるようにする
-# TODO: Haskell側でplotのみ行うようにする
 
 
 def plot2d(outputDirList, xPathArgv, yPathArgv, interval_, frameRate_):
