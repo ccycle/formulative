@@ -92,14 +92,6 @@ python ../../visualization-scripts/create_database.py
 
 View and query database (the result is exported in `output/_query_result.csv`):
 
-Make database:
-
-```sh
-python ../../visualization-scripts/create_database.py
-```
-
-View database:
-
 ```sh
 python ../../visualization-scripts/view_database.py
 ```
@@ -144,13 +136,40 @@ Visualization command is executed on all directories contained in `_query_result
 
 ### Plot
 
-Phase space:
+Plot x-y-z space:
 
 ```sh
 python plot3d_lorenz.py --data variable.csv -o variable.png
 ```
 
-References:
+Plot animation (interval=20, framerate=10):
 
-- https://www2.physics.ox.ac.uk/sites/default/files/profiles/read/lect6-43147.pdf
+```sh
+python plot3d_animation_lorenz.py --data variable.csv -o variable.mp4 -i 20 -f 10
+```
+
+## Examples
+
+$\sigma = 10,\beta=8/3,\rho=15$:
+
+<video src="media/variable_rho_15.mp4" controls="controls" width="70%">
+</video>
+
+$\sigma = 10,\beta=8/3,\rho=24$:
+
+<video src="media/variable_rho_24.mp4" controls="controls" width="70%">
+</video>
+
+$\sigma = 10,\beta=8/3,\rho=25$:
+
+<video src="media/variable_rho_25.mp4" controls="controls" width="70%">
+</video>
+
+$\sigma = 10,\beta=8/3,\rho=28$:
+
+<video src="media/variable_rho_28.mp4" controls="controls" width="70%">
+</video>
+
+## References:
+
 - https://en.wikipedia.org/wiki/Lorenz_system

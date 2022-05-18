@@ -70,7 +70,7 @@ Execute:
    execute for multiple setting files:
 
    ```sh
-   find ./settingFiles -name "*.dhall" | xargs -I -P 4 cabal exec -- harmonic-oscillator -s {}
+   find ./settingFiles -name "*.dhall" | xargs -I {} -P 4 cabal exec -- harmonic-oscillator -s {}
    ```
 
    Recalculate dependent variables from exported independent variable data:
@@ -82,7 +82,7 @@ Execute:
    Multiprocessing (3 process):
 
    ```sh
-   find ./settingFiles -name "*.dhall" | xargs -P 3 -I {} cabal exec -- harmonic-oscillator --recalculation Continue -s {}
+   find ./settingFiles -name "*.dhall" | xargs -P 4 -I {} cabal exec -- harmonic-oscillator --recalculation Continue -s {}
    ```
 
 ## Visualization
@@ -98,7 +98,7 @@ View and query database (the result is exported in `output/_query_result.csv`):
 - example 1: "equation_dampingRatio <= 1"
 
   ```sh
-  python ../../visualization-scripts/view_database.py -H equation_a equation_b equation_xInit equation_pxInit equation_pyInit -q "equation_dampingRatio <= 1"
+  python ../../visualization-scripts/view_database.py -H equation_dampingRatio equation_x0 equation_p0 -S equation_dampingRatio -q "equation_dampingRatio <= 1"
   ```
 
 - example 2: extract specific directory
@@ -112,7 +112,7 @@ Visualization command is executed on all directories contained in `_query_result
 Time evolution:
 
 ```sh
-python ../../visualization-scripts/plot_time_evolution.py -t time.csv -x position.csv
+python ../../visualization-scripts/plot_time_evolution.py -t time.csv -x position.csv -o t-x.png
 ```
 
 Phase space:
@@ -132,3 +132,27 @@ Global quantities for selected labels (in this case `hamiltonian`, `dHdt`, `powe
 ```sh
 python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariable/_global.csv --header hamiltonian dHdt power
 ```
+
+## Examples
+
+damping ratio: $\zeta=\gamma/(2\sqrt{mk})$
+
+$m = 1.0, k = 1.0, \gamma = 0.0, x_0 = 1.0, p_0 = 0.0$ ($\zeta=0.0$)
+
+![](media/t-x_dampingRatio_0.png)
+
+$m = 1.0, k = 1.0, \gamma = 1.0, x_0 = 1.0, p_0 = 0.0$ ($\zeta=0.5$)
+
+![](media/t-x_dampingRatio_0.5.png)
+
+$m = 1.0, k = 1.0, \gamma = 2.0, x_0 = 1.0, p_0 = 0.0$ ($\zeta=1.0$)
+
+![](media/t-x_dampingRatio_1.png)
+
+$m = 1.0, k = 1.0, \gamma = 3.0, x_0 = 1.0, p_0 = 0.0$ ($\zeta=1.5$)
+
+![](media/t-x_dampingRatio_1.5.png)
+
+## References
+
+- https://en.wikipedia.org/wiki/Harmonic_oscillator
