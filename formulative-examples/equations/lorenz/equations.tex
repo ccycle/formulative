@@ -1,0 +1,41 @@
+%% LyX 2.3.6.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[10pt,xelatex,10pt,a4paper]{bxjsarticle}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{fontspec}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setcounter{tocdepth}{2}
+\usepackage{mathtools}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\newlength{\lyxlabelwidth}      % auxiliary length 
+
+\@ifundefined{date}{}{\date{}}
+\AtBeginDocument{
+  \def\labelitemii{\tiny\(\blacksquare\)}
+  \def\labelitemiii{\scriptsize\(\blacktriangleright\)}
+}
+
+\makeatother
+
+
+\begin{document}
+Equation:
+\begin{align*}
+\frac{\mathrm{d}x}{\mathrm{d}t} & =\sigma\left(y-x\right)\\
+\frac{\mathrm{d}y}{\mathrm{d}t} & =x\left(\rho-z\right)-y\\
+\frac{\mathrm{d}z}{\mathrm{d}t} & =xy-\beta z
+\end{align*}
+
+Scheme:
+\begin{align*}
+ & \frac{x^{(i+1)}-x^{(i)}}{\Delta t}-\sigma\left(\frac{y^{(i+1)}+y^{(i)}}{2}-\frac{x^{(i+1)}+x^{(i)}}{2}\right)=0\\
+ & \frac{y^{(i+1)}-y^{(i)}}{\Delta t}-\left(\frac{x^{(i+1)}+x^{(i)}}{2}\right)\left(\rho-\frac{z^{(i+1)}+z^{(i)}}{2}\right)-\frac{y^{(i+1)}+y^{(i)}}{2}=0\\
+ & \frac{z^{(i+1)}-z^{(i)}}{\Delta t}-\sigma\left(\frac{x^{(i+1)}+x^{(i)}}{2}\right)\left(\frac{y^{(i+1)}+y^{(i)}}{2}\right)-\beta\left(\frac{z^{(i+1)}+z^{(i)}}{2}\right)=0
+\end{align*}
+
+\end{document}
