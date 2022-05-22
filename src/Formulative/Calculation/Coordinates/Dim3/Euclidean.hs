@@ -19,10 +19,6 @@ instance (Ord (RealField a), Additive (RealField a), NormSpace a) => NormSpace (
 
 instance (InnerProductSpace a, Additive (Scalar a)) => InnerProductSpace (EuclideanCoord3d a)
 
-class CoordinateTransform3d f a where
-    toEuclidean3d :: f a -> EuclideanCoord3d a
-    fromEuclidean3d :: EuclideanCoord3d a -> f a
-
 newtype MyCoord f a = MyCoord (f a)
 instance ToVariableType (MyCoord f a) where
     toVariableType _ = ParticleType

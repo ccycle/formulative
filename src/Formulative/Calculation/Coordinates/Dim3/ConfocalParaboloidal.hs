@@ -6,13 +6,12 @@ module Formulative.Calculation.Coordinates.Dim3.ConfocalParaboloidal where
 import qualified Data.ByteString.Lazy as BSL
 import Data.Csv
 import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Coordinates.Class
 import Formulative.Calculation.Coordinates.Dim3.Euclidean
 import Formulative.Calculation.VectorSpace.Class
-import Formulative.Postprocess.Export.CSV
 import Formulative.Postprocess.Export.Variable.Class
 import Formulative.Postprocess.Export.Variable.Local
 import GHC.Generics
-import Path
 
 -- 0<a<b
 data ParaboloidParam c = ParaboloidParam {a :: c, b :: c}
@@ -38,9 +37,10 @@ instance AdditiveGroup a => AdditiveGroup (ConfocalParaboloidCoord a) where
 instance AdditiveGroup a => VectorSpace (ConfocalParaboloidCoord a) where
     alpha *. ConfocalParaboloidCoord lambda1 mu1 nu1 = undefined
 
-instance (Multiplicative a, Floating a, Additive a, RealFloat a) => CoordinateTransform3d ConfocalParaboloidCoord a where
-    toEuclidean3d (ConfocalParaboloidCoord lambda1 mu1 nu1) = undefined
-    fromEuclidean3d (EuclideanCoord3d x y z) = undefined
+instance (Multiplicative a, Floating a, Additive a, RealFloat a) => HasCoordinateTransformation EuclideanCoord3d ConfocalParaboloidCoord a where
+    transformCoord (EuclideanCoord3d x y z) = undefined
+instance (Multiplicative a, Floating a, Additive a, RealFloat a) => HasCoordinateTransformation ConfocalParaboloidCoord EuclideanCoord3d a where
+    transformCoord (ConfocalParaboloidCoord lambda1 mu1 nu1) = undefined
 
 instance (Ord (RealField a), Additive (RealField a), NormSpace a, Multiplicative a, Transcendental a, a ~ RealField a) => NormSpace (ConfocalParaboloidCoord a) where
     absPowSum _ (ConfocalParaboloidCoord lambda1 mu1 nu1) = undefined

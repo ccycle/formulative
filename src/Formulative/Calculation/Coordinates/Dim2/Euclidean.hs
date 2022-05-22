@@ -15,7 +15,3 @@ data EuclideanCoord2d a = EuclideanCoord2d {x :: a, y :: a}
     deriving anyclass (ToRecord, FromRecord, ToLazyField)
 instance (Ord (RealField a), Additive (RealField a), NormSpace a) => NormSpace (EuclideanCoord2d a)
 instance (InnerProductSpace a, Additive (Scalar a)) => InnerProductSpace (EuclideanCoord2d a)
-
-class CoordinateTransform2d f a where
-    toEuclidean :: f a -> EuclideanCoord2d a
-    fromEuclidean :: EuclideanCoord2d a -> f a

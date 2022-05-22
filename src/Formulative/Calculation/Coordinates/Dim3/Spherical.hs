@@ -5,6 +5,7 @@ module Formulative.Calculation.Coordinates.Dim3.Spherical where
 
 import Data.Csv (ToRecord)
 import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Coordinates.Class
 import Formulative.Calculation.Coordinates.Dim3.Euclidean
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Postprocess.Export.Variable.Class
@@ -30,9 +31,10 @@ instance (AdditiveGroup a, Multiplicative a, VectorSpace a) => VectorSpace (Sphe
     type Scalar (SphericalCoord a) = Scalar a
     alpha *. SphericalCoord r1 theta1 phi1 = SphericalCoord (alpha *. r1) theta1 phi1
 
-instance (Additive a, Multiplicative a, Floating a, RealFloat a, Field a) => CoordinateTransform3d SphericalCoord a where
-    toEuclidean3d (SphericalCoord r1 theta1 phi1) = EuclideanCoord3d (r1 .*. cos phi1 .*. sin theta1) (r1 .*. sin phi1 .*. sin theta1) (r1 .*. cos theta1)
-    fromEuclidean3d (EuclideanCoord3d x y z) = SphericalCoord (sqrt (x .^ 2 .+. y .^ 2 .+. z .^ 2)) (acos (z ./. sqrt (x .^ 2 .+. y .^ 2 .+. z .^ 2))) (atan2 y x)
+instance (Additive a, Multiplicative a, Floating a, RealFloat a, Field a) => HasCoordinateTransformation EuclideanCoord3d SphericalCoord a where
+    transformCoord (EuclideanCoord3d x y z) = SphericalCoord (sqrt (x .^ 2 .+. y .^ 2 .+. z .^ 2)) (acos (z ./. sqrt (x .^ 2 .+. y .^ 2 .+. z .^ 2))) (atan2 y x)
+instance (Additive a, Multiplicative a, Floating a, RealFloat a, Field a) => HasCoordinateTransformation SphericalCoord EuclideanCoord3d a where
+    transformCoord (SphericalCoord r1 theta1 phi1) = EuclideanCoord3d (r1 .*. cos phi1 .*. sin theta1) (r1 .*. sin phi1 .*. sin theta1) (r1 .*. cos theta1)
 
 deriving via (MyCoord SphericalCoord a) instance ToVariableType (SphericalCoord a)
 
