@@ -3,7 +3,6 @@
 module Formulative.Calculation.Algebra.DualNumber where
 
 import Formulative.Calculation.Algebra.Arithmetic.Class hiding (Transcendental (..))
-import Formulative.Calculation.Algebra.HyperComplex
 import GHC.Generics
 import Refined.Unsafe.Type
 import Prelude hiding (fromInteger)
@@ -29,19 +28,12 @@ instance (Additive a, Multiplicative a) => Multiplicative (DualNumber a) where
 instance Semiring a => Semiring (DualNumber a)
 instance Ring a => Ring (DualNumber a)
 
--- nonzeroの条件が通常と異なる (実数部がnonzero)
--- instance (Field a) => Field (DualNumber a) where
---     reciprocal (Refined (DualNumber a a')) = Refined $ DualNumber (reciprocalUnsafe a) (negation $ a' .*. reciprocalUnsafe (a .*. a))
 instance (Eq a, Field a) => Field (DualNumber a) where
     reciprocal (DualNumber a a') = DualNumber a (negation $ a' .*. (a .*. a))
     fromRational' a = DualNumber (fromRational' a) zero
     isDividable (DualNumber a a') = a == zero
 
 liftD a = DualNumber a a
-
-instance HyperComplex DualNumber a where
-    getRealPart (DualNumber a b) = a
-    getDualPart (DualNumber a b) = b
 
 applyD (DualNumber f g) x = DualNumber (f x) (g x)
 
@@ -50,6 +42,8 @@ epsilon = DualNumber 0 1
 
 -- liftD ::(Num a1, Num a2) =>  (a1->a2 )-> (DualNumber a1 -> DualNumber a2)
 -- liftD f = fmap f
+
+getDualPart (DualNumber _ y) = y
 
 diff :: forall a. Floating a => (forall x. Floating x => x -> x) -> a -> a
 diff f x = getDualPart $ f (DualNumber x 1)

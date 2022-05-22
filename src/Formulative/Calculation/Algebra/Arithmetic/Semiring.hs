@@ -2,8 +2,6 @@
 
 module Formulative.Calculation.Algebra.Arithmetic.Semiring where
 
--- module Formulative.Calculation.Algebra.Arithmetic.Semiring where
-
 import qualified Data.Vector.Sized as VS
 import Debug.SimpleReflect.Expr
 import Formulative.Calculation.Algebra.Arithmetic.Additive
@@ -29,7 +27,6 @@ instance (GRng a, GRng b) => GRng (a :*: b) where
 instance (Semiring a) => GRng (K1 i a) where
     gfromInteger a = K1 (fromInteger a)
 
--- deriving instance
 instance (Num a) => Semiring (MyNum a) where
     fromInteger = MyNum . Prelude.fromInteger
 

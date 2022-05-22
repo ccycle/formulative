@@ -23,8 +23,8 @@ msgLoggerM msg = do
     sendIO . ensureDir $ parent dir
     sendIO $ appendFile (toFilePath dir) (msg <> "\n")
 
-msgM :: (Algebra sig m, Member (Lift IO) sig) => String -> m ()
-msgM = sendIO . putStrLn
+putStrLnM :: (Algebra sig m, Member (Lift IO) sig) => String -> m ()
+putStrLnM = sendIO . putStrLn
 
 ensureDirOutputM :: (Algebra sig m, Member Export sig, Member (Lift IO) sig) => m ()
 ensureDirOutputM = do

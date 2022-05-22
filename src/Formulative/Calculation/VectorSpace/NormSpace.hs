@@ -98,3 +98,15 @@ instance (Foldable m, Applicative m, Transcendental (RealField a), NormSpace a, 
     absMaxAll (MyFoldable a) = foldl' (binaryOpLp LInfinity) zero (fmap absMaxAll a)
 
 deriving via (MyFoldable (VS.Vector n) a) instance (KnownNat n, Transcendental (RealField a), Multiplicative a, NormSpace a, Ord (RealField a), NormSpace (RealField a)) => NormSpace (VS.Vector n a)
+
+normalize ::
+    forall v.
+    ( Field (Scalar v)
+    , NormSpace v
+    , Transcendental (RealField v)
+    , RealField v ~ Scalar v
+    ) =>
+    NormType (RealField v) ->
+    v ->
+    v
+normalize lp v = v ./ norm lp v

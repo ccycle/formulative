@@ -9,7 +9,6 @@ import Control.Monad.ST.Strict
 import Data.STRef.Strict
 import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.Algebra.DualNumber
-import Formulative.Calculation.Calculus.Variation
 import Formulative.Calculation.Internal.DerivingPrelude
 import Formulative.Calculation.Internal.List
 import Formulative.Calculation.Internal.Types
@@ -28,10 +27,6 @@ instance Applicative DiscreteVariable where
 deriving via (MyApplicative DiscreteVariable a) instance (Absolute a) => Num (DiscreteVariable a)
 deriving via (MyApplicative DiscreteVariable a) instance (Field a, Eq a, Absolute a, Ring a) => Fractional (DiscreteVariable a)
 deriving via (MyApplicative DiscreteVariable a) instance (Eq a, Floating a, Absolute a, Field a) => Floating (DiscreteVariable a)
-
-instance (Floating a, Eq a, AdditiveGroup a, Field a) => Variation (DiscreteVariable a) where
-    type VariateTo (DiscreteVariable a) = a
-    variation f (DiscreteVariable x y) = if (y .-. x) == zero then diff f x else (f y .-. f x) ./. (y .-. x)
 
 -- zipWithのある型に対してのみ適用可能
 discreteVariation :: (Floating a, Eq a, AdditiveGroup a, Field a) => (forall x. Floating x => x -> x) -> DiscreteVariable a -> a

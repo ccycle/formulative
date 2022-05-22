@@ -23,8 +23,6 @@ maybeToMonadThrow e = throwM e `maybe` return
 eitherToMonadThrow :: (MonadThrow m, Exception e) => Either e a -> m a
 eitherToMonadThrow = throw ||| return
 
--- instance Exception PathException
-
 -- safe read
 data ReadException = ReadException String TypeRep
     deriving (Show, Typeable)

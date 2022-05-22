@@ -3,7 +3,6 @@
 module Formulative.Calculation.Algebra.ComplexNumber where
 
 import Formulative.Calculation.Algebra.Arithmetic.Class
-import Formulative.Calculation.Algebra.HyperComplex
 import GHC.Generics
 import Prelude hiding (fromInteger)
 import qualified Prelude
@@ -20,12 +19,6 @@ instance (Semiring a, AdditiveGroup a) => Semiring (ComplexNumber a) where
 
 instance (Ring a) => Ring (ComplexNumber a)
 
--- instance (AdditiveGroup a, Multiplicative a, Field a) => Field (ComplexNumber a) where
---     reciprocal (Refined (ComplexNumber a b)) = Refined $ ComplexNumber (a ./. Refined (a .*. a .+. b .*. b)) (negation b ./. Refined (a .*. a .+. b .*. b))
 instance (Eq a, Field a) => Field (ComplexNumber a) where
     reciprocal ((ComplexNumber a b)) = ComplexNumber (a ./. (a .*. a .+. b .*. b)) (negation b ./. (a .*. a .+. b .*. b))
     fromRational' a = ComplexNumber (fromRational' a) zero
-
-instance HyperComplex ComplexNumber a where
-    getRealPart (ComplexNumber a b) = a
-    getDualPart (ComplexNumber a b) = b
