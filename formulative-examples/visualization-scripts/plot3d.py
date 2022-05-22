@@ -5,12 +5,22 @@ import numpy as np
 import os
 import matplotlib
 import argparse
-import glob
-from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 import dhall
 
-matplotlib.use("Agg")
+
+def getRowNumber(df):
+    return df.shape[0]
+
+
+def getColumnNumber(df):
+    return df.shape[1]
+
+
+def concatFromPaths(all_files):
+    return pd.concat((pd.read_csv(f, header=None) for f in all_files), axis=1).set_axis(
+        ["x", "y", "z"], axis=1
+    )
 
 
 def dhallPathToDict(path):
@@ -20,54 +30,59 @@ def dhallPathToDict(path):
     return dhallToDict
 
 
-def paraboloid_plot(relPath):
-    path = os.path.join(relPath, "setting.dhall")
-    dhallToDict = dhallPathToDict(path)
-    a = dhallToDict["equation"]["a"]
-    b = dhallToDict["equation"]["b"]
-    x = np.arange(-2, 2, 0.1)
-    y = np.arange(-2, 2, 0.1)
-    X, Y = np.meshgrid(x, y)
-    Z = (X / a) ** 2 + (Y / b) ** 2
-    return (X, Y, Z)
-
-    # fig = plt.figure(figsize=(6,6))
-    # ax = fig.add_subplot(111, projection='3d')
-
-    # Plot a 3D surface
-    # ax.plot_surface(X, Y, Z)
-
-
-def plot2d(outputDirList, xPathArgv):
+def plot3d(outputDirList, xPathsArgv, fileName):
     for outputDirRegExp in outputDirList:
-        xPath = os.path.join(outputDirRegExp, xPathArgv)
+        xPaths = map(lambda x: os.path.join(outputDirRegExp, x) + ".csv", xPathsArgv)
 
-        # yPath = os.path.join(outputDirRegExp, yPathArgv)
+        dataCSV = concatFromPaths(xPaths)
 
-        # xName = os.path.splitext(os.path.basename(xPath))[0]
-        # yName = os.path.splitext(os.path.basename(yPath))[0]
-
-        dataCSV = pd.read_csv(xPath, names=["x", "y", "z"])
-
-        # df = pd.concat([position, momentum], axis=1)
         ax = plt.axes(projection="3d")
 
         # Data for a three-dimensional line
         xline = dataCSV["x"]
         yline = dataCSV["y"]
         zline = dataCSV["z"]
-        ax.plot3D(xline, yline, zline, "gray")
 
-        # plot surface
-        (X, Y, Z) = paraboloid_plot(outputDirRegExp)
-        ax.plot_surface(X, Y, Z, alpha=0.2)
-        # plt.figure()
-        # df.plot(x=xName, y=yName)
-        # fig, ax = plt.subplots( nrows=1, ncols=1 )
-        # plt.ion()
-        # ax.plot(position,momentum)
-        # plt.ioff()
-        imgOutputPath = os.path.join(outputDirRegExp, "position.png")
+        # plot line
+        ax.plot3D(xline, yline, zline)
+
+        # fix x and y axis
+        max_axis_val = ((np.abs(dataCSV[["x", "y"]])).max()).max()
+        ax.scatter(-max_axis_val, -max_axis_val, 0, s=0)
+        ax.scatter(max_axis_val, max_axis_val, 0, s=0)
+
+        xmin, xmax = ax.get_xlim()
+        ymin, ymax = ax.get_ylim()
+        zmin, zmax = ax.get_zlim()
+
+        # projection
+        ax.plot(
+            xs=xline,
+            ys=yline,
+            zs=zmin,
+            zdir="z",
+            c="gray",
+            alpha=0.5,
+        )
+        ax.plot(
+            xs=yline,
+            ys=zline,
+            zs=xmin,
+            zdir="x",
+            c="gray",
+            alpha=0.5,
+        )
+        ax.plot(
+            xs=xline,
+            ys=zline,
+            zs=ymax,
+            zdir="y",
+            c="gray",
+            alpha=0.5,
+        )
+
+        imgOutputPath = os.path.join(outputDirRegExp, fileName)
+        print("Exporting " + imgOutputPath + " ..")
         plt.savefig(imgOutputPath)
         plt.close("all")
 
@@ -75,22 +90,45 @@ def plot2d(outputDirList, xPathArgv):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="an example program")
+
     parser.add_argument(
         "--queryResult",
-        help="paths of database for plotting.",
+        help="path for database.",
         default="output/_query_result.csv",
     )
 
     parser.add_argument(
-        "--data", help="3d data. example: --data position.csv", required=True
+        "--data",
+        help='3d data. example: "--data position", "--data x y z"',
+        required=True,
+        nargs="*",
+        type=str,
+        default=[],
+    )
+
+    parser.add_argument(
+        "-I",
+        "--interactive",
+        help="show interactive view",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        help="file name of output image. example: -o t-x.png",
+        required=True,
     )
 
     args = parser.parse_args()
     queryResultArgv = args.queryResult
     queryResultDF = pd.read_csv(queryResultArgv)
     outputDirList = queryResultDF["export_outputDirectory"]
-    xPathArgv = args.data
-    # yPathArgv = args.y
-    # labelListArgv = args.labels
+    xPathsArgv = args.data
+    fileNameArgv = args.output
 
-    plot2d(outputDirList, xPathArgv)
+    if args.interactive:
+        plot3d(outputDirList, xPathsArgv, fileNameArgv)
+        plt.show()
+    else:
+        matplotlib.use("Agg")
+        plot3d(outputDirList, xPathsArgv, fileNameArgv)

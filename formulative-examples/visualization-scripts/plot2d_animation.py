@@ -20,8 +20,8 @@ def plot2d(outputDirList, xPathArgv, yPathArgv, interval_, frameRate_):
         xLabel = os.path.splitext(os.path.basename(xPath))[0]
         yLabel = os.path.splitext(os.path.basename(yPath))[0]
 
-        df_x = pd.read_csv(xPath, names=[xLabel])
-        df_y = pd.read_csv(yPath, names=[yLabel])
+        df_x = pd.read_csv(xPath, header=None, names=[xLabel])
+        df_y = pd.read_csv(yPath, header=None, names=[yLabel])
 
         df = pd.concat([df_x, df_y], axis=1)
         cols = len(df)

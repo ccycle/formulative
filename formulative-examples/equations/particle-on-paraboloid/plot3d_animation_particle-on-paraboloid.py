@@ -39,7 +39,7 @@ def plot3d(outputDirList, xPathArgv, interval_, frameRate_, fileName):
 
         xPath = os.path.join(outputDirRegExp, xPathArgv)
 
-        df = pd.read_csv(xPath, names=["x", "y", "z"])
+        df = pd.read_csv(xPath, header=None, names=["x", "y", "z"])
         cols = len(df)
         colsDigits = len(str(cols))
         imgDir = os.path.join(outputDirRegExp, "img")

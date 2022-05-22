@@ -20,7 +20,7 @@ def plot2d(outputDirList, xPathArgv, yPathArgv, fileNameArgv):
 
         t_ = pd.read_csv(xPath)
         t = t_[tName]
-        x = pd.read_csv(yPath, names=[xName])
+        x = pd.read_csv(yPath, header=None, names=[xName])
 
         df = pd.concat([t, x], axis=1)
 
@@ -46,7 +46,9 @@ if __name__ == "__main__":
     )
 
     parser.add_argument("-t", help="t data. example: -t time.csv", required=True)
-    parser.add_argument("-x", help="x data. example: -x position.csv", required=True)
+    parser.add_argument(
+        "--data", help="data. example: --data position momentum", required=True
+    )
     parser.add_argument(
         "-o",
         "--output",

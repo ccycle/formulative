@@ -1,9 +1,5 @@
 # Lorenz equation
 
-<!-- TODO: equation -->
-
-## Equation
-
 Equation:
 
 $$
@@ -34,15 +30,15 @@ cabal build lorenz
 
 Execute:
 
-1. single setting file
+1. For single setting file
 
    ```sh
    cabal exec -- lorenz -s setting.dhall
    ```
 
-1. multiple setting files
+1. For multiple setting files
 
-   generate multiple setting files:
+   Generate multiple setting files:
 
    ```sh
    cabal repl lorenz
@@ -62,7 +58,7 @@ Execute:
 
    _NOTE_: `:source` is a command defined in `formulative-examples/.ghci` . To use this command outside of `formulative-examples`, add `:def source readFile` in your `.ghci` file.
 
-   execute for multiple setting files:
+   Execute for multiple setting files:
 
    ```sh
    find ./settingFiles -name "*.dhall" | xargs -I {} -P 4 cabal exec -- lorenz -s {}
@@ -84,13 +80,13 @@ Execute:
 
 ### Query
 
-Make database:
+Create database:
 
 ```sh
 python ../../visualization-scripts/create_database.py
 ```
 
-View and query database (the result is exported in `output/_query_result.csv`):
+View and query database (the results are exported to `output/_query_result.csv`):
 
 ```sh
 python ../../visualization-scripts/view_database.py
@@ -132,7 +128,7 @@ python ../../visualization-scripts/view_database.py -H equation_rho -S equation_
   python ../../visualization-scripts/view_database.py -q "export_outputDirectory == \"output/9352458ed15815db770b0d6cece7e30dff1f7b7b\""
   ```
 
-Visualization command is executed on all directories contained in `_query_result.csv` .
+The following visualization scripts are executed on all directories contained in `output/_query_result.csv` .
 
 ### Plot
 
@@ -149,6 +145,8 @@ python plot3d_animation_lorenz.py --data variable.csv -o variable.mp4 -i 20 -f 1
 ```
 
 ## Examples
+
+Initial condition: $(x_0,y_0,z_0)=(1,0,0)$
 
 $\sigma = 10,\beta=8/3,\rho=15$:
 

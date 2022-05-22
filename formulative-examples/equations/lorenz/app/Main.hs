@@ -39,7 +39,7 @@ import Formulative.Preprocess.SettingFile.Carrier
 ----------------------------------------------------------------
 -- User-defined variable
 ----------------------------------------------------------------
-newtype MyVariable = MyVariable {variable :: EuclideanCoord3d Double}
+data MyVariable = MyVariable {x :: Double, y :: Double, z :: Double}
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
   deriving anyclass (DefaultOrdered, ToVariableTypes, ToLazyFields, FromLazyFields)
@@ -89,9 +89,9 @@ instance (Has (Reader MyEquationConstants) sig m) => HasDependentParameterM m My
     MyEquationConstants{..} <- ask
     return
       MyDependentParameter
-        { fixedPointX = sqrt (beta .*. (rho .-. 1))
-        , fixedPointY = sqrt (beta .*. (rho .-. 1))
-        , fixedPointZ = rho .-. 1
+        { fixedPointX = if rho .-. 1 < 0 then sqrt (beta .*. (rho .-. 1)) else 0
+        , fixedPointY = if rho .-. 1 < 0 then sqrt (beta .*. (rho .-. 1)) else 0
+        , fixedPointZ = if rho .-. 1 < 0 then rho .-. 1 else 0
         , rhoH = sigma .*. (sigma .+. beta .+. 3) ./. (sigma .-. beta .-. 1)
         }
 
@@ -120,7 +120,7 @@ instance
   HasLocalDependentVariableM m MyVariable
   where
   type LocalDependentVariable MyVariable = MyLocalDependentVariable
-  localDependentVariableM (MyVariable EuclideanCoord3d{..}) = do
+  localDependentVariableM MyVariable{..} = do
     MyEquationConstants{..} <- ask
     let xDot = sigma .*. (y .-. x)
         yDot = x .*. (rho .-. z) .-. y
@@ -136,15 +136,15 @@ instance (HasExportDynamicsUnconstrained sig m MyVariable Double) => HasExportDy
 gradDeltaL
   (StepSize dt)
   MyEquationConstants{..}
-  (MyVariable xOld)
-  (MyVariable xNew) = MyVariable dLdX
+  xOld
+  xNew = dLdX
    where
     xVecDot = (xNew .-. xOld) ./ dt
-    (EuclideanCoord3d x y z) = (xNew .+. xOld) ./ 2
+    (MyVariable x y z) = (xNew .+. xOld) ./ 2
     xDot = sigma .*. (y .-. x)
     yDot = x .*. (rho .-. z) .-. y
     zDot = x .*. y .-. beta .*. z
-    dLdX = xVecDot .-. EuclideanCoord3d xDot yDot zDot
+    dLdX = xVecDot .-. MyVariable xDot yDot zDot
 
 instance
   ( Algebra sig m
@@ -172,7 +172,7 @@ instance
   where
   getInitialConditionM = do
     MyEquationConstants{..} <- ask
-    return $ MyVariable (EuclideanCoord3d x0 y0 z0)
+    return $ MyVariable x0 y0 z0
 
 instance
   ( HasUpdateWithOptimization sig m MyVariable

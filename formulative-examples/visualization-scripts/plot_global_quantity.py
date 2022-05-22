@@ -59,8 +59,6 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    # outputDirRegExp_ = args.outputDirRegExp
-    # outputDirList = glob.glob(outputDirRegExp_)
     queryResultArgv = args.queryResult
     queryResultDF = pd.read_csv(queryResultArgv)
     outputDirList = queryResultDF["export_outputDirectory"]

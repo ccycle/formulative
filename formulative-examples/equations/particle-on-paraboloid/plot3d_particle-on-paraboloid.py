@@ -38,7 +38,7 @@ def plot3d(outputDirList, xPathArgv, fileName):
     for outputDirRegExp in outputDirList:
         xPath = os.path.join(outputDirRegExp, xPathArgv)
 
-        dataCSV = pd.read_csv(xPath, names=["x", "y", "z"])
+        dataCSV = pd.read_csv(xPath, header=None, names=["x", "y", "z"])
 
         ax = plt.axes(projection="3d")
 

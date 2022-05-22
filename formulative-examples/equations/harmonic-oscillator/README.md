@@ -135,7 +135,7 @@ python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv 
 
 ## Examples
 
-damping ratio: $\zeta=\gamma/(2\sqrt{mk})$
+damping ratio: $\zeta=\frac{\gamma}{2\sqrt{mk}}$
 
 $m = 1.0, k = 1.0, \gamma = 0.0, x_0 = 1.0, p_0 = 0.0$ ($\zeta=0.0$)
 
