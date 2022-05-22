@@ -33,21 +33,14 @@ library
       Formulative.Calculation.Algebra.Arithmetic.Field
       Formulative.Calculation.Algebra.Arithmetic.Mul
       Formulative.Calculation.Algebra.Arithmetic.Multiplicative
-      Formulative.Calculation.Algebra.Arithmetic.RealRing
       Formulative.Calculation.Algebra.Arithmetic.Ring
       Formulative.Calculation.Algebra.Arithmetic.Semiring
       Formulative.Calculation.Algebra.Arithmetic.Transcendental
       Formulative.Calculation.Algebra.ComplexNumber
       Formulative.Calculation.Algebra.DiscreteVariation
       Formulative.Calculation.Algebra.DualNumber
-      Formulative.Calculation.Algebra.HyperComplex
       Formulative.Calculation.Algebra.MaxPlus
-      Formulative.Calculation.Algebra.Polynomial
-      Formulative.Calculation.Algebra.SetTheory.FiniteField
-      Formulative.Calculation.Algebra.SetTheory.Group
-      Formulative.Calculation.Algebra.SetTheory.Set
-      Formulative.Calculation.Calculus.Series
-      Formulative.Calculation.Calculus.Variation
+      Formulative.Calculation.Coordinates.Class
       Formulative.Calculation.Coordinates.Dim2.Euclidean
       Formulative.Calculation.Coordinates.Dim2.Parabolic
       Formulative.Calculation.Coordinates.Dim2.Polar
@@ -132,8 +125,6 @@ library
       Formulative.Postprocess.Export.Variable.Class
       Formulative.Postprocess.Export.Variable.Global
       Formulative.Postprocess.Export.Variable.Local
-      Formulative.Postprocess.Export.VTU
-      Formulative.Postprocess.Organization
       Formulative.Preprocess.CommandLineOptions
       Formulative.Preprocess.DefaultValue
       Formulative.Preprocess.DiscreteExteriorCalculus.CheckMesh

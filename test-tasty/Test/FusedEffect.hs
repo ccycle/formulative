@@ -4,13 +4,11 @@
 module Test.FusedEffect where
 
 import Control.Algebra
-import Control.Applicative
 import qualified Control.Carrier.Error.Church as Church
 import Control.Carrier.Error.Either
 import Control.Carrier.Lift
 import Control.Carrier.Reader
 import Control.Carrier.State.Strict
-import Control.Effect.Lift
 import Control.Effect.Sum
 import Control.Exception.Safe
 import Control.Monad
@@ -19,9 +17,7 @@ import Data.Kind
 import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.Algebra.Arithmetic.Field
 import Formulative.Calculation.DifferentialEquation.Types
-import Formulative.Calculation.Internal.Types
 import Formulative.Preprocess.Exception
-import GHC.TypeNats
 
 -- import Formulative.Preprocess.Label
 
@@ -253,7 +249,7 @@ instance (Algebra sig m) => Algebra (LabelsEff :+: sig) (LabelsEnvC a m) where
             pure ((<$ ctx) l)
         R other -> LabelsEnvC (alg (runLabelsEnv . hdl) (R other) ctx)
 
-printLabelsTest :: (Has LabelsEff sig m, Member (Lift IO) sig, Member Export sig) => m ()
+printLabelsTest :: (Has LabelsEff sig m, Member (Lift IO) sig) => m ()
 printLabelsTest = do
     l <- getLabels
     forM_ l putStrLnM
