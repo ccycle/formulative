@@ -72,7 +72,7 @@ instance (MSG.Matrix mat v a, KnownNat r) => UnsafeIndex (mat r 1 v a) where
 
 instance (Element a, KnownNat m, KnownNat n) => IsList (HMatrixSized m n a) where
     type Item (HMatrixSized m n a) = [a]
-    fromList (x) = HMatrixSized $ H.fromLists x
+    fromList = HMatrixSized . H.fromLists
     toList (HMatrixSized x) = H.toLists x
 
 instance (MSG.Matrix mat v a, KnownNat r, KnownNat c) => IsList (mat r c v a) where

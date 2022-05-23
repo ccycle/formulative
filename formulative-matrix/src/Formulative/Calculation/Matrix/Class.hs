@@ -113,8 +113,8 @@ instance
     NormSpace (MSL.SparseMatrix m n a)
     where
     type RealField (MSL.SparseMatrix m n a) = RealField a
-    absPowSum (p) x = flip (.**) (reciprocal p) $ VST.foldl' (binaryOpLp (Lp p)) zero $ VST.map (absPowSum (p)) $ MSG.flatten x
-    absMaxAll x = VST.foldl' (binaryOpLp LInfinity) zero $ VST.map absMaxAll $ MSG.flatten x
+    absPowSum p = flip (.**) (reciprocal p) . VST.foldl' (binaryOpLp (Lp p)) zero . VST.map (absPowSum p) . MSG.flatten
+    absMaxAll = VST.foldl' (binaryOpLp LInfinity) zero . VST.map absMaxAll . MSG.flatten
 
 instance
     {-# OVERLAPS #-}
@@ -157,8 +157,8 @@ instance forall n m a. (KnownNat m, KnownNat n, MSL.Numeric a, VectorSpace a, Mu
 
 instance forall n m a. (KnownNat m, KnownNat n, VST.Storable (RealField a), Additive (RealField a), NormSpace a, MSL.Numeric a, Ord (RealField a), VectorSpace a, Multiplicative a, Transcendental (RealField a)) => NormSpace (MSL.Matrix m n a) where
     type RealField (MSL.Matrix m n a) = RealField a
-    absPowSum (p) x = flip (.**) (reciprocal p) $ VST.foldl' (binaryOpLp (Lp p)) zero $ VST.map (absPowSum (p)) $ MSG.flatten x
-    absMaxAll x = VST.foldl' (binaryOpLp (LInfinity)) zero $ VST.map (absMaxAll) $ MSG.flatten x
+    absPowSum p x = flip (.**) (reciprocal p) $ VST.foldl' (binaryOpLp (Lp p)) zero $ VST.map (absPowSum p) $ MSG.flatten x
+    absMaxAll x = VST.foldl' (binaryOpLp LInfinity) zero $ VST.map absMaxAll $ MSG.flatten x
 
 instance (MSL.Numeric a, NormSpace a, Multiplicative a, KnownNat n, KnownNat m) => InnerProductSpace (MSL.Matrix m n a) where
     x <.> y = VST.sum $ MSG.flatten (MSG.transpose x .@. y)
