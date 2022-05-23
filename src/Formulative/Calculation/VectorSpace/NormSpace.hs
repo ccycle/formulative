@@ -27,11 +27,11 @@ data NormType a = Lp a | LInfinity
 instance HasDefaultValue (NormType a) where
     defaultValue = LInfinity
 
--- absPowSum x = |x1|^p + |x2|^p + ...
 class (VectorSpace v) => NormSpace v where
     type RealField v
     type RealField v = GRealField (Rep v)
 
+    -- absPowSum x = |x1|^p + |x2|^p + ...
     absPowSum :: RealField v -> v -> RealField v
     default absPowSum :: (Generic v, GNormSpace (Rep v), GRealField (Rep v) ~ RealField v) => RealField v -> v -> RealField v
     absPowSum p v = gAbsPowSum p (from v)
@@ -40,14 +40,15 @@ class (VectorSpace v) => NormSpace v where
     default absMaxAll :: (Generic v, GNormSpace (Rep v), GRealField (Rep v) ~ RealField v) => v -> RealField v
     absMaxAll v = gAbsMaxAll (from v)
 
-    norm :: (Transcendental (RealField v)) => NormType (RealField v) -> v -> RealField v
+    norm :: (NormSpace v) => NormType (RealField v) -> v -> RealField v
+    default norm :: (NormSpace v, Transcendental (RealField v)) => NormType (RealField v) -> v -> RealField v
     norm (Lp p) x = absPowSum p x .** reciprocal p
     norm LInfinity x = absMaxAll x
 
 maxNorm x = norm LInfinity x
-normL1 x = absPowSum (Lp 1) x
+normL1 x = norm (Lp 1) x
 normL2 x = norm (Lp 2) x
-normSquared x = absPowSum (Lp 2) x
+normSquared x = absPowSum 2 x
 
 binaryOpLp LInfinity = max
 binaryOpLp (Lp p) = (.+.)
@@ -69,28 +70,24 @@ instance (GNormSpace f, Ord (GRealField f), GNormSpace g, GRealField g ~ GRealFi
     gAbsPowSum p (x :*: y) = binaryOpLp (Lp p) (gAbsPowSum p x) (gAbsPowSum p y)
     gAbsMaxAll (x :*: y) = binaryOpLp LInfinity (gAbsMaxAll x) (gAbsMaxAll y)
 
-instance (Num a, Transcendental a) => NormSpace (MyNum a) where
+instance (Integral a) => NormSpace (MyNum a) where
     type RealField (MyNum a) = a
-    absPowSum p (MyNum a) = abs a .** p
+    absPowSum p (MyNum a) = abs a ^ p
     absMaxAll (MyNum a) = abs a
+    norm _ (MyNum a) = abs a
 
--- absPowSum LInfinity (MyNum a) = abs a
+instance (Floating a) => NormSpace (MyFloating a) where
+    type RealField (MyFloating a) = a
+    absPowSum p (MyFloating a) = abs a ** p
+    absMaxAll (MyFloating a) = abs a
+    norm _ (MyFloating a) = abs a
 
--- deriving via (MyNum Int) instance NormSpace Int
--- deriving via (MyNum Integer) instance NormSpace Integer
--- deriving via (MyNum Natural) instance NormSpace Natural
-deriving via (MyNum Double) instance NormSpace Double
-deriving via (MyNum Float) instance NormSpace Float
+deriving via (MyNum Int) instance NormSpace Int
+deriving via (MyNum Integer) instance NormSpace Integer
+deriving via (MyNum Natural) instance NormSpace Natural
 
-instance (RealFloat a, Transcendental a) => NormSpace (MyComplex a) where
-    type RealField (MyComplex a) = a
-    absPowSum p (MyComplex a) = realPart (abs a) .** p
-    absMaxAll (MyComplex a) = realPart $ abs a
-
--- absPowSum (LInfinity) (MyComplex a) = realPart $ abs a
-
-deriving via (MyComplex Double) instance NormSpace (Complex Double)
-deriving via (MyComplex Float) instance NormSpace (Complex Float)
+deriving via (MyFloating Double) instance NormSpace Double
+deriving via (MyFloating Float) instance NormSpace Float
 
 instance (Foldable m, Applicative m, Transcendental (RealField a), NormSpace a, Ord (RealField a), NormSpace (RealField a)) => NormSpace (MyFoldable m a) where
     type RealField (MyFoldable m a) = RealField a
@@ -99,14 +96,8 @@ instance (Foldable m, Applicative m, Transcendental (RealField a), NormSpace a, 
 
 deriving via (MyFoldable (VS.Vector n) a) instance (KnownNat n, Transcendental (RealField a), Multiplicative a, NormSpace a, Ord (RealField a), NormSpace (RealField a)) => NormSpace (VS.Vector n a)
 
-normalize ::
-    forall v.
-    ( Field (Scalar v)
-    , NormSpace v
-    , Transcendental (RealField v)
-    , RealField v ~ Scalar v
-    ) =>
-    NormType (RealField v) ->
-    v ->
-    v
-normalize lp v = v ./ norm lp v
+-- Double -> Complex Double, ..
+class ConvertNumeric a b where
+    convertNumeric :: a -> b
+    default convertNumeric :: (a ~ b) => a -> b
+    convertNumeric = id

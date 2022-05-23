@@ -70,7 +70,7 @@ updateWithConstrainedOptimization variable = do
     aParam <- askAugmentedLagrangianParameter @(EqualityConstraintType b)
     convergenceParam <- askConvergenceTestParameters @(Scalar b)
     lagrangeMultiplier <- getLagrangeMultiplier
-    (VariablesConstrainedSystem x (l)) <-
+    (VariablesConstrainedSystem x l) <-
         liftEither $
             augmentedLagrangianMethod
                 lineSearchParam

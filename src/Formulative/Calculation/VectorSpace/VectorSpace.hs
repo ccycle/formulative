@@ -34,7 +34,7 @@ instance (GVectorSpace f, GVectorSpace g, GScalar f ~ GScalar g) => GVectorSpace
     μ *.. (x :*: y) = μ *.. x :*: μ *.. y
 
 -- deriving instance
-instance {-# OVERLAPS #-} (Num a) => VectorSpace (MyNum a) where
+instance (Num a) => VectorSpace (MyNum a) where
     type Scalar (MyNum a) = a
     a *. (MyNum b) = MyNum (a * b)
 
@@ -46,9 +46,11 @@ deriving via (MyNum (Complex Float)) instance VectorSpace (Complex Float)
 deriving via (MyNum (Complex Double)) instance VectorSpace (Complex Double)
 deriving via (MyNum Natural) instance VectorSpace Natural
 
-instance {-# OVERLAPS #-} (RealFloat a) => VectorSpace (MyComplex a) where
-    type Scalar (MyComplex a) = Complex a
-    a *. (MyComplex b) = MyComplex (a * b)
+deriving via (MyNum a) instance (Num a) => VectorSpace (MyFloating a)
+
+-- instance (RealFloat a) => VectorSpace (MyComplex a) where
+--     type Scalar (MyComplex a) = Complex a
+--     a *. (MyComplex b) = MyComplex (a * b)
 
 ----------------------------------------------------------------
 ------ applicative

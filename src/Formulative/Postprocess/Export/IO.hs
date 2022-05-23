@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Formulative.Postprocess.Export.IO where
 
 import Control.Algebra

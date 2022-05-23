@@ -55,9 +55,7 @@ deriving via (MyNum (Complex Float)) instance AdditiveGroup (Complex Float)
 deriving via (MyNum (Complex Double)) instance AdditiveGroup (Complex Double)
 deriving via (MyNum Expr) instance AdditiveGroup Expr
 
-instance {-# OVERLAPS #-} (RealFloat a) => AdditiveGroup (MyComplex a) where
-    negation (MyComplex a) = MyComplex (negate a)
-    (MyComplex a) .-. (MyComplex b) = MyComplex (a - b)
+deriving via (MyNum a) instance (Num a) => AdditiveGroup (MyFloating a)
 
 instance {-# OVERLAPS #-} (AdditiveGroup a, AdditiveGroup b) => AdditiveGroup (a -> b) where
     (f .-. g) x = f x .-. g x

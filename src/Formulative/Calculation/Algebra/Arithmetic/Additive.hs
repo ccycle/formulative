@@ -68,9 +68,7 @@ deriving via (MyNum Expr) instance Additive Expr
 deriving via (MyNum (Complex Float)) instance Additive (Complex Float)
 deriving via (MyNum (Complex Double)) instance Additive (Complex Double)
 
-instance (RealFloat a) => Additive (MyComplex a) where
-    zero = MyComplex 0
-    (MyComplex a) .+. (MyComplex b) = MyComplex (a + b)
+deriving via (MyNum a) instance (Num a) => Additive (MyFloating a)
 
 -- deriving via (MyComplex Float) instance Additive (Complex Float)
 -- deriving via (MyComplex Double) instance Additive (Complex Double)

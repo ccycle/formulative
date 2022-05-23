@@ -106,8 +106,8 @@ wolfeCondition (WolfeConditionParameter c2) (StepSizeForLineSearch alpha) x (Des
 
 strongWolfeCondition (WolfeConditionParameter c2) (StepSizeForLineSearch alpha) x (DescentDirection p) (GradObjectiveFunction gradf) = lhs <= rhs
  where
-  rhs = abs' $ p <.> gradf x
-  lhs = c2 .*. abs' (p <.> gradf (x .+. (alpha *. p)))
+  rhs = absolute $ p <.> gradf x
+  lhs = c2 .*. absolute (p <.> gradf (x .+. (alpha *. p)))
 
 lineSearchCondition (Armijo a) alpha x p f gradf = armijoCondition a alpha x p f gradf
 lineSearchCondition (Wolfe a w) alpha x p f gradf = armijoCondition a alpha x p f gradf && wolfeCondition w alpha x p gradf

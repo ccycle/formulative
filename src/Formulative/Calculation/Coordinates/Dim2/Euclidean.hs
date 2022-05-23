@@ -13,5 +13,5 @@ data EuclideanCoord2d a = EuclideanCoord2d {x :: a, y :: a}
     deriving stock (Show, Eq, Generic)
     deriving anyclass (Additive, AdditiveGroup, VectorSpace)
     deriving anyclass (ToRecord, FromRecord, ToLazyField)
-instance (Ord (RealField a), Additive (RealField a), NormSpace a) => NormSpace (EuclideanCoord2d a)
+instance (Ord (RealField a), Additive (RealField a), NormSpace a, Transcendental (RealField a)) => NormSpace (EuclideanCoord2d a)
 instance (InnerProductSpace a, Additive (Scalar a)) => InnerProductSpace (EuclideanCoord2d a)

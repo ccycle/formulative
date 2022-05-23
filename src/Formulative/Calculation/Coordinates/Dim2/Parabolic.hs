@@ -18,7 +18,7 @@ import Prelude hiding (fromInteger)
 data ParabolicCoord2d a = ParabolicCoord2d {sigma :: a, tau :: a}
     deriving stock (Show, Eq, Generic)
     deriving anyclass (ToRecord, ToLazyField)
-instance (RealField a ~ Scalar a, Field (Scalar a), NormSpace a, Transcendental (Scalar a), Transcendental a) => HasCoordinateTransformation EuclideanCoord2d ParabolicCoord2d a where
-    transformCoord EuclideanCoord2d{..} = ParabolicCoord2d (normalize LInfinity x .*. sqrt' (sqrt' (x .^ 2 .+. y .^ 2) .+. y)) (sqrt' (sqrt' (x .^ 2 .+. y .^ 2) .-. y))
+instance (RealField a ~ Scalar a, Field (Scalar a), NormSpace a, Transcendental (Scalar a), Transcendental a, InnerProductSpace a, Eq (Scalar a)) => HasCoordinateTransformation EuclideanCoord2d ParabolicCoord2d a where
+    transformCoord EuclideanCoord2d{..} = ParabolicCoord2d (normalize x .*. sqrt' (sqrt' (x .^ 2 .+. y .^ 2) .+. y)) (sqrt' (sqrt' (x .^ 2 .+. y .^ 2) .-. y))
 instance (Field a) => HasCoordinateTransformation ParabolicCoord2d EuclideanCoord2d a where
     transformCoord ParabolicCoord2d{..} = EuclideanCoord2d (sigma .*. tau) ((tau .^ 2 .-. sigma .^ 2) ./. 2)

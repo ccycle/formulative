@@ -40,8 +40,10 @@ deriving via (MyNum Double) instance InnerProductSpace Double
 deriving via (MyNum Float) instance InnerProductSpace Float
 
 instance {-# OVERLAPS #-} (VectorSpace a, Multiplicative a, Applicative m, Foldable m) => InnerProductSpace (MyApplicative m a) where
-    (<.>) (MyApplicative x) (MyApplicative y) = foldl' (.+.) (zero) (liftA2 (.*.) x y)
+    (<.>) (MyApplicative x) (MyApplicative y) = foldl' (.+.) zero (liftA2 (.*.) x y)
 
 deriving via (MyApplicative (VS.Vector n) a) instance (Multiplicative a, VectorSpace a, KnownNat n) => InnerProductSpace (VS.Vector n a)
 
 angleV lp v1 v2 = if absPowSum lp v1 == zero || absPowSum lp v2 == zero then zero else v1 <.> v2 ./. (absPowSum lp v1 .*. absPowSum lp v2)
+
+normalize v = if v <.> v /= zero then v ./ sqrt' (v <.> v) else zero

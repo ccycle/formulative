@@ -15,7 +15,7 @@ data EuclideanCoord3d a = EuclideanCoord3d {x :: a, y :: a, z :: a}
     deriving stock (Show, Eq, Generic, Functor)
     deriving anyclass (Additive, AdditiveGroup, Multiplicative, VectorSpace)
     deriving anyclass (ToRecord, FromRecord, ToLazyField)
-instance (Ord (RealField a), Additive (RealField a), NormSpace a) => NormSpace (EuclideanCoord3d a)
+instance (Ord (RealField a), Additive (RealField a), NormSpace a, Transcendental (RealField a)) => NormSpace (EuclideanCoord3d a)
 
 instance (InnerProductSpace a, Additive (Scalar a)) => InnerProductSpace (EuclideanCoord3d a)
 

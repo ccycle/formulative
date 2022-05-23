@@ -21,21 +21,3 @@ instance (Transcendental a, Ord a) => HasCoordinateTransformation EuclideanCoord
     transformCoord EuclideanCoord2d{..} = PolarCoord (sqrt' (x .^ 2 .+. y .^ 2)) (if y < 0 then acos' (x ./. sqrt' (x .^ 2 .+. y .^ 2)) else negation $ acos' (x ./. sqrt' (x .^ 2 .+. y .^ 2)))
 instance (Transcendental a) => HasCoordinateTransformation PolarCoord EuclideanCoord2d a where
     transformCoord PolarCoord{..} = EuclideanCoord2d (r .*. cos' theta) (r .*. sin' theta)
-
--- TODO: undefinedの除去
--- instance Additive a => Additive (PolarCoord a) where
---     zero = PolarCoord zero zero
---     PolarCoord r1 theta1 .+. PolarCoord r2 theta2 = undefined
-
--- instance AdditiveGroup a => AdditiveGroup (PolarCoord a) where
---     PolarCoord r1 theta1 .-. PolarCoord r2 theta2 = undefined
-
--- instance (AdditiveGroup a, VectorSpace a) => VectorSpace (PolarCoord a) where
---     alpha *. PolarCoord r1 theta1 = PolarCoord (alpha *. r1) theta1
-
--- instance NormSpace (PolarCoord a) where
---     absPowSum p (PolarCoord r theta) = r .** p
---     absMaxAll (PolarCoord r theta) = r
---     norm _ (PolarCoord r theta) = r
-
--- instance (InnerProductSpace a, Additive (Scalar a)) => InnerProductSpace (PolarCoord a)

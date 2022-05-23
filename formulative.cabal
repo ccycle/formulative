@@ -336,8 +336,6 @@ test-suite formulative-tasty
       Test.Homology
       Test.KnownNatSolver
       Test.Matrix
-      Test.MonoidInstance
-      Test.NonHomogeneousProd
       Test.Optimization.AugmentedLagrangian
       Test.Optimization.LBFGS
       Test.Physics
