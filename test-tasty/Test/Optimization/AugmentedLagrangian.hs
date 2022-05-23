@@ -31,9 +31,10 @@ lambda = 0.0
 initialData = TestData (-1) (-1)
 augmentedLagrangianParametersTest = defaultValue{penaltyCoefficient = PenaltyCoefficient mu, growthRate = GrowthRateForPenaltyCoefficient 1.1, maximumIterationNumber = IterationNumberForALM 1000}
 
-augmentedLagrangianMethodTest :: (MonadThrow m) => TestData -> m (TestData, LagrangeMultiplier Double)
+augmentedLagrangianMethodTest :: (MonadThrow m) => TestData -> m (VariablesConstrainedSystem TestData (LagrangeMultiplier Double))
 augmentedLagrangianMethodTest =
     augmentedLagrangianMethod
+        defaultValue
         defaultValue
         defaultValue
         defaultValue
