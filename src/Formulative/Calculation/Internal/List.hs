@@ -4,10 +4,6 @@ module Formulative.Calculation.Internal.List (
 ) where
 
 import Data.List
-import qualified Data.Matrix.Static.Dense as MSD
-import qualified Data.Matrix.Static.Generic as MSG
-import qualified Data.Matrix.Static.LinearAlgebra as MSL
-import qualified Data.Matrix.Static.Sparse as MSS
 import Data.Maybe (fromJust)
 import Data.Set (Set)
 import qualified Data.Set as S
@@ -16,7 +12,6 @@ import qualified Data.Vector.Algorithms.Intro as VA
 import qualified Data.Vector.Sized as VS
 import qualified Data.Vector.Storable as VST
 import qualified Data.Vector.Unboxed as VU
-import Formulative.Calculation.Matrix.Types
 import GHC.Exts (IsList (Item, fromList, toList))
 import GHC.TypeNats
 import Numeric.LinearAlgebra (Element)
@@ -54,10 +49,6 @@ class IsVector v1 v2 where
 --     fromList = MSS.fromList
 --     toList = MSS.toList
 
-instance (KnownNat m, VST.Storable a, MSS.Zero a) => IsVector (VST.Vector a) (MSL.SparseMatrix m 1 a) where
-    fromVector = MSS.fromVector
-    toVector = flip MSS.unsafeTakeColumn 0
-
 instance (KnownNat n) => IsList (VS.Vector n a) where
     type Item (VS.Vector n a) = a
     fromList = fromJust . VS.fromList
@@ -68,16 +59,6 @@ instance (KnownNat n) => IsList (VS.Vector n a) where
 --     type Item (HMatrixSized m n a) = [a]
 --     fromList = fromJust . E.fromList
 --     toList = E.toList
-
-instance (Element a, KnownNat m, KnownNat n) => IsList (HMatrixSized m n a) where
-    type Item (HMatrixSized m n a) = [a]
-    fromList (x) = HMatrixSized $ fromLists x
-    toList (HMatrixSized x) = toLists x
-
-instance (MSG.Matrix mat v a, KnownNat r, KnownNat c) => IsList (mat r c v a) where
-    type Item (mat r c v a) = a
-    fromList = MSG.fromList
-    toList = MSG.toList
 
 class MapClass t a where
     mapG :: (a -> b) -> t a -> t b
@@ -97,8 +78,6 @@ instance UnsafeIndex (V.Vector a) where
     unsafeIndex = V.unsafeIndex
 instance (Ord a) => UnsafeIndex (Set a) where
     unsafeIndex = flip S.elemAt
-instance (MSG.Matrix mat v a, KnownNat r) => UnsafeIndex (mat r 1 v a) where
-    unsafeIndex mat i = MSD.unsafeIndex mat (i, 0)
 
 class (IsList a) => SafeIndex a where
     safeIndex :: a -> Int -> Maybe (Item a)

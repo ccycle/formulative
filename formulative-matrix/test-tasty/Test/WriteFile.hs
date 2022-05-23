@@ -7,6 +7,7 @@ import Data.Csv
 import qualified Data.Matrix.Static.LinearAlgebra as MSL
 import Formulative.Calculation.Internal.List
 import Formulative.Calculation.Internal.Setting
+import Formulative.Calculation.Matrix.Types
 import Formulative.Postprocess.Export.Carrier
 import Formulative.Postprocess.Export.IO (ensureDirOutputM)
 import Formulative.Postprocess.Export.Types

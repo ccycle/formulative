@@ -55,22 +55,6 @@ library
       Formulative.Calculation.DifferentialEquation.Dynamics.Effect
       Formulative.Calculation.DifferentialEquation.TimeEvolution
       Formulative.Calculation.DifferentialEquation.Types
-      Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Operators
-      Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Operators.Geometry
-      Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Operators.Homology
-      Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
-      Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
-      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Carrier
-      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Effect
-      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Operators
-      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Submanifold.Curvature
-      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Submanifold.Operators
-      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Submanifold.Types
-      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Types
-      Formulative.Calculation.DiscreteExteriorCalculus.Homology.Carrier
-      Formulative.Calculation.DiscreteExteriorCalculus.Homology.Effect
-      Formulative.Calculation.DiscreteExteriorCalculus.Homology.Operators
-      Formulative.Calculation.DiscreteExteriorCalculus.Homology.Types
       Formulative.Calculation.Internal.Class
       Formulative.Calculation.Internal.DerivingPrelude
       Formulative.Calculation.Internal.DerivingPrelude.Floating
@@ -81,16 +65,10 @@ library
       Formulative.Calculation.Internal.Infix
       Formulative.Calculation.Internal.List
       Formulative.Calculation.Internal.Setting
-      Formulative.Calculation.Internal.Singletons
       Formulative.Calculation.Internal.TH
-      Formulative.Calculation.Internal.TypeLevelList
-      Formulative.Calculation.Internal.TypeLevelNatural
       Formulative.Calculation.Internal.Types
       Formulative.Calculation.Internal.Variable.Carrier
       Formulative.Calculation.Internal.Variable.Effect
-      Formulative.Calculation.Matrix.Class
-      Formulative.Calculation.Matrix.Solve
-      Formulative.Calculation.Matrix.Types
       Formulative.Calculation.Optimization.Carrier
       Formulative.Calculation.Optimization.Class
       Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian
@@ -127,8 +105,6 @@ library
       Formulative.Postprocess.Export.Variable.Local
       Formulative.Preprocess.CommandLineOptions
       Formulative.Preprocess.DefaultValue
-      Formulative.Preprocess.DiscreteExteriorCalculus.CheckMesh
-      Formulative.Preprocess.DiscreteExteriorCalculus.Read
       Formulative.Preprocess.Exception
       Formulative.Preprocess.IO
       Formulative.Preprocess.Path
@@ -201,7 +177,6 @@ library
     , hashable
     , hmatrix
     , ieee
-    , matrix-sized
     , megaparsec
     , numeric-limits
     , optparse-applicative
@@ -214,7 +189,6 @@ library
     , safe-exceptions
     , scientific
     , simple-reflect
-    , singletons
     , string-conversions
     , tasty
     , tasty-hunit
@@ -295,7 +269,6 @@ executable preprocess
     , hashable
     , hmatrix
     , ieee
-    , matrix-sized
     , megaparsec
     , numeric-limits
     , optparse-applicative
@@ -308,7 +281,6 @@ executable preprocess
     , safe-exceptions
     , scientific
     , simple-reflect
-    , singletons
     , string-conversions
     , tasty
     , tasty-hunit
@@ -326,30 +298,20 @@ test-suite formulative-tasty
   type: exitcode-stdio-1.0
   main-is: Tasty.hs
   other-modules:
-      Test.Adjacency
       Test.DefineNewEffect
       Test.Dhall
       Test.Factorial
       Test.FusedEffect
-      Test.GenericsTest
-      Test.Geometry
-      Test.Homology
       Test.KnownNatSolver
-      Test.Matrix
       Test.Optimization.AugmentedLagrangian
       Test.Optimization.LBFGS
       Test.Physics
       Test.ReadFile
       Test.RebindableSyntax
       Test.RefineException
-      Test.Refl
-      Test.SingletonTest
       Test.TastyTest
       Test.TH
-      Test.ToRecord
       Test.Turtle
-      Test.VectorSpace.InnerProductSpace
-      Test.WriteFile
       Paths_formulative
   hs-source-dirs:
       test-tasty
@@ -416,7 +378,6 @@ test-suite formulative-tasty
     , hashable
     , hmatrix
     , ieee
-    , matrix-sized
     , megaparsec
     , numeric-limits
     , optparse-applicative
@@ -429,7 +390,6 @@ test-suite formulative-tasty
     , safe-exceptions
     , scientific
     , simple-reflect
-    , singletons
     , string-conversions
     , tasty
     , tasty-hunit
@@ -513,7 +473,6 @@ test-suite formulative-test
     , hashable
     , hmatrix
     , ieee
-    , matrix-sized
     , megaparsec
     , numeric-limits
     , optparse-applicative
@@ -526,7 +485,6 @@ test-suite formulative-test
     , safe-exceptions
     , scientific
     , simple-reflect
-    , singletons
     , string-conversions
     , tasty
     , tasty-hunit
@@ -611,7 +569,6 @@ benchmark Factorial
     , hashable
     , hmatrix
     , ieee
-    , matrix-sized
     , megaparsec
     , numeric-limits
     , optparse-applicative
@@ -624,7 +581,6 @@ benchmark Factorial
     , safe-exceptions
     , scientific
     , simple-reflect
-    , singletons
     , string-conversions
     , tasty
     , tasty-hunit
@@ -709,7 +665,6 @@ benchmark MatrixMul
     , hashable
     , hmatrix
     , ieee
-    , matrix-sized
     , megaparsec
     , numeric-limits
     , optparse-applicative
@@ -722,7 +677,6 @@ benchmark MatrixMul
     , safe-exceptions
     , scientific
     , simple-reflect
-    , singletons
     , string-conversions
     , tasty
     , tasty-hunit
@@ -807,7 +761,6 @@ benchmark MatrixToVector
     , hashable
     , hmatrix
     , ieee
-    , matrix-sized
     , megaparsec
     , numeric-limits
     , optparse-applicative
@@ -820,7 +773,6 @@ benchmark MatrixToVector
     , safe-exceptions
     , scientific
     , simple-reflect
-    , singletons
     , string-conversions
     , tasty
     , tasty-hunit
@@ -905,7 +857,6 @@ benchmark StackingEffects
     , hashable
     , hmatrix
     , ieee
-    , matrix-sized
     , megaparsec
     , numeric-limits
     , optparse-applicative
@@ -918,7 +869,6 @@ benchmark StackingEffects
     , safe-exceptions
     , scientific
     , simple-reflect
-    , singletons
     , string-conversions
     , tasty
     , tasty-hunit
@@ -1003,7 +953,6 @@ benchmark UnsafeIndex
     , hashable
     , hmatrix
     , ieee
-    , matrix-sized
     , megaparsec
     , numeric-limits
     , optparse-applicative
@@ -1016,7 +965,6 @@ benchmark UnsafeIndex
     , safe-exceptions
     , scientific
     , simple-reflect
-    , singletons
     , string-conversions
     , tasty
     , tasty-hunit

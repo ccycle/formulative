@@ -14,7 +14,6 @@ import Dhall.Core
 import Dhall.Pretty
 import Dhall.Src
 import Formulative.Calculation.Internal.TH
-import Formulative.Preprocess.DiscreteExteriorCalculus.Read
 import Formulative.Preprocess.Exception
 import Formulative.Preprocess.ReadSetting
 import qualified Prettyprinter.Render.Text as Prettyprint.Text

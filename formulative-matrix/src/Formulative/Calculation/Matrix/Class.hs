@@ -160,7 +160,5 @@ instance forall n m a. (KnownNat m, KnownNat n, VST.Storable (RealField a), Addi
     absPowSum (p) x = flip (.**) (reciprocal p) $ VST.foldl' (binaryOpLp (Lp p)) zero $ VST.map (absPowSum (p)) $ MSG.flatten x
     absMaxAll x = VST.foldl' (binaryOpLp (LInfinity)) zero $ VST.map (absMaxAll) $ MSG.flatten x
 
--- absPowSum LInfinity x = VST.foldl' (binaryOpLp LInfinity) zero $ VST.map (absPowSum LInfinity) $ MSG.flatten x
-
 instance (MSL.Numeric a, NormSpace a, Multiplicative a, KnownNat n, KnownNat m) => InnerProductSpace (MSL.Matrix m n a) where
     x <.> y = VST.sum $ MSG.flatten (MSG.transpose x .@. y)

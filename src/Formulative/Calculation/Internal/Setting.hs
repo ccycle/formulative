@@ -18,7 +18,6 @@ import Formulative.Postprocess.Export.IO
 import Formulative.Postprocess.Export.Path
 import Formulative.Postprocess.Export.Types
 import Formulative.Preprocess.DefaultValue
-import Formulative.Preprocess.DiscreteExteriorCalculus.Read
 import Formulative.Preprocess.ReadSetting
 import Path
 import Path.IO
@@ -40,7 +39,6 @@ runEquationConstantsIO f = do
 data FormulativeSetting a = FormulativeSetting
     { optimization :: OptimizationSetting a
     , export :: ExportSetting
-    , geometry :: GeometrySetting
     , dynamics :: DynamicsSetting a
     , constrainedSystem :: ConstrainedSystemSetting a
     }

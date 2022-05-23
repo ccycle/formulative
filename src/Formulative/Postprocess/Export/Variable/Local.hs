@@ -15,8 +15,6 @@ import qualified Data.ByteString.Char8 as BS8
 import qualified Data.ByteString.Lazy as BSL
 import qualified Data.ByteString.Lazy as BSL8
 import Data.Csv
-import qualified Data.Matrix.Static.LinearAlgebra as MSL
-import Data.Matrix.Static.Sparse (toTriplet)
 import Data.Maybe (fromJust)
 import Data.Proxy
 import Data.String.Conversions
@@ -45,16 +43,6 @@ class ToLazyField a where
     toLazyField :: a -> LazyField
     default toLazyField :: (ToRecord a) => a -> LazyField
     toLazyField x = encodeLF [x]
-
-instance
-    ( ToField a
-    , VST.Storable a
-    , KnownNat k1
-    , KnownNat k2
-    ) =>
-    ToLazyField (MSL.SparseMatrix k1 k2 a)
-    where
-    toLazyField x = runConduitPure $ toTriplet x .| mapC (\x -> encodeLF [x]) .| foldlC (<>) ""
 
 instance (ToField a) => ToLazyField (MyNum a) where
     toLazyField (MyNum x) = encodeLF [[x]]

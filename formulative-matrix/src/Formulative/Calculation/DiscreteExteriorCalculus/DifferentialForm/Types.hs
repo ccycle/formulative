@@ -20,7 +20,9 @@ import Dhall
 import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
 import Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Types
+import Formulative.Calculation.Internal.Types
 import Formulative.Calculation.VectorSpace.Class
+import Formulative.Postprocess.Export.Variable.Class
 import Formulative.Preprocess.DefaultValue
 import GHC.TypeNats
 import Unsafe.Coerce
@@ -276,3 +278,5 @@ instance
 (<<.@.>>) :: forall n l c1 k1 c2 k2 c3 k3 a m. (KnownNat n, SingI l, SingI c1, SingI c2, SingI c3, KnownNat k1, KnownNat k2, KnownNat k3, Applicative m, MSL.Numeric a) => m (DECrepresentationMatrix n l c1 k1 c2 k2 a) -> m (DECrepresentationMatrix n l c2 k2 c3 k3 a) -> m (DECrepresentationMatrix n l c1 k1 c3 k3 a)
 (<<.@.>>) = liftA2 (.@.)
 infixl 7 <<.@.>>
+
+deriving via (MyMatrix (DECrepresentationMatrix n l c1 k1 c2 k2 a)) instance ToVariableType (DECrepresentationMatrix n l c1 k1 c2 k2 a)

@@ -1,10 +1,10 @@
-name: formulative
+name: formulative-matrix
 version: 0.1.0.0
-github: "githubuser/formulative"
+github: "githubuser/formulative-matrix"
 license: BSD3
 author: "Author name here"
 maintainer: "example@example.com"
-copyright: "2021 Author name here"
+copyright: "2022 Author name here"
 
 extra-source-files:
   - README.md
@@ -17,9 +17,10 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description: Please see the README on GitHub at <https://github.com/githubuser/formulative#readme>
+description: Please see the README on GitHub at <https://github.com/githubuser/formulative-matrix#readme>
 
 dependencies:
+  - formulative
   - ad
   - aeson
   - base >= 4.7 && < 5
@@ -38,6 +39,7 @@ dependencies:
   - hashable
   - hmatrix
   - ieee
+  - matrix-sized
   - megaparsec
   - numeric-limits
   - optparse-applicative
@@ -50,6 +52,7 @@ dependencies:
   - safe-exceptions
   - scientific
   - simple-reflect
+  - singletons
   - string-conversions
   - tasty
   - tasty-hunit
@@ -61,7 +64,6 @@ dependencies:
   - vector
   - vector-algorithms
   - vector-sized
-
 library:
   source-dirs: src
 
@@ -97,7 +99,6 @@ default-extensions:
   - PatternGuards
   - PolyKinds
   - RankNTypes
-  # - RebindableSyntax
   - RecordWildCards
   - ScopedTypeVariables
   - StandaloneDeriving
@@ -109,29 +110,8 @@ default-extensions:
   - TypeSynonymInstances
   - ViewPatterns
 
-executables:
-  preprocess:
-    main: Preprocess.hs
-    other-modules: []
-    source-dirs: app
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
-    dependencies:
-      - formulative
-
 tests:
-  formulative-test:
-    main: Spec.hs
-    source-dirs: test
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
-    dependencies:
-      - formulative
-  formulative-tasty:
+  formulative-matrix-tasty:
     main: Tasty.hs
     source-dirs: test-tasty
     ghc-options:
@@ -141,61 +121,18 @@ tests:
       - -O0
     dependencies:
       - formulative
+      - formulative-matrix
       - tasty
       - tasty-hunit
       - tasty-quickcheck
-
-benchmarks:
-  Factorial:
-    main: Factorial.hs
-    source-dirs: benchmarks/Factorial
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
-    dependencies:
-      - formulative
-      - criterion
-  StackingEffects:
-    main: StackEffects.hs
-    source-dirs: benchmarks/FusedEffects
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
-    dependencies:
-      - formulative
-      - criterion
-  MatrixMul:
-    main: MatrixMul.hs
-    source-dirs: benchmarks/MatrixMul
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
-      - -O1
-    dependencies:
-      - formulative
-      - criterion
-  MatrixToVector:
-    main: MatrixToVector.hs
-    source-dirs: benchmarks/MatrixToVector
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
-      - -O1
-    dependencies:
-      - formulative
-      - criterion
-  UnsafeIndex:
-    main: UnsafeIndex.hs
-    source-dirs: benchmarks/UnsafeIndex
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
-      - -O1
-    dependencies:
-      - formulative
-      - criterion
+#
+# executables:
+#   formulative-matrix:
+#     main: Main.hs
+#     source-dirs: app
+#     ghc-options:
+#       - -threaded
+#       - -rtsopts
+#       - -with-rtsopts=-N
+#     dependencies:
+#       - formulative-matrix

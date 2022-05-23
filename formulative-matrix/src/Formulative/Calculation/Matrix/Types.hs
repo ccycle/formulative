@@ -1,8 +1,21 @@
 module Formulative.Calculation.Matrix.Types where
 
+import Conduit
+import Data.Csv (ToField)
+import qualified Data.Matrix.Static.Dense as MSD
+import qualified Data.Matrix.Static.Generic as MSG
+import qualified Data.Matrix.Static.LinearAlgebra as MSL
+import Data.Matrix.Static.Sparse (toTriplet)
+import qualified Data.Matrix.Static.Sparse as MSS
 import Data.Proxy
+import qualified Data.Vector.Storable as VST
 import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Internal.List
+import Formulative.Calculation.Internal.Types
 import Formulative.Calculation.VectorSpace.Class
+import Formulative.Postprocess.Export.CSV
+import Formulative.Postprocess.Export.Variable.Class
+import Formulative.Postprocess.Export.Variable.Local
 import GHC.Generics
 import GHC.TypeNats
 import Numeric.LinearAlgebra (Container, Element, Matrix, Numeric, Vector)
@@ -53,3 +66,33 @@ instance (Numeric a, KnownNat n, KnownNat m, Num (Vector a)) => VectorSpace (HMa
 
 instance (Numeric a, KnownNat n, KnownNat m, Num (Vector a)) => InnerProductSpace (HMatrixSized n m a) where
     (<.>) (HMatrixSized x) (HMatrixSized y) = undefined -- (x .@. y)
+
+instance (MSG.Matrix mat v a, KnownNat r) => UnsafeIndex (mat r 1 v a) where
+    unsafeIndex mat i = MSD.unsafeIndex mat (i, 0)
+
+instance (Element a, KnownNat m, KnownNat n) => IsList (HMatrixSized m n a) where
+    type Item (HMatrixSized m n a) = [a]
+    fromList (x) = HMatrixSized $ H.fromLists x
+    toList (HMatrixSized x) = H.toLists x
+
+instance (MSG.Matrix mat v a, KnownNat r, KnownNat c) => IsList (mat r c v a) where
+    type Item (mat r c v a) = a
+    fromList = MSG.fromList
+    toList = MSG.toList
+
+instance (KnownNat m, VST.Storable a, MSS.Zero a) => IsVector (VST.Vector a) (MSL.SparseMatrix m 1 a) where
+    fromVector = MSS.fromVector
+    toVector = flip MSS.unsafeTakeColumn 0
+
+deriving via (MyMatrix (MSL.SparseMatrix p1 p2 a)) instance ToVariableType (MSL.SparseMatrix p1 p2 a)
+deriving via (MyMatrix (MSL.Matrix p1 p2 a)) instance ToVariableType (MSL.Matrix p1 p2 a)
+
+instance
+    ( ToField a
+    , VST.Storable a
+    , KnownNat k1
+    , KnownNat k2
+    ) =>
+    ToLazyField (MSL.SparseMatrix k1 k2 a)
+    where
+    toLazyField x = runConduitPure $ toTriplet x .| mapC (\x -> encodeLF [x]) .| foldlC (<>) ""

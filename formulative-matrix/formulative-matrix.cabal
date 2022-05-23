@@ -1,0 +1,252 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.5.
+--
+-- see: https://github.com/sol/hpack
+
+name:           formulative-matrix
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/formulative-matrix#readme>
+homepage:       https://github.com/githubuser/formulative-matrix#readme
+bug-reports:    https://github.com/githubuser/formulative-matrix/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2022 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/formulative-matrix
+
+library
+  exposed-modules:
+      Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Operators
+      Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Operators.Geometry
+      Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Operators.Homology
+      Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
+      Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
+      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Carrier
+      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Effect
+      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Operators
+      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Submanifold.Curvature
+      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Submanifold.Operators
+      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Submanifold.Types
+      Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Types
+      Formulative.Calculation.DiscreteExteriorCalculus.Homology.Carrier
+      Formulative.Calculation.DiscreteExteriorCalculus.Homology.Effect
+      Formulative.Calculation.DiscreteExteriorCalculus.Homology.Operators
+      Formulative.Calculation.DiscreteExteriorCalculus.Homology.Types
+      Formulative.Calculation.Internal.Singletons
+      Formulative.Calculation.Internal.TypeLevelList
+      Formulative.Calculation.Internal.TypeLevelNatural
+      Formulative.Calculation.Matrix.Class
+      Formulative.Calculation.Matrix.Solve
+      Formulative.Calculation.Matrix.Types
+      Formulative.Preprocess.DiscreteExteriorCalculus.CheckMesh
+      Formulative.Preprocess.DiscreteExteriorCalculus.Read
+      Lib
+  other-modules:
+      Paths_formulative_matrix
+  hs-source-dirs:
+      src
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      BinaryLiterals
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveDataTypeable
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingVia
+      DoAndIfThenElse
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternGuards
+      PolyKinds
+      RankNTypes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      StrictData
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      TypeSynonymInstances
+      ViewPatterns
+  build-depends:
+      ad
+    , aeson
+    , base >=4.7 && <5
+    , bytestring
+    , cassava
+    , conduit
+    , constraints
+    , containers
+    , cryptonite
+    , dhall
+    , exact-combinatorics
+    , formulative
+    , fused-effects
+    , ghc-prim
+    , ghc-typelits-knownnat
+    , ghc-typelits-natnormalise
+    , hashable
+    , hmatrix
+    , ieee
+    , matrix-sized
+    , megaparsec
+    , numeric-limits
+    , optparse-applicative
+    , path
+    , path-io
+    , physics
+    , prettyprinter
+    , refined
+    , replace-megaparsec
+    , safe-exceptions
+    , scientific
+    , simple-reflect
+    , singletons
+    , string-conversions
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , text
+    , time
+    , unordered-containers
+    , vector
+    , vector-algorithms
+    , vector-sized
+  default-language: Haskell2010
+
+test-suite formulative-matrix-tasty
+  type: exitcode-stdio-1.0
+  main-is: Tasty.hs
+  other-modules:
+      Test.Adjacency
+      Test.GenericsTest
+      Test.Geometry
+      Test.Homology
+      Test.Matrix
+      Test.Refl
+      Test.SingletonTest
+      Test.ToRecord
+      Test.VectorSpace.InnerProductSpace
+      Test.WriteFile
+      Paths_formulative_matrix
+  hs-source-dirs:
+      test-tasty
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      BinaryLiterals
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveDataTypeable
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingVia
+      DoAndIfThenElse
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternGuards
+      PolyKinds
+      RankNTypes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      StrictData
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      TypeSynonymInstances
+      ViewPatterns
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -O0
+  build-depends:
+      ad
+    , aeson
+    , base >=4.7 && <5
+    , bytestring
+    , cassava
+    , conduit
+    , constraints
+    , containers
+    , cryptonite
+    , dhall
+    , exact-combinatorics
+    , formulative
+    , formulative-matrix
+    , fused-effects
+    , ghc-prim
+    , ghc-typelits-knownnat
+    , ghc-typelits-natnormalise
+    , hashable
+    , hmatrix
+    , ieee
+    , matrix-sized
+    , megaparsec
+    , numeric-limits
+    , optparse-applicative
+    , path
+    , path-io
+    , physics
+    , prettyprinter
+    , refined
+    , replace-megaparsec
+    , safe-exceptions
+    , scientific
+    , simple-reflect
+    , singletons
+    , string-conversions
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , text
+    , time
+    , unordered-containers
+    , vector
+    , vector-algorithms
+    , vector-sized
+  default-language: Haskell2010
