@@ -29,10 +29,7 @@ dependencies:
   - ghc-typelits-knownnat
   - ghc-typelits-natnormalise
   - hashable
-  - matrix-sized
-  - megaparsec
   - numeric-limits
-  - prettyprinter
   - safe-exceptions
   - tasty
   - tasty-hunit
@@ -108,9 +105,9 @@ executables:
       - -with-rtsopts=-N
     dependencies:
       - formulative-examples
-  van-der-Pol-oscillator:
+  van-der-pol-oscillator:
     main: Main.hs
-    source-dirs: equations/van-der-Pol-oscillator/app
+    source-dirs: equations/van-der-pol-oscillator/app
     ghc-options:
       - -threaded
       - -rtsopts
@@ -120,6 +117,33 @@ executables:
   lorenz:
     main: Main.hs
     source-dirs: equations/lorenz/app
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - formulative-examples
+  henon-map:
+    main: Main.hs
+    source-dirs: equations/henon-map/app
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - formulative-examples
+  logistic-map:
+    main: Main.hs
+    source-dirs: equations/logistic-map/app
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - formulative-examples
+  gumowski-mira-map:
+    main: Main.hs
+    source-dirs: equations/gumowski-mira-map/app
     ghc-options:
       - -threaded
       - -rtsopts

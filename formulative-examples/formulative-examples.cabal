@@ -82,10 +82,78 @@ library
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , matrix-sized
-    , megaparsec
     , numeric-limits
-    , prettyprinter
+    , safe-exceptions
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , vector
+    , vector-algorithms
+    , vector-sized
+  default-language: Haskell2010
+
+executable gumowski-mira-map
+  main-is: Main.hs
+  other-modules:
+      Paths_formulative_examples
+  hs-source-dirs:
+      equations/gumowski-mira-map/app
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      BinaryLiterals
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveDataTypeable
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingVia
+      DoAndIfThenElse
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternGuards
+      PolyKinds
+      RankNTypes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      StrictData
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      TypeSynonymInstances
+      ViewPatterns
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , cassava
+    , dhall
+    , formulative
+    , formulative-examples
+    , fused-effects
+    , ghc-prim
+    , ghc-typelits-knownnat
+    , ghc-typelits-natnormalise
+    , hashable
+    , numeric-limits
     , safe-exceptions
     , tasty
     , tasty-hunit
@@ -156,10 +224,149 @@ executable harmonic-oscillator
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , matrix-sized
-    , megaparsec
     , numeric-limits
-    , prettyprinter
+    , safe-exceptions
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , vector
+    , vector-algorithms
+    , vector-sized
+  default-language: Haskell2010
+
+executable henon-map
+  main-is: Main.hs
+  other-modules:
+      Paths_formulative_examples
+  hs-source-dirs:
+      equations/henon-map/app
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      BinaryLiterals
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveDataTypeable
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingVia
+      DoAndIfThenElse
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternGuards
+      PolyKinds
+      RankNTypes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      StrictData
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      TypeSynonymInstances
+      ViewPatterns
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , cassava
+    , dhall
+    , formulative
+    , formulative-examples
+    , fused-effects
+    , ghc-prim
+    , ghc-typelits-knownnat
+    , ghc-typelits-natnormalise
+    , hashable
+    , numeric-limits
+    , safe-exceptions
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , vector
+    , vector-algorithms
+    , vector-sized
+  default-language: Haskell2010
+
+executable logistic-map
+  main-is: Main.hs
+  other-modules:
+      Paths_formulative_examples
+  hs-source-dirs:
+      equations/logistic-map/app
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      BinaryLiterals
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveDataTypeable
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingVia
+      DoAndIfThenElse
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternGuards
+      PolyKinds
+      RankNTypes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      StrictData
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      TypeSynonymInstances
+      ViewPatterns
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , cassava
+    , dhall
+    , formulative
+    , formulative-examples
+    , fused-effects
+    , ghc-prim
+    , ghc-typelits-knownnat
+    , ghc-typelits-natnormalise
+    , hashable
+    , numeric-limits
     , safe-exceptions
     , tasty
     , tasty-hunit
@@ -230,10 +437,7 @@ executable lorenz
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , matrix-sized
-    , megaparsec
     , numeric-limits
-    , prettyprinter
     , safe-exceptions
     , tasty
     , tasty-hunit
@@ -304,10 +508,7 @@ executable particle-on-paraboloid
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , matrix-sized
-    , megaparsec
     , numeric-limits
-    , prettyprinter
     , safe-exceptions
     , tasty
     , tasty-hunit
@@ -318,12 +519,12 @@ executable particle-on-paraboloid
     , vector-sized
   default-language: Haskell2010
 
-executable van-der-Pol-oscillator
+executable van-der-pol-oscillator
   main-is: Main.hs
   other-modules:
       Paths_formulative_examples
   hs-source-dirs:
-      equations/van-der-Pol-oscillator/app
+      equations/van-der-pol-oscillator/app
   default-extensions:
       ApplicativeDo
       BangPatterns
@@ -378,10 +579,7 @@ executable van-der-Pol-oscillator
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , matrix-sized
-    , megaparsec
     , numeric-limits
-    , prettyprinter
     , safe-exceptions
     , tasty
     , tasty-hunit
