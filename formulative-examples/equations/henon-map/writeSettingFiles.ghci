@@ -1,0 +1,21 @@
+:{
+writeSettingFilesFromList
+  "./equations/henon-map/settingFiles"
+  ( \(a', b')->
+      defaultValue
+        { dynamics =
+            DynamicsSetting
+              { label = "time"
+              , initialValue = 0
+              , finalValue = 20000
+              , stepSize = 1
+              , interval = 1
+              , maximumIterationNumber = 1000000
+              }
+        , equation =
+            MyEquationConstants
+              { a = a', b = b', x0 = 0.0, y0 = 0.0 }
+        }
+  )
+  [(a',b') | (a',b') <- [(0.2,0.9991),(0.2,-0.9999),(1.4,0.3)]]
+:}

@@ -22,7 +22,7 @@ $$
 \end{align*}
 $$
 
-where $\lambda$ is Lagrangian multiplier.
+where $\lambda$ is Lagrange multiplier.
 
 ## Execution
 
@@ -54,7 +54,7 @@ Execute:
   :source equations/particle-on-paraboloid/writeSettingFiles.ghci
   ```
 
-  quit REPL:
+  Quit REPL:
 
   ```sh
   :q
@@ -62,32 +62,18 @@ Execute:
 
   _NOTE_: `:source` is a command defined in `formulative-examples/.ghci` . To use this command outside of `formulative-examples`, add `:def source readFile` in your `.ghci` file.
 
-  Execute for multiple setting files:
+  Execute for multiple setting files (Multiprocessing):
 
-  - Single process:
-
-    ```sh
-    find ./settingFiles -name "*.dhall" | xargs -I {} cabal exec -- particle-on-paraboloid -s {}
-    ```
-
-    Using option `--recalculation` (Recalculate dependent variables from exported variable data if the directory exists):
-
-    ```sh
-    find ./settingFiles -name "*.dhall" | xargs -I {} cabal exec -- particle-on-paraboloid --recalculation Continue -s {}
-    ```
-
-  - Multi process (Run 3 processes):
-
-    ```sh
-    find ./settingFiles -name "*.dhall" | xargs -P 3 -I {} cabal exec -- particle-on-paraboloid --recalculation Continue -s {}
-    ```
+  ```sh
+  find ./settingFiles -name "*.dhall" | xargs -P 4 -I {} cabal exec -- particle-on-paraboloid -s {}
+  ```
 
 ## Visualization
 
-Make database:
+Create Database:
 
 ```sh
-python ../../visualization-scripts/make_database.py
+python ../../visualization-scripts/create_database.py
 ```
 
 View and query database (the result is exported in `output/_query_result.csv`):
@@ -124,11 +110,30 @@ Plot all global quantities:
 python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariable/_global.csv
 ```
 
-Global quantities for selected labels (in this case `kineticEnergy`,`potentialEnergy`,`hamiltonian`):
+Plot global quantities for selected labels (in this case `kineticEnergy`,`potentialEnergy`,`hamiltonian`):
 
 ```sh
 python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariable/_global.csv -H kineticEnergy potentialEnergy hamiltonian
 ```
+
+## Examples
+
+(g,a,b,xInit,yInit,vxInit)=(1,1,1,1,0,0)
+
+vyInit=0.5:
+
+<video src="media/position1.mp4" controls="controls" width="70%">
+</video>
+
+vyInit=1.0:
+
+<video src="media/position2.mp4" controls="controls" width="70%">
+</video>
+
+vyInit=1.5:
+
+<video src="media/position3.mp4" controls="controls" width="70%">
+</video>
 
 ## Reference
 

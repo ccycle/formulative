@@ -1,0 +1,267 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties false
+\origin unavailable
+\textclass bxjsarticle
+\options xelatex,10pt,a4paper
+\use_default_options false
+\begin_modules
+enumitem
+multicol
+customHeadersFooters
+tcolorbox
+theorems-named
+InStar
+fixme
+theorems-ams-bytype
+theorems-ams-extended-bytype
+\end_modules
+\maintain_unincluded_children false
+\begin_local_layout
+Format 60
+Style Theorem
+Category              Reasoning
+Margin                First_Dynamic
+LatexType             Environment
+LatexName             thm
+NextNoIndent          0
+ResetArgs             1
+AddToToc              thm
+IsTocCaption          1
+Argument 1
+LabelString    "Additional Theorem Text"
+Tooltip        "Additional text appended to the theorem header"
+IsTocCaption      1
+EndArgument
+LabelSep              xx
+ParIndent             MMM
+ParSkip               0.4
+ItemSep               0.2
+TopSep                0.7
+BottomSep             0.7
+ParSep                0.3
+Align                 Block
+AlignPossible         Left
+LabelType             Static
+LabelCounter          theorem
+LabelString           "Theorem \thetheorem."
+Font
+  Shape               Up
+  Size                Normal
+EndFont
+LabelFont
+  Shape               Up
+  Series              Bold
+EndFont
+Preamble
+\theoremstyle{definition}
+\newtheorem{thm}{\protect\theoremname}[section]
+EndPreamble
+LangPreamble
+\providecommand{\theoremname}{_(Theorem)}
+EndLangPreamble
+BabelPreamble
+  \addto\captions$$lang{\renewcommand{\theoremname}{_(Theorem)}}
+EndBabelPreamble
+Requires              amsthm
+End
+\end_local_layout
+\begin_forced_local_layout
+Format 66
+Style "In Preamble"
+	Category "FrontMatter"
+	Margin Static
+	LatexType Paragraph
+	InTitle 0
+	InPreamble 1
+	TocLevel -1000
+	ResumeCounter 0
+	StepMasterCounter 0
+	NeedProtect 0
+	KeepEmpty 0
+	NextNoIndent 0
+	CommandDepth 0
+	LatexName "dummy"
+	ItemCommand item
+	LabelType No_Label
+	EndLabelType No_Label
+	ParagraphGroup "0"
+	ParIndent MM
+	ParSkip 0.4
+	ItemSep 0
+	TopSep 0
+	BottomSep 0
+	LabelBottomSep 0
+	ParSep 0
+	NewLine 1
+	Align Block
+	AlignPossible Block, Center, Layout, Left, Right
+	FreeSpacing 0
+	PassThru 0
+	ParbreakIsNewline 0
+	RefPrefix OFF
+	HTMLLabelFirst 0
+	HTMLStyle
+div.standard {
+margin-bottom: 2ex;
+}
+	EndHTMLStyle
+	HTMLForceCSS 0
+	HTMLTitle 0
+	Spellcheck 1
+	ForceLocal 1
+End
+Style "In Title"
+	Category "FrontMatter"
+	Margin Static
+	LatexType Paragraph
+	InTitle 1
+	InPreamble 0
+	TocLevel -1000
+	ResumeCounter 0
+	StepMasterCounter 0
+	NeedProtect 0
+	KeepEmpty 0
+	NextNoIndent 0
+	CommandDepth 0
+	LatexName "dummy"
+	ItemCommand item
+	LabelType No_Label
+	EndLabelType No_Label
+	ParagraphGroup "0"
+	ParIndent MM
+	ParSkip 0.4
+	ItemSep 0
+	TopSep 0
+	BottomSep 0
+	LabelBottomSep 0
+	ParSep 0
+	NewLine 1
+	Align Block
+	AlignPossible Block, Center, Layout, Left, Right
+	FreeSpacing 0
+	PassThru 0
+	ParbreakIsNewline 0
+	RefPrefix OFF
+	HTMLLabelFirst 0
+	HTMLStyle
+div.standard {
+margin-bottom: 2ex;
+}
+	EndHTMLStyle
+	HTMLForceCSS 0
+	HTMLTitle 0
+	Spellcheck 1
+	ForceLocal 1
+End
+\end_forced_local_layout
+\language japanese
+\language_package 
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts true
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command bibtex
+\index_command default
+\paperfontsize 10
+\spacing single
+\use_hyperref false
+\pdf_bookmarks true
+\pdf_bookmarksnumbered true
+\pdf_bookmarksopen true
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle false
+\papersize default
+\use_geometry false
+\use_package amsmath 2
+\use_package amssymb 2
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 2
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date true
+\justification false
+\use_refstyle 0
+\use_minted 0
+\boxbgcolor #e6e6e6
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\index あ行
+\shortcut あ行
+\color #008000
+\end_index
+\index か行
+\shortcut か行
+\color #008000
+\end_index
+\leftmargin 12.5page%
+\topmargin 7.5pheight%
+\rightmargin 12.5page%
+\bottommargin 5pheight%
+\secnumdepth 3
+\tocdepth 2
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\bullet 1 1 35 0
+\bullet 2 1 31 1
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+Equation:
+\begin_inset Formula 
+\begin{align*}
+x_{n+1} & =rx_{n}\left(1-x_{n}\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

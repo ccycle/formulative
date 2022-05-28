@@ -1,0 +1,23 @@
+:{
+writeSettingFilesFromList
+  "./equations/gumowski-mira-map/settingFiles"
+  ( \(alpha', sigma', mu')->
+      defaultValue
+        { dynamics =
+            DynamicsSetting
+              { label = "time"
+              , initialValue = 0
+              , finalValue = 20000
+              , stepSize = 1
+              , interval = 1
+              , maximumIterationNumber = 1000000
+              }
+        , equation =
+            MyEquationConstants
+              { alpha = alpha', sigma = sigma', mu = mu', x0 = 1.0, y0 = 1.0 }
+        }
+  )
+  ([(alpha',sigma', mu') | (alpha',sigma',mu') <- [(0.008, 0.05, -0.496), (0.009, 0.05, -0.801)]]
+  <> [(alpha',sigma', mu') | (alpha',sigma') <- [(0.0, 0.0)], mu' <- [-0.2,0.05,0.25,0.3]]
+  )
+:}

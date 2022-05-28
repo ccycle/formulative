@@ -50,7 +50,12 @@ data MyEquationConstants = MyEquationConstants {mu :: Double, x0 :: Double, y0 :
     deriving stock (Show, Generic)
     deriving anyclass (ToDhall, FromDhall, Hashable, HasDefaultValue)
 
-data MySetting = MySetting {optimization :: OptimizationSetting Double, dynamics :: DynamicsSetting Double, export :: ExportSetting, equation :: MyEquationConstants}
+data MySetting = MySetting
+    { optimization :: OptimizationSetting Double
+    , dynamics :: DynamicsSetting Double
+    , export :: ExportSetting
+    , equation :: MyEquationConstants
+    }
     deriving stock (Show, Generic)
     deriving anyclass (ToDhall, FromDhall, Hashable, HasDefaultValue)
 
@@ -76,7 +81,6 @@ gradDeltaL
         y' = symmetrizePoly 1 y yNew
         x' = symmetrizePoly 1 x xNew
         x3' = symmetrizePoly 3 x xNew
-        -- f z = z .^ 3 .-. z
         dLdx = dxdt .-. mu *. (x' .-. x3' ./ 3 - y')
         dLdy = dydt .-. x' ./ mu
 

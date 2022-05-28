@@ -87,10 +87,10 @@ Execute:
 
 ## Visualization
 
-Make database:
+Create Database:
 
 ```sh
-python ../../visualization-scripts/make_database.py
+python ../../visualization-scripts/create_database.py
 ```
 
 View and query database (the result is exported in `output/_query_result.csv`):

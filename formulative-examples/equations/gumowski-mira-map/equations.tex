@@ -1,0 +1,34 @@
+%% LyX 2.3.6.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[10pt,xelatex,10pt,a4paper]{bxjsarticle}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{fontspec}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setcounter{tocdepth}{2}
+\usepackage{mathtools}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\newlength{\lyxlabelwidth}      % auxiliary length 
+
+\@ifundefined{date}{}{\date{}}
+\AtBeginDocument{
+  \def\labelitemii{\tiny\(\blacksquare\)}
+  \def\labelitemiii{\scriptsize\(\blacktriangleright\)}
+}
+
+\makeatother
+
+
+\begin{document}
+Equation:
+\begin{align*}
+x_{n+1} & =y_{n}+\alpha y_{n}\left(1-\sigma y_{n}{}^{2}\right)+g\left(x_{n}\right)\\
+y_{n+1} & =-x_{n}+g\left(x_{n+1}\right)
+\end{align*}
+
+where $g\left(x\right)=\mu x+\frac{2\left(1-\mu\right)x^{2}}{1+x^{2}}$
+\end{document}

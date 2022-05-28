@@ -1,0 +1,32 @@
+%% LyX 2.3.6.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[10pt,xelatex,10pt,a4paper]{bxjsarticle}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{fontspec}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setcounter{tocdepth}{2}
+\usepackage{mathtools}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\newlength{\lyxlabelwidth}      % auxiliary length 
+
+\@ifundefined{date}{}{\date{}}
+\AtBeginDocument{
+  \def\labelitemii{\tiny\(\blacksquare\)}
+  \def\labelitemiii{\scriptsize\(\blacktriangleright\)}
+}
+
+\makeatother
+
+
+\begin{document}
+Equation:
+\begin{align*}
+x_{n+1} & =rx_{n}\left(1-x_{n}\right)
+\end{align*}
+
+\end{document}

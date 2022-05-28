@@ -95,7 +95,6 @@ instance (Has (Reader MyEquationConstants) sig m) => HasDependentParameterM m My
 data MyGlobalDependentVariable = MyGlobalDependentVariable
   { kineticEnergy :: Double
   , potentialEnergy :: Double
-  , lagrangian :: Double
   , hamiltonian :: Double
   , dHdt :: Double
   , power :: Double
@@ -125,7 +124,6 @@ instance
       MyGlobalDependentVariable
         { kineticEnergy = eK p
         , potentialEnergy = eP x
-        , lagrangian = eK p .-. eP x
         , hamiltonian = h x p
         , dHdt = hDot
         , power = w
@@ -138,10 +136,7 @@ instance
 data MyLocalDependentVariable = MyLocalDependentVariable
   { velocity :: Double
   , xBar :: Double
-  , xBarMinusPBar :: Double
   , pBar :: Double
-  , xBarPlusPBar :: Double
-  , xBarMulPBar :: Double
   }
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
@@ -155,19 +150,11 @@ instance
   type LocalDependentVariable MyVariable = MyLocalDependentVariable
   localDependentVariableM MyVariable{..} = do
     MyEquationConstants{..} <- ask
-    let pBar = momentum ./. sqrt m
-        xBar = position .*. sqrt k
-        var1 = xBar .+. pBar
-        var2 = xBar .-. pBar
-        var3 = xBar .*. pBar
     return $
       MyLocalDependentVariable
-        { velocity = momentum ./. m
-        , xBar = xBar
-        , pBar = pBar
-        , xBarMinusPBar = var1
-        , xBarPlusPBar = var2
-        , xBarMulPBar = var3
+        { velocity = momentum ./ m
+        , xBar = sqrt k *. position
+        , pBar = momentum ./ sqrt m
         }
 
 instance (HasExportDynamicsUnconstrained sig m MyVariable Double) => HasExportDynamicsM m MyVariable Double where

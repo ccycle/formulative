@@ -1,0 +1,39 @@
+%% LyX 2.3.6.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[10pt,xelatex,10pt,a4paper]{bxjsarticle}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{fontspec}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setcounter{tocdepth}{2}
+\usepackage{mathtools}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\newlength{\lyxlabelwidth}      % auxiliary length 
+
+\@ifundefined{date}{}{\date{}}
+\AtBeginDocument{
+  \def\labelitemii{\tiny\(\blacksquare\)}
+  \def\labelitemiii{\scriptsize\(\blacktriangleright\)}
+}
+
+\makeatother
+
+
+\begin{document}
+Equation:
+\begin{align*}
+\frac{\mathrm{d}x}{\mathrm{d}t} & =\mu\left(x-\frac{1}{3}x^{3}-y\right)\\
+\frac{\mathrm{d}y}{\mathrm{d}t} & =\frac{1}{\mu}x
+\end{align*}
+
+Scheme:
+\begin{align*}
+ & \frac{x^{(i+1)}-x^{(i)}}{\Delta t}-\mu\left(\frac{x^{(i+1)}+x^{(i)}}{2}-\frac{1}{3}f\left(x^{(i+1)},x^{(i)}\right)-\frac{y^{(i+1)}+y^{(i)}}{2}\right)=0\\
+ & \frac{y^{(i+1)}-y^{(i)}}{\Delta t}-\frac{1}{\mu}\left(\frac{x^{(i+1)}+x^{(i)}}{2}\right)=0
+\end{align*}
+where $f\left(x^{(i+1)},x^{(i)}\right)=\frac{1}{4}\left(\left(x^{(i+1)}\right)^{3}+\left(x^{(i+1)}\right)^{2}x^{(i)}+x^{(i+1)}\left(x^{(i+1)}\right)^{2}+\left(x^{(i)}\right)^{3}\right)$
+\end{document}
