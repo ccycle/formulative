@@ -34,18 +34,6 @@ unGMatrix :: GMatrix k a -> GMatrixContainer k k a
 unGMatrix = coerce
 type SizedVector n a = VS.Vector n a
 
--- data PointData (nEuc :: EucDim) (p :: Nat) a (m :: Type -> Type) k where
---     GetPointData :: PointData nEuc p a m (AllPointDataPrimal0 nEuc p a)
--- getPointData :: (Has (PointData n p a) sig m) => m (AllPointDataPrimal0 n p a)
--- getPointData = send GetPointData
-
--- data SomePointData a m k = forall nEuc p. SomePointData (PointData nEuc p a m k)
-
--- connectivity + point -> metric
-
--- data Metric (n :: Dim) l a m k where
---   GetMetric :: Proxy k -> SCellType c -> Metric n l a m (SizedVector nEuc (SizedVector (ToMatSize nBase l c k) a))
-
 -- https://blog.jle.im/entry/introduction-to-singletons-2.html
 $( singletons
     [d|

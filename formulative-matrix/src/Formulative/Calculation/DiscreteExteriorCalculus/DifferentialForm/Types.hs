@@ -27,80 +27,11 @@ import Formulative.Preprocess.DefaultValue
 import GHC.TypeNats
 import Unsafe.Coerce
 
--- import Formulative.Calculation.DiscreteExteriorCalculus.Proofs
-
--- -- https://blog.jle.im/entry/introduction-to-singletons-2.html
-
-{- $( singletons
-     [d|
-         data CellType = Primal | Dual | CEmpty
-             deriving (Show, Eq)
-         |]
-  )
--}
-
--- deriving stock instance Generic CellType
--- deriving anyclass instance FromDhall CellType
--- deriving anyclass instance ToDhall CellType
--- deriving anyclass instance Hashable CellType
-
--- sameCellType :: forall (c :: CellType) (c' :: CellType). (SingI c, SingI c') => Sing c -> Sing c' -> Maybe (c :~: c')
--- sameCellType singc singc'
---     | fromSing singc == fromSing singc' = Just (unsafeCoerce Refl)
---     | otherwise = Nothing
-
--- type family DualMap (c :: CellType) = r | r -> c where
---     DualMap 'Primal = 'Dual
---     DualMap 'Dual = 'Primal
---     DualMap 'CEmpty = 'CEmpty
-
--- dualMap :: CellType -> CellType
--- dualMap Primal = Dual
--- dualMap Dual = Primal
--- dualMap CEmpty = CEmpty
-
--- instance SingKind (DualMap c) where
---     type Demote (DualMap c) = CellType
-
---     fromSing :: Sing (xs :: SCellType k) -> List (Demote k)
---     fromSing = undefined
-
---     toSing :: List (Demote k) -> SomeSing (List k)
---     toSing = undefined -- ??? -- type instance HodgeDual n (DegreeOfForm (n + 1)) = Phi
-
--- primal n-form -> (d) -> primal (n+1)-form (empty) -> (star) -> dual (-1)-form (empty) -> (d) -> dual 0-form (empty) -> (star) -> primal n-form (empty)
--- primal 0-form -> (star) -> dual n-form -> (d) -> dual (n+1)-form (empty) -> (star) -> primal (-1)-form (empty) -> (d) -> primal 0-form (empty)
--- d :: dual empty-form -> dual 0-form
--- d :: primal empty-form -> primal empty-form
--- star :: dual empty-form -> primal empty-form
--- star :: primal empty-form -> dual empty-form
-
 -- k-form -> k+1
 -- emptyに対応させるため、数字を一個足す
 -- 基底部は n=0 (empty)
 
--- type Nat = Nat
 type DegreeOfForm = Nat
-
--- sizes of simplicial k-complex for each k
--- type [Nat] = [Nat]
--- type KnownHDims = SingI
-
--- -- from degree of form to matrix size
--- type family ToMatSize (n :: Nat) (l :: [Nat]) (c :: CellType) (k :: Nat) where
---     ToMatSize n l 'Primal k = l !! k
---     ToMatSize n l 'Dual k = l !! DualDeg n k
---     ToMatSize n l 'CEmpty k = k
-
--- type DualDeg (n :: Nat) (k :: Nat) = (n - k)
-
--- type SuccDeg (n :: Nat) (k :: Nat) = (k + 1)
--- type DualSuccDeg (n :: Nat) (k :: Nat) = DualDeg n (SuccDeg n k)
-
--- type PredDeg (n :: Nat) (k :: Nat) = (k - 1)
--- type DualPredDeg (n :: Nat) (k :: Nat) = DualDeg n (PredDeg n k)
-
--- type SizedMatrix p1 p2 a = MSL.SparseMatrix p1 p2 a -- 実装に使う型を選択
 
 -- TODO: Show instanceを変える
 -- 内部表現ではk+1にしているのをkに変える
@@ -189,7 +120,6 @@ instance
     (DECrepresentationMatrix x) .*. (DECrepresentationMatrix y) = case knownMatSizeDoublet @n @l @c1 @c2 @k1 @k2 of
         (Dict, Dict) -> DECrepresentationMatrix $ x .*. y
 
--- -- degreeの計算はphantom type上でのみ行う
 instance
     ( MSL.Numeric a
     , KnownNat n
@@ -204,15 +134,7 @@ instance
     Mul (DECrepresentationMatrix n l c1 k1 c2 k2 a) (DECrepresentationMatrix n l c2 k2 c3 k3 a) (DECrepresentationMatrix n l c1 k1 c3 k3 a)
     where
     DECrepresentationMatrix a .@. DECrepresentationMatrix b =
-        let proxyn = Proxy :: Proxy n
-            proxyl = sing :: Sing l
-            proxyc1 = sing :: SCellType c1
-            proxyc2 = sing :: SCellType c2
-            proxyc3 = sing :: SCellType c3
-            proxyk1 = Proxy :: Proxy k1
-            proxyk2 = Proxy :: Proxy k2
-            proxyk3 = Proxy :: Proxy k3
-         in case knownMatSizeTriplet @n @l @c1 @c2 @c3 @k1 @k2 @k3 of (Dict, Dict, Dict) -> DECrepresentationMatrix (a .@. b)
+        case knownMatSizeTriplet @n @l @c1 @c2 @c3 @k1 @k2 @k3 of (Dict, Dict, Dict) -> DECrepresentationMatrix (a .@. b)
 
 instance
     ( MSL.Numeric a

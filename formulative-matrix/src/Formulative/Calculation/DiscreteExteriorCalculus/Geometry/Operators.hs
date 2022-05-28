@@ -181,7 +181,6 @@ circumcenterAMat (PositionMatrix sMat) = sMat'''
     | i == kInt + 1 && j == kInt + 1 = 0
     | otherwise = 2 * x
 
--- TODO: 行列積とベクトルへの変換コストを比較(ベクトルに変換、1を末尾に足す、行列に戻すという操作だと計算速度は遅いのかを調査)
 -- b = [ ||v0||^2
 --       ||v1||^2
 --       .
