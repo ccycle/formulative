@@ -1,1 +1,1 @@
-cabal install all:exes  --installdir "bin" --install-method=copy --overwrite-policy=always && zip -r formulative-examples-bin bin/
+cabal install formulative-examples:exes  --installdir "bin" --install-method=copy --overwrite-policy=always && zip -r formulative-examples-bin bin/
