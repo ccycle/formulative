@@ -22,7 +22,6 @@ import Formulative.Calculation.DifferentialEquation.Dynamics.Effect
 import Formulative.Calculation.DifferentialEquation.Types
 import Formulative.Calculation.Internal.Class
 import Formulative.Calculation.Internal.IfThenElse
-import Formulative.Calculation.Internal.List
 import Formulative.Calculation.Internal.Variable.Effect
 import Formulative.Calculation.Optimization.Constrained.Class
 import Formulative.Calculation.Optimization.Constrained.Effect (ConstrainedSystem, getLagrangeMultiplier)
@@ -251,6 +250,7 @@ mainCalcDynamics = do
                 putVariableOld xi
                 xiPlus1 <- updateM xi
                 putVariable xiPlus1
+                putDynamicParameter (DynamicParameter t)
                 msgNewLine
                 go
                     (IntervalStepIndex nInterval)

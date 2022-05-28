@@ -14,6 +14,8 @@ import Path
 data Dynamics a m k where
     AskDynamicsSetting :: Dynamics a m (DynamicsSetting a)
     AskStepSize :: Dynamics a m (StepSize a)
+    GetDynamicParameter :: Dynamics a m (DynamicParameter a)
+    PutDynamicParameter :: DynamicParameter a -> Dynamics a m ()
 
 askDynamicsSetting :: forall a sig m. (Has (Dynamics a) sig m) => m (DynamicsSetting a)
 askDynamicsSetting = send AskDynamicsSetting
@@ -21,6 +23,10 @@ askLabelOfDynamicParameter :: forall a sig m. (Has (Dynamics a) sig m) => m Labe
 askLabelOfDynamicParameter = label <$> (askDynamicsSetting @a)
 askStepSize :: (Has (Dynamics a) sig m) => m (StepSize a)
 askStepSize = send AskStepSize
+getDynamicParameter :: (Has (Dynamics a) sig m) => m (DynamicParameter a)
+getDynamicParameter = send GetDynamicParameter
+putDynamicParameter :: forall a sig m. (Has (Dynamics a) sig m) => DynamicParameter a -> m ()
+putDynamicParameter x = send (PutDynamicParameter x)
 
 askDynamicParameterPath ::
     forall a sig m.

@@ -64,7 +64,7 @@ unStepSize = coerce
 
 exponentBase10 x = base10Exponent (fromFloatDigits x) + (pred . length . show . coefficient) (fromFloatDigits x)
 
-roundStepSize (StepSize dt) x = fromIntegral (round $ x .*. (t)) ./. (t)
+roundStepSize (StepSize dt) x = fromIntegral (round $ x .*. t) ./. t
   where
     n = if exponentBase10 x < 0 then negate (exponentBase10 x) else 0
     t = 10 ^ n
