@@ -1,0 +1,24 @@
+:{
+writeSettingFilesFromList
+  "./equations/van-der-pol-oscillator/settingFiles"
+  ( \mu' ->
+      defaultValue
+        { dynamics =
+            DynamicsSetting
+              { label = "time"
+              , initialValue = 0.0
+              , finalValue = 60.0
+              , stepSize = 1.0e-2
+              , interval = 1
+              , maximumIterationNumber = 1000000
+              }
+        , equation =
+            MyEquationConstants
+              { mu = mu'
+              , x0 = 1.0
+              , y0 = 0.0
+              }
+        }
+  )
+  [ mu' | mu' <- [0.1, 0.5, 1.0, 2.0, 4.0] ]
+:}

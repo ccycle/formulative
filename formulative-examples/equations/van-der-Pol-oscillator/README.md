@@ -25,7 +25,7 @@ where $f\left(x^{(i+1)},x^{(i)}\right)=\frac{1}{4}\left(\left(x^{(i+1)}\right)^{
 Build:
 
 ```sh
-cabal build lorenz
+cabal build van-der-pol-oscillator
 ```
 
 Execute:
@@ -33,7 +33,7 @@ Execute:
 1. For single setting file
 
    ```sh
-   cabal exec -- lorenz -s setting.dhall
+   cabal exec -- van-der-pol-oscillator -s setting.dhall
    ```
 
 1. For multiple setting files
@@ -41,13 +41,13 @@ Execute:
    Generate multiple setting files:
 
    ```sh
-   cabal repl lorenz
+   cabal repl van-der-pol-oscillator
    ```
 
    in REPL:
 
    ```sh
-   :source equations/lorenz/writeSettingFiles.ghci
+   :source equations/van-der-pol-oscillator/writeSettingFiles.ghci
    ```
 
    quit REPL:
@@ -61,7 +61,7 @@ Execute:
    Execute for multiple setting files (Multiprocessing):
 
    ```sh
-   find ./settingFiles -name "*.dhall" | xargs -I {} -P 4 cabal exec -- lorenz -s {}
+   find ./settingFiles -name "*.dhall" | xargs -I {} -P 4 cabal exec -- van-der-pol-oscillator -s {}
    ```
 
 ## Visualization
@@ -77,30 +77,54 @@ python ../../visualization-scripts/create_database.py
 View and query database (the results are exported to `output/_query_result.csv`):
 
 ```sh
-python ../../visualization-scripts/view_database.py -H equation_rho -S equation_rho
+python ../../visualization-scripts/view_database.py -H equation_mu -S equation_mu
 ```
 
 The following visualization scripts are executed on all directories contained in `output/_query_result.csv` .
 
 ### Plot
 
-Plot x-y-z space:
-
-```sh
-python plot3d.py --data variable -o variable.png
-```
-
 Plot x-xdot space:
 
 ```sh
-python ../../visualization-scripts/plot2d.py  --data x dependentVariable/xdot -o x-xdot.png
+python ../../visualization-scripts/plot2d.py --data x dependentVariable/xdot -o x-xdot.png
+```
+
+View list of image files:
+
+```sh
+python ../../visualization-scripts/view_database.py -H equation_mu -S equation_mu -f x-xdot.png
 ```
 
 Plot animation (interval=20, framerate=10):
 
 ```sh
-python ../../visualization-scripts/plot2d_animation.py --data x y -o variable.mp4 -i 20 -f 10
+python ../../visualization-scripts/plot2d_animation.py --data x dependentVariable/xdot -o variable.mp4 -i 20 -f 10
 ```
+
+## Exmaples
+
+(x0,y0)=(0,1)
+
+$\mu=0.1$:
+
+![](media/x-xdot1.png)
+
+$\mu=0.5$:
+
+![](media/x-xdot2.png)
+
+$\mu=1.0$:
+
+![](media/x-xdot3.png)
+
+$\mu=2.0$:
+
+![](media/x-xdot4.png)
+
+$\mu=4.0$:
+
+![](media/x-xdot5.png)
 
 ## References:
 
