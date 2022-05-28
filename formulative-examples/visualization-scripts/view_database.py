@@ -135,7 +135,7 @@ if __name__ == "__main__":
         if val == "y" or val == "":
             delete_dirs(df1["export_outputDirectory"])
             print(
-                'Old data may remain in the database; to keep the database up to date, run "make_database.py".'
+                'Old data may remain in the database; to keep the database up to date, run "create_database.py".'
             )
         elif val == "n":
             print("Exit")

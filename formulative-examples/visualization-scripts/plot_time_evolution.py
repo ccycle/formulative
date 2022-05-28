@@ -10,22 +10,46 @@ import glob
 matplotlib.use("Agg")
 
 
-def plot2d(outputDirList, xPathArgv, yPathArgv, fileNameArgv):
+def concatFromPaths(all_files, names):
+    return pd.concat((pd.read_csv(f, header=None) for f in all_files), axis=1).set_axis(
+        names, axis=1
+    )
+
+
+def plot2d(
+    outputDirList, tPathArgv, xPathsArgv, fileNameArgv, idxStartArgv, idxEndArgv
+):
     for outputDirRegExp in outputDirList:
-        xPath = os.path.join(outputDirRegExp, xPathArgv)
-        yPath = os.path.join(outputDirRegExp, yPathArgv)
 
-        tName = os.path.splitext(os.path.basename(xPath))[0]
-        xName = os.path.splitext(os.path.basename(yPath))[0]
+        tPath = os.path.join(outputDirRegExp, tPathArgv) + ".csv"
+        # xPath = os.path.join(outputDirRegExp, xPathsArgv)
 
-        t_ = pd.read_csv(xPath)
-        t = t_[tName]
-        x = pd.read_csv(yPath, header=None, names=[xName])
+        xPaths = map(lambda x: os.path.join(outputDirRegExp, x) + ".csv", xPathsArgv)
 
-        df = pd.concat([t, x], axis=1)
+        # tName = os.path.splitext(os.path.basename(tPath))[0]
+        tName = tPathArgv
+        # xName = os.path.splitext(os.path.basename(xPath))[0]
+
+        # xPaths = map(lambda x: os.path.join(outputDirRegExp, x) + ".csv", xPathsArgv)
+
+        t_ = pd.read_csv(tPath)
+        t = t_[tPathArgv]
+        # x = pd.read_csv(xPath, header=None, names=[xName])
+        # dataCSV = concatFromPaths(xPaths)
+
+        xPaths = map(lambda x: os.path.join(outputDirRegExp, x) + ".csv", xPathsArgv)
+
+        x = concatFromPaths(xPaths, xPathsArgv)
+
+        if idxEndArgv == 0:
+            idxEnd = df.shape[0]
+        else:
+            idxEnd = idxEndArgv
+
+        df = pd.concat([t, x], axis=1).iloc[idxStartArgv:idxEnd]
 
         plt.figure()
-        df.plot(x=tName, y=xName)
+        df.plot(x=tName, y=xPathsArgv)
         # fig, ax = plt.subplots( nrows=1, ncols=1 )
         # plt.ion()
         # ax.plot(t,t)
@@ -39,15 +63,26 @@ def plot2d(outputDirList, xPathArgv, yPathArgv, fileNameArgv):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="plot time-dependent value. example: ")
+
     parser.add_argument(
         "--queryResult",
         help="paths of database for plotting.",
         default="output/_query_result.csv",
     )
 
+    parser.add_argument(
+        "--idxStart", help="Index to start plotting.", default=0, type=int
+    )
+    parser.add_argument("--idxEnd", help="Index to end plotting.", default=0, type=int)
+
     parser.add_argument("-t", help="t data. example: -t time.csv", required=True)
     parser.add_argument(
-        "--data", help="data. example: --data position momentum", required=True
+        "--data",
+        help='3d data. example: "--data position", "--data x y z"',
+        required=True,
+        nargs="*",
+        type=str,
+        default=[],
     )
     parser.add_argument(
         "-o",
@@ -63,9 +98,10 @@ if __name__ == "__main__":
     queryResultArgv = args.queryResult
     queryResultDF = pd.read_csv(queryResultArgv)
     outputDirList = queryResultDF["export_outputDirectory"]
-    xPathArgv = args.t
-    yPathArgv = args.x
+    tPathArgv = args.t
+    xPathsArgv = args.data
     fileNameArgv = args.output
-    # labelListArgv = args.labels
+    idxEndArgv = args.idxEnd
+    idxStartArgv = args.idxStart
 
-    plot2d(outputDirList, xPathArgv, yPathArgv, fileNameArgv)
+    plot2d(outputDirList, tPathArgv, xPathsArgv, fileNameArgv, idxStartArgv, idxEndArgv)

@@ -30,21 +30,34 @@ def dhallPathToDict(path):
     return dhallToDict
 
 
-def plot3d(outputDirList, xPathsArgv, fileName):
+def plot3d(
+    outputDirList, xPathsArgv, fileName, scatterplotArgv, idxStartArgv, idxEndArgv
+):
+
     for outputDirRegExp in outputDirList:
         xPaths = map(lambda x: os.path.join(outputDirRegExp, x) + ".csv", xPathsArgv)
 
         dataCSV = concatFromPaths(xPaths)
 
+        if idxEndArgv == 0:
+            idxEnd = dataCSV.shape[0]
+        else:
+            idxEnd = idxEndArgv
+
         ax = plt.axes()
 
+        df = dataCSV.iloc[idxStartArgv:idxEnd]
+
         # Data for a three-dimensional line
-        xline = dataCSV["x"]
-        yline = dataCSV["y"]
+        xline = df["x"]
+        yline = df["y"]
         # zline = dataCSV["z"]
 
-        # plot line
-        ax.plot(xline, yline)
+        if scatterplotArgv:
+            # plot line
+            ax.plot(xline, yline)
+        else:
+            ax.scatter(xline, yline, s=0.25)
 
         # fix x and y axis
         # max_axis_val = ((np.abs(dataCSV[["x", "y"]])).max()).max()
@@ -113,11 +126,21 @@ if __name__ == "__main__":
         action="store_true",
     )
     parser.add_argument(
+        "-S",
+        "--scatterplot",
+        help="plot points",
+        action="store_false",
+    )
+    parser.add_argument(
         "-o",
         "--output",
         help="file name of output image. example: -o t-x.png",
         required=True,
     )
+    parser.add_argument(
+        "--idxStart", help="Index to start plotting.", default=0, type=int
+    )
+    parser.add_argument("--idxEnd", help="Index to end plotting.", default=0, type=int)
 
     args = parser.parse_args()
     queryResultArgv = args.queryResult
@@ -125,10 +148,27 @@ if __name__ == "__main__":
     outputDirList = queryResultDF["export_outputDirectory"]
     xPathsArgv = args.data
     fileNameArgv = args.output
+    scatterplotArgv = args.scatterplot
+    idxStartArgv = args.idxStart
+    idxEndArgv = args.idxEnd
 
     if args.interactive:
-        plot3d(outputDirList, xPathsArgv, fileNameArgv)
+        plot3d(
+            outputDirList,
+            xPathsArgv,
+            fileNameArgv,
+            scatterplotArgv,
+            idxStartArgv,
+            idxEndArgv,
+        )
         plt.show()
     else:
         matplotlib.use("Agg")
-        plot3d(outputDirList, xPathsArgv, fileNameArgv)
+        plot3d(
+            outputDirList,
+            xPathsArgv,
+            fileNameArgv,
+            scatterplotArgv,
+            idxStartArgv,
+            idxEndArgv,
+        )
