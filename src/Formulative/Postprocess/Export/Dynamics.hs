@@ -12,7 +12,7 @@ import Control.Effect.Sum
 import Control.Exception.Safe
 import Control.Monad
 import qualified Data.ByteString.Lazy as BSL
-import Data.Csv (DefaultOrdered, FromField, ToField, ToRecord)
+import Data.Csv (DefaultOrdered (headerOrder), FromField, ToField, ToRecord)
 import qualified Data.Csv.Streaming as Streaming
 import Data.Proxy
 import Data.String
@@ -104,9 +104,10 @@ exportLocalDependentVariableDynamics ::
     m ()
 exportLocalDependentVariableDynamics i x = do
     x' <- localDependentVariableM x
-    localOutputDir addPostfixToDirForDependentVariable $ do
-        ensureDirOutputM
-        exportVariableDynamics i x'
+    unless (null (headerOrder x')) $ do
+        localOutputDir addPostfixToDirForDependentVariable $ do
+            ensureDirOutputM
+            exportVariableDynamics i x'
 
 exportDependentVariableDynamicsM i xi = do
     exportGlobalDependentVariable xi

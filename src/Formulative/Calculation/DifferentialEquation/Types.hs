@@ -21,9 +21,6 @@ import Formulative.Preprocess.DefaultValue
 import GHC.Exts (IsString)
 import Refined
 
-newtype IsAdaptiveStepSize = IsAdaptiveStepSize Bool
-    deriving stock (Generic, Show, Eq)
-    deriving anyclass (FromDhall, ToDhall, Hashable)
 data DynamicsSetting a = DynamicsSetting
     { label :: LabelOfDynamicParameter
     , initialValue :: DynamicParameter a
@@ -34,17 +31,17 @@ data DynamicsSetting a = DynamicsSetting
     }
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall)
-instance (Fractional a) => HasDefaultValue (DynamicsSetting a) where
+instance (Num a) => HasDefaultValue (DynamicsSetting a) where
     defaultValue =
         DynamicsSetting
             { label = LabelOfDynamicParameter "time"
             , initialValue = 0
-            , finalValue = 1
-            , stepSize = 0.01
-            , interval = 10
+            , finalValue = 10
+            , stepSize = 1
+            , interval = 5
             , maximumIterationNumber = 1000
             }
-instance (Hashable a, Fractional a) => Hashable (DynamicsSetting a) where
+instance (Hashable a) => Hashable (DynamicsSetting a) where
     hashWithSalt
         s
         DynamicsSetting{..} =

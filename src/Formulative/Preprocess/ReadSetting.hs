@@ -63,3 +63,6 @@ fillInMissingValuesWithDefaultValues txt = input auto $ T.concat [toDhallText (d
 -- fillInSetting "export" txt :: IO (ExportSetting)
 fillInSetting :: forall a. (ToDhall a, FromDhall a, HasDefaultValue a) => Text -> Text -> IO a
 fillInSetting name txt = input auto $ T.concat ["(", "{", name, " = ", toDhallText (defaultValue @a), "}", " // ", txt, ")", ".", name]
+
+fillInSettingText :: forall a. (ToDhall a, FromDhall a, HasDefaultValue a) => Text -> DhallSettingText -> DhallSettingText
+fillInSettingText name (DhallSettingText txt) = DhallSettingText $ T.concat ["{", name, " = ", toDhallText (defaultValue @a), "}", " // ", txt]

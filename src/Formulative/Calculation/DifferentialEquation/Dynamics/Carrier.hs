@@ -37,7 +37,6 @@ runDynamicsIO ::
     , Member (Throw SomeException) sig
     , ToDhall a
     , FromDhall a
-    , Fractional a
     , Member (Lift IO) sig
     ) =>
     DynamicsC a m b ->

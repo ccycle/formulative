@@ -26,6 +26,11 @@ instance (Algebra sig m) => Algebra (SettingFile :+: sig) (SettingFileC m) where
         L AskSettingHash -> do
             (_, env) <- SettingFileC (ask @(DhallSettingText, SettingHash))
             pure (env <$ ctx)
+        L (LocalSettingFileText f m) ->
+            (SettingFileC . ReaderC)
+                (\(txt, hashVal) -> run (f txt, hashVal) (hdl (m <$ ctx)))
+          where
+            run r = runReader r . runSettingFileC
         R other -> SettingFileC (alg (runSettingFileC . hdl) (R other) ctx)
 
 -- Carrier 1: Pure value
@@ -51,7 +56,8 @@ runSettingFileIO ::
 runSettingFileIO f = do
     CmdOptions{..} <- sendIO cmdOptionIO
     (DhallSettingText x) <- sendIO $ readDhallFile filePath
-    s <- sendIO $ fillInMissingValuesWithDefaultValues @a x -- hashHexadecimalString
+    -- s <- sendIO $ input @a auto x
+    s <- sendIO $ fillInMissingValuesWithDefaultValues @a x
     let x' = toDhallText s
     let b = hashHexadecimalString s
     runReader (DhallSettingText x', SettingHash b) . runSettingFileC $ f

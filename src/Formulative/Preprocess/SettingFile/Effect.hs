@@ -11,8 +11,10 @@ import Formulative.Preprocess.ReadSetting
 data SettingFile m k where
     AskSettingHash :: SettingFile m SettingHash -- "./setting.dhall"
     AskSettingFileText :: SettingFile m DhallSettingText -- text in "./setting.dhall"
+    LocalSettingFileText :: (DhallSettingText -> DhallSettingText) -> m a -> SettingFile m a
 
 askSettingFileText :: (Has SettingFile sig m) => m DhallSettingText
 askSettingFileText = send AskSettingFileText
 askSettingHash :: (Has SettingFile sig m) => m SettingHash
 askSettingHash = send AskSettingHash
+localSettingFileText f m = send (LocalSettingFileText f m)
