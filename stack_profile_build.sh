@@ -1,1 +1,0 @@
-stack --work-dir .stack-work-profile/ build --profile --fno-prof-auto
