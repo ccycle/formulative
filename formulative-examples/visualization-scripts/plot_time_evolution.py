@@ -42,7 +42,7 @@ def plot2d(
         x = concatFromPaths(xPaths, xPathsArgv)
 
         if idxEndArgv == 0:
-            idxEnd = df.shape[0]
+            idxEnd = x.shape[0]
         else:
             idxEnd = idxEndArgv
 

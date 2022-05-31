@@ -6,7 +6,6 @@ import Control.Effect.Lift
 import Control.Effect.Sum
 import Control.Exception.Safe
 import Control.Monad
-import Data.Time
 import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.Types
 import Formulative.Preprocess.CommandLineOptions
@@ -101,14 +100,6 @@ removeDirRecurWithWarningM = do
             Overwrite -> removeDirRecurOutputM (OutputDir x)
             NoOperation -> liftEither $ throw NoOperationException
             _ -> return ()
-
-parentDirM :: (Algebra sig m, Member (Lift IO) sig, Member (Throw SomeException) sig) => m (Path Rel Dir)
-parentDirM = do
-    t <- sendIO getZonedTime
-    let dir = formatTime defaultTimeLocale "%Y%m%d-%H%M%S" t
-    liftEither $ parseRelDir $ "./output/" <> dir
-
--- TODO: adaptive step sizeの実装
 
 msgNewLine :: (Has (Lift IO) sig m, Member Export sig) => m ()
 msgNewLine = msgLoggerM ""
