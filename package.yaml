@@ -21,7 +21,6 @@ description: Please see the README on GitHub at <https://github.com/githubuser/f
 
 dependencies:
   - ad
-  - aeson
   - base >= 4.7 && < 5
   - bytestring
   - cassava
@@ -56,7 +55,6 @@ dependencies:
   - tasty-quickcheck
   - template-haskell
   - text
-  - time
   - unordered-containers
   - vector
   - vector-algorithms
@@ -109,18 +107,6 @@ default-extensions:
   - TypeSynonymInstances
   - ViewPatterns
 
-executables:
-  preprocess:
-    main: Preprocess.hs
-    other-modules: []
-    source-dirs: app
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
-    dependencies:
-      - formulative
-
 tests:
   formulative-test:
     main: Spec.hs
@@ -163,39 +149,6 @@ benchmarks:
       - -threaded
       - -rtsopts
       - -with-rtsopts=-N
-    dependencies:
-      - formulative
-      - criterion
-  MatrixMul:
-    main: MatrixMul.hs
-    source-dirs: benchmarks/MatrixMul
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
-      - -O1
-    dependencies:
-      - formulative
-      - criterion
-  MatrixToVector:
-    main: MatrixToVector.hs
-    source-dirs: benchmarks/MatrixToVector
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
-      - -O1
-    dependencies:
-      - formulative
-      - criterion
-  UnsafeIndex:
-    main: UnsafeIndex.hs
-    source-dirs: benchmarks/UnsafeIndex
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
-      - -O1
     dependencies:
       - formulative
       - criterion

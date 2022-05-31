@@ -125,14 +125,38 @@ tests:
       - tasty
       - tasty-hunit
       - tasty-quickcheck
-#
-# executables:
-#   formulative-matrix:
-#     main: Main.hs
-#     source-dirs: app
-#     ghc-options:
-#       - -threaded
-#       - -rtsopts
-#       - -with-rtsopts=-N
-#     dependencies:
-#       - formulative-matrix
+
+benchmarks:
+  MatrixMul:
+    main: MatrixMul.hs
+    source-dirs: benchmarks/MatrixMul
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+      - -O1
+    dependencies:
+      - formulative
+      - criterion
+  MatrixToVector:
+    main: MatrixToVector.hs
+    source-dirs: benchmarks/MatrixToVector
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+      - -O1
+    dependencies:
+      - formulative
+      - criterion
+  UnsafeIndex:
+    main: UnsafeIndex.hs
+    source-dirs: benchmarks/UnsafeIndex
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+      - -O1
+    dependencies:
+      - formulative
+      - criterion
