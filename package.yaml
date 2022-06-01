@@ -1,10 +1,10 @@
 name: formulative
 version: 0.1.0.0
-github: "githubuser/formulative"
+github: "ccycle/formulative"
 license: BSD3
-author: "Author name here"
-maintainer: "example@example.com"
-copyright: "2021 Author name here"
+author: "ccycle"
+maintainer: "ccycle713@gmail.com"
+copyright: "2021 ccycle"
 
 extra-source-files:
   - README.md
@@ -17,7 +17,7 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description: Please see the README on GitHub at <https://github.com/githubuser/formulative#readme>
+description: Please see the README on GitHub at <https://github.com/ccycle/formulative#readme>
 
 dependencies:
   - ad
@@ -124,7 +124,6 @@ tests:
       - -threaded
       - -rtsopts
       - -with-rtsopts=-N
-      - -O0
     dependencies:
       - formulative
       - tasty

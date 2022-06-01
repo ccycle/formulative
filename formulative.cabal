@@ -6,12 +6,12 @@ cabal-version: 1.12
 
 name:           formulative
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/formulative#readme>
-homepage:       https://github.com/githubuser/formulative#readme
-bug-reports:    https://github.com/githubuser/formulative/issues
-author:         Author name here
-maintainer:     example@example.com
-copyright:      2021 Author name here
+description:    Please see the README on GitHub at <https://github.com/ccycle/formulative#readme>
+homepage:       https://github.com/ccycle/formulative#readme
+bug-reports:    https://github.com/ccycle/formulative/issues
+author:         ccycle
+maintainer:     ccycle713@gmail.com
+copyright:      2021 ccycle
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
@@ -21,7 +21,7 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/formulative
+  location: https://github.com/ccycle/formulative
 
 library
   exposed-modules:
@@ -263,7 +263,7 @@ test-suite formulative-tasty
       TypeOperators
       TypeSynonymInstances
       ViewPatterns
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N -O0
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       ad
     , base >=4.7 && <5
