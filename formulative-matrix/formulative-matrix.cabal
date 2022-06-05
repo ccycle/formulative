@@ -49,7 +49,6 @@ library
       Formulative.Calculation.Matrix.Types
       Formulative.Preprocess.DiscreteExteriorCalculus.CheckMesh
       Formulative.Preprocess.DiscreteExteriorCalculus.Read
-      Lib
   other-modules:
       Paths_formulative_matrix
   hs-source-dirs:
