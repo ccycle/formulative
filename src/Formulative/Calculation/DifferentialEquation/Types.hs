@@ -1,14 +1,7 @@
-{-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE DeriveAnyClass #-}
-{-# LANGUAGE DuplicateRecordFields #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE UndecidableInstances #-}
 
 module Formulative.Calculation.DifferentialEquation.Types where
 
-import Control.Algebra
-import Control.Carrier.Reader
-import Control.Effect.Sum (Member)
 import Control.Exception.Safe
 import Data.Coerce (coerce)
 import Data.Hashable (Hashable (hashWithSalt))
@@ -79,5 +72,5 @@ instance (Additive a, Eq a) => Predicate StepSizeException (StepSize a) where
 checkStepSize :: (Additive a, Eq a, MonadThrow m) => StepSize a -> m (Refined StepSizeException (StepSize a))
 checkStepSize = refineThrow @StepSizeException
 
--- maxStepSizeはDynamicsSettingsからとってくる
-data AdaptiveStepSizeSetting a = AdaptiveStepSizeSetting {minStepSize :: StepSize a, b :: a}
+-- maxStepSizeはDynamicsSettingsから取得
+data AdaptiveStepSizeSetting a = AdaptiveStepSizeSetting {minStepSize :: StepSize a, exponent :: a}

@@ -1,28 +1,9 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
-{-# LANGUAGE UndecidableInstances #-}
-{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 
 module Formulative.Calculation.Internal.Class where
 
-import Control.Algebra
 import Data.Csv (DefaultOrdered, ToNamedRecord, ToRecord)
-import Formulative.Calculation.Algebra.Arithmetic.Class
-import Formulative.Calculation.Internal.Variable.Effect
-import Formulative.Calculation.VectorSpace.Class
 
--- import Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian
--- class (VectorSpace a) => HasObjectiveFunctionM m a where
---     getObjectiveFunctionM :: m (a -> Scalar a)
---     default getObjectiveFunctionM :: (Has (Variable a) sig m, InnerProductSpace a, HasGradObjectiveFunctionM m a) => m (a -> Scalar a)
---     getObjectiveFunctionM = do
---         xOld <- getVariableOld @a
---         gradf <- getGradientOfObjectiveFunctionM
---         return $ \x -> (x .-. xOld) <.> gradf x
-
--- class (VectorSpace a) => HasGradObjectiveFunctionM m a where
---     getGradientOfObjectiveFunctionM :: m (a -> a)
-
--- initial condition
 class HasInitialConditionM m a where
     getInitialConditionM :: m a
 
