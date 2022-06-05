@@ -54,21 +54,27 @@ if __name__ == "__main__":
         "-f", "--appendFileName", help="append file name to outputDirectory", default=""
     )
     parser.add_argument(
+        "-p",
+        "--appendParentDirectory",
+        help="append parent directory name to outputDirectory",
+        default="",
+    )
+    parser.add_argument(
         "-o",
         "--output",
         help="Whether to export the results of the query execution",
         metavar="PATH",
         default="output/_query_result.csv",
     )
-    parser.add_argument(
-        "-S",
-        "--headerToSort",
-        help="Header to sort",
-        metavar="HEADER",
-        type=str,
-        nargs="*",
-        default=[],
-    )
+    # parser.add_argument(
+    #     "-S",
+    #     "--headerToSort",
+    #     help="Header to sort",
+    #     metavar="HEADER",
+    #     type=str,
+    #     nargs="*",
+    #     default=[],
+    # )
     parser.add_argument(
         "-A", "--isAscending", help="sort type", metavar="FLAG", default=True
     )
@@ -99,13 +105,16 @@ if __name__ == "__main__":
     df = pd.read_csv(dbPath).astype({"export_outputDirectory": str})
     df1 = str_to_df_query(df, queryStr)
     fileName1 = args.appendFileName
+    parentDir1 = args.appendParentDirectory
     df2 = df1.copy()
-    if fileName1 != "":
-        df2["export_outputDirectory"] = df2["export_outputDirectory"].map(
-            lambda x: (x + "/" + fileName1)
-        )
+    df2["export_outputDirectory"] = df2["export_outputDirectory"].map(
+        lambda x: os.path.join(parentDir1, x, fileName1)
+    )
     headerArg = args.header
-    headerToSortArg = args.headerToSort
+
+    # headerToSortArg = args.headerToSort
+    headerToSortArg = headerArg
+
     isAscendingArg = args.isAscending
     df3 = df2[["export_outputDirectory"] + headerArg]
     if headerToSortArg != []:
