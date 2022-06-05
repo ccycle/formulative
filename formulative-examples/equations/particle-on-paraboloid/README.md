@@ -76,7 +76,7 @@ Create Database:
 python ../../visualization-scripts/create_database.py
 ```
 
-View and query database (the result is exported in `output/_query_result.csv`):
+View and query database (for more details, see [Queries and Visualizations](../../visualization-scripts/README.md)):
 
 - example 1: "equation_dampingRatio <= 1"
 

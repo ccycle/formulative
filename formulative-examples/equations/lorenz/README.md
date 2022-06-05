@@ -93,7 +93,7 @@ python plot3d.py --data variable -o variable.png
 Plot x-z space:
 
 ```sh
-python ../../visualization-scripts/plot2d.py  --data x z -o x-z.png
+python ../../visualization-scripts/plot2d.py --data x z -o x-z.png
 ```
 
 Plot animation (interval=20, framerate=10):
@@ -106,22 +106,24 @@ python ../../visualization-scripts/plot3d_animation.py --data x y z -o variable.
 
 Initial condition: $(x_0,y_0,z_0)=(1,0,0)$
 
-$\sigma = 10,\beta=8/3,\rho=15$:
+$\sigma = 10,\beta=8/3$
+
+$\rho=15$:
 
 <video src="media/variable_rho_15.mp4" controls="controls" width="70%">
 </video>
 
-$\sigma = 10,\beta=8/3,\rho=24$:
+$\rho=24$:
 
 <video src="media/variable_rho_24.mp4" controls="controls" width="70%">
 </video>
 
-$\sigma = 10,\beta=8/3,\rho=25$:
+$\rho=25$:
 
 <video src="media/variable_rho_25.mp4" controls="controls" width="70%">
 </video>
 
-$\sigma = 10,\beta=8/3,\rho=28$:
+$\rho=28$:
 
 <video src="media/variable_rho_28.mp4" controls="controls" width="70%">
 </video>

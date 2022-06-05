@@ -73,7 +73,7 @@ Create Database:
 python ../../visualization-scripts/create_database.py
 ```
 
-View and query database (the result is exported in `output/_query_result.csv`):
+View and query database (for more details, see [Queries and Visualizations](../../visualization-scripts/README.md)):
 
 ```sh
 python ../../visualization-scripts/view_database.py -H equation_a equation_b -S equation_a equation_b
@@ -90,23 +90,22 @@ python ../../visualization-scripts/plot2d.py --data x y -S -o phase-space.png
 View list of image files:
 
 ```sh
-python ../../visualization-scripts/view_database.py -H equation_a equation_b -S equation_a equation_b -f phase-space.png
+python ../../visualization-scripts/view_database.py -H equation_a equation_b -f phase-space.png
 ```
 
 ## Examples
 
-$a = 1.4, b = 0.3, x0 = 0.0, y0 = 0.0$
+$a = 1.4, b = 0.3, x_0 = 0.0, y_0 = 0.0$
 
 ![](media/phase-space1.png)
 
-$a = 0.2, b = 0.9991, x0 = 0.0, y0 = 0.0$
+$a = 0.2, b = 0.9991, x_0 = 0.0, y_0 = 0.0$
 
 ![](media/phase-space2.png)
 
-$a = 0.2, b = -0.9999, x0 = 0.0, y0 = 0.0$
+$a = 0.2, b = -0.9999, x_0 = 0.0, y_0 = 0.0$
 
 ![](media/phase-space3.png)
-
 
 ## References
 

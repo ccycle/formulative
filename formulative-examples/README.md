@@ -6,12 +6,14 @@
   - Unconstrained system
     - [Harmonic Oscillator](equations/harmonic-oscillator/)
     - [Van der Pol Oscillator](equations/van-der-pol-oscillator/)
+    - [Lorenz Equation](equations/lorenz/)
   - Constrained system
     - [Particle on Paraboloid](equations/particle-on-paraboloid/)
 - Discrete Dynamical Systems
   - [Hénon Map](equations/henon-map/)
   - [Logistic Map](equations/logistic-map/)
-  - [Gumowski Mira Map](equations/gumowski-mira-map/)
+  - [Gumowski-Mira Map](equations/gumowski-mira-map/)
+
 ## Build and Execute
 
 - Get a list of the available binaries:
@@ -26,6 +28,12 @@
   cabal build <exec_name>
   ```
 
+  To reduce binary size, use `--enable-executable-dynamic` (may fail if shared library changes):
+
+  ```
+  cabal build <exec_name> --enable-executable-dynamic
+  ```
+
 - Build all binary:
 
   ```sh
@@ -38,7 +46,7 @@
   cabal exec <exec_name>
   ```
 
-  To use commandline arguments, put `--` after `exec`:
+  To use command line arguments, put `--` after `exec`:
 
   ```sh
   cabal exec -- <exec_name> <args>

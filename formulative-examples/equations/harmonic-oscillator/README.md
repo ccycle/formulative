@@ -93,21 +93,11 @@ Create Database:
 python ../../visualization-scripts/create_database.py
 ```
 
-View and query database (the result is exported in `output/_query_result.csv`):
+View and query database (for more details, see [Queries and Visualizations](../../visualization-scripts/README.md)):
 
-- example 1: "equation_dampingRatio <= 1"
-
-  ```sh
-  python ../../visualization-scripts/view_database.py -H equation_dampingRatio equation_x0 equation_p0 -S equation_dampingRatio -q "equation_dampingRatio <= 1"
-  ```
-
-- example 2: extract specific directory
-
-  ```sh
-  python ../../visualization-scripts/view_database.py -q "export_outputDirectory == \"output/eeca6053077485a19e88dbeb2424390f1c6b37b7\""
-  ```
-
-Visualization command is executed on all directories contained in `_query_result.csv` .
+```sh
+python ../../visualization-scripts/view_database.py -H equation_dampingRatio equation_x0 equation_p0
+```
 
 Time evolution:
 

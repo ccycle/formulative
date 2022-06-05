@@ -1,8 +1,6 @@
 # Formulative
 
-(Caution: This package is experimental and under construction.)
-
-`Formulative` is an open-source package for polymorphic numerical simulation written in Haskell. It provides unified syntax for mathematical operators appliable to multiple types such as scalar, vector, matrix, and data type combining these types.
+`Formulative` is an open-source package for polymorphic numerical simulation. It provides unified syntax for mathematical operators appliable to multiple types such as scalar, vector, matrix, and data type combining these types.
 
 Examples are in [formulative-examples](formulative-examples).
 
@@ -12,16 +10,6 @@ If you don't have GHC, use GHCup (https://www.haskell.org/ghcup/) and install GH
 
 ## Build
 
-There are two ways to build the package.
-
-1. Using cabal (recommended):
-
-    ```
-    cabal build
-    ```
-
-2. Using stack:
-
-    ```
-    stack build
-    ```
+```
+cabal build
+```
