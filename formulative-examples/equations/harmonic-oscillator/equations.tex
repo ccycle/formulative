@@ -24,20 +24,14 @@
 
 
 \begin{document}
-Equation:
 \begin{align*}
- & \frac{\mathrm{d}\mathbf{x}}{\mathrm{d}t}=\mathbf{v}\\
- & \frac{\mathrm{d}\mathbf{\mathbf{v}}}{\mathrm{d}t}=-gz\mathbf{e}_{z}\\
- & \frac{x^{2}}{a^{2}}+\frac{y^{2}}{b^{2}}-2z=0
+\frac{\mathrm{d}x}{\mathrm{d}t} & =\frac{p}{m}\\
+\frac{\mathrm{d}p}{\mathrm{d}t} & =-\frac{\gamma}{m}p-kx
 \end{align*}
 
-where $\mathbf{x}=\left(x,y,z\right)$.
-
-Scheme:
 \begin{align*}
- & \frac{\mathbf{x}^{(i+1)}-x^{(i)}}{\Delta t}-\frac{\mathbf{v}^{(i+1)}+\mathbf{v}^{(i)}}{2}=\mathbf{0}\\
- & \frac{\mathbf{v}^{(i+1)}-\mathbf{v}^{(i)}}{\Delta t}+g\frac{z^{(i+1)}+z^{(i)}}{2}\mathbf{e}_{z}\\
- & \quad+2\lambda\left[\left(\frac{x^{(i+1)}+x^{(i)}}{a^{2}}\right)\mathbf{e}_{x}+\left(\frac{y^{(i+1)}+y^{(i)}}{b^{2}}\right)\mathbf{e}_{y}-\mathbf{e}_{z}\right]=\mathbf{0}
+\frac{x_{i+1}-x_{i}}{\Delta t} & -\frac{p_{i+1}+p_{i}}{m}=0\\
+\frac{p_{i+1}-p_{i}}{\Delta t} & +\frac{\gamma}{m}\frac{p_{i+1}+p_{i}}{2}+k\frac{x_{i+1}+x_{i}}{2}=0
 \end{align*}
 
 \end{document}

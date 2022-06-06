@@ -1,31 +1,20 @@
 # Harmonic Oscillator
 
-equation:
+Equation:
 
 $$
-\global\long\def\d{\mathrm{d}}%
-\global\long\def\D#1#2{\frac{\d#1}{\d#2}}%
-\global\long\def\vari{x}%
-\global\long\def\varii{p}%
-\global\long\def\parami{t}%
-\global\long\def\mass{m}%
-\global\long\def\viscousDampingCoefficient{\gamma}%
-\global\long\def\springConstant{k}%
 \begin{align*}
-\D x{\parami} & =\frac{\varii}{\mass}\\
-\D{\varii}{\parami} & =-\frac{\viscousDampingCoefficient}{\mass}\varii-\springConstant\vari
+\frac{\mathrm{d}x}{\mathrm{d}t} & =\frac{p}{m}\\
+\frac{\mathrm{d}p}{\mathrm{d}t} & =-\frac{\gamma}{m}p-kx
 \end{align*}
 $$
 
-scheme:
+Scheme:
 
 $$
-\global\long\def\vari{x}%
-\global\long\def\varii{p}%
-\global\long\def\indexI{i}%
 \begin{align*}
-\frac{x_{\indexI+1}-x_{\indexI}}{\Delta t} & -\frac{p_{\indexI+1}+p_{\indexI}}{m}=0\\
-\frac{p_{\indexI+1}-p_{\indexI}}{\Delta t} & +\frac{\gamma}{m}\frac{p_{\indexI+1}+p_{\indexI}}{2}+k\frac{\vari_{\indexI+1}+\vari_{\indexI}}{2}=0
+\frac{x_{i+1}-x_{i}}{\Delta t} & -\frac{p_{i+1}+p_{i}}{m}=0\\
+\frac{p_{i+1}-p_{i}}{\Delta t} & +\frac{\gamma}{m}\frac{p_{i+1}+p_{i}}{2}+k\frac{x_{i+1}+x_{i}}{2}=0
 \end{align*}
 $$
 
@@ -39,15 +28,15 @@ cabal build harmonic-oscillator
 
 Execute:
 
-1. single setting file
+1. Single setting file
 
    ```sh
    cabal exec -- harmonic-oscillator -s setting.dhall
    ```
 
-1. multiple setting files
+1. Multiple setting files
 
-   generate multiple setting files:
+   Generate multiple setting files:
 
    ```sh
    cabal repl harmonic-oscillator
@@ -59,7 +48,7 @@ Execute:
    :source equations/harmonic-oscillator/writeSettingFiles.ghci
    ```
 
-   quit REPL:
+   Quit REPL:
 
    ```sh
    :q
@@ -67,7 +56,7 @@ Execute:
 
    _NOTE_: `:source` is a command defined in `formulative-examples/.ghci` . To use this command outside of `formulative-examples`, add `:def source readFile` in your `.ghci` file.
 
-   execute for multiple setting files:
+   Execute for multiple setting files:
 
    ```sh
    find ./settingFiles -name "*.dhall" | xargs -I {} -P 4 cabal exec -- harmonic-oscillator -s {}
@@ -99,47 +88,49 @@ View and query database (for more details, see [Queries and Visualizations](../.
 python ../../visualization-scripts/view_database.py -H equation_dampingRatio equation_x0 equation_p0
 ```
 
-Time evolution:
+Plot time evolution:
 
 ```sh
-python ../../visualization-scripts/plot_time_evolution.py -t time.csv -x position.csv -o t-x.png
+python ../../visualization-scripts/plot_time_evolution.py -t time --data position -o t-x.png
 ```
 
-Phase space:
+Plot phase space:
 
 ```sh
-python ../../visualization-scripts/plot2d.py --x position.csv --y momentum.csv
+python ../../visualization-scripts/plot2d.py --data position momentum
 ```
 
-All global quantities:
+Plot all global quantities:
 
 ```sh
-python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariable/_global.csv
+python ../../visualization-scripts/plot_global_quantity.py --parameter time
 ```
 
-Global quantities for selected labels (in this case `hamiltonian`, `dHdt`, `power`):
+Plot global quantities for selected labels (in this case `hamiltonian`, `dHdt`, `power`):
 
 ```sh
-python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariable/_global.csv --header hamiltonian dHdt power
+python ../../visualization-scripts/plot_global_quantity.py --parameter time --header hamiltonian dHdt power
 ```
 
 ## Examples
 
+$m = 1.0, k = 1.0, x_0 = 1.0, p_0 = 0.0$
+
 damping ratio: $\zeta=\frac{\gamma}{2\sqrt{mk}}$
 
-$m = 1.0, k = 1.0, \gamma = 0.0, x_0 = 1.0, p_0 = 0.0$ ($\zeta=0.0$)
+$\gamma = 0.0$ ($\zeta=0.0$)
 
 ![](media/t-x_dampingRatio_0.png)
 
-$m = 1.0, k = 1.0, \gamma = 1.0, x_0 = 1.0, p_0 = 0.0$ ($\zeta=0.5$)
+$\gamma = 1.0$ ($\zeta=0.5$)
 
 ![](media/t-x_dampingRatio_0.5.png)
 
-$m = 1.0, k = 1.0, \gamma = 2.0, x_0 = 1.0, p_0 = 0.0$ ($\zeta=1.0$)
+$\gamma = 2.0$ ($\zeta=1.0$)
 
 ![](media/t-x_dampingRatio_1.png)
 
-$m = 1.0, k = 1.0, \gamma = 3.0, x_0 = 1.0, p_0 = 0.0$ ($\zeta=1.5$)
+$\gamma = 3.0$ ($\zeta=1.5$)
 
 ![](media/t-x_dampingRatio_1.5.png)
 

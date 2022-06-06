@@ -2,7 +2,7 @@
 
 English/[Japanese](README-ja.md)
 
-Binaries created with `formulative` create individual parent directories under `output/` by default, depending on the configuration file. Scripts under `formulative-examples/visualization-scripts/` can search output directories by configuration values and visualize the search results. The following sections describe these scripts and provide examples of their use.
+Binaries created with `formulative` generate individual parent directories under `output/` by default, depending on the configuration file. By using scripts under `formulative-examples/visualization-scripts/`, you can search output directories by configuration values and visualize the search results. The following sections describe usage of these scripts and provide examples of their use.
 
 ## Querying Database
 
@@ -12,7 +12,7 @@ The `create_database.py` is a script that reads the values in `setting.dhall` un
 
 ## Examples
 
-All of the following example scripts are run in the [Harmonic Oscillator](.../equations/harmonic-oscillator/) directory (assuming that all numerical calculations have been done).
+All of the following scripts run in the [Harmonic Oscillator](.../equations/harmonic-oscillator/) directory (assuming that all numerical calculations have been done).
 
 Example:
 
@@ -20,7 +20,7 @@ Example:
 $ python ../../visualization-scripts/view_database.py -H equation_x0 equation_p0 equation_gamma dynamics_stepSize
 ```
 
-Result(Hash values may vary depending on package version):
+Result(hash values may vary depending on package version):
 
 ```
 Header prefixes are removed for displaying on terminal by default. To show prefixes, use "--showPrefix".
@@ -41,7 +41,7 @@ output/1708ed594716f2a51b2438ec4d1909a46d162445 1.0 1.0    3.0      0.01
 Exporting output/_query_result.csv ..
 ````
 
-The `-q` option can be used to apply the given string to the pandas [query](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.query.html) function to search for results.
+The `-q` option can be used to search for results (see [pandas.DataFrame.query](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.query.html) for syntax).
 
 Example:
 
@@ -51,7 +51,7 @@ python ../../visualization-scripts/view_database.py -H equation_x0 equation_p0 e
 
 Result:
 
-```sh
+```console
 Header prefixes are removed for displaying on terminal by default. To show prefixes, use "--showPrefix".
 Result:
                                 outputDirectory  x0  p0  gamma  stepSize
@@ -64,7 +64,7 @@ Exporting output/_query_result.csv ..
 
 Visualization scripts such as `plot2d.py` are executed by default for all `outputDirectory` in `_query_result.csv`.
 
-The option `-q` queries the results partially.
+By using the `-q` option mentioned above you can partially visualize the results.
 
 Example:
 
@@ -75,14 +75,14 @@ python ../../visualization-scripts/plot_time_evolution.py -t time --data positio
 
 Result:
 
-```sh
+```console
 Exporting output/1944314149639206e60f063d7e8a15346903fdba/t-x.png ..
 Exporting output/6ed95255177ec6764d325f3b0026c4dbefa37461/t-x.png ..
 ```
 
 ## Querying image paths
 
-The option `-f` appends a file path to the query results.
+The option `-f` can be used to append a file path to the query results.
 
 Example:
 
@@ -92,7 +92,7 @@ python ../../visualization-scripts/view_database.py -H equation_x0 equation_p0 e
 
 Result:
 
-```
+```console
 Header prefixes are removed for displaying on terminal by default. To show prefixes, use "--showPrefix".
 Result:
                                         outputDirectory  x0  p0  gamma  stepSize
@@ -101,4 +101,4 @@ output/6ed95255177ec6764d325f3b0026c4dbefa37461/t-x.png 1.0 0.0    1.0      0.01
 Exporting output/_query_result.csv ..
 ```
 
-The displayed file path is useful for opening files directly from the terminal by copying and pasting, etc.
+The displayed file paths are useful for opening files directly from the terminal by copying and pasting, etc.

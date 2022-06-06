@@ -14,7 +14,7 @@
   - [Logistic Map](equations/logistic-map/)
   - [Gumowski-Mira Map](equations/gumowski-mira-map/)
 
-## Build and Execute
+## Build and Execution
 
 - Get a list of the available binaries:
 
@@ -28,7 +28,7 @@
   cabal build <exec_name>
   ```
 
-  To reduce binary size, use `--enable-executable-dynamic` (may fail if shared library changes):
+  To reduce binary size, use `--enable-executable-dynamic` (may fail if shared libraries are changed):
 
   ```
   cabal build <exec_name> --enable-executable-dynamic
@@ -40,7 +40,7 @@
   cabal build all
   ```
 
-- execute:
+- Execute:
 
   ```sh
   cabal exec <exec_name>
@@ -51,3 +51,5 @@
   ```sh
   cabal exec -- <exec_name> <args>
   ```
+
+For data visualizations, see [Queries and Visualizations](visualization-scripts/README.md).

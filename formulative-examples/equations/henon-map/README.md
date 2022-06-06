@@ -19,15 +19,15 @@ cabal build henon-map
 
 Execute:
 
-1. single setting file
+1. Single setting file
 
    ```sh
    cabal exec -- henon-map -s setting.dhall
    ```
 
-1. multiple setting files
+1. Multiple setting files
 
-   generate multiple setting files:
+   Generate multiple setting files:
 
    ```sh
    cabal repl henon-map
@@ -39,7 +39,7 @@ Execute:
    :source equations/henon-map/writeSettingFiles.ghci
    ```
 
-   quit REPL:
+   Quit REPL:
 
    ```sh
    :q
@@ -47,7 +47,7 @@ Execute:
 
    _NOTE_: `:source` is a command defined in `formulative-examples/.ghci` . To use this command outside of `formulative-examples`, add `:def source readFile` in your `.ghci` file.
 
-   execute for multiple setting files:
+   Execute for multiple setting files:
 
    ```sh
    find ./settingFiles -name "*.dhall" | xargs -I {} -P 4 cabal exec -- henon-map -s {}
@@ -81,7 +81,7 @@ python ../../visualization-scripts/view_database.py -H equation_a equation_b -S 
 
 Visualization command is executed on all directories contained in `_query_result.csv` .
 
-Phase space (scatter plot):
+Plot phase space (scatter plot):
 
 ```sh
 python ../../visualization-scripts/plot2d.py --data x y -S -o phase-space.png

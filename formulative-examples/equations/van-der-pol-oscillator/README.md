@@ -30,13 +30,13 @@ cabal build van-der-pol-oscillator
 
 Execute:
 
-1. For single setting file
+1. Single setting file
 
    ```sh
    cabal exec -- van-der-pol-oscillator -s setting.dhall
    ```
 
-1. For multiple setting files
+1. Multiple setting files
 
    Generate multiple setting files:
 
@@ -50,7 +50,7 @@ Execute:
    :source equations/van-der-pol-oscillator/writeSettingFiles.ghci
    ```
 
-   quit REPL:
+   Quit REPL:
 
    ```sh
    :q
@@ -80,9 +80,9 @@ View and query database (the results are exported to `output/_query_result.csv`)
 python ../../visualization-scripts/view_database.py -H equation_mu -S equation_mu
 ```
 
-The following visualization scripts are executed on all directories contained in `output/_query_result.csv` .
-
 ### Plot
+
+The following visualization scripts are executed on all directories contained in `output/_query_result.csv` .
 
 Plot x-xdot space:
 
@@ -103,8 +103,6 @@ python ../../visualization-scripts/plot2d_animation.py --data x dependentVariabl
 ```
 
 ## Exmaples
-
-(x0,y0)=(0,1)
 
 $\mu=0.1$:
 

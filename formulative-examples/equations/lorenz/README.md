@@ -30,13 +30,13 @@ cabal build lorenz
 
 Execute:
 
-1. For single setting file
+1. Single setting file
 
    ```sh
    cabal exec -- lorenz -s setting.dhall
    ```
 
-1. For multiple setting files
+1. Multiple setting files
 
    Generate multiple setting files:
 
@@ -50,7 +50,7 @@ Execute:
    :source equations/lorenz/writeSettingFiles.ghci
    ```
 
-   quit REPL:
+   Quit REPL:
 
    ```sh
    :q
@@ -80,9 +80,9 @@ View and query database (the results are exported to `output/_query_result.csv`)
 python ../../visualization-scripts/view_database.py -H equation_rho -S equation_rho
 ```
 
-The following visualization scripts are executed on all directories contained in `output/_query_result.csv` .
-
 ### Plot
+
+The following visualization scripts are executed on all directories contained in `output/_query_result.csv` .
 
 Plot x-y-z space:
 
@@ -108,22 +108,22 @@ Initial condition: $(x_0,y_0,z_0)=(1,0,0)$
 
 $\sigma = 10,\beta=8/3$
 
-$\rho=15$:
+$\rho=15$: [video link](media/variable_rho_15.mp4)
 
 <video src="media/variable_rho_15.mp4" controls="controls" width="70%">
 </video>
 
-$\rho=24$:
+$\rho=24$: [video link](media/variable_rho_24.mp4)
 
 <video src="media/variable_rho_24.mp4" controls="controls" width="70%">
 </video>
 
-$\rho=25$:
+$\rho=25$: [video link](media/variable_rho_25.mp4)
 
 <video src="media/variable_rho_25.mp4" controls="controls" width="70%">
 </video>
 
-$\rho=28$:
+$\rho=28$: [video link](media/variable_rho_28.mp4)
 
 <video src="media/variable_rho_28.mp4" controls="controls" width="70%">
 </video>

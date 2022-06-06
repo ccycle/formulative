@@ -17,8 +17,8 @@ Scheme:
 $$
 \begin{align*}
  & \frac{\mathbf{x}^{(i+1)}-x^{(i)}}{\Delta t}-\frac{\mathbf{v}^{(i+1)}+\mathbf{v}^{(i)}}{2}=\mathbf{0}\\
- & \frac{\mathbf{v}^{(i+1)}+\mathbf{v}^{(i)}}{\Delta t}+g\frac{z^{(i+1)}+z^{(i)}}{2}\mathbf{e}_{z}\\
- & \quad+\lambda\left[\left(\frac{x^{(i+1)}+x^{(i)}}{a^{2}}\right)\mathbf{e}_{x}+\left(\frac{y^{(i+1)}+y^{(i)}}{b^{2}}\right)\mathbf{e}_{y}-\left(z^{(i+1)}+z^{(i)}\right)\mathbf{e}_{z}\right]=\mathbf{0}
+ & \frac{\mathbf{v}^{(i+1)}-\mathbf{v}^{(i)}}{\Delta t}+g\frac{z^{(i+1)}+z^{(i)}}{2}\mathbf{e}_{z}\\
+ & \quad+2\lambda\left[\left(\frac{x^{(i+1)}+x^{(i)}}{a^{2}}\right)\mathbf{e}_{x}+\left(\frac{y^{(i+1)}+y^{(i)}}{b^{2}}\right)\mathbf{e}_{y}-\mathbf{e}_{z}\right]=\mathbf{0}
 \end{align*}
 $$
 
@@ -34,13 +34,13 @@ cabal build particle-on-paraboloid
 
 Execute:
 
-- (case 1) Single setting file
+1. Single setting file
 
   ```sh
   cabal exec -- particle-on-paraboloid -s setting.dhall
   ```
 
-- (case 2) Multiple setting files
+1. Multiple setting files
 
   Generate multiple setting files:
 
@@ -78,59 +78,51 @@ python ../../visualization-scripts/create_database.py
 
 View and query database (for more details, see [Queries and Visualizations](../../visualization-scripts/README.md)):
 
-- example 1: "equation_dampingRatio <= 1"
-
-  ```sh
-  python ../../visualization-scripts/view_database.py -H equation_a equation_b equation_xInit equation_vxInit equation_vyInit -q "equation_a==1 & equation_b == 1"
-  ```
-
-- example 2: extract specific directory
-
-  ```sh
-  python ../../visualization-scripts/view_database.py -q "export_outputDirectory == \"output/eeca6053077485a19e88dbeb2424390f1c6b37b7\""
-  ```
+```sh
+python ../../visualization-scripts/view_database.py -H equation_a equation_b equation_xInit equation_vxInit equation_vyInit
+```
 
 Visualization command is executed on all directories contained in `_query_result.csv` .
 
 Plot orbit:
 
 ```sh
-python plot3d_particle-on-paraboloid.py --data position.csv -o position.png
+python plot3d_particle-on-paraboloid.py --data position -o position.png
 ```
 
 Plot animation (interval:5):
 
 ```sh
-python plot3d_animation_particle-on-paraboloid.py --data position.csv -o position.mp4 -i 5
+python plot3d_animation_particle-on-paraboloid.py --data position -o position.mp4 -i 5
 ```
 
 Plot all global quantities:
 
 ```sh
-python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariable/_global.csv
+python ../../visualization-scripts/plot_global_quantity.py --parameter time
 ```
 
 Plot global quantities for selected labels (in this case `kineticEnergy`,`potentialEnergy`,`hamiltonian`):
 
 ```sh
-python ../../visualization-scripts/plot_global_quantity.py --parameter time.csv --data dependentVariable/_global.csv -H kineticEnergy potentialEnergy hamiltonian
+python ../../visualization-scripts/plot_global_quantity.py -H kineticEnergy potentialEnergy hamiltonian
 ```
 
 ## Examples
 
 (g,a,b,xInit,yInit,vxInit)=(1,1,1,1,0,0)
 
-vyInit=0.5:
+vyInit=0.5: [movie link](media/position1.mp4)
 
 <video src="media/position1.mp4" controls="controls" width="70%">
 </video>
 
-vyInit=1.0:
+vyInit=1.0: [movie link](media/position2.mp4)
 
 <video src="media/position2.mp4" controls="controls" width="70%">
 </video>
 
-vyInit=1.5:
+vyInit=1.5: [movie link](media/position3.mp4)
 
 <video src="media/position3.mp4" controls="controls" width="70%">
 </video>

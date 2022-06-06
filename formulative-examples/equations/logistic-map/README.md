@@ -68,7 +68,7 @@ python ../../visualization-scripts/view_database.py -H equation_r -S equation_r
 
 Visualization command is executed on all directories contained in `_query_result.csv` .
 
-Time evolution:
+Plot time evolution:
 
 ```sh
 python ../../visualization-scripts/plot_time_evolution.py -t time --data x -o t-x.png

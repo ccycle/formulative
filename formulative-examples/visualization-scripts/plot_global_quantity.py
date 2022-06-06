@@ -11,7 +11,7 @@ matplotlib.use("Agg")
 
 def plot_global_quantity(outputDirList, paramPathArgv, dataPathArgv, labelList):
     for outputDir in outputDirList:
-        paramPath = os.path.join(outputDir, paramPathArgv)
+        paramPath = os.path.join(outputDir, paramPathArgv) + ".csv"
         dataPath = os.path.join(outputDir, dataPathArgv)
         params_ = pd.read_csv(paramPath)
         labelName = os.path.splitext(os.path.basename(paramPath))[0]
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--parameter",
         help="paramter data example: --parameterData=time.csv",
-        default="time.csv",
+        default="time",
     )
     parser.add_argument(
         "--data",
