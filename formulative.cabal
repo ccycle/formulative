@@ -5,7 +5,7 @@ cabal-version: 1.12
 -- see: https://github.com/sol/hpack
 
 name:           formulative
-version:        0.1.0.0
+version:        0.1.0
 description:    Please see the README on GitHub at <https://github.com/ccycle/formulative#readme>
 homepage:       https://github.com/ccycle/formulative#readme
 bug-reports:    https://github.com/ccycle/formulative/issues
@@ -48,8 +48,6 @@ library
       Formulative.Calculation.Coordinates.Dim3.Euclidean
       Formulative.Calculation.Coordinates.Dim3.Paraboloidal
       Formulative.Calculation.Coordinates.Dim3.Spherical
-      Formulative.Calculation.DifferentialEquation.Dynamics.AdaptiveStepSize.Carrier
-      Formulative.Calculation.DifferentialEquation.Dynamics.AdaptiveStepSize.Effect
       Formulative.Calculation.DifferentialEquation.Dynamics.Carrier
       Formulative.Calculation.DifferentialEquation.Dynamics.Class
       Formulative.Calculation.DifferentialEquation.Dynamics.Effect
@@ -60,7 +58,6 @@ library
       Formulative.Calculation.Internal.DerivingPrelude.Floating
       Formulative.Calculation.Internal.DerivingPrelude.Fractional
       Formulative.Calculation.Internal.DerivingPrelude.Num
-      Formulative.Calculation.Internal.Generics
       Formulative.Calculation.Internal.IfThenElse
       Formulative.Calculation.Internal.Infix
       Formulative.Calculation.Internal.List
@@ -89,8 +86,6 @@ library
       Formulative.Calculation.VectorSpace.NormSpace
       Formulative.Calculation.VectorSpace.Tensor
       Formulative.Calculation.VectorSpace.VectorSpace
-      Formulative.Internal.ReExport.Carrier
-      Formulative.Internal.ReExport.Effect
       Formulative.Postprocess.Export.Carrier
       Formulative.Postprocess.Export.CSV
       Formulative.Postprocess.Export.Dynamics

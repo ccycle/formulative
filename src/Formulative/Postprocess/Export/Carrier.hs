@@ -13,7 +13,6 @@ import Control.Effect.Error
 import Control.Effect.Lift
 import Control.Effect.Sum
 import Control.Exception.Safe
-import Formulative.Internal.ReExport.Effect (askSettingHash)
 import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.IO
 import Formulative.Postprocess.Export.Path
