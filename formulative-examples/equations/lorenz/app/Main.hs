@@ -107,8 +107,9 @@ instance
 ----------------------------------------------------------------
 ---- local dependent variable
 ----------------------------------------------------------------
-newtype MyLocalDependentVariable = MyLocalDependentVariable
+data MyLocalDependentVariable = MyLocalDependentVariable
   { velocity :: EuclideanCoord3d Double
+  , speed :: Double
   }
   deriving stock (Show, Generic)
   deriving anyclass (Additive, AdditiveGroup, VectorSpace, NormSpace, InnerProductSpace)
@@ -125,7 +126,8 @@ instance
     let xDot = sigma .*. (y .-. x)
         yDot = x .*. (rho .-. z) .-. y
         zDot = x .*. y .-. beta .*. z
-    return $ MyLocalDependentVariable (EuclideanCoord3d xDot yDot zDot)
+        v = EuclideanCoord3d xDot yDot zDot
+    return $ MyLocalDependentVariable v (normL2 v)
 
 instance (HasExportDynamicsUnconstrained sig m MyVariable Double) => HasExportDynamicsM m MyVariable Double where
   exportDynamicsM = exportDynamicsUnconstrained
