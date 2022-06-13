@@ -49,7 +49,7 @@ exportDependentParameterFile = do
     when (y /= toDhallText ()) $ do
         (OutputDir outputDir) <- askOutputDir
         sendIO $ ensureDir outputDir
-        sName <- sendIO $ parseRelFile "dependentParamater.dhall"
+        sName <- sendIO $ parseRelFile "dependentParameter.dhall"
         let filePath = toFilePath (outputDir </> sName)
         msgLoggerM $ concat ["Exporting dependent parameter file (", filePath, ") .."]
         sendIO $ T.writeFile filePath y

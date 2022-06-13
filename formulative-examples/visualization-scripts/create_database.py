@@ -36,7 +36,7 @@ def dhallPathToDataFrame(path):
 
     # add dependent parameter to dictionary
     parentDir = getParentDirStr(path)
-    dependentParameterPath = os.path.join(parentDir, "dependentParamater.dhall")
+    dependentParameterPath = os.path.join(parentDir, "dependentParameter.dhall")
     if os.path.exists(dependentParameterPath):
         with open(dependentParameterPath) as f1:
             s1 = f1.read()
