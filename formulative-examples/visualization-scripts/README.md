@@ -16,7 +16,7 @@ All of the following scripts run in the [Harmonic Oscillator](.../equations/harm
 
 Example:
 
-```sh
+```
 $ python ../../visualization-scripts/view_database.py -H equation_x0 equation_p0 equation_gamma dynamics_stepSize
 ```
 
@@ -51,7 +51,7 @@ python ../../visualization-scripts/view_database.py -H equation_x0 equation_p0 e
 
 Result:
 
-```console
+```
 Header prefixes are removed for displaying on terminal by default. To show prefixes, use "--showPrefix".
 Result:
                                 outputDirectory  x0  p0  gamma  stepSize
@@ -68,14 +68,14 @@ By using the `-q` option mentioned above you can partially visualize the results
 
 Example:
 
-```sh
+```
 python ../../visualization-scripts/view_database.py -H equation_x0 equation_p0 equation_gamma dynamics_stepSize -q "equation_x0 == 1 & equation_p0 == 0 & equation_gamma <= 1"
 python ../../visualization-scripts/plot_time_evolution.py -t time --data position -o t-x.png
 ```
 
 Result:
 
-```console
+```
 Exporting output/1944314149639206e60f063d7e8a15346903fdba/t-x.png ..
 Exporting output/6ed95255177ec6764d325f3b0026c4dbefa37461/t-x.png ..
 ```
@@ -92,7 +92,7 @@ python ../../visualization-scripts/view_database.py -H equation_x0 equation_p0 e
 
 Result:
 
-```console
+```
 Header prefixes are removed for displaying on terminal by default. To show prefixes, use "--showPrefix".
 Result:
                                         outputDirectory  x0  p0  gamma  stepSize

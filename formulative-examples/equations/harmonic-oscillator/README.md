@@ -22,7 +22,7 @@ $$
 
 Build:
 
-```sh
+```
 cabal build harmonic-oscillator
 ```
 
@@ -30,7 +30,7 @@ Execute:
 
 1. Single setting file
 
-   ```sh
+   ```
    cabal exec -- harmonic-oscillator -s setting.dhall
    ```
 
@@ -38,19 +38,19 @@ Execute:
 
    Generate multiple setting files:
 
-   ```sh
+   ```
    cabal repl harmonic-oscillator
    ```
 
    in REPL:
 
-   ```sh
+   ```
    :source equations/harmonic-oscillator/writeSettingFiles.ghci
    ```
 
    Quit REPL:
 
-   ```sh
+   ```
    :q
    ```
 
@@ -58,19 +58,19 @@ Execute:
 
    Execute for multiple setting files:
 
-   ```sh
+   ```
    find ./settingFiles -name "*.dhall" | xargs -I {} -P 4 cabal exec -- harmonic-oscillator -s {}
    ```
 
    Recalculate dependent variables from exported independent variable data:
 
-   ```sh
+   ```
    find ./settingFiles -name "*.dhall" | xargs -I {} cabal exec -- harmonic-oscillator --recalculation Continue -s {}
    ```
 
    Multiprocessing (3 process):
 
-   ```sh
+   ```
    find ./settingFiles -name "*.dhall" | xargs -P 4 -I {} cabal exec -- harmonic-oscillator --recalculation Continue -s {}
    ```
 
@@ -78,37 +78,37 @@ Execute:
 
 Create Database:
 
-```sh
+```
 python ../../visualization-scripts/create_database.py
 ```
 
 View and query database (for more details, see [Queries and Visualizations](../../visualization-scripts/README.md)):
 
-```sh
+```
 python ../../visualization-scripts/view_database.py -H equation_dampingRatio equation_x0 equation_p0
 ```
 
 Plot time evolution:
 
-```sh
+```
 python ../../visualization-scripts/plot_time_evolution.py -t time --data position -o t-x.png
 ```
 
 Plot phase space:
 
-```sh
+```
 python ../../visualization-scripts/plot2d.py --data position momentum
 ```
 
 Plot all global quantities:
 
-```sh
+```
 python ../../visualization-scripts/plot_global_quantity.py --parameter time
 ```
 
 Plot global quantities for selected labels (in this case `hamiltonian`, `dHdt`, `power`):
 
-```sh
+```
 python ../../visualization-scripts/plot_global_quantity.py --parameter time --header hamiltonian dHdt power
 ```
 

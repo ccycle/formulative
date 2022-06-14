@@ -24,7 +24,7 @@ $$
 
 Build:
 
-```sh
+```
 cabal build lorenz
 ```
 
@@ -32,7 +32,7 @@ Execute:
 
 1. Single setting file
 
-   ```sh
+   ```
    cabal exec -- lorenz -s setting.dhall
    ```
 
@@ -40,19 +40,19 @@ Execute:
 
    Generate multiple setting files:
 
-   ```sh
+   ```
    cabal repl lorenz
    ```
 
    in REPL:
 
-   ```sh
+   ```
    :source equations/lorenz/writeSettingFiles.ghci
    ```
 
    Quit REPL:
 
-   ```sh
+   ```
    :q
    ```
 
@@ -60,7 +60,7 @@ Execute:
 
    Execute for multiple setting files (Multiprocessing):
 
-   ```sh
+   ```
    find ./settingFiles -name "*.dhall" | xargs -I {} -P 4 cabal exec -- lorenz -s {}
    ```
 
@@ -70,13 +70,13 @@ Execute:
 
 Create database:
 
-```sh
+```
 python ../../visualization-scripts/create_database.py
 ```
 
 View and query database (the results are exported to `output/_query_result.csv`):
 
-```sh
+```
 python ../../visualization-scripts/view_database.py -H equation_rho -S equation_rho
 ```
 
@@ -86,19 +86,19 @@ The following visualization scripts are executed on all directories contained in
 
 Plot x-y-z space:
 
-```sh
+```
 python plot3d.py --data variable -o variable.png
 ```
 
 Plot x-z space:
 
-```sh
+```
 python ../../visualization-scripts/plot2d.py --data x z -o x-z.png
 ```
 
 Plot animation (interval=20, framerate=10):
 
-```sh
+```
 python ../../visualization-scripts/plot3d_animation.py --data x y z -o variable.mp4 -i 20 -f 10
 ```
 

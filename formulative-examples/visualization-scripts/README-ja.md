@@ -18,8 +18,8 @@
 
 例:
 
-```sh
-$ python ../../visualization-scripts/view_database.py -H equation_x0 equation_p0 equation_gamma dynamics_stepSize
+```
+python ../../visualization-scripts/view_database.py -H equation_x0 equation_p0 equation_gamma dynamics_stepSize
 ```
 
 実行結果(ハッシュ値はパッケージのバージョンによって異なる可能性がある):
@@ -53,7 +53,7 @@ python ../../visualization-scripts/view_database.py -H equation_x0 equation_p0 e
 
 実行結果:
 
-```sh
+```
 Header prefixes are removed for displaying on terminal by default. To show prefixes, use "--showPrefix".
 Result:
                                 outputDirectory  x0  p0  gamma  stepSize
@@ -70,14 +70,14 @@ Exporting output/_query_result.csv ..
 
 例:
 
-```sh
+```
 python ../../visualization-scripts/view_database.py -H equation_x0 equation_p0 equation_gamma dynamics_stepSize -q "equation_x0 == 1 & equation_p0 == 0 & equation_gamma <= 1"
 python ../../visualization-scripts/plot_time_evolution.py -t time --data position -o t-x.png
 ```
 
 実行結果:
 
-```sh
+```
 Exporting output/1944314149639206e60f063d7e8a15346903fdba/t-x.png ..
 Exporting output/6ed95255177ec6764d325f3b0026c4dbefa37461/t-x.png ..
 ```

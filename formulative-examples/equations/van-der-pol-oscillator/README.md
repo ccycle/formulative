@@ -24,7 +24,7 @@ where $f\left(x^{(i+1)},x^{(i)}\right)=\frac{1}{4}\left(\left(x^{(i+1)}\right)^{
 
 Build:
 
-```sh
+```
 cabal build van-der-pol-oscillator
 ```
 
@@ -32,7 +32,7 @@ Execute:
 
 1. Single setting file
 
-   ```sh
+   ```
    cabal exec -- van-der-pol-oscillator -s setting.dhall
    ```
 
@@ -40,19 +40,19 @@ Execute:
 
    Generate multiple setting files:
 
-   ```sh
+   ```
    cabal repl van-der-pol-oscillator
    ```
 
    in REPL:
 
-   ```sh
+   ```
    :source equations/van-der-pol-oscillator/writeSettingFiles.ghci
    ```
 
    Quit REPL:
 
-   ```sh
+   ```
    :q
    ```
 
@@ -60,7 +60,7 @@ Execute:
 
    Execute for multiple setting files (Multiprocessing):
 
-   ```sh
+   ```
    find ./settingFiles -name "*.dhall" | xargs -I {} -P 4 cabal exec -- van-der-pol-oscillator -s {}
    ```
 
@@ -70,13 +70,13 @@ Execute:
 
 Create database:
 
-```sh
+```
 python ../../visualization-scripts/create_database.py
 ```
 
 View and query database (the results are exported to `output/_query_result.csv`):
 
-```sh
+```
 python ../../visualization-scripts/view_database.py -H equation_mu -S equation_mu
 ```
 
@@ -86,19 +86,19 @@ The following visualization scripts are executed on all directories contained in
 
 Plot x-xdot space:
 
-```sh
+```
 python ../../visualization-scripts/plot2d.py --data x dependentVariable/xdot -o x-xdot.png
 ```
 
 View list of image files:
 
-```sh
+```
 python ../../visualization-scripts/view_database.py -H equation_mu -S equation_mu -f x-xdot.png
 ```
 
 Plot animation (interval=20, framerate=10):
 
-```sh
+```
 python ../../visualization-scripts/plot2d_animation.py --data x dependentVariable/xdot -o variable.mp4 -i 20 -f 10
 ```
 

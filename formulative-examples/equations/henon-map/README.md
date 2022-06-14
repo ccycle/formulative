@@ -13,7 +13,7 @@ $$
 
 Build:
 
-```sh
+```
 cabal build henon-map
 ```
 
@@ -21,7 +21,7 @@ Execute:
 
 1. Single setting file
 
-   ```sh
+   ```
    cabal exec -- henon-map -s setting.dhall
    ```
 
@@ -29,19 +29,19 @@ Execute:
 
    Generate multiple setting files:
 
-   ```sh
+   ```
    cabal repl henon-map
    ```
 
    in REPL:
 
-   ```sh
+   ```
    :source equations/henon-map/writeSettingFiles.ghci
    ```
 
    Quit REPL:
 
-   ```sh
+   ```
    :q
    ```
 
@@ -49,19 +49,19 @@ Execute:
 
    Execute for multiple setting files:
 
-   ```sh
+   ```
    find ./settingFiles -name "*.dhall" | xargs -I {} -P 4 cabal exec -- henon-map -s {}
    ```
 
    Recalculate dependent variables from exported independent variable data:
 
-   ```sh
+   ```
    find ./settingFiles -name "*.dhall" | xargs -I {} cabal exec -- henon-map --recalculation Continue -s {}
    ```
 
    Multiprocessing (3 process):
 
-   ```sh
+   ```
    find ./settingFiles -name "*.dhall" | xargs -P 4 -I {} cabal exec -- henon-map --recalculation Continue -s {}
    ```
 
@@ -69,13 +69,13 @@ Execute:
 
 Create Database:
 
-```sh
+```
 python ../../visualization-scripts/create_database.py
 ```
 
 View and query database (for more details, see [Queries and Visualizations](../../visualization-scripts/README.md)):
 
-```sh
+```
 python ../../visualization-scripts/view_database.py -H equation_a equation_b -S equation_a equation_b
 ```
 
@@ -83,13 +83,13 @@ Visualization command is executed on all directories contained in `_query_result
 
 Plot phase space (scatter plot):
 
-```sh
+```
 python ../../visualization-scripts/plot2d.py --data x y -S -o phase-space.png
 ```
 
 View list of image files:
 
-```sh
+```
 python ../../visualization-scripts/view_database.py -H equation_a equation_b -f phase-space.png
 ```
 

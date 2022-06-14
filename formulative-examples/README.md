@@ -36,19 +36,19 @@
 
 - Build all binary:
 
-  ```sh
+  ```
   cabal build all
   ```
 
 - Execute:
 
-  ```sh
+  ```
   cabal exec <exec_name>
   ```
 
   To use command line arguments, put `--` after `exec`:
 
-  ```sh
+  ```
   cabal exec -- <exec_name> <args>
   ```
 

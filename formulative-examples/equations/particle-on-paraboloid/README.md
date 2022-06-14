@@ -28,7 +28,7 @@ where $\lambda$ is Lagrange multiplier.
 
 Build:
 
-```sh
+```
 cabal build particle-on-paraboloid
 ```
 
@@ -36,7 +36,7 @@ Execute:
 
 1. Single setting file
 
-  ```sh
+  ```
   cabal exec -- particle-on-paraboloid -s setting.dhall
   ```
 
@@ -44,19 +44,19 @@ Execute:
 
   Generate multiple setting files:
 
-  ```sh
+  ```
   cabal repl particle-on-paraboloid
   ```
 
   in REPL:
 
-  ```sh
+  ```
   :source equations/particle-on-paraboloid/writeSettingFiles.ghci
   ```
 
   Quit REPL:
 
-  ```sh
+  ```
   :q
   ```
 
@@ -64,7 +64,7 @@ Execute:
 
   Execute for multiple setting files (Multiprocessing):
 
-  ```sh
+  ```
   find ./settingFiles -name "*.dhall" | xargs -P 4 -I {} cabal exec -- particle-on-paraboloid -s {}
   ```
 
@@ -72,13 +72,13 @@ Execute:
 
 Create Database:
 
-```sh
+```
 python ../../visualization-scripts/create_database.py
 ```
 
 View and query database (for more details, see [Queries and Visualizations](../../visualization-scripts/README.md)):
 
-```sh
+```
 python ../../visualization-scripts/view_database.py -H equation_a equation_b equation_xInit equation_vxInit equation_vyInit
 ```
 
@@ -86,25 +86,25 @@ Visualization command is executed on all directories contained in `_query_result
 
 Plot orbit:
 
-```sh
+```
 python plot3d_particle-on-paraboloid.py --data position -o position.png
 ```
 
 Plot animation (interval:5):
 
-```sh
+```
 python plot3d_animation_particle-on-paraboloid.py --data position -o position.mp4 -i 5
 ```
 
 Plot all global quantities:
 
-```sh
+```
 python ../../visualization-scripts/plot_global_quantity.py --parameter time
 ```
 
 Plot global quantities for selected labels (in this case `kineticEnergy`,`potentialEnergy`,`hamiltonian`):
 
-```sh
+```
 python ../../visualization-scripts/plot_global_quantity.py -H kineticEnergy potentialEnergy hamiltonian
 ```
 

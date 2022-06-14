@@ -12,7 +12,7 @@ $$
 
 Build:
 
-```sh
+```
 cabal build logistic-map
 ```
 
@@ -20,7 +20,7 @@ Execute:
 
 1. Single setting file
 
-   ```sh
+   ```
    cabal exec -- logistic-map -s setting.dhall
    ```
 
@@ -28,19 +28,19 @@ Execute:
 
    Generate multiple setting files:
 
-   ```sh
+   ```
    cabal repl logistic-map
    ```
 
    in REPL:
 
-   ```sh
+   ```
    :source equations/logistic-map/writeSettingFiles.ghci
    ```
 
    Quit REPL:
 
-   ```sh
+   ```
    :q
    ```
 
@@ -48,7 +48,7 @@ Execute:
 
    Execute for multiple setting files (Multiprocessing):
 
-   ```sh
+   ```
    find ./settingFiles -name "*.dhall" | xargs -I {} -P 4 cabal exec -- logistic-map -s {}
    ```
 
@@ -56,13 +56,13 @@ Execute:
 
 Create Database:
 
-```sh
+```
 python ../../visualization-scripts/create_database.py
 ```
 
 View and query database (for more details, see [Queries and Visualizations](../../visualization-scripts/README.md)):
 
-```sh
+```
 python ../../visualization-scripts/view_database.py -H equation_r -S equation_r
 ```
 
@@ -70,13 +70,13 @@ Visualization command is executed on all directories contained in `_query_result
 
 Plot time evolution:
 
-```sh
+```
 python ../../visualization-scripts/plot_time_evolution.py -t time --data x -o t-x.png
 ```
 
 View list of image files:
 
-```sh
+```
 python ../../visualization-scripts/view_database.py -H equation_r -f t-x.png
 ```
 
