@@ -11,7 +11,6 @@ import Dhall
 import Formulative.Calculation.Internal.List
 import Formulative.Calculation.Internal.Types
 import GHC.Generics
-import qualified Numeric.LinearAlgebra.Data as H
 
 data VariableType = ParticleType | FieldType
     deriving stock (Show, Eq, Generic)
@@ -32,12 +31,10 @@ deriving via (MyNum Natural) instance ToVariableType Natural
 instance (Num a) => ToVariableType (MyApplicative f a) where
     toVariableType _ = ParticleType
 deriving via (MyApplicative Vector a) instance (Num a) => ToVariableType (Vector a)
-deriving via (MyApplicative H.Vector a) instance (Num a) => ToVariableType (H.Vector a)
 deriving via (MyApplicative (VS.Vector n) a) instance (Num a) => ToVariableType (VS.Vector n a)
 
 instance ToVariableType (MyMatrix a) where
     toVariableType _ = FieldType
-deriving via (MyMatrix (H.Matrix a)) instance ToVariableType (H.Matrix a)
 
 ----------------------------------------------------------------
 

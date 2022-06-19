@@ -35,7 +35,6 @@ dependencies:
   - ghc-typelits-knownnat
   - ghc-typelits-natnormalise
   - hashable
-  - hmatrix
   - ieee
   - megaparsec
   - numeric-limits
