@@ -3,11 +3,15 @@ module Formulative.Calculation.Algebra.MaxPlus where
 import Data.Coerce
 import Formulative.Calculation.Algebra.Arithmetic.Additive
 import Formulative.Calculation.Algebra.Arithmetic.Multiplicative
+import Formulative.Calculation.Algebra.Arithmetic.Semiring
+import GHC.Generics
+import Prelude hiding (fromInteger)
 
-data MaxPlus a = MaxPlus a | NegativeInf deriving (Eq)
+data MaxPlus a = MaxPlus a | NegativeInf
+    deriving stock (Eq, Generic)
 
 instance (Show a) => Show (MaxPlus a) where
-    show (MaxPlus a) = "MaxPlus " <> show a
+    show (MaxPlus a) = show a
     show NegativeInf = "-oo"
 
 instance (Ord a) => Ord (MaxPlus a) where
@@ -27,3 +31,6 @@ instance (Ord a, Additive a) => Multiplicative (MaxPlus a) where
     (.*.) NegativeInf a = NegativeInf
     (.*.) a NegativeInf = NegativeInf
     one = MaxPlus zero
+
+instance (Ord a, Semiring a) => Semiring (MaxPlus a) where
+    fromInteger i = MaxPlus $ fromInteger i
