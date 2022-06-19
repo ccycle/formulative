@@ -1,5 +1,3 @@
-{-# LANGUAGE RebindableSyntax #-}
-
 module Formulative.Calculation.Algebra.Arithmetic.Semiring where
 
 import qualified Data.Vector.Sized as VS
@@ -15,16 +13,16 @@ import qualified Prelude
 
 class (Additive a, Multiplicative a) => Semiring a where
     fromInteger :: Integer -> a
-    default fromInteger :: (Generic a, GRng (Rep a)) => Integer -> a
+    default fromInteger :: (Generic a, GSemiring (Rep a)) => Integer -> a
     fromInteger = to . gfromInteger
 
-class (GMultiplicative f, GAdditive f) => GRng f where
+class (GMultiplicative f, GAdditive f) => GSemiring f where
     gfromInteger :: Integer -> f a
-instance GRng a => GRng (M1 i c a) where
+instance GSemiring a => GSemiring (M1 i c a) where
     gfromInteger a = M1 (gfromInteger a)
-instance (GRng a, GRng b) => GRng (a :*: b) where
+instance (GSemiring a, GSemiring b) => GSemiring (a :*: b) where
     gfromInteger a = gfromInteger a :*: gfromInteger a
-instance (Semiring a) => GRng (K1 i a) where
+instance (Semiring a) => GSemiring (K1 i a) where
     gfromInteger a = K1 (fromInteger a)
 
 instance (Num a) => Semiring (MyNum a) where
