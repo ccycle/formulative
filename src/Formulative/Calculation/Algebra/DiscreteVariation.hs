@@ -8,12 +8,12 @@ import Control.Monad
 import Control.Monad.ST.Strict
 import Data.STRef.Strict
 import Formulative.Calculation.Algebra.Arithmetic.Class
-import Formulative.Calculation.Algebra.DualNumber
 import Formulative.Calculation.Internal.DerivingPrelude
 import Formulative.Calculation.Internal.List
 import Formulative.Calculation.Internal.Types
 import Formulative.Calculation.VectorSpace.Class
 import GHC.Generics
+import Numeric.AD
 import Prelude hiding (fromInteger)
 
 data DiscreteVariable a = DiscreteVariable {getOldVar :: a, getNewVar :: a}

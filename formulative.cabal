@@ -38,7 +38,6 @@ library
       Formulative.Calculation.Algebra.Arithmetic.Transcendental
       Formulative.Calculation.Algebra.ComplexNumber
       Formulative.Calculation.Algebra.DiscreteVariation
-      Formulative.Calculation.Algebra.DualNumber
       Formulative.Calculation.Algebra.MaxPlus
       Formulative.Calculation.Coordinates.Class
       Formulative.Calculation.Coordinates.Dim2.Euclidean
@@ -169,7 +168,6 @@ library
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , hmatrix
     , ieee
     , megaparsec
     , numeric-limits
@@ -276,7 +274,6 @@ test-suite formulative-tasty
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , hmatrix
     , ieee
     , megaparsec
     , numeric-limits
@@ -369,7 +366,6 @@ test-suite formulative-test
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , hmatrix
     , ieee
     , megaparsec
     , numeric-limits
@@ -463,7 +459,6 @@ benchmark Factorial
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , hmatrix
     , ieee
     , megaparsec
     , numeric-limits
@@ -557,7 +552,6 @@ benchmark StackingEffects
     , ghc-typelits-knownnat
     , ghc-typelits-natnormalise
     , hashable
-    , hmatrix
     , ieee
     , megaparsec
     , numeric-limits
