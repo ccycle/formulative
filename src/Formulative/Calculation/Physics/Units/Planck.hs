@@ -2,7 +2,7 @@
 
 module Formulative.Calculation.Physics.Units.Planck where
 
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Physics.Units.Planck
 
 -- c = a*b

@@ -4,7 +4,7 @@ import Control.Algebra
 import Control.Effect.Sum
 import Control.Effect.Throw
 import Control.Exception.Safe
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Optimization.Class
 import Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian
 import Formulative.Calculation.Optimization.Constrained.Class

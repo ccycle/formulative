@@ -11,7 +11,7 @@ import Data.Maybe
 import Data.STRef.Strict
 import qualified Data.Vector as V
 import Dhall
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Internal.List
 import Formulative.Calculation.Optimization.LineSearch
 import Formulative.Calculation.VectorSpace.Class

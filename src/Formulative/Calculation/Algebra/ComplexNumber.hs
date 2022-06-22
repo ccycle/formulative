@@ -4,7 +4,7 @@ module Formulative.Calculation.Algebra.ComplexNumber (
 ) where
 
 import Data.Complex hiding (conjugate)
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Prelude hiding (fromInteger)
 import qualified Prelude
 

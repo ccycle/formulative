@@ -11,7 +11,7 @@ import Control.Effect.Sum
 import Data.Csv (DefaultOrdered, ToField, ToNamedRecord, ToRecord)
 import Data.Hashable
 import Dhall
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Algebra.DiscreteVariation
 import Formulative.Calculation.Coordinates.Dim3.Euclidean
 import Formulative.Calculation.DifferentialEquation.Dynamics.Carrier

@@ -5,7 +5,7 @@
 module Formulative.Calculation.Coordinates.Dim2.Parabolic where
 
 import Data.Csv (ToRecord)
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Coordinates.Class
 import Formulative.Calculation.Coordinates.Dim2.Euclidean
 import Formulative.Calculation.VectorSpace.Class

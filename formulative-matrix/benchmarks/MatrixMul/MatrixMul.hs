@@ -8,7 +8,7 @@ import qualified Data.Matrix.Static.LinearAlgebra.Types as MS
 import Data.Singletons
 import Data.Singletons.TypeLits
 import qualified Eigen.SparseMatrix as ES
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Matrix.Class
 import Path
 import Path.IO

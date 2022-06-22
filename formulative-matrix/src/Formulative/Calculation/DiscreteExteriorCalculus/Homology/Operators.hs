@@ -18,7 +18,7 @@ import qualified Data.Set as S
 import qualified Data.Vector as V
 import qualified Data.Vector.Algorithms.Intro as VA
 import qualified Data.Vector.Unboxed as VU
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Effect
 import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Types
 import Formulative.Calculation.Internal.List

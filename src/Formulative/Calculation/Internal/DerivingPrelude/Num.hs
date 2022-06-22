@@ -1,7 +1,7 @@
 module Formulative.Calculation.Internal.DerivingPrelude.Num where
 
 import Control.Applicative
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Internal.Types
 import Prelude hiding (fromInteger)
 import qualified Prelude

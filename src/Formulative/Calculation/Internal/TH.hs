@@ -14,7 +14,7 @@ import Data.Csv hiding (Field, Name)
 import Data.Hashable
 import Dhall.Marshal.Decode (FromDhall)
 import Dhall.Marshal.Encode (ToDhall)
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.VectorSpace.Class
 import GHC.Classes
 import GHC.Generics

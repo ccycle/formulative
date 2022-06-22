@@ -14,7 +14,7 @@ import qualified Data.Matrix.Static.LinearAlgebra as MSL
 import Data.Singletons
 import Data.Type.Equality
 import qualified Data.Vector.Unboxed as VU
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Operators.Homology
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types

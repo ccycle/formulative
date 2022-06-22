@@ -3,7 +3,7 @@
 module Test.Physics where
 
 import Data.Coerce
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Physics.Units.SI
 import Physics.Units
 import Test.Tasty

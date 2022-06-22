@@ -6,7 +6,7 @@ import Control.Algebra
 import Control.Applicative
 import Data.Foldable
 import qualified Data.Vector.Sized as VS
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Internal.Types
 import Formulative.Calculation.VectorSpace.NormSpace
 import Formulative.Calculation.VectorSpace.VectorSpace

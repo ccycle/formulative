@@ -28,7 +28,7 @@ import qualified Data.Vector.Algorithms.Intro as VA
 import qualified Data.Vector.Sized as VS
 import qualified Data.Vector.Storable as VST
 import qualified Data.Vector.Unboxed as VU
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
 import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Effect

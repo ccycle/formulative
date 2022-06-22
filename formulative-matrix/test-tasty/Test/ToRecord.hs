@@ -9,7 +9,7 @@ import Control.Exception.Safe
 import Data.Csv
 import qualified Data.Vector as V
 import Dhall
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
 import Formulative.Calculation.VectorSpace.Class

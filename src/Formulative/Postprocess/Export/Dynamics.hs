@@ -17,7 +17,7 @@ import qualified Data.Csv.Streaming as Streaming
 import Data.Proxy
 import Data.String
 import Dhall
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.DifferentialEquation.Dynamics.Effect
 import Formulative.Calculation.DifferentialEquation.Types
 import Formulative.Calculation.Internal.Class

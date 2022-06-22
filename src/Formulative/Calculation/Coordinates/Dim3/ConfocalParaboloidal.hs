@@ -5,7 +5,7 @@ module Formulative.Calculation.Coordinates.Dim3.ConfocalParaboloidal where
 
 import qualified Data.ByteString.Lazy as BSL
 import Data.Csv
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Coordinates.Class
 import Formulative.Calculation.Coordinates.Dim3.Euclidean
 import Formulative.Calculation.VectorSpace.Class

@@ -9,7 +9,7 @@ import Data.Matrix.Static.Sparse (toTriplet)
 import qualified Data.Matrix.Static.Sparse as MSS
 import Data.Proxy
 import qualified Data.Vector.Storable as VST
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Internal.List
 import Formulative.Calculation.Internal.Types
 import Formulative.Calculation.VectorSpace.Class

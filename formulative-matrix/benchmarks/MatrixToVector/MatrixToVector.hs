@@ -21,7 +21,7 @@ import qualified Data.Vector.Unboxed as VU
 import qualified Eigen.Internal as E
 import qualified Eigen.Matrix as E
 import qualified Eigen.SparseMatrix as ES
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Matrix.Class
 import Path
 import Path.IO

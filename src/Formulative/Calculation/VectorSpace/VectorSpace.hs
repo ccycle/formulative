@@ -5,7 +5,7 @@ module Formulative.Calculation.VectorSpace.VectorSpace where
 
 import Data.Complex
 import qualified Data.Vector.Sized as VS
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Internal.Types
 import GHC.Generics
 import GHC.Natural

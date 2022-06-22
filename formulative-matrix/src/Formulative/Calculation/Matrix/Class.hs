@@ -22,7 +22,7 @@ import qualified Numeric.LinearAlgebra as H
 import qualified Numeric.LinearAlgebra.Data as HD
 import Prelude hiding (fromInteger)
 
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Internal.List
 import Formulative.Calculation.Internal.TypeLevelList
 import Formulative.Calculation.Internal.TypeLevelNatural

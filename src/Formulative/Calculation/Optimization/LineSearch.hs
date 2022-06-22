@@ -7,7 +7,7 @@ import Data.Coerce
 import Data.Hashable
 import qualified Data.Vector as V
 import Dhall
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Preprocess.DefaultValue
 

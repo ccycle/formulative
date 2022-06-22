@@ -8,8 +8,8 @@ import Data.Hashable
 import Data.String.Conversions (ConvertibleStrings (convertString))
 import qualified Data.Text as T
 import Dhall
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Algebra.Arithmetic.Additive
-import Formulative.Calculation.Algebra.Arithmetic.Class
 import Formulative.Calculation.Algebra.Arithmetic.Semiring
 import Formulative.Preprocess.DefaultValue
 import GHC.Exts (IsString)

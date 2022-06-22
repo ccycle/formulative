@@ -12,7 +12,7 @@ import Data.Foldable
 import Data.Hashable
 import qualified Data.Vector.Sized as VS
 import Dhall
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Internal.Types
 import Formulative.Calculation.VectorSpace.VectorSpace
 import Formulative.Preprocess.DefaultValue

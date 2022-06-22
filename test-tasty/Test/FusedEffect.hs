@@ -14,7 +14,7 @@ import Control.Exception.Safe
 import Control.Monad
 import Control.Monad.IO.Class
 import Data.Kind
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Algebra.Arithmetic.Field
 import Formulative.Calculation.DifferentialEquation.Types
 import Formulative.Preprocess.Exception

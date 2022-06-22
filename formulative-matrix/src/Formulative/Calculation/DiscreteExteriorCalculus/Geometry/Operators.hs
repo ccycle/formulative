@@ -14,7 +14,7 @@ import qualified Data.Vector.Sized as VS
 import Data.Vector.Storable (Storable)
 
 -- import qualified Eigen.Matrix as E
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Types
 import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Operators
 import Formulative.Calculation.DiscreteExteriorCalculus.Homology.Types

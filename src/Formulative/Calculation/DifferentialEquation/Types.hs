@@ -8,7 +8,7 @@ import Data.Hashable (Hashable (hashWithSalt))
 import Data.Scientific
 import Data.Typeable
 import Dhall
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Postprocess.Export.Types
 import Formulative.Preprocess.DefaultValue
 import GHC.Exts (IsString)

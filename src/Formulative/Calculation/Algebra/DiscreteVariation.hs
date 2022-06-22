@@ -7,7 +7,7 @@ import Control.Applicative
 import Control.Monad
 import Control.Monad.ST.Strict
 import Data.STRef.Strict
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Internal.DerivingPrelude
 import Formulative.Calculation.Internal.List
 import Formulative.Calculation.Internal.Types

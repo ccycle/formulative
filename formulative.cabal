@@ -25,10 +25,11 @@ source-repository head
 
 library
   exposed-modules:
+      Formulative.Calculation.Algebra.Arithmetic
       Formulative.Calculation.Algebra.Arithmetic.Absolute
       Formulative.Calculation.Algebra.Arithmetic.Additive
       Formulative.Calculation.Algebra.Arithmetic.AdditiveGroup
-      Formulative.Calculation.Algebra.Arithmetic.Class
+      Formulative.Calculation.Algebra.Arithmetic.Algebraic
       Formulative.Calculation.Algebra.Arithmetic.Div
       Formulative.Calculation.Algebra.Arithmetic.Field
       Formulative.Calculation.Algebra.Arithmetic.Mul
@@ -38,6 +39,7 @@ library
       Formulative.Calculation.Algebra.Arithmetic.Transcendental
       Formulative.Calculation.Algebra.ComplexNumber
       Formulative.Calculation.Algebra.DiscreteVariation
+      Formulative.Calculation.Algebra.IntMod
       Formulative.Calculation.Algebra.MaxPlus
       Formulative.Calculation.Coordinates.Class
       Formulative.Calculation.Coordinates.Dim2.Euclidean

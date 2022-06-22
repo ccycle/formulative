@@ -3,7 +3,7 @@
 
 module Formulative.Calculation.Physics.Units.SI where
 
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Physics.Units.Arithmetic
 import Physics.Units.Type
 

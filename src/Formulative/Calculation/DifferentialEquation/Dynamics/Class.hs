@@ -1,6 +1,6 @@
 module Formulative.Calculation.DifferentialEquation.Dynamics.Class where
 
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.VectorSpace.Class
 
 -- dx/dt = f(x)

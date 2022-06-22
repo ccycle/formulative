@@ -15,7 +15,7 @@ import qualified Data.Set as S
 import Data.Singletons
 import qualified Data.Vector as V
 import qualified Data.Vector.Unboxed as VU
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import GHC.Exts
 import GHC.TypeNats
 

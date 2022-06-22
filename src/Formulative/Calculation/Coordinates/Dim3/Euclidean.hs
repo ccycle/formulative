@@ -5,7 +5,7 @@ module Formulative.Calculation.Coordinates.Dim3.Euclidean where
 
 import Data.Csv (FromRecord, ToRecord)
 import Data.Foldable (Foldable (foldl'))
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Postprocess.Export.Variable.Class
 import Formulative.Postprocess.Export.Variable.Local

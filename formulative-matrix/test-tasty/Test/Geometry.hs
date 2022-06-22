@@ -3,7 +3,7 @@ module Test.Geometry where
 import Data.Constraint
 import Data.Proxy
 import Data.Singletons
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Types
 import Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Operators

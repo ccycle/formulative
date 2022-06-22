@@ -7,7 +7,7 @@ import Criterion.Main
 import Criterion.Types
 import qualified Data.Matrix.Static.LinearAlgebra.Types as MSL
 import qualified Data.Matrix.Static.Sparse as MSS
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Matrix.Class
 import Path
 import Path.IO

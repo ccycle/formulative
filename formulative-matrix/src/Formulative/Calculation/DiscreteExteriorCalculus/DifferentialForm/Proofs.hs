@@ -16,7 +16,7 @@ import Data.Singletons.Prelude.List (SList)
 import Data.Singletons.TH hiding (type (<=))
 import Data.Type.Equality
 import qualified Data.Vector.Storable as VST
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Types
 import Formulative.Calculation.Internal.TypeLevelList
 import Formulative.Calculation.Internal.TypeLevelNatural

@@ -4,7 +4,7 @@
 module Formulative.Calculation.Coordinates.Dim2.Euclidean where
 
 import Data.Csv (FromRecord, ToRecord)
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Postprocess.Export.Variable.Local
 import GHC.Generics

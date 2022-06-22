@@ -11,7 +11,7 @@ import Control.Effect.Sum
 import Data.Hashable
 import Data.Vector.Sized (Vector, generate, index)
 import Dhall hiding (Vector)
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Algebra.DiscreteVariation (symmetrizePoly)
 import Formulative.Calculation.Coordinates.Dim3.Euclidean
 import Formulative.Calculation.DifferentialEquation.Dynamics.Carrier

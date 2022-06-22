@@ -17,7 +17,7 @@ import Data.Singletons.TH hiding (type (<=))
 import qualified Data.Text as T
 import qualified Data.Vector.Storable as VST
 import Dhall
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.DiscreteExteriorCalculus.DifferentialForm.Proofs
 import Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Types
 import Formulative.Calculation.Internal.Types

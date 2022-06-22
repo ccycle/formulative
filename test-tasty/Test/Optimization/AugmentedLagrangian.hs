@@ -7,7 +7,7 @@ module Test.Optimization.AugmentedLagrangian where
 import Control.Exception.Safe
 import Data.Csv
 import Dhall
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian
 import Formulative.Calculation.Optimization.Constrained.Types
 import Formulative.Calculation.Optimization.LBFGS

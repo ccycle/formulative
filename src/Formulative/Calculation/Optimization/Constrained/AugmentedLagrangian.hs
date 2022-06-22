@@ -5,7 +5,7 @@
 module Formulative.Calculation.Optimization.Constrained.AugmentedLagrangian where
 
 import Control.Exception.Safe
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Optimization.Constrained.Types
 import Formulative.Calculation.Optimization.LBFGS
 import Formulative.Calculation.Optimization.LineSearch

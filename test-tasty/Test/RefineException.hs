@@ -6,7 +6,7 @@ import Refined
 import Test.Tasty
 
 import Control.Applicative (liftA2)
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Preprocess.Exception
 
 allNonzeroTestVec :: MonadThrow m => m (VS.Vector 3 Double)

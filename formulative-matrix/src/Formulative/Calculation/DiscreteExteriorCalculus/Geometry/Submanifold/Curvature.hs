@@ -1,6 +1,6 @@
 module Formulative.Calculation.DiscreteExteriorCalculus.Geometry.Submanifold.Curvature where
 
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.DifferentialEquation.Dynamics.Class
 import Formulative.Calculation.VectorSpace.InnerProductSpace
 

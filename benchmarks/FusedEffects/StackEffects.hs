@@ -12,7 +12,7 @@ import Criterion.Types
 
 import Control.Carrier.Reader
 import Control.Effect.Sum
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Matrix.Class
 import Path
 import Path.IO

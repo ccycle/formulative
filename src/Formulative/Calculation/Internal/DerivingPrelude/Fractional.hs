@@ -1,6 +1,6 @@
 module Formulative.Calculation.Internal.DerivingPrelude.Fractional where
 
-import Formulative.Calculation.Algebra.Arithmetic.Class
+import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.Internal.DerivingPrelude.Num
 import Formulative.Calculation.Internal.Types
 

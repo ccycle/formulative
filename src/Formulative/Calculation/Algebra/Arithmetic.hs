@@ -1,4 +1,4 @@
-module Formulative.Calculation.Algebra.Arithmetic.Class (
+module Formulative.Calculation.Algebra.Arithmetic (
     module Formulative.Calculation.Algebra.Arithmetic.Additive,
     module Formulative.Calculation.Algebra.Arithmetic.AdditiveGroup,
     module Formulative.Calculation.Algebra.Arithmetic.Multiplicative,

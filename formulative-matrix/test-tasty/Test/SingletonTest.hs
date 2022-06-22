@@ -34,7 +34,7 @@ import Data.Singletons.TypeLits
 import GHC.Natural
 import GHC.TypeNats
 
--- import Formulative.Calculation.Algebra.Arithmetic.Class
+-- import Formulative.Calculation.Algebra.Arithmetic
 
 -- import Formulative.Calculation.DiscreteExteriorCalculus.Class
 -- import Formulative.Calculation.DiscreteExteriorCalculus.Proofs
