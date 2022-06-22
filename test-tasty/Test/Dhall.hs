@@ -4,7 +4,6 @@
 module Test.Dhall where
 
 import Control.Exception.Safe
-import Data.Aeson
 import Data.Csv
 import Data.Hashable
 import Data.Text (pack)
@@ -28,7 +27,7 @@ import Test.Tasty
 -}
 
 data ParameterTest a = ParameterTest {parameterTest1 :: a, parameterTest2 :: a}
-    deriving anyclass (ToNamedRecord, ToJSON)
+    deriving anyclass (ToNamedRecord)
     deriving stock (Generic, Show, Eq)
     deriving anyclass (FromDhall, ToDhall, Hashable, ToRecord)
 
@@ -37,7 +36,6 @@ data ParameterTest a = ParameterTest {parameterTest1 :: a, parameterTest2 :: a}
 --     deriving anyclass (FromDhall, ToDhall, Hashable)
 data ConstantsOfSystems = ConstantsOfSystems {a :: ParameterTest Double, b :: Double}
     deriving stock (Generic, Show, Eq)
-    deriving anyclass (ToJSON)
     deriving anyclass (FromDhall, ToDhall, Hashable)
 defaultConstantsOfSystems = ConstantsOfSystems (ParameterTest 0.1 1e20) 0.0
 
