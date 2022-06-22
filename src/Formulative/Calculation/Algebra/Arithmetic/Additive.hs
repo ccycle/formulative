@@ -54,24 +54,19 @@ instance Additive a => GAdditive (K1 i a) where
     gZero = K1 zero
 
 -- deriving instance: Num
-instance (Num a) => Additive (MyNum a) where
-    zero = MyNum 0
-    (MyNum a) .+. (MyNum b) = MyNum (a + b)
+instance (Num a) => Additive (MyNumeric a) where
+    zero = MyNumeric 0
+    (MyNumeric a) .+. (MyNumeric b) = MyNumeric (a + b)
 
-deriving via (MyNum Int) instance Additive Int
-deriving via (MyNum Integer) instance Additive Integer
-deriving via (MyNum Natural) instance Additive Natural
-deriving via (MyNum Word) instance Additive Word
-deriving via (MyNum Float) instance Additive Float
-deriving via (MyNum Double) instance Additive Double
-deriving via (MyNum Expr) instance Additive Expr
-deriving via (MyNum (Complex Float)) instance Additive (Complex Float)
-deriving via (MyNum (Complex Double)) instance Additive (Complex Double)
-
-deriving via (MyNum a) instance (Num a) => Additive (MyFloating a)
-
--- deriving via (MyComplex Float) instance Additive (Complex Float)
--- deriving via (MyComplex Double) instance Additive (Complex Double)
+deriving via (MyNumeric Int) instance Additive Int
+deriving via (MyNumeric Integer) instance Additive Integer
+deriving via (MyNumeric Natural) instance Additive Natural
+deriving via (MyNumeric Word) instance Additive Word
+deriving via (MyNumeric Float) instance Additive Float
+deriving via (MyNumeric Double) instance Additive Double
+deriving via (MyNumeric Expr) instance Additive Expr
+deriving via (MyNumeric (Complex Float)) instance Additive (Complex Float)
+deriving via (MyNumeric (Complex Double)) instance Additive (Complex Double)
 
 instance (Additive a, Additive b) => Additive (a -> b) where
     (f .+. g) x = f x .+. g x

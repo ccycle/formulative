@@ -34,23 +34,17 @@ instance (GVectorSpace f, GVectorSpace g, GScalar f ~ GScalar g) => GVectorSpace
     μ *.. (x :*: y) = μ *.. x :*: μ *.. y
 
 -- deriving instance
-instance (Num a) => VectorSpace (MyNum a) where
-    type Scalar (MyNum a) = a
-    a *. (MyNum b) = MyNum (a * b)
+instance (Num a) => VectorSpace (MyNumeric a) where
+    type Scalar (MyNumeric a) = a
+    a *. (MyNumeric b) = MyNumeric (a * b)
 
-deriving via (MyNum Int) instance VectorSpace Int
-deriving via (MyNum Integer) instance VectorSpace Integer
-deriving via (MyNum Float) instance VectorSpace Float
-deriving via (MyNum Double) instance VectorSpace Double
-deriving via (MyNum (Complex Float)) instance VectorSpace (Complex Float)
-deriving via (MyNum (Complex Double)) instance VectorSpace (Complex Double)
-deriving via (MyNum Natural) instance VectorSpace Natural
-
-deriving via (MyNum a) instance (Num a) => VectorSpace (MyFloating a)
-
--- instance (RealFloat a) => VectorSpace (MyComplex a) where
---     type Scalar (MyComplex a) = Complex a
---     a *. (MyComplex b) = MyComplex (a * b)
+deriving via (MyNumeric Int) instance VectorSpace Int
+deriving via (MyNumeric Integer) instance VectorSpace Integer
+deriving via (MyNumeric Float) instance VectorSpace Float
+deriving via (MyNumeric Double) instance VectorSpace Double
+deriving via (MyNumeric (Complex Float)) instance VectorSpace (Complex Float)
+deriving via (MyNumeric (Complex Double)) instance VectorSpace (Complex Double)
+deriving via (MyNumeric Natural) instance VectorSpace Natural
 
 ----------------------------------------------------------------
 ------ applicative

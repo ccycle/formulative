@@ -2,11 +2,10 @@
 
 module Formulative.Calculation.Algebra.Arithmetic.Transcendental where
 
--- import GHC.Generics
-
 import qualified Data.Vector.Sized as VS
 import Formulative.Calculation.Algebra.Arithmetic.Additive
 import Formulative.Calculation.Algebra.Arithmetic.AdditiveGroup
+import Formulative.Calculation.Algebra.Arithmetic.Algebraic
 import Formulative.Calculation.Algebra.Arithmetic.Field
 import Formulative.Calculation.Algebra.Arithmetic.Multiplicative
 import Formulative.Calculation.Algebra.Arithmetic.Ring
@@ -17,7 +16,7 @@ import Prelude hiding (fromInteger)
 import qualified Prelude
 
 -- generalized class of Floating
-class (Field a) => Transcendental a where
+class (Algebraic a) => Transcendental a where
     pi' :: a
     exp' :: a -> a
     log' :: a -> a
@@ -34,7 +33,8 @@ class (Field a) => Transcendental a where
 
     (.**) :: a -> a -> a
     logBase' :: a -> a -> a
-    sqrt' :: a -> a
+
+    -- sqrt' :: a -> a
     tan' :: a -> a
     tanh' :: a -> a
 
@@ -45,12 +45,14 @@ class (Field a) => Transcendental a where
 
     {-# INLINE (.**) #-}
     {-# INLINE logBase' #-}
-    {-# INLINE sqrt' #-}
+
+    -- {-# INLINE sqrt' #-}
     {-# INLINE tan' #-}
     {-# INLINE tanh' #-}
     x .** y = exp' (log' x .*. y)
     logBase' x y = log' y ./. log' x
-    sqrt' x = x .** (1 ./. 2)
+
+    -- sqrt' x = x .** (1 ./. 2)
     tan' x = sin' x ./. cos' x
     tanh' x = sinh' x ./. cosh' x
 
@@ -63,30 +65,23 @@ class (Field a) => Transcendental a where
     log1pexp' x = log1p' (exp' x)
     log1mexp' x = log1p' (negation (exp' x))
 
-deriving via (MyNum a) instance (Floating a) => Additive (MyTranscendental a)
-deriving via (MyNum a) instance (Floating a) => AdditiveGroup (MyTranscendental a)
-deriving via (MyNum a) instance (Floating a) => Multiplicative (MyTranscendental a)
-deriving via (MyNum a) instance (Floating a) => Semiring (MyTranscendental a)
-deriving via (MyNum a) instance (Floating a) => Ring (MyTranscendental a)
-deriving via (MyFractional a) instance (Eq a, Floating a) => Field (MyTranscendental a)
+instance (Eq a, Field a, Prelude.Floating a) => Transcendental (MyNumeric a) where
+    pi' = MyNumeric Prelude.pi
+    exp' = MyNumeric . Prelude.exp . unMyNumeric
+    log' = MyNumeric . Prelude.log . unMyNumeric
+    sin' = MyNumeric . Prelude.sin . unMyNumeric
+    cos' = MyNumeric . Prelude.cos . unMyNumeric
+    asin' = MyNumeric . Prelude.asin . unMyNumeric
+    acos' = MyNumeric . Prelude.acos . unMyNumeric
+    atan' = MyNumeric . Prelude.atan . unMyNumeric
+    sinh' = MyNumeric . Prelude.sinh . unMyNumeric
+    cosh' = MyNumeric . Prelude.cosh . unMyNumeric
+    asinh' = MyNumeric . Prelude.asinh . unMyNumeric
+    acosh' = MyNumeric . Prelude.acosh . unMyNumeric
+    atanh' = MyNumeric . Prelude.atanh . unMyNumeric
 
-instance (Eq a, Field a, Prelude.Floating a) => Transcendental (MyTranscendental a) where
-    pi' = MyTranscendental Prelude.pi
-    exp' = MyTranscendental . Prelude.exp . unMyTranscendental
-    log' = MyTranscendental . Prelude.log . unMyTranscendental
-    sin' = MyTranscendental . Prelude.sin . unMyTranscendental
-    cos' = MyTranscendental . Prelude.cos . unMyTranscendental
-    asin' = MyTranscendental . Prelude.asin . unMyTranscendental
-    acos' = MyTranscendental . Prelude.acos . unMyTranscendental
-    atan' = MyTranscendental . Prelude.atan . unMyTranscendental
-    sinh' = MyTranscendental . Prelude.sinh . unMyTranscendental
-    cosh' = MyTranscendental . Prelude.cosh . unMyTranscendental
-    asinh' = MyTranscendental . Prelude.asinh . unMyTranscendental
-    acosh' = MyTranscendental . Prelude.acosh . unMyTranscendental
-    atanh' = MyTranscendental . Prelude.atanh . unMyTranscendental
-
-deriving via (MyTranscendental Double) instance Transcendental Double
-deriving via (MyTranscendental Float) instance Transcendental Float
+deriving via (MyNumeric Double) instance Transcendental Double
+deriving via (MyNumeric Float) instance Transcendental Float
 
 instance (Transcendental a, Eq a, Applicative m, Foldable m) => Transcendental (MyApplicative m a) where
     pi' = MyApplicative $ pure pi'

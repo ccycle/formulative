@@ -25,11 +25,11 @@ instance (GLocalInnerSpace a) => GLocalInnerSpace (M1 i c a) where
 instance (GLocalInnerSpace f, GLocalInnerSpace g) => GLocalInnerSpace (f :*: g) where
     (<<..>>) (x :*: y) (z :*: w) = (<<..>>) x z :*: (<<..>>) y w
 
-instance (Num a) => LocalInnerSpace (MyNum a) where
-    (MyNum a) <|.|> (MyNum b) = MyNum $ a * b
+instance (Num a) => LocalInnerSpace (MyNumeric a) where
+    (MyNumeric a) <|.|> (MyNumeric b) = MyNumeric $ a * b
 
-deriving via (MyNum Int) instance LocalInnerSpace Int
-deriving via (MyNum Integer) instance LocalInnerSpace Integer
-deriving via (MyNum Natural) instance LocalInnerSpace Natural
-deriving via (MyNum Double) instance LocalInnerSpace Double
-deriving via (MyNum Float) instance LocalInnerSpace Float
+deriving via (MyNumeric Int) instance LocalInnerSpace Int
+deriving via (MyNumeric Integer) instance LocalInnerSpace Integer
+deriving via (MyNumeric Natural) instance LocalInnerSpace Natural
+deriving via (MyNumeric Double) instance LocalInnerSpace Double
+deriving via (MyNumeric Float) instance LocalInnerSpace Float

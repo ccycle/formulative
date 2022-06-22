@@ -32,18 +32,18 @@ class (AdditiveGroup a, Semiring a) => Ring a
 --     gfromInteger a = K1 (fromInteger a)
 
 -- -- deriving instance
-instance (Num a) => Ring (MyNum a)
+instance (Num a) => Ring (MyNumeric a)
 
--- fromInteger = MyNum . Prelude.fromInteger
+-- fromInteger = MyNumeric . Prelude.fromInteger
 
 -- fromInteger = MyApplicative . pure . fromInteger
 
-deriving via (MyNum Word) instance Ring Word
-deriving via (MyNum Int) instance Ring Int
-deriving via (MyNum Integer) instance Ring Integer
-deriving via (MyNum Float) instance Ring Float
-deriving via (MyNum Double) instance Ring Double
-deriving via (MyNum Expr) instance Ring Expr
+deriving via (MyNumeric Word) instance Ring Word
+deriving via (MyNumeric Int) instance Ring Int
+deriving via (MyNumeric Integer) instance Ring Integer
+deriving via (MyNumeric Float) instance Ring Float
+deriving via (MyNumeric Double) instance Ring Double
+deriving via (MyNumeric Expr) instance Ring Expr
 
 instance (Ring a, Applicative m) => Ring (MyApplicative m a)
 deriving via (MyApplicative IO a) instance (Ring a) => Ring (IO a)

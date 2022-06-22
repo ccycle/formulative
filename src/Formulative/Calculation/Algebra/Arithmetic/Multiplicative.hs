@@ -56,18 +56,18 @@ instance Multiplicative a => GMultiplicative (K1 i a) where
     K1 a ..*.. K1 b = K1 (a .*. b)
     gOne = K1 one
 
-instance (Num a) => Multiplicative (MyNum a) where
-    one = MyNum 1
-    (MyNum a) .*. (MyNum b) = MyNum (a * b)
+instance (Num a) => Multiplicative (MyNumeric a) where
+    one = MyNumeric 1
+    (MyNumeric a) .*. (MyNumeric b) = MyNumeric (a * b)
 
-deriving via (MyNum Int) instance Multiplicative Int
-deriving via (MyNum Integer) instance Multiplicative Integer
-deriving via (MyNum Natural) instance Multiplicative Natural
-deriving via (MyNum Word) instance Multiplicative Word
-deriving via (MyNum Float) instance Multiplicative Float
-deriving via (MyNum Double) instance Multiplicative Double
-deriving via (MyNum (Complex Float)) instance Multiplicative (Complex Float)
-deriving via (MyNum (Complex Double)) instance Multiplicative (Complex Double)
+deriving via (MyNumeric Int) instance Multiplicative Int
+deriving via (MyNumeric Integer) instance Multiplicative Integer
+deriving via (MyNumeric Natural) instance Multiplicative Natural
+deriving via (MyNumeric Word) instance Multiplicative Word
+deriving via (MyNumeric Float) instance Multiplicative Float
+deriving via (MyNumeric Double) instance Multiplicative Double
+deriving via (MyNumeric (Complex Float)) instance Multiplicative (Complex Float)
+deriving via (MyNumeric (Complex Double)) instance Multiplicative (Complex Double)
 instance (Multiplicative a, Multiplicative b) => Multiplicative (a -> b) where
     (f .*. g) x = f x .*. g x
     one x = one
@@ -79,7 +79,7 @@ instance (Multiplicative a, Applicative m) => Multiplicative (MyApplicative m a)
     (.*.) (MyApplicative a) (MyApplicative b) = MyApplicative (liftA2 (.*.) a b)
     one = MyApplicative (pure one)
 
-deriving via (MyNum Expr) instance Multiplicative Expr
+deriving via (MyNumeric Expr) instance Multiplicative Expr
 deriving via (MyApplicative (VS.Vector n) a) instance (KnownNat n, Multiplicative a) => Multiplicative (VS.Vector n a)
 deriving via (MyApplicative Maybe a) instance (Multiplicative a) => Multiplicative (Maybe a)
 deriving via (MyApplicative IO a) instance (Multiplicative a) => Multiplicative (IO a)

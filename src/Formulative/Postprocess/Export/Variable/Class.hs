@@ -18,15 +18,15 @@ data VariableType = ParticleType | FieldType
 class ToVariableType a where
     toVariableType :: Proxy a -> VariableType
 
-instance (Num a) => ToVariableType (MyNum a) where
+instance (Num a) => ToVariableType (MyNumeric a) where
     toVariableType _ = ParticleType
 instance ToVariableType () where
     toVariableType _ = ParticleType
-deriving via (MyNum Double) instance ToVariableType Double
-deriving via (MyNum Float) instance ToVariableType Float
-deriving via (MyNum Int) instance ToVariableType Int
-deriving via (MyNum Integer) instance ToVariableType Integer
-deriving via (MyNum Natural) instance ToVariableType Natural
+deriving via (MyNumeric Double) instance ToVariableType Double
+deriving via (MyNumeric Float) instance ToVariableType Float
+deriving via (MyNumeric Int) instance ToVariableType Int
+deriving via (MyNumeric Integer) instance ToVariableType Integer
+deriving via (MyNumeric Natural) instance ToVariableType Natural
 
 instance (Num a) => ToVariableType (MyApplicative f a) where
     toVariableType _ = ParticleType

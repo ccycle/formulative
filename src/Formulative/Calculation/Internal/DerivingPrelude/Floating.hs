@@ -5,10 +5,6 @@ import Formulative.Calculation.Internal.DerivingPrelude.Fractional
 import Formulative.Calculation.Internal.DerivingPrelude.Num
 import Formulative.Calculation.Internal.Types
 
-deriving via (MyNum a) instance (Ring a, Absolute a) => Num (MyTranscendental a)
-deriving via (MyFractional a) instance (Ring a, Absolute a, Field a) => Fractional (MyTranscendental a)
-deriving via (MyTranscendental a) instance (Ring a, Absolute a, Field a) => Floating (MyTranscendental a)
-
 instance (Eq a, Absolute a, Field a, Floating a, Applicative f) => Floating (MyApplicative f a) where
     pi = MyApplicative $ pure pi
     exp = MyApplicative . fmap exp . unMyApplicative

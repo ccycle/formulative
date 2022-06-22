@@ -13,6 +13,7 @@ import Formulative.Calculation.VectorSpace.VectorSpace
 import GHC.Generics
 import GHC.Natural
 import GHC.TypeNats
+import Prelude hiding (Floating (..))
 
 class (VectorSpace v) => InnerProductSpace v where
     (<.>) :: v -> v -> Scalar v
@@ -30,14 +31,14 @@ instance (GInnerProductSpace a) => GInnerProductSpace (M1 i c a) where
 instance (GInnerProductSpace f, GInnerProductSpace g, GScalar g ~ GScalar f, Additive (GScalar f)) => GInnerProductSpace (f :*: g) where
     (<..>) (x :*: y) (z :*: w) = (<..>) x z .+. (<..>) y w
 
-instance (Num a) => InnerProductSpace (MyNum a) where
-    (MyNum a) <.> (MyNum b) = a * b
+instance (Num a) => InnerProductSpace (MyNumeric a) where
+    (MyNumeric a) <.> (MyNumeric b) = a * b
 
-deriving via (MyNum Int) instance InnerProductSpace Int
-deriving via (MyNum Integer) instance InnerProductSpace Integer
-deriving via (MyNum Natural) instance InnerProductSpace Natural
-deriving via (MyNum Double) instance InnerProductSpace Double
-deriving via (MyNum Float) instance InnerProductSpace Float
+deriving via (MyNumeric Int) instance InnerProductSpace Int
+deriving via (MyNumeric Integer) instance InnerProductSpace Integer
+deriving via (MyNumeric Natural) instance InnerProductSpace Natural
+deriving via (MyNumeric Double) instance InnerProductSpace Double
+deriving via (MyNumeric Float) instance InnerProductSpace Float
 
 instance {-# OVERLAPS #-} (VectorSpace a, Multiplicative a, Applicative m, Foldable m) => InnerProductSpace (MyApplicative m a) where
     (<.>) (MyApplicative x) (MyApplicative y) = foldl' (.+.) zero (liftA2 (.*.) x y)
@@ -46,4 +47,4 @@ deriving via (MyApplicative (VS.Vector n) a) instance (Multiplicative a, VectorS
 
 angleV lp v1 v2 = if absPowSum lp v1 == zero || absPowSum lp v2 == zero then zero else v1 <.> v2 ./. (absPowSum lp v1 .*. absPowSum lp v2)
 
-normalize v = if v <.> v /= zero then v ./ sqrt' (v <.> v) else zero
+normalize v = if v <.> v /= zero then v ./ sqrt (v <.> v) else zero

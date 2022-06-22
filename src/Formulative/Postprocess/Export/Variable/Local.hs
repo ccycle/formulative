@@ -44,14 +44,14 @@ class ToLazyField a where
     default toLazyField :: (ToRecord a) => a -> LazyField
     toLazyField x = encodeLF [x]
 
-instance (ToField a) => ToLazyField (MyNum a) where
-    toLazyField (MyNum x) = encodeLF [[x]]
+instance (ToField a) => ToLazyField (MyNumeric a) where
+    toLazyField (MyNumeric x) = encodeLF [[x]]
 
-deriving via (MyNum Double) instance ToLazyField Double
-deriving via (MyNum Float) instance ToLazyField Float
-deriving via (MyNum Int) instance ToLazyField Int
-deriving via (MyNum Integer) instance ToLazyField Integer
-deriving via (MyNum Natural) instance ToLazyField Natural
+deriving via (MyNumeric Double) instance ToLazyField Double
+deriving via (MyNumeric Float) instance ToLazyField Float
+deriving via (MyNumeric Int) instance ToLazyField Int
+deriving via (MyNumeric Integer) instance ToLazyField Integer
+deriving via (MyNumeric Natural) instance ToLazyField Natural
 
 instance (ToField a) => ToLazyField (V.Vector a)
 instance (ToField a) => ToLazyField (VS.Vector n a) where

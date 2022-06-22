@@ -46,17 +46,17 @@ instance Exception ReadRecordException where
 
 class FromLazyField a where
     parseBSLazy :: LazyField -> Either ReadRecordException a
-instance (FromField a, Typeable a) => FromLazyField (MyNum a) where
+instance (FromField a, Typeable a) => FromLazyField (MyNumeric a) where
     parseBSLazy x = do
         let y = parseField (BSL.toStrict x)
         case runParser y of
             Left _ -> Left (ParseException x (typeRep y))
-            Right v -> Right (MyNum v)
-deriving via (MyNum Double) instance FromLazyField Double
-deriving via (MyNum Float) instance FromLazyField Float
-deriving via (MyNum Int) instance FromLazyField Int
-deriving via (MyNum Integer) instance FromLazyField Integer
-deriving via (MyNum Natural) instance FromLazyField Natural
+            Right v -> Right (MyNumeric v)
+deriving via (MyNumeric Double) instance FromLazyField Double
+deriving via (MyNumeric Float) instance FromLazyField Float
+deriving via (MyNumeric Int) instance FromLazyField Int
+deriving via (MyNumeric Integer) instance FromLazyField Integer
+deriving via (MyNumeric Natural) instance FromLazyField Natural
 deriving newtype instance FromLazyField StepIndex
 deriving newtype instance FromField StepIndex
 instance (FromRecord (f a), Typeable (f a)) => FromLazyField (MyApplicative f a) where

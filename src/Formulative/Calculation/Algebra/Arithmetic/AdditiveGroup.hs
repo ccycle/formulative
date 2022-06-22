@@ -41,21 +41,19 @@ instance (AdditiveGroup a) => GAdditiveGroup (K1 i a) where
 -- deriving instance
 ----------------------------------------------------------------
 
-instance (Num a) => AdditiveGroup (MyNum a) where
-    negation (MyNum a) = MyNum (negate a)
-    (MyNum a) .-. (MyNum b) = MyNum (a - b)
+instance (Num a) => AdditiveGroup (MyNumeric a) where
+    negation (MyNumeric a) = MyNumeric (negate a)
+    (MyNumeric a) .-. (MyNumeric b) = MyNumeric (a - b)
 
-deriving via (MyNum Int) instance AdditiveGroup Int
-deriving via (MyNum Integer) instance AdditiveGroup Integer
-deriving via (MyNum Natural) instance AdditiveGroup Natural
-deriving via (MyNum Word) instance AdditiveGroup Word
-deriving via (MyNum Float) instance AdditiveGroup Float
-deriving via (MyNum Double) instance AdditiveGroup Double
-deriving via (MyNum (Complex Float)) instance AdditiveGroup (Complex Float)
-deriving via (MyNum (Complex Double)) instance AdditiveGroup (Complex Double)
-deriving via (MyNum Expr) instance AdditiveGroup Expr
-
-deriving via (MyNum a) instance (Num a) => AdditiveGroup (MyFloating a)
+deriving via (MyNumeric Int) instance AdditiveGroup Int
+deriving via (MyNumeric Integer) instance AdditiveGroup Integer
+deriving via (MyNumeric Natural) instance AdditiveGroup Natural
+deriving via (MyNumeric Word) instance AdditiveGroup Word
+deriving via (MyNumeric Float) instance AdditiveGroup Float
+deriving via (MyNumeric Double) instance AdditiveGroup Double
+deriving via (MyNumeric (Complex Float)) instance AdditiveGroup (Complex Float)
+deriving via (MyNumeric (Complex Double)) instance AdditiveGroup (Complex Double)
+deriving via (MyNumeric Expr) instance AdditiveGroup Expr
 
 instance {-# OVERLAPS #-} (AdditiveGroup a, AdditiveGroup b) => AdditiveGroup (a -> b) where
     (f .-. g) x = f x .-. g x

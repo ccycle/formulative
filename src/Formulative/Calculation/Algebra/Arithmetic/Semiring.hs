@@ -25,19 +25,19 @@ instance (GSemiring a, GSemiring b) => GSemiring (a :*: b) where
 instance (Semiring a) => GSemiring (K1 i a) where
     gfromInteger a = K1 (fromInteger a)
 
-instance (Num a) => Semiring (MyNum a) where
-    fromInteger = MyNum . Prelude.fromInteger
+instance (Num a) => Semiring (MyNumeric a) where
+    fromInteger = MyNumeric . Prelude.fromInteger
 
 instance (Semiring a, Applicative m) => Semiring (MyApplicative m a) where
     fromInteger = MyApplicative . pure . fromInteger
 
-deriving via (MyNum Word) instance Semiring Word
-deriving via (MyNum Int) instance Semiring Int
-deriving via (MyNum Integer) instance Semiring Integer
-deriving via (MyNum Natural) instance Semiring Natural
-deriving via (MyNum Float) instance Semiring Float
-deriving via (MyNum Double) instance Semiring Double
-deriving via (MyNum Expr) instance Semiring Expr
+deriving via (MyNumeric Word) instance Semiring Word
+deriving via (MyNumeric Int) instance Semiring Int
+deriving via (MyNumeric Integer) instance Semiring Integer
+deriving via (MyNumeric Natural) instance Semiring Natural
+deriving via (MyNumeric Float) instance Semiring Float
+deriving via (MyNumeric Double) instance Semiring Double
+deriving via (MyNumeric Expr) instance Semiring Expr
 
 deriving via (MyApplicative IO a) instance (Semiring a) => Semiring (IO a)
 deriving via (MyApplicative Maybe a) instance (Semiring a) => Semiring (Maybe a)

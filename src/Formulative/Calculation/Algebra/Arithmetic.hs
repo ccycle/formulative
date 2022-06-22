@@ -9,11 +9,13 @@ module Formulative.Calculation.Algebra.Arithmetic (
     module Formulative.Calculation.Algebra.Arithmetic.Mul,
     module Formulative.Calculation.Algebra.Arithmetic.Div,
     module Formulative.Calculation.Algebra.Arithmetic.Transcendental,
+    module Formulative.Calculation.Algebra.Arithmetic.Algebraic,
 ) where
 
 import Formulative.Calculation.Algebra.Arithmetic.Absolute
 import Formulative.Calculation.Algebra.Arithmetic.Additive
 import Formulative.Calculation.Algebra.Arithmetic.AdditiveGroup
+import Formulative.Calculation.Algebra.Arithmetic.Algebraic
 import Formulative.Calculation.Algebra.Arithmetic.Div
 import Formulative.Calculation.Algebra.Arithmetic.Field
 import Formulative.Calculation.Algebra.Arithmetic.Mul

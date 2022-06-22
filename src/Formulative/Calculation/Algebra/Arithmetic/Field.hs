@@ -76,22 +76,15 @@ instance (Field a) => GField (K1 i a) where
     gFromRational' a = K1 (fromRational' a)
     gIsDividable (K1 a) = isDividable a
 
--- deriving instance
--- Num
-deriving via (MyNum a) instance (Fractional a) => Additive (MyFractional a)
-deriving via (MyNum a) instance (Fractional a) => AdditiveGroup (MyFractional a)
-deriving via (MyNum a) instance (Fractional a) => Multiplicative (MyFractional a)
-deriving via (MyNum a) instance (Fractional a) => Semiring (MyFractional a)
-deriving via (MyNum a) instance (Fractional a) => Ring (MyFractional a)
-instance (Eq a, Fractional a) => Field (MyFractional a) where
-    reciprocal (MyFractional a) = MyFractional (recip a)
-    (MyFractional a) ./. (MyFractional b) = MyFractional (a / b)
-    fromRational' = MyFractional . fromRational
+instance (Eq a, Fractional a) => Field (MyNumeric a) where
+    reciprocal (MyNumeric a) = MyNumeric (recip a)
+    (MyNumeric a) ./. (MyNumeric b) = MyNumeric (a / b)
+    fromRational' = MyNumeric . fromRational
     isDividable x = zero /= x
 
-deriving via (MyFractional Double) instance Field Double
-deriving via (MyFractional Float) instance Field Float
-deriving via (MyFractional Expr) instance Field Expr
+deriving via (MyNumeric Double) instance Field Double
+deriving via (MyNumeric Float) instance Field Float
+deriving via (MyNumeric Expr) instance Field Expr
 
 -- applicative
 instance (Eq a, Field a, Applicative m, Foldable m) => Field (MyApplicative m a) where
