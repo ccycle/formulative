@@ -13,17 +13,6 @@ import Formulative.Calculation.VectorSpace.Class
 import Formulative.Preprocess.Exception
 import Prelude hiding (fromInteger)
 
-{- | \[
- L=f+<\lambda,g>+(\frac{\mu}{2})<g,g>
- \]
- \[
- gradPenalty :: \delta(<\lambda,g>)
- \]
- \delta((\mu/2)<g,g>)=\delta(<\lambda,g>) | λ=μg
- 内積のgradientは計算がかなり面倒
- 使用者側が手計算経由で与えるほかない？
- gと\(\lambda\)の内部表現は同じ
--}
 augmentedLagrangianFunc (PenaltyCoefficient mu) (LagrangeMultiplier lambda) (ObjectiveFunction f) (EqualityConstraint g) = ObjectiveFunction $ \x -> f x .+. (mu ./. fromInteger 2 .*. g x <.> g x) .+. (lambda <.> g x)
 
 augmentedLagrangianMethod
