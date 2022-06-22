@@ -16,9 +16,9 @@ import GHC.TypeNats
 class (Field a) => Algebraic a where
     {-# MINIMAL root | (^%) #-}
 
-    -- sqrt x  =  x ** (1/2)
-    sqrt :: a -> a
-    sqrt = root 2
+    -- sqrt' x  =  x ** (1/2)
+    sqrt' :: a -> a
+    sqrt' = root 2
 
     -- root n x  =  x ** (1/n)
     root :: P.Integer -> a -> a
@@ -29,7 +29,7 @@ class (Field a) => Algebraic a where
     x ^% y = root (denominator y) (x .^ numerator y)
 
 instance (Eq a, P.Floating a) => Algebraic (MyNumeric a) where
-    sqrt (MyNumeric x) = MyNumeric (P.sqrt x)
+    sqrt' (MyNumeric x) = MyNumeric (P.sqrt x)
     root n (MyNumeric x) = MyNumeric $ x P.** P.recip (P.fromInteger n)
     (MyNumeric x) ^% y = MyNumeric $ x P.** fromRational y
 
@@ -37,7 +37,7 @@ deriving via (MyNumeric Double) instance Algebraic Double
 deriving via (MyNumeric Float) instance Algebraic Float
 
 instance (Algebraic a, Eq a, Applicative m, Foldable m) => Algebraic (MyApplicative m a) where
-    sqrt (MyApplicative x) = MyApplicative (fmap sqrt x)
+    sqrt' (MyApplicative x) = MyApplicative (fmap sqrt' x)
     root n (MyApplicative x) = MyApplicative $ fmap (root n) x
     (MyApplicative x) ^% y = MyApplicative $ fmap (^% y) x
 

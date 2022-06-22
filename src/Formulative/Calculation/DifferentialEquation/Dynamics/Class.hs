@@ -2,6 +2,7 @@ module Formulative.Calculation.DifferentialEquation.Dynamics.Class where
 
 import Formulative.Calculation.Algebra.Arithmetic
 import Formulative.Calculation.VectorSpace.Class
+import Prelude hiding (Floating (..))
 
 -- dx/dt = f(x)
 -- f: evolutionFunctionM
@@ -19,7 +20,7 @@ curvatureValueSpaceTime f1 x =
         g1 = f1 x <.> f2 x
         g2 = f2 x <.> f2 x
         g3 = f1 x <.> f2 x
-     in sqrt (((one .+. g1) .*. g2 .-. g3 .^ 2) ./. (one .+. g1) .^ 3)
+     in sqrt' (((one .+. g1) .*. g2 .-. g3 .^ 2) ./. (one .+. g1) .^ 3)
 curvatureValueSpaceTimeM x = do
     f1 <- evolutionFunctionM
     return $ curvatureValueSpaceTime f1 x

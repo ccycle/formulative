@@ -12,7 +12,7 @@ import Formulative.Calculation.Internal.IfThenElse
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Postprocess.Export.Variable.Local
 import GHC.Generics
-import Prelude hiding (fromInteger)
+import Prelude hiding (Floating (..), fromInteger)
 
 data PolarCoord a = PolarCoord {r :: a, theta :: a}
     deriving stock (Show, Eq, Generic)

@@ -11,7 +11,7 @@ import Formulative.Calculation.Coordinates.Dim2.Euclidean
 import Formulative.Calculation.VectorSpace.Class
 import Formulative.Postprocess.Export.Variable.Local
 import GHC.Generics
-import Prelude hiding (fromInteger)
+import Prelude hiding (Floating (..), fromInteger)
 
 -- -oo < sigma < oo
 -- 0 < tau < oo

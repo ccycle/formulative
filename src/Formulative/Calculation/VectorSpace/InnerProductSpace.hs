@@ -47,4 +47,4 @@ deriving via (MyApplicative (VS.Vector n) a) instance (Multiplicative a, VectorS
 
 angleV lp v1 v2 = if absPowSum lp v1 == zero || absPowSum lp v2 == zero then zero else v1 <.> v2 ./. (absPowSum lp v1 .*. absPowSum lp v2)
 
-normalize v = if v <.> v /= zero then v ./ sqrt (v <.> v) else zero
+normalize v = if v <.> v /= zero then v ./ sqrt' (v <.> v) else zero
