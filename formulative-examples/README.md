@@ -28,7 +28,7 @@
   cabal build <exec_name>
   ```
 
-  To reduce binary size, use `--enable-executable-dynamic` (may fail if shared libraries are changed):
+  To reduce binary size, use `--enable-executable-dynamic` (build may fail if shared libraries has been changed):
 
   ```
   cabal build <exec_name> --enable-executable-dynamic
