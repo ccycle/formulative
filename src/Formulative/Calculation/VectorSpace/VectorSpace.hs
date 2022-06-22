@@ -46,18 +46,21 @@ deriving via (MyNumeric (Complex Float)) instance VectorSpace (Complex Float)
 deriving via (MyNumeric (Complex Double)) instance VectorSpace (Complex Double)
 deriving via (MyNumeric Natural) instance VectorSpace Natural
 
+deriving via (MyNumeric a) instance (Integral a) => Additive (MyIntegral a)
+deriving via (MyNumeric a) instance (Integral a) => AdditiveGroup (MyIntegral a)
+deriving via (MyNumeric a) instance (Integral a) => VectorSpace (MyIntegral a)
+
+-- MyIntegral
 ----------------------------------------------------------------
 ------ applicative
 ----------------------------------------------------------------
-instance {-# OVERLAPS #-} (VectorSpace a, Multiplicative a, Applicative m) => VectorSpace (MyApplicative m a) where
+instance (VectorSpace a, Multiplicative a, Applicative m) => VectorSpace (MyApplicative m a) where
     type Scalar (MyApplicative m a) = a
     (*.) x (MyApplicative y) = MyApplicative (fmap (x .*.) y)
 
 deriving via (MyApplicative (VS.Vector n) a) instance (VectorSpace a, Multiplicative a, KnownNat n) => VectorSpace (VS.Vector n a)
 
-instance (VectorSpace a, Applicative m, Foldable m) => VectorSpace (MyFoldable m a) where
-    type Scalar (MyFoldable m a) = Scalar a
-    (*.) x (MyFoldable y) = MyFoldable (fmap (x *.) y)
+deriving via (MyApplicative m a) instance (VectorSpace a, Multiplicative a, Applicative m, Foldable m) => VectorSpace (MyFoldable m a)
 
 x ./ a = reciprocal a *. x
 infixl 7 ./

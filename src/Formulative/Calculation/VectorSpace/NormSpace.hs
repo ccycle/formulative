@@ -70,17 +70,25 @@ instance (GNormSpace f, Ord (GRealField f), GNormSpace g, GRealField g ~ GRealFi
     gAbsPowSum p (x :*: y) = binaryOpLp (Lp p) (gAbsPowSum p x) (gAbsPowSum p y)
     gAbsMaxAll (x :*: y) = binaryOpLp LInfinity (gAbsMaxAll x) (gAbsMaxAll y)
 
-instance (Integral a) => NormSpace (MyNumeric a) where
+instance (Integral a) => NormSpace (MyIntegral a) where
+    type RealField (MyIntegral a) = a
+    absPowSum p (MyIntegral a) = abs a ^ p
+    absMaxAll (MyIntegral a) = abs a
+    norm _ (MyIntegral a) = abs a
+
+instance (RealFloat a) => NormSpace (MyNumeric a) where
     type RealField (MyNumeric a) = a
-    absPowSum p (MyNumeric a) = abs a ^ p
+    absPowSum p (MyNumeric a) = abs a ** p
     absMaxAll (MyNumeric a) = abs a
     norm _ (MyNumeric a) = abs a
 
-deriving via (MyNumeric Int) instance NormSpace Int
-deriving via (MyNumeric Integer) instance NormSpace Integer
-deriving via (MyNumeric Natural) instance NormSpace Natural
+deriving via (MyIntegral Int) instance NormSpace Int
+deriving via (MyIntegral Integer) instance NormSpace Integer
+deriving via (MyIntegral Natural) instance NormSpace Natural
+deriving via (MyNumeric Double) instance NormSpace Double
+deriving via (MyNumeric Float) instance NormSpace Float
 
-instance (Foldable m, Applicative m, Transcendental (RealField a), NormSpace a, Ord (RealField a), NormSpace (RealField a)) => NormSpace (MyFoldable m a) where
+instance (Foldable m, Applicative m, Transcendental (RealField a), NormSpace a, Ord (RealField a), Multiplicative a, NormSpace (RealField a)) => NormSpace (MyFoldable m a) where
     type RealField (MyFoldable m a) = RealField a
     absPowSum p (MyFoldable a) = foldl' (binaryOpLp (Lp p)) zero (fmap (absPowSum p) a)
     absMaxAll (MyFoldable a) = foldl' (binaryOpLp LInfinity) zero (fmap absMaxAll a)
