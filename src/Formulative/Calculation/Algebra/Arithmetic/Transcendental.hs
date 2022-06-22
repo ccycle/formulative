@@ -12,10 +12,9 @@ import Formulative.Calculation.Algebra.Arithmetic.Ring
 import Formulative.Calculation.Algebra.Arithmetic.Semiring
 import Formulative.Calculation.Internal.Types
 import GHC.TypeNats
-import Prelude hiding (fromInteger)
+import Prelude hiding (Floating (..), fromInteger)
 import qualified Prelude
 
--- generalized class of Floating
 class (Algebraic a) => Transcendental a where
     pi' :: a
     exp' :: a -> a
@@ -34,7 +33,6 @@ class (Algebraic a) => Transcendental a where
     (.**) :: a -> a -> a
     logBase' :: a -> a -> a
 
-    -- sqrt' :: a -> a
     tan' :: a -> a
     tanh' :: a -> a
 
@@ -46,13 +44,11 @@ class (Algebraic a) => Transcendental a where
     {-# INLINE (.**) #-}
     {-# INLINE logBase' #-}
 
-    -- {-# INLINE sqrt' #-}
     {-# INLINE tan' #-}
     {-# INLINE tanh' #-}
     x .** y = exp' (log' x .*. y)
     logBase' x y = log' y ./. log' x
 
-    -- sqrt' x = x .** (1 ./. 2)
     tan' x = sin' x ./. cos' x
     tanh' x = sinh' x ./. cosh' x
 
