@@ -101,4 +101,4 @@ output/6ed95255177ec6764d325f3b0026c4dbefa37461/t-x.png 1.0 0.0    1.0      0.01
 Exporting output/_query_result.csv ..
 ```
 
-The displayed file paths are useful for opening files directly from the terminal by copying and pasting, etc.
+The displayed file paths can be used to open files directly from the terminal.
