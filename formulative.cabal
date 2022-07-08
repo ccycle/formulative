@@ -34,6 +34,7 @@ library
       Formulative.Calculation.Algebra.Arithmetic.Field
       Formulative.Calculation.Algebra.Arithmetic.Mul
       Formulative.Calculation.Algebra.Arithmetic.Multiplicative
+      Formulative.Calculation.Algebra.Arithmetic.RealTranscendental
       Formulative.Calculation.Algebra.Arithmetic.Ring
       Formulative.Calculation.Algebra.Arithmetic.Semiring
       Formulative.Calculation.Algebra.Arithmetic.Transcendental
