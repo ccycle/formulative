@@ -10,7 +10,7 @@ import qualified Data.Vector.Sized as VS
 import Formulative.Calculation.Algebra.Arithmetic.Multiplicative (
     Multiplicative ((.^)),
  )
-import Formulative.Calculation.Internal.Type
+import Formulative.Calculation.Internal.Types
 import GHC.TypeNats
 
 class (Field a) => Algebraic a where

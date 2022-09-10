@@ -2,7 +2,7 @@ module Formulative.Calculation.Algebra.Arithmetic.RealTranscendental where
 
 import Formulative.Calculation.Algebra.Arithmetic.Field
 import Formulative.Calculation.Algebra.Arithmetic.Transcendental
-import Formulative.Calculation.Internal.Type
+import Formulative.Calculation.Internal.Types
 
 class (Transcendental a) => RealTranscendental a where
     atan2' :: a -> a -> a
