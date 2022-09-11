@@ -87,7 +87,7 @@ The following visualization scripts are executed on all directories contained in
 Plot x-y-z space:
 
 ```
-python plot3d.py --data variable -o variable.png
+python ../../visualization-scripts/plot2d.py --data x y z -o variable.png
 ```
 
 Plot x-z space:
