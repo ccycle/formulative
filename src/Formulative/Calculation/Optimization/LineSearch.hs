@@ -67,7 +67,9 @@ instance (Fractional a) => HasDefaultValue (BacktrackingFactor a) where
 newtype IterationNumberForLineSearch = IterationNumberForLineSearch Natural
   deriving stock (Show, Eq, Ord, Generic)
   deriving newtype (Enum, Num)
-  deriving anyclass (FromDhall, ToDhall, Hashable, HasDefaultValue)
+  deriving anyclass (FromDhall, ToDhall, Hashable)
+instance HasDefaultValue IterationNumberForLineSearch where
+  defaultValue = IterationNumberForLineSearch 0
 
 data BacktrackingParameter a = BacktrackingParameter
   { factor :: BacktrackingFactor a

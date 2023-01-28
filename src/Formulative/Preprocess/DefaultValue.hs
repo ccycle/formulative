@@ -16,12 +16,3 @@ instance (HasDefaultValue a) => GDefaultValue (K1 i a) where
     gdefaultValue = K1 defaultValue
 instance (GDefaultValue a) => GDefaultValue (M1 i c a) where
     gdefaultValue = M1 gdefaultValue
-
-instance (Num a) => HasDefaultValue (MyNumeric a) where
-    defaultValue = MyNumeric 0
-
-deriving via (MyNumeric Natural) instance HasDefaultValue Natural
-deriving via (MyNumeric Int) instance HasDefaultValue Int
-deriving via (MyNumeric Integer) instance HasDefaultValue Integer
-deriving via (MyNumeric Float) instance HasDefaultValue Float
-deriving via (MyNumeric Double) instance HasDefaultValue Double
