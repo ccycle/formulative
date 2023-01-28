@@ -1,6 +1,3 @@
-{-# HLINT ignore "Eta reduce" #-}
-{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
-
 module Formulative.Calculation.Algebra.Arithmetic.Additive where
 
 import Control.Algebra

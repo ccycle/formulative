@@ -1,8 +1,7 @@
-{-# HLINT ignore "Eta reduce" #-}
-{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
-
 module Formulative.Postprocess.Export.CSV where
 
+import Data.ByteString.Lazy
 import Data.Csv
 
-encodeLF x = encodeWith (defaultEncodeOptions{encUseCrLf = False}) x
+encodeLF :: ToRecord a => [a] -> ByteString
+encodeLF = encodeWith (defaultEncodeOptions{encUseCrLf = False})
