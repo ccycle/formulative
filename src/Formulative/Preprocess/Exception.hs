@@ -11,7 +11,6 @@ import Data.Proxy
 import qualified Data.Text as T
 import Data.Typeable (Proxy, TypeRep, typeOf, typeRep)
 import qualified Data.Vector.Sized as VS
-import Formulative.Calculation.Algebra.Arithmetic.Additive
 import GHC.Generics
 import GHC.TypeNats
 import Refined
@@ -70,11 +69,6 @@ fromListToSizedVector _ l = maybeToMonadThrow FromListException (VS.fromList l)
 
 data MatrixSolveException = MatrixSolveException deriving (Show)
 instance Exception MatrixSolveException
-
-class (RealFloat a) => IsFiniteM m a where
-    anyM :: (a -> Bool) -> m a -> Bool
-    isFiniteM :: m a -> Bool
-    isFiniteM = anyM (\x -> isNaN x || isInfinite x)
 
 data AllLessThan (n :: Nat) = AllLessThan deriving (Generic)
 instance (Ord a, Num a, KnownNat n, Foldable t) => Predicate (AllLessThan n) (t a) where
