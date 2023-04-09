@@ -173,6 +173,7 @@ library
     , hashable
     , ieee
     , megaparsec
+    , minimal-default
     , numeric-limits
     , optparse-applicative
     , path
@@ -279,6 +280,7 @@ test-suite formulative-tasty
     , hashable
     , ieee
     , megaparsec
+    , minimal-default
     , numeric-limits
     , optparse-applicative
     , path
@@ -371,6 +373,7 @@ test-suite formulative-test
     , hashable
     , ieee
     , megaparsec
+    , minimal-default
     , numeric-limits
     , optparse-applicative
     , path
@@ -464,6 +467,7 @@ benchmark Factorial
     , hashable
     , ieee
     , megaparsec
+    , minimal-default
     , numeric-limits
     , optparse-applicative
     , path
@@ -557,6 +561,7 @@ benchmark StackingEffects
     , hashable
     , ieee
     , megaparsec
+    , minimal-default
     , numeric-limits
     , optparse-applicative
     , path

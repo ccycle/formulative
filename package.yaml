@@ -37,6 +37,7 @@ dependencies:
   - hashable
   - ieee
   - megaparsec
+  - minimal-default
   - numeric-limits
   - optparse-applicative
   - path
@@ -94,7 +95,6 @@ default-extensions:
   - PatternGuards
   - PolyKinds
   - RankNTypes
-  # - RebindableSyntax
   - RecordWildCards
   - ScopedTypeVariables
   - StandaloneDeriving
