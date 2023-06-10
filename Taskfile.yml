@@ -1,0 +1,9 @@
+version: '3'
+
+env:
+  LTS: '{{.LTS | default "20.15"}}'
+  BUILD_ARGS: --ghc-options="-O0"
+
+includes:
+  hs:
+    taskfile: Taskfile-haskell.yml

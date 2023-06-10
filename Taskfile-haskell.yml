@@ -1,0 +1,109 @@
+version: '3'
+
+vars:
+  LTS: '{{.LTS}}'
+  BUILD_ARGS: '{{.BUILD_ARGS | default "-O0"}}'
+  TARGETS: '{{.TARGETS}}'
+  GLOBAL_FLAGS: '{{.GLOBAL_FLAGS}}'
+  STACK_DHALL: stack-lts-{{.LTS}}.dhall
+  STACK_YAML: stack-lts-{{.LTS}}.yaml
+  CABAL_PROJECT: cabal-lts-{{.LTS}}.project
+
+tasks:
+  hpack:
+    cmds:
+      - "test -f package.yaml && hpack -f || echo \"package.yaml doesn't exists; aborting\""
+  dhall2stack:
+    cmds:
+      - dhall-to-yaml --generated-comment --file {{.STACK_DHALL}} --output {{.STACK_YAML}}
+    sources:
+      - '{{.STACK_DHALL}}'
+    generates:
+      - '{{.STACK_YAML}}'
+  stack2cabal:
+    deps: [dhall2stack]
+    desc: "Convert stack projects to cabal.project + cabal.project.freeze. Example: `task hs:stack2cabal LTS=20.3`"
+    cmds:
+      - stack2cabal --no-run-hpack -f {{.STACK_YAML}} -o {{.CABAL_PROJECT}}
+    sources:
+      - '{{.STACK_YAML}}'
+    generates:
+      - '{{.CABAL_PROJECT}}'
+      - '{{.CABAL_PROJECT}}.freeze'
+
+  symlink-cabal:
+    deps: [stack2cabal]
+    cmds:
+      - ln -sf {{.CABAL_PROJECT}} ./cabal.project
+      - ln -sf {{.CABAL_PROJECT}}.freeze ./cabal.project.freeze
+    sources:
+      - '{{.CABAL_PROJECT}}'
+      - '{{.CABAL_PROJECT}}.freeze'
+    generates:
+      - ./cabal.project
+      - ./cabal.project.freeze
+
+  dry-run:
+    deps: [dhall2stack]
+    cmds:
+      - stack build --dry-run --stack-yaml {{.STACK_YAML}}
+    sources:
+      - '{{.STACK_YAML}}'
+
+  symlink-stack:
+    deps: [dhall2stack]
+    cmds:
+      - ln -sf {{.STACK_YAML}} stack.yaml
+      - ln -sf {{.STACK_YAML}}.lock stack.yaml.lock
+    sources:
+      - '{{.STACK_YAML}}'
+      - '{{.STACK_YAML}}.lock'
+    generates:
+      - stack.yaml
+      - stack.yaml.lock
+
+  symlink:
+    deps: [symlink-cabal,symlink-stack]
+
+  autogen:
+    deps: [stack2cabal,hpack]
+
+  cabal:
+    deps: [autogen]
+    vars:
+      CABAL_PROJECT: cabal-lts-{{.LTS}}.project
+      BUILD_ARGS_PROJECT: --project-file {{.CABAL_PROJECT}}
+      BUILD_ARGS_ALL: '{{.BUILD_ARGS_PROJECT}} {{.BUILD_ARGS}}'
+      GLOBAL_FLAGS: '{{.GLOBAL_FLAGS}}'
+      COMMAND: '{{.COMMAND}}'
+    cmds:
+      - cabal {{.GLOBAL_FLAGS}} {{.COMMAND}} {{.TARGETS}} {{.BUILD_ARGS_ALL}}
+
+  build:
+    cmds:
+      - task: cabal
+        vars:
+          COMMAND: build
+  run:
+    cmds:
+      - task: cabal
+        vars:
+          COMMAND: run
+
+  repl:
+    cmds:
+      - task: cabal
+        vars:
+          COMMAND: repl
+
+  test:
+    cmds:
+      - task: cabal
+        vars:
+          COMMAND: test
+
+  bench:
+    cmds:
+      - task: cabal
+        vars:
+          COMMAND: bench

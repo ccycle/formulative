@@ -1,0 +1,4 @@
+stack-lts-*.yaml
+stack-lts-*.yaml.lock
+cabal-lts-*.project
+cabal-lts-*.project.freeze
