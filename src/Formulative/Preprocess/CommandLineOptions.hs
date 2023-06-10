@@ -11,8 +11,10 @@ import Control.Monad
 import Data.Hashable
 import Dhall hiding (auto)
 import Formulative.Preprocess.Exception
+import Formulative.Preprocess.ReadSetting (DhallSettingText, readDhallFile)
 import GHC.Generics
 import Options.Applicative
+import Path
 
 -- data RecalculationOption = Overwrite | NoOperation
 data RecalculationOption = Continue | Overwrite | NoOperation
@@ -76,3 +78,9 @@ cmdOptionIO = execParser opts
                 <> progDesc "Execute numerical calculation."
                 <> header "Formulative - an open source tool for numerical simulation based on polymorphism in Haskell."
             )
+
+cmdOptionToDhallSettingText :: (Algebra sig m, Member (Lift IO) sig, Member (Throw SomeException) sig) => m DhallSettingText
+cmdOptionToDhallSettingText = do
+    CmdOptions{..} <- sendIO cmdOptionIO
+    pathRelFile <- liftEither $ parseRelFile filePath
+    sendIO $ readDhallFile filePath

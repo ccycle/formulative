@@ -15,10 +15,6 @@ import qualified Data.Text as T
 import qualified Data.Text.IO as T
 import Dhall
 import Dhall.Pretty
-import Formulative.Calculation.Algebra.Arithmetic.Additive (zero)
-import Formulative.Calculation.VectorSpace.VectorSpace (Scalar)
-import Formulative.Postprocess.Export.Path (hashHexadecimalString)
-import Formulative.Preprocess.CommandLineOptions
 import Formulative.Preprocess.DefaultValue
 import Path
 
@@ -48,12 +44,6 @@ newtype DhallSettingText = DhallSettingText Text
 
 fillInMissingValues :: ToDhall a => Text -> a -> Text
 fillInMissingValues txt x = T.concat [toDhallText x, " // ", txt]
-
-cmdOptionToDhallSettingText :: (Algebra sig m, Member (Lift IO) sig, Member (Throw SomeException) sig) => m DhallSettingText
-cmdOptionToDhallSettingText = do
-  CmdOptions{..} <- sendIO cmdOptionIO
-  pathRelFile <- liftEither $ parseRelFile filePath
-  sendIO $ readDhallFile filePath
 
 fillInMissingValuesWithDefaultValues :: forall a. (FromDhall a, ToDhall a, HasDefaultValue a) => Text -> IO a
 fillInMissingValuesWithDefaultValues txt = input auto $ T.concat [toDhallText (defaultValue @a), " // ", txt]

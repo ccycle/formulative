@@ -17,6 +17,7 @@ import Formulative.Calculation.Optimization.Types
 import Formulative.Postprocess.Export.IO
 import Formulative.Postprocess.Export.Path
 import Formulative.Postprocess.Export.Types
+import Formulative.Preprocess.CommandLineOptions
 import Formulative.Preprocess.DefaultValue
 import Formulative.Preprocess.ReadSetting
 import Path

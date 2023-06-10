@@ -14,6 +14,7 @@ import Formulative.Calculation.DifferentialEquation.Dynamics.Effect
 import Formulative.Calculation.DifferentialEquation.Types
 import Formulative.Postprocess.Export.IO
 import Formulative.Postprocess.Export.Types
+import Formulative.Preprocess.CommandLineOptions
 import Formulative.Preprocess.ReadSetting
 
 newtype DynamicsC a m b = DynamicsC {runDynamicsC :: StateC (DynamicParameter a) (ReaderC (DynamicsSetting a) m) b}

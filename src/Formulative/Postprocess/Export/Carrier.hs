@@ -14,6 +14,7 @@ import Formulative.Postprocess.Export.Effect
 import Formulative.Postprocess.Export.IO
 import Formulative.Postprocess.Export.Path
 import Formulative.Postprocess.Export.Types
+import Formulative.Preprocess.CommandLineOptions
 import Formulative.Preprocess.DefaultValue (HasDefaultValue)
 import Formulative.Preprocess.ReadSetting
 import Formulative.Preprocess.SettingFile.Effect
@@ -32,7 +33,7 @@ instance (Algebra sig m) => Algebra (Export :+: sig) (ExportC m) where
             pure (output <$ ctx)
         L (LocalOutputDir f m) ->
             (ExportC . ReaderC)
-                (\(env, output) -> (run (env, f output) (hdl (m <$ ctx))))
+                (\(env, output) -> run (env, f output) (hdl (m <$ ctx)))
           where
             run r = runReader r . runExportC
         R other -> ExportC (alg (runExportC . hdl) (R other) ctx)

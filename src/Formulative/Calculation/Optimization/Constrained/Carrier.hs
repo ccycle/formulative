@@ -17,6 +17,7 @@ import Formulative.Calculation.Internal.Variable.Carrier
 import Formulative.Calculation.Optimization.Constrained.Effect
 import Formulative.Calculation.Optimization.Constrained.Types
 import Formulative.Calculation.VectorSpace.Class
+import Formulative.Preprocess.CommandLineOptions
 import Formulative.Preprocess.ReadSetting
 import Formulative.Preprocess.SettingFile.Effect
 

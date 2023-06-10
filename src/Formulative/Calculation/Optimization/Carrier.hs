@@ -12,6 +12,7 @@ import Data.String.Conversions
 import Dhall
 import Formulative.Calculation.Optimization.Effect
 import Formulative.Calculation.Optimization.Types
+import Formulative.Preprocess.CommandLineOptions
 import Formulative.Preprocess.ReadSetting
 import Formulative.Preprocess.SettingFile.Effect
 
