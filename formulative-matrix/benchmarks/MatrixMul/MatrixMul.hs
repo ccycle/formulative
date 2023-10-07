@@ -17,10 +17,10 @@ import Path.IO
 -- https://haskell.e-bigmoon.com/posts/2018/06-25-all-about-strictness
 
 matrixSizedTest :: forall n. KnownNat n => MS.SparseMatrix n n Double -> MS.SparseMatrix n n Double
-matrixSizedTest x = x .*. x
+matrixSizedTest x = x * x
 
 eigenTest :: forall n. KnownNat n => ES.SparseMatrix n n Double -> ES.SparseMatrix n n Double
-eigenTest x = x .*. x
+eigenTest x = x * x
 
 -- factorialList 0 = 1
 -- factorialList n

@@ -36,11 +36,11 @@ hConcat (HMatrixSized x) (HMatrixSized y) = HMatrixSized $ x H.||| y
 vConcat :: (Element a) => HMatrixSized n m a -> HMatrixSized l m a -> HMatrixSized (n + l) m a
 vConcat (HMatrixSized x) (HMatrixSized y) = HMatrixSized $ x H.=== y
 
-dropLastRow :: Element a => HMatrixSized n m a -> HMatrixSized (n -1) m a
+dropLastRow :: Element a => HMatrixSized n m a -> HMatrixSized (n - 1) m a
 dropLastRow (HMatrixSized x) = HMatrixSized $ x H.?? (H.DropLast 1, H.All)
 
 instance (KnownNat n, KnownNat m, Num a, Container Matrix a, Container Vector a, Num (Vector a)) => Additive (HMatrixSized n m a) where
-    HMatrixSized x .+. HMatrixSized y = HMatrixSized (x + y)
+    HMatrixSized x + HMatrixSized y = HMatrixSized (x + y)
     zero = HMatrixSized (H.konst 0 (nInt, mInt))
       where
         nInt = fromIntegral $ natVal (Proxy @n)
@@ -51,7 +51,7 @@ instance (KnownNat n, KnownNat m, Num a, Container Matrix a, Container Vector a,
     HMatrixSized x .-. HMatrixSized y = HMatrixSized (x - y)
 
 instance (KnownNat n, KnownNat m, Num a, Container Matrix a, Container Vector a, Num (Vector a)) => Multiplicative (HMatrixSized n m a) where
-    HMatrixSized x .*. HMatrixSized y = HMatrixSized (x * y)
+    HMatrixSized x * HMatrixSized y = HMatrixSized (x * y)
     one = HMatrixSized (H.konst 1 (nInt, mInt))
       where
         nInt = fromIntegral $ natVal (Proxy @n)

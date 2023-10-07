@@ -217,7 +217,7 @@ circumcenterInternalUnsafe sMat = (BarycentricCoordinate x', Circumcenter bx, Ci
   kInt = natToInt (Proxy :: Proxy k)
   q = unsafeIndexMat x (kInt + 1, 0)
   bx = transpose x' .@. unPositionMatrix sMat
-  r = sqrt $ q .+. bx <.> bx
+  r = sqrt $ q + bx <.> bx
 
 -- dualVolume :: forall n l k. Simplices (n-k) l ->
 -- dualVolume = undefined

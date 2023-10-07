@@ -80,7 +80,7 @@ instance (KnownNat r, KnownNat c, H.Field a) => MatrixGeneral HMatrixSized r c a
 -- sparse
 instance (KnownNat m, KnownNat n, MSL.Numeric a) => Additive (MSL.SparseMatrix m n a) where
     zero = MSS.fromTriplet (V.fromList [])
-    a .+. b = a MSL.%+% b
+    a + b = a MSL.%+% b
 
 instance (KnownNat m, KnownNat n, MSL.Numeric a, AdditiveGroup a) => AdditiveGroup (MSL.SparseMatrix m n a) where
     negation = MSG.map negation
@@ -88,7 +88,7 @@ instance (KnownNat m, KnownNat n, MSL.Numeric a, AdditiveGroup a) => AdditiveGro
 
 instance forall n m a. (KnownNat m, KnownNat n, MSL.Numeric a, Multiplicative a) => Multiplicative (MSL.SparseMatrix m n a) where
     one = MSD.convertAny (MSD.replicate one :: MSL.Matrix m n a)
-    a .*. b = a MSL.%*% b
+    a * b = a MSL.%*% b
 
 instance forall l m n a. (MSL.Numeric a, KnownNat l, KnownNat m, KnownNat n) => Mul (MSL.SparseMatrix l m a) (MSL.SparseMatrix m n a) (MSL.SparseMatrix l n a) where
     (.@.) = (MSL.@@)

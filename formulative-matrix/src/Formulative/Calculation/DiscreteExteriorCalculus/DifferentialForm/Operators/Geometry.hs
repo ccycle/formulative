@@ -60,7 +60,7 @@ hodgeStarInv ::
     ) =>
     m (DifferentialForm n l c k a -> DifferentialForm n l (DualMap c) (DualDeg n k) a)
 hodgeStarInv = case dualMapDict @c of
-    Sub Dict -> integralToSign (k * (n -1)) <$> hodgeStar
+    Sub Dict -> integralToSign (k * (n - 1)) <$> hodgeStar
       where
         n = natVal (Proxy @n)
         k = natVal (Proxy @k)
@@ -105,7 +105,7 @@ lieDerivative = case (leqNat (Proxy :: Proxy 1) (Proxy :: Proxy k), leqNat (Prox
         i2 <- leftContraction
         d1 <- exteriorDerivative
         d2 <- exteriorDerivative
-        return $ \v -> (i1 v . d1) .+. (d2 . i2 v)
+        return $ \v -> (i1 v . d1) + (d2 . i2 v)
     (Just Refl, Nothing) -> do
         i <- leftContraction
         d <- exteriorDerivative

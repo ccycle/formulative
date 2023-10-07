@@ -26,20 +26,20 @@ data Rec = Rec {pressure :: Double, density :: Double}
     deriving stock (Generic, Show, Eq)
     deriving anyclass (VectorSpace, Additive, AdditiveGroup, NormSpace, Multiplicative)
 
-unit_RecAdd = print $ Rec 1 1 .+. Rec 2 3
+unit_RecAdd = print $ Rec 1 1 + Rec 2 3
 unit_RecSub = print $ Rec 1 1 .-. Rec 2 3
-unit_RecMul = print $ Rec 2 2 .*. Rec 2 3
+unit_RecMul = print $ Rec 2 2 * Rec 2 3
 unit_RecZero = print (zero :: Rec)
 
 unit_testRecNorm = print $ norm (Lp 2) (Rec 1 2)
 
-unit_RecVectorSpace = print $ 2 *. Rec 2 3
+unit_RecVectorSpace = print $ 2 *< Rec 2 3
 
 data HeteroRecTest = HeteroRecTest {pressure :: Double, density :: Int}
     deriving stock (Generic, Show, Eq)
     deriving anyclass (Additive, AdditiveGroup, Multiplicative)
 
-unit_HeteroRecAdd = print $ HeteroRecTest 1 1 .+. HeteroRecTest 1 2
+unit_HeteroRecAdd = print $ HeteroRecTest 1 1 + HeteroRecTest 1 2
 unit_HeteroRecSub = print $ HeteroRecTest 1 1 .-. HeteroRecTest 1 2
 
 associativity :: (Eq a) => (a -> a -> a) -> a -> a -> a -> Bool

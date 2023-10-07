@@ -80,9 +80,9 @@ instance
     ) =>
     Additive (DECrepresentationMatrix n l c1 k1 c2 k2 a)
     where
-    DECrepresentationMatrix a .+. DECrepresentationMatrix b =
+    DECrepresentationMatrix a + DECrepresentationMatrix b =
         case knownMatSizeDoublet @n @l @c1 @c2 @k1 @k2 of
-            (Dict, Dict) -> DECrepresentationMatrix (a .+. b)
+            (Dict, Dict) -> DECrepresentationMatrix (a + b)
     zero = case knownMatSizeDoublet @n @l @c1 @c2 @k1 @k2 of
         (Dict, Dict) -> DECrepresentationMatrix zero
 
@@ -117,8 +117,8 @@ instance
     where
     one = case knownMatSizeDoublet @n @l @c1 @c2 @k1 @k2 of
         (Dict, Dict) -> DECrepresentationMatrix one
-    (DECrepresentationMatrix x) .*. (DECrepresentationMatrix y) = case knownMatSizeDoublet @n @l @c1 @c2 @k1 @k2 of
-        (Dict, Dict) -> DECrepresentationMatrix $ x .*. y
+    (DECrepresentationMatrix x) * (DECrepresentationMatrix y) = case knownMatSizeDoublet @n @l @c1 @c2 @k1 @k2 of
+        (Dict, Dict) -> DECrepresentationMatrix $ x * y
 
 instance
     ( MSL.Numeric a
@@ -155,7 +155,7 @@ instance
                 (SizedMatrix (ToMatSize n l c1 k1) (ToMatSize n l c2 k2) a)
             )
     (*.) a (DECrepresentationMatrix x) = case knownMatSizeDoublet @n @l @c1 @c2 @k1 @k2 of
-        (Dict, Dict) -> DECrepresentationMatrix (a *. x)
+        (Dict, Dict) -> DECrepresentationMatrix (a *< x)
 
 instance
     ( KnownNat n

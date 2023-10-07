@@ -11,4 +11,4 @@ curvatureValue f1 f2 x =
     let g1 = f1 x <.> f2 x
         g2 = f2 x <.> f2 x
         g3 = f1 x <.> f2 x
-     in sqrt ((g1 .*. g2 .-. g3 .^ 2) ./. g1 .^ 3)
+     in sqrt ((g1 * g2 .-. g3 .^ 2) ./. g1 .^ 3)

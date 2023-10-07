@@ -1,0 +1,7 @@
+version: '3'
+
+includes:
+  sub:
+    taskfile: ../Taskfile.yml
+    vars:
+      TARGETS: formulative-physics

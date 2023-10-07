@@ -1,0 +1,185 @@
+cabal-version: 2.2
+
+-- This file has been generated from package.yaml by hpack version 0.35.2.
+--
+-- see: https://github.com/sol/hpack
+
+name:           formulative-algebra
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/ccycle/formulative-algebra#readme>
+homepage:       https://github.com/ccycle/formulative-algebra#readme
+bug-reports:    https://github.com/ccycle/formulative-algebra/issues
+author:         ccycle
+maintainer:     ccycle713@gmail.com
+copyright:      2023 ccycle
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/ccycle/formulative-algebra
+
+library
+  exposed-modules:
+      Formulative.Algebra.Arithmetic
+      Formulative.Algebra.Arithmetic.Absolute
+      Formulative.Algebra.Arithmetic.Additive
+      Formulative.Algebra.Arithmetic.AdditiveGroup
+      Formulative.Algebra.Arithmetic.Algebraic
+      Formulative.Algebra.Arithmetic.Div
+      Formulative.Algebra.Arithmetic.Field
+      Formulative.Algebra.Arithmetic.Mul
+      Formulative.Algebra.Arithmetic.Multiplicative
+      Formulative.Algebra.Arithmetic.RealTranscendental
+      Formulative.Algebra.Arithmetic.Ring
+      Formulative.Algebra.Arithmetic.Semiring
+      Formulative.Algebra.Arithmetic.Transcendental
+      Formulative.Algebra.Internal.FromPrelude
+      Formulative.Algebra.Literal.FromInteger
+      Formulative.Algebra.Number.Complex
+      Formulative.Algebra.Number.IntMod
+      Formulative.Algebra.Number.MaxPlus
+      Formulative.Algebra.Number.Variation
+      Formulative.Algebra.Prelude
+      Formulative.Algebra.Vector
+      Formulative.Algebra.Vector.InnerProductSpace
+      Formulative.Algebra.Vector.NormSpace
+      Formulative.Algebra.Vector.VectorSpace
+  other-modules:
+      Paths_formulative_algebra
+  autogen-modules:
+      Paths_formulative_algebra
+  hs-source-dirs:
+      src
+  default-extensions:
+      BangPatterns
+      BinaryLiterals
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingVia
+      DoAndIfThenElse
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternGuards
+      PolyKinds
+      RankNTypes
+      RecordWildCards
+      RebindableSyntax
+      ScopedTypeVariables
+      StandaloneDeriving
+      TupleSections
+      TypeFamilies
+      TypeOperators
+      TypeSynonymInstances
+      ViewPatterns
+  ghc-options: -Wall -Werror=missing-methods -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
+  build-depends:
+      ad
+    , base >=4.7 && <5
+    , containers
+    , dhall
+    , fused-effects
+    , hashable
+    , minimal-default
+    , refined
+    , safe-exceptions
+    , scientific
+    , simple-reflect
+    , vector
+    , vector-algorithms
+    , vector-sized
+  default-language: Haskell2010
+
+test-suite test
+  type: exitcode-stdio-1.0
+  main-is: Tasty.hs
+  other-modules:
+      Test
+      Paths_formulative_algebra
+  autogen-modules:
+      Paths_formulative_algebra
+  hs-source-dirs:
+      test
+  default-extensions:
+      BangPatterns
+      BinaryLiterals
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingVia
+      DoAndIfThenElse
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternGuards
+      PolyKinds
+      RankNTypes
+      RecordWildCards
+      RebindableSyntax
+      ScopedTypeVariables
+      StandaloneDeriving
+      TupleSections
+      TypeFamilies
+      TypeOperators
+      TypeSynonymInstances
+      ViewPatterns
+      NoRebindableSyntax
+  ghc-options: -Wall -Werror=missing-methods -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      ad
+    , base >=4.7 && <5
+    , containers
+    , dhall
+    , formulative-algebra
+    , fused-effects
+    , hashable
+    , minimal-default
+    , refined
+    , safe-exceptions
+    , scientific
+    , simple-reflect
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , vector
+    , vector-algorithms
+    , vector-sized
+  default-language: Haskell2010
